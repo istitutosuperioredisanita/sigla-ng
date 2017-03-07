@@ -39,7 +39,6 @@ public class HelloResource {
                 .collect(toList());
     }
 
-    @Secured("admin")
     @PostMapping(value = "/api/hello", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Hello helloPost(@RequestBody Hello hello) {
         return helloRepository.saveAndFlush(hello);
