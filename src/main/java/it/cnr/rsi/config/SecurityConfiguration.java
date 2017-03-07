@@ -19,20 +19,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring()
+        web
+                .ignoring()
                 .antMatchers("/app/**/*.{js,html}");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .authorizeRequests()
-            .anyRequest().fullyAuthenticated()
-            .and()
-            .formLogin()
-            .and()
-            .csrf()
-            .disable();
+                .authorizeRequests()
+                .antMatchers("/api/**").fullyAuthenticated()
+                .and()
+                .formLogin()
+                .and()
+                .csrf()
+                .disable();
     }
 
 
