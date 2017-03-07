@@ -1,5 +1,9 @@
 package it.cnr.rsi.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -15,7 +19,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@EnableConfigurationProperties(LdapConfigurationProperties.class)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfiguration.class);
+
+    @Autowired
+    private LdapConfigurationProperties ldapConfigurationProperties;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -39,15 +49,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
+
+        LOGGER.info("ldap config: {}", ldapConfigurationProperties.getUrl());
+
         auth
                 .ldapAuthentication()
-                .userSearchBase("o=cnr, c=it")
-                .userSearchFilter("uid={0}")
+                .userSearchBase(ldapConfigurationProperties.getUserSearchBase())
+                .userSearchFilter(ldapConfigurationProperties.getUserSearchFilter())
                 .groupSearchBase(null)
                 .contextSource()
-                .url("ldap://virtest1.si.cnr.it:389")
-                .managerDn("cn=mastercnrapp2,ou=account,o=cnr,c=it")
-                .managerPassword("pippa");
+                .url(ldapConfigurationProperties.getUrl())
+                .managerDn(ldapConfigurationProperties.getManagerDn())
+                .managerPassword(ldapConfigurationProperties.getManagerPassword());
 
     }
 
