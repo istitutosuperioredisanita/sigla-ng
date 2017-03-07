@@ -38,7 +38,10 @@ public class WebConfigurer implements ServletContextInitializer {
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
-        initClusteredHttpSessionFilter(servletContext, disps);
+
+        log.warn("enable clustered sessions");
+
+//        initClusteredHttpSessionFilter(servletContext, disps);
         log.info("Web application fully configured");
     }
 
