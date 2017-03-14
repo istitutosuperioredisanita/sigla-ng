@@ -49,6 +49,9 @@ public class CacheConfiguration {
     public HazelcastInstance hazelcastInstance() {
         log.debug("Configuring Hazelcast");
         Config config = new Config();
+
+        config.setProperty("hazelcast.jmx", Boolean.TRUE.toString());
+
         config.setInstanceName(hazelcastConfigurationProperties.getInstanceName());
         config.getNetworkConfig().setPort(hazelcastConfigurationProperties.getPort());
         config.getNetworkConfig().setPortAutoIncrement(true);
