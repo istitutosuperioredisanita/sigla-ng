@@ -25,6 +25,8 @@ import static org.junit.Assert.assertEquals;
 public class AlberoMainServiceTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AlberoMainServiceTest.class);
+    private static final String USER_ID = "MSPASIANO";
+    private static final String UNITA_ORGANIZZATIVA = "999.000";
 
     @Autowired
     private AlberoMainService alberoMainService;
@@ -32,17 +34,13 @@ public class AlberoMainServiceTest {
     @Test
     public void tree() throws Exception {
 
-        String userId = "MSPASIANO";
-        String unitaOrganizzativa = "999.000";
-
-
-        Map<String, List<TreeNode>> fullMap = alberoMainService.tree(userId, unitaOrganizzativa);
+        Map<String, List<TreeNode>> fullMap = alberoMainService.tree(USER_ID, UNITA_ORGANIZZATIVA);
 
         try {
             String json = new ObjectMapper().writeValueAsString(fullMap);
             LOGGER.info("json {}", json);
         } catch (JsonProcessingException e) {
-            LOGGER.error("error creating tree {} {}", userId, unitaOrganizzativa, e);
+            LOGGER.error("error creating tree {} {}", USER_ID, UNITA_ORGANIZZATIVA, e);
         }
 
         assertEquals(9, fullMap.get("0").size());

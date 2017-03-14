@@ -29,6 +29,7 @@ import java.util.stream.Stream;
 public class AlberoMainService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AlberoMainService.class);
+    public static final String ROOT = "ROOT";
 
     private AlberoMainRepository alberoMainRepository;    
     private UtenteUnitaAccessoRepository utenteUnitaAccessoRepository;
@@ -56,21 +57,19 @@ public class AlberoMainService {
     	Stream<String> accessi = Stream.concat(accessiPerUtente, accessiPerRuoli).distinct();
     	Stream<AlberoMain> leafs = alberoMainRepository.findAlberoMainByAccessi(accessi.collect(Collectors.toList()));
 
+        MultiValuedMap<String, AlberoMain> rawMap = new HashSetValuedHashMap<>();
+    	leafs.forEach(leaf -> visit(leaf, rawMap));
+    	LOGGER.debug("mappa {}", rawMap.toString());
 
-        MultiValuedMap<String, AlberoMain> m = new HashSetValuedHashMap<>();
-    	leafs.forEach(leaf -> visit(leaf, m));
-    	LOGGER.info("mappa {}", m.toString());
-
-        Map<String, List<TreeNode>> fullMap = m
+        Map<String, List<TreeNode>> tree = rawMap
                 .keySet()
                 .stream()
-                .map(id -> Pair.of(id, orderedValues(m.get(id))))
+                .map(id -> Pair.of(id, orderedValues(rawMap.get(id))))
                 .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
 
-        LOGGER.info("full map {}", fullMap);
+        LOGGER.debug("tree: {}", tree);
 
-
-    	return fullMap;
+    	return tree;
     }
 
     private List<TreeNode> orderedValues(Collection<AlberoMain> values) {
@@ -87,17 +86,15 @@ public class AlberoMainService {
 
         String cdNodo = node.getCdNodo();
 
-        node.getPgOrdinamento();
-
         AlberoMain parent = node.getAlberoMain();
 
         if (parent == null) {
-            m.put("ROOT", node);
+            m.put(ROOT, node);
         } else {
             String parentCdNodo = parent.getCdNodo();
 
             if (m.containsKey(parentCdNodo)) {
-                LOGGER.info("{} gia' visitato", parentCdNodo);
+                LOGGER.debug("{} gia' visitato", parentCdNodo);
             } else {
                 visit(parent, m);
             }
