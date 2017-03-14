@@ -1,0 +1,1966 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"app",
+				"append"
+			],
+			[
+				"att",
+				"attachment"
+			],
+			[
+				"edit",
+				"editProdotti"
+			],
+			[
+				"ed",
+				"editProdotti"
+			],
+			[
+				"ob",
+				"objectTypeId"
+			],
+			[
+				"comu",
+				"comunicazioni"
+			],
+			[
+				"es",
+				"esclusioneRinuncia"
+			],
+			[
+				"co",
+				"common"
+			],
+			[
+				"la",
+				"label"
+			],
+			[
+				"ano",
+				"Anonima"
+			],
+			[
+				"form",
+				"format"
+			],
+			[
+				"call",
+				"callId"
+			],
+			[
+				"drop",
+				"dropdownConvocazioni"
+			],
+			[
+				"m",
+				"message"
+			],
+			[
+				"sede",
+				"sede"
+			],
+			[
+				"jconon",
+				"jconon_call"
+			],
+			[
+				"dis",
+				"displayGroup"
+			],
+			[
+				"ma",
+				"manageGroup"
+			],
+			[
+				"r",
+				"rdp"
+			],
+			[
+				"grou",
+				"groupRdP"
+			],
+			[
+				"user",
+				"userData"
+			],
+			[
+				"us",
+				"userData"
+			],
+			[
+				"pa",
+				"partecipazione"
+			],
+			[
+				"ex",
+				"excludeAspects"
+			],
+			[
+				"prop",
+				"propValue"
+			],
+			[
+				"node",
+				"node"
+			],
+			[
+				"in",
+				"input"
+			],
+			[
+				"esclusio",
+				"esclusione_rinuncia"
+			],
+			[
+				"copy",
+				"copyEnabled"
+			],
+			[
+				"comm",
+				"common"
+			],
+			[
+				"ba",
+				"bando"
+			],
+			[
+				"pag",
+				"paging"
+			],
+			[
+				"upload",
+				"uploadContent"
+			],
+			[
+				"e",
+				"equals"
+			],
+			[
+				"true",
+				"true"
+			],
+			[
+				"appen",
+				"append"
+			],
+			[
+				"id",
+				"idCategoria"
+			],
+			[
+				"me",
+				"metadata"
+			],
+			[
+				"CAN",
+				"CAN_UPDATE_PROPERTIES"
+			],
+			[
+				"ban",
+				"bandi"
+			],
+			[
+				"CD_UNI",
+				"CD_UNITA_DESTINAZIONE"
+			],
+			[
+				"CONT",
+				"CONSTRAINT"
+			],
+			[
+				"CD",
+				"CD_UNITA_ORGANIZZATIVA"
+			],
+			[
+				"P",
+				"PROGRESSIVO"
+			],
+			[
+				"PR",
+				"PROGRESSIVO"
+			],
+			[
+				"NUM",
+				"NUMERO_LINEA"
+			],
+			[
+				"str",
+				"struttura_destinataria"
+			],
+			[
+				"t",
+				"test15"
+			],
+			[
+				"gr",
+				"groupGestoriModal"
+			],
+			[
+				"sel",
+				"selectedFolder"
+			],
+			[
+				"b",
+				"btnPreview"
+			],
+			[
+				"rende",
+				"renderElement"
+			],
+			[
+				"ne",
+				"nextKey"
+			],
+			[
+				"SU",
+				"success"
+			],
+			[
+				"def",
+				"defaultChoice"
+			],
+			[
+				"lo",
+				"log"
+			],
+			[
+				"al",
+				"alert"
+			],
+			[
+				"modal",
+				"modal-inner-fix"
+			],
+			[
+				"Vers",
+				"versioni"
+			],
+			[
+				"sh",
+				"showHistory"
+			],
+			[
+				"S",
+				"Search"
+			],
+			[
+				"version",
+				"versionLabel"
+			],
+			[
+				"setting",
+				"settings"
+			],
+			[
+				"getN",
+				"getNodeRef"
+			],
+			[
+				"qu",
+				"queue"
+			],
+			[
+				"bulk",
+				"bulkinfo"
+			],
+			[
+				"last",
+				"lastModificationDate"
+			],
+			[
+				"su",
+				"success"
+			],
+			[
+				"a",
+				"application"
+			],
+			[
+				"sub",
+				"substring"
+			],
+			[
+				"d",
+				"documents"
+			],
+			[
+				"pro",
+				"prodotti"
+			],
+			[
+				"th",
+				"thead"
+			],
+			[
+				"order",
+				"orderBy"
+			],
+			[
+				"append",
+				"appendTo"
+			],
+			[
+				"name",
+				"name"
+			],
+			[
+				"fo",
+				"font-style"
+			],
+			[
+				"margin",
+				"margin-top"
+			],
+			[
+				"fon",
+				"font-size"
+			],
+			[
+				"borderr",
+				"border-right"
+			],
+			[
+				"di",
+				"display"
+			],
+			[
+				"wid",
+				"widget-area"
+			],
+			[
+				"pub",
+				"published"
+			],
+			[
+				"prodo",
+				"prodotto"
+			],
+			[
+				"re",
+				"return"
+			],
+			[
+				"mo",
+				"modal-inner-fix"
+			],
+			[
+				"pri",
+				"print_dic_sost"
+			],
+			[
+				"all",
+				"allegati"
+			],
+			[
+				"se",
+				"search"
+			],
+			[
+				"jconontype",
+				"jconontype"
+			],
+			[
+				"data",
+				"dataSource"
+			],
+			[
+				"tre",
+				"trigger"
+			],
+			[
+				"bu",
+				"buttonPeople"
+			],
+			[
+				"s",
+				"settings"
+			],
+			[
+				"button",
+				"buttonUpload"
+			],
+			[
+				"ci",
+				"criteria"
+			],
+			[
+				"add",
+				"addClass"
+			],
+			[
+				"tu",
+				"true"
+			],
+			[
+				"da",
+				"dataCall"
+			],
+			[
+				"inde",
+				"indexOf"
+			],
+			[
+				"input",
+				"input-medium"
+			],
+			[
+				"i",
+				"list-item"
+			],
+			[
+				"data_",
+				"data_now"
+			],
+			[
+				"Comm",
+				"common"
+			],
+			[
+				"el",
+				"else"
+			],
+			[
+				"va",
+				"valueType"
+			],
+			[
+				"mar",
+				"margin-right"
+			],
+			[
+				"addC",
+				"addCmisObjectId"
+			],
+			[
+				"un",
+				"undefined"
+			],
+			[
+				"ca",
+				"catch"
+			],
+			[
+				"ud",
+				"undefined"
+			],
+			[
+				"type",
+				"typeId"
+			],
+			[
+				"remove",
+				"removeClass"
+			],
+			[
+				"cmis",
+				"cmisObjectId"
+			],
+			[
+				"remo",
+				"removeClass"
+			],
+			[
+				"rem",
+				"removeClass"
+			],
+			[
+				"sho",
+				"showAllegati"
+			],
+			[
+				"show",
+				"showPermessi"
+			],
+			[
+				"cm",
+				"cmisObjectId"
+			],
+			[
+				"border",
+				"border-bottom"
+			],
+			[
+				"o",
+				"objectTypeId"
+			],
+			[
+				"td",
+				"tdAuthority"
+			],
+			[
+				"padd",
+				"padding-left"
+			],
+			[
+				"min",
+				"min-width"
+			],
+			[
+				"margi",
+				"margin-left"
+			],
+			[
+				"p",
+				"padding-left"
+			],
+			[
+				"mu",
+				"multiple"
+			],
+			[
+				"cl",
+				"click"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "pom.xml",
+			"settings":
+			{
+				"buffer_size": 2542,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/main/resources/static/src/index.html",
+			"settings":
+			{
+				"buffer_size": 1858,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/mspasiano/Massimo Zaccardelli.html",
+			"settings":
+			{
+				"buffer_size": 1627,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/mspasiano/Alessandro Mangione.html",
+			"settings":
+			{
+				"buffer_size": 1627,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/mspasiano/Gerardo Bellantone.html",
+			"settings":
+			{
+				"buffer_size": 1626,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/mspasiano/buttami/angular2-registration-login-example/app/login/login.component.js",
+			"settings":
+			{
+				"buffer_size": 2413,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/main/resources/static/src/app/app.component.html",
+			"settings":
+			{
+				"buffer_size": 3828,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 96.0,
+		"selected_items":
+		[
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"Insta",
+				"Package Control: Install Package"
+			],
+			[
+				"ru",
+				"JSLint: Run JSLint"
+			],
+			[
+				"run ",
+				"JSLint: Run JSLint"
+			],
+			[
+				"diff",
+				"FileDiffs: Menu"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"Inst",
+				"Package Control: Install Package"
+			],
+			[
+				"Indent",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"indent",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"",
+				"JSLint: Run JSLint"
+			]
+		],
+		"width": 467.0
+	},
+	"console":
+	{
+		"height": 236.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/mspasiano/git/sigla-ng/src/main/resources/static/src/index.html",
+		"/run/user/1000/gvfs/ftp:host=bandi.urp.cnr.it,user=bandiUSER/catalina.out",
+		"/run/user/1000/gvfs/ftp:host=bandi.urp.cnr.it,user=bandiUSER/etc/logrotate.bandi.urp.cnr.it",
+		"/home/mspasiano/buttami/assegni.src/assegni/gestione/GestioneAssegno.java",
+		"/home/mspasiano/buttami/assegni/WEB-INF/classes/assegni/hbm/DettagliBando.hbm.xml",
+		"/home/mspasiano/git/sigla-ng-old/src/main/resources/static/src/app/app.component.html",
+		"/home/mspasiano/git/sigla-ng/src/main/resources/static/src/app/app.component.html",
+		"/home/mspasiano/git/sigla-ng/src/main/resources/static/src/app/app.component.ts",
+		"/home/mspasiano/git/sigla-ng/src/main/resources/static/src/app/app.module.ts",
+		"/home/mspasiano/git/sigla-ng/src/main/resources/static/bower.json",
+		"/home/mspasiano/git/sigla-ng/src/main/resources/static/src/app/app.component.css",
+		"/home/mspasiano/git/sigla-ng/src/main/resources/static/src/styles.css",
+		"/home/mspasiano/buttami/urp/carica_documento_commissione.jsp",
+		"/home/mspasiano/git/sigla-ng/src/main/resources/static/node_modules/saucelabs/test/bootstrap/index.js",
+		"/home/mspasiano/git/sigla-ng/src/main/resources/static/src/favicon.ico",
+		"/home/mspasiano/git/sigla-bootstrap/sigla-bootstrap.sublime-project",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/META-INF/js/cnr/cnr.call.js",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/META-INF/js/cnr/cnr.jconon.js",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/META-INF/js/ws/application/application.js",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-backend/src/main/resources/application.properties",
+		"/home/mspasiano/.cache/.fr-rYfxkn/hazelcast-3.7.5/mancenter/startManCenter.sh",
+		"/home/mspasiano/curl-totalnumitems.txt",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/META-INF/js/ws/call/call.js",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/pages/call/call.get.html.ftl",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/bulkInfo/F_jconon_call_aric_folder.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/bulkInfo/F_jconon_call_folder.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-backend/src/main/java/it/cnr/si/cool/jconon/rest/CommonRest.java",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/META-INF/js/cnr/cnr.application.js",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/META-INF/js/ws/header.js",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/less/style.less",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/pom.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/bulkInfo/D_cvpeople_articolo_tecnologo.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/bulkInfo/D_cvelement_attivita_incarichi_tecnologo.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/bulkInfo/P_jconon_protocollo_common.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/META-INF/js/cnr/cnr.ui.protocollo.js",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/META-INF/js/cnr/cnr.ui.timepicker.js",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/i18n/cool-jconon_it.properties",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/i18n/change-password_it.properties",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/i18n/login_it.properties",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/bulkInfo/P_cvelement_commonDocenza.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/META-INF/js/ws/call/comunicazione.get.js",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/META-INF/js/ws/call/convocazione.get.js",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/META-INF/js/ws/call/esclusione.get.js",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/META-INF/js/ws/my-applications/main.get.js",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/META-INF/js/ws/helpdesk/main.get.js",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/META-INF/js/ws/security/change-password.js",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/META-INF/js/ws/security/create.js",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/META-INF/js/handlebars/call-main-results.handlebars",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/bulkInfo/F_jconon_application_folder.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/pages/header/header.get.html.ftl",
+		"/home/mspasiano/git/cool-jconon-funzione-pubblica/jconon.sublime-",
+		"/run/user/1000/gvfs/dav:host=alfresco-community.test.si.cnr.it,ssl=false,prefix=%2Falfresco%2Fwebdav/Funzione Pubblica/BANDO OIV/labels.json",
+		"/run/user/1000/gvfs/dav:host=alfresco-community.test.si.cnr.it,ssl=false,user=admin,prefix=%2Falfresco%2Fwebdav/Data Dictionary/Web Applications/jconon/WEB-INF/classes/rbac.get.json.ftl",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/pages/pages.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/i18n/cool-jconon_en.properties",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/i18n/applications_it.properties",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/i18n/my-applications_it.properties",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/pages/my-applications/main.get.html.ftl",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/META-INF/js/handlebars/application-main-results.handlebars",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-remote/src/main/resources/remote/Data Dictionary/Models/jconon_attachment_folder.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/i18n/applications_en.properties",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-backend/src/test/resources/pages/pages.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/META-INF/js/ws/call/show-convocazione.get.js",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/bulkInfo/esclusioneBulkInfo.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/bulkInfo/convocazioneBulkInfo.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-backend/src/main/java/it/cnr/si/cool/jconon/util/TipoSelezione.java",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-remote/src/main/resources/remote/Data Dictionary/Models/jconon_application_folder.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-remote/src/main/resources/remote/Data Dictionary/Models/jconon_call_folder.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-backend/src/main/java/it/cnr/si/cool/jconon/service/helpdesk/HelpdeskService.java",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/META-INF/json/paesi.json",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-remote/src/main/resources/remote/Data Dictionary/Web Scripts/it/cnr/jconon/application-send.post.js",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-remote/src/main/resources/remote/Data Dictionary/Web Scripts/it/cnr/jconon/application-checkin.post.desc.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-remote/src/main/resources/remote/Data Dictionary/Web Scripts/it/cnr/jconon/application-checkin.post.js",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/bulkInfo/D_jconon_esclusione_attachment.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/META-INF/js/ws/groups/gestori.get.js",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/bulkInfo/P_jconon_application_aspect_dottorato.xml",
+		"/home/mspasiano/Downloads/protocollo.json",
+		"/home/mspasiano/svn/alfresco-source/HEAD/root/projects/remote-api/config/alfresco/templates/webscripts/org/alfresco/slingshot/documentlibrary/action/checkin.post.json.js",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-remote/src/main/resources/remote/Data Dictionary/Web Scripts/it/cnr/jconon/application-checkin.post.json.ftl",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/bulkInfo/D_jconon_modello_verifica_attivita_attachment.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-backend/src/main/java/it/cnr/si/cool/jconon/cmis/model/JCONONPropertyIds.java",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-backend/src/main/java/it/cnr/si/cool/jconon/service/application/ApplicationService.java",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/bulkInfo/D_jconon_relazione_attivita_svolta_attachment.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/bulkInfo/D_jconon_scheda_anonima_laurea.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/bulkInfo/P_jconon_application_aspect_laurea.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/bulkInfo/D_jconon_attachment_document.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/bulkInfo/D_jconon_documento_riconoscimento_attachment.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-backend/src/main/java/it/cnr/si/cool/jconon/rest/Call.java",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/bulkInfo/D_jconon_tesi_laurea_attachment.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/bulkInfo/D_jconon_comunicazione_attachment.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/META-INF/js/ws/call/show-esclusione.get.js",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-backend/src/main/java/it/cnr/si/cool/jconon/configuration/JerseyConfig.java",
+		"/home/mspasiano/svn/sigla-proxy/pom.xml",
+		"/home/mspasiano/svn/sigla-proxy/src/main/amp/config/alfresco/mia-share-config.xml",
+		"/home/mspasiano/svn/sigla-proxy/src/main/resources/META-INF/share-config-custom.xml.sample",
+		"/home/mspasiano/svn/sigla-proxy/src/test/resources/alfresco/web-extension/share-config-custom.xml",
+		"/home/mspasiano/svn/sigla-proxy/target/classes/META-INF/share-config-custom.xml.sample",
+		"/home/mspasiano/svn/sigla-proxy/target/sigla-proxy/config/alfresco/mia-share-config.xml",
+		"/home/mspasiano/svn/sigla-proxy/target/test-classes/alfresco/mia-share-config.xml",
+		"/home/mspasiano/svn/sigla-proxy/target/test-classes/alfresco/web-extension/share-config-custom.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-backend/src/main/java/it/cnr/si/cool/jconon/repository/dto/CmisObjectCache.java",
+		"/home/mspasiano/missioni.json",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/META-INF/js/ws/application/scheda-valutazione.js",
+		"/home/mspasiano/Downloads/jstack_attestati1",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-backend/src/main/java/it/cnr/si/cool/jconon/rest/Application.java",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/pages/util/confirm-message.get.html.ftl",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-backend/src/main/java/it/cnr/jconon/service/PrintService.java",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-backend/src/main/java/it/cnr/jconon/service/call/CallService.java",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-backend/src/test/resources/i18n/cool-jconon_it.properties",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/pages/confirm-message.get.html.ftl",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/pages/util/confirm-message.get.head.ftl",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-remote/src/main/resources/remote/Data Dictionary/Web Scripts/it/cnr/jconon/firma-convocazioni.post.js",
+		"/home/mspasiano/git/cool/cool-common/cool-common-web/src/main/resources/remote/Data Dictionary/Web Scripts/it/cnr/cool/Readme.md",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-webapp-resources/src/main/resources/i18n/home_it.properties",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-backend/src/main/java/it/cnr/jconon/service/application/ApplicationBulkInfoInjection.java",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-remote/src/main/resources/remote/Data Dictionary/Web Scripts/it/cnr/jconon/sedi-gestori.get.js",
+		"/home/mspasiano/git/sprint-attestati/src/main/java/it/cnr/si/attestati/service/DipendenteService.java",
+		"/home/mspasiano/git/cool-jconon/pom.xml",
+		"/home/mspasiano/git/cool-jconon/cool-jconon-backend/pom.xml",
+		"/home/mspasiano/git/cool-jconon-esclusioni/cool-jconon-webapp-resources/src/main/resources/META-INF/js/ws/call/show-comunicazione.get.js",
+		"/home/mspasiano/git/cool-jconon-esclusioni/cool-jconon-webapp-resources/src/main/resources/bulkInfo/D_jconon_esclusione_attachment.xml",
+		"/home/mspasiano/git/cool-jconon-esclusioni/cool-jconon-webapp-resources/src/main/resources/META-INF/js/cnr/cnr.jconon.js",
+		"/home/mspasiano/git/cool-jconon-esclusioni/cool-jconon-remote/src/main/resources/remote/Data Dictionary/Web Scripts/it/cnr/jconon/firma-convocazioni.post.js",
+		"/home/mspasiano/git/cool-jconon-esclusioni/cool-jconon-webapp-resources/src/main/resources/pages/call/call_en.properties",
+		"/home/mspasiano/git/cool-jconon-esclusioni/cool-jconon-webapp-resources/src/main/resources/pages/call/call_it.properties",
+		"/home/mspasiano/git/cool-jconon-esclusioni/cool-jconon-webapp-resources/src/main/resources/pages/call/convocazione_it.properties",
+		"/home/mspasiano/git/cool-jconon-esclusioni/cool-jconon-webapp-resources/src/main/resources/bulkInfo/D_jconon_convocazione_attachment.xml",
+		"/home/mspasiano/git/cool-jconon-esclusioni/cool-jconon-webapp-resources/src/main/resources/i18n/cool-jconon_it.properties"
+	],
+	"find":
+	{
+		"height": 70.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			"*.*",
+			"*.js",
+			"*.java",
+			"*.js",
+			"*.xml",
+			"*.js",
+			"*.java",
+			"*.js",
+			"*.*",
+			"*.js",
+			"*.*",
+			"*.js",
+			"*.xml",
+			"*.*",
+			"*.js",
+			"*.xml",
+			"*.js",
+			"*.*",
+			"*.js",
+			"*.handlebars",
+			"*.js",
+			"*.*",
+			"*.js",
+			"*.xml",
+			"*.js",
+			"*.*",
+			"*.xml",
+			"*.js",
+			"*.*",
+			"*.js",
+			"*.*",
+			"*.xml",
+			"*.java",
+			"*.js",
+			"*.properties",
+			"*.xml",
+			"*.*",
+			"*.xml",
+			"*.ftl",
+			"*.*",
+			"*.java",
+			"*.js",
+			"*.ftl",
+			"*.*",
+			"*.js",
+			"*.*",
+			"*.properties",
+			"*.java",
+			"*.md",
+			"*.*",
+			"*.java",
+			"*.js",
+			"*.xml",
+			"*.js",
+			"*.xml",
+			"*.js",
+			"*.xml",
+			"*.properties",
+			"*.*",
+			"*.js",
+			"*.xml",
+			"*.properties",
+			"*.xml",
+			"*.java",
+			"*.xml",
+			"*.js",
+			"*.properties",
+			"*.js",
+			"*.java",
+			"*.js",
+			"*.*",
+			"*.java",
+			"*.ftl",
+			"*.properties",
+			"*.js",
+			"*.properties",
+			"*.md",
+			"*.js",
+			"*.java",
+			"*.ftl",
+			"*.java",
+			"*.md",
+			"pom.xml",
+			"*.*",
+			"*.properties",
+			"*.java",
+			"*.properties",
+			"*.java",
+			"*.properties",
+			"*.js",
+			"*.properties",
+			"*.java",
+			"*.*",
+			"*.java",
+			"*.js",
+			"*.handlebars",
+			"*.js",
+			"*.java",
+			"*.*",
+			"*.java",
+			"*.js",
+			"*.ftl",
+			"*.js",
+			"*.md",
+			"*.js",
+			"*.md",
+			"*.java",
+			"*.xml",
+			"*.js",
+			"*.xml",
+			"*.*",
+			"*.java",
+			"*.*",
+			"*.java",
+			"*.jrxml",
+			"*.md",
+			"*.java",
+			"*.*",
+			"*.java",
+			"*.properties",
+			"*.js",
+			"*.xml",
+			"*.md",
+			"*.js",
+			"*.xml",
+			"*.js",
+			"*.java",
+			"*.xml"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"codice bando",
+			"codiceBando",
+			"dettagliBandoCodice",
+			"codice bando",
+			"traceur",
+			"src/",
+			"sigla-print",
+			"isConcorsi",
+			"Call.isConcorsi()",
+			"isConcorsi",
+			"concorsi",
+			"Fri Mar 03 2017 17",
+			"print",
+			"protocol",
+			"createCurriculum",
+			"showCurriculum",
+			"defaultDisplayDocument",
+			"displayTi",
+			"createTitoli",
+			"showTitoli",
+			"createTitoli",
+			"Attachments",
+			"applicationAttachments",
+			"createTitoli",
+			"isRdP",
+			"filter",
+			"inTree",
+			"org.apache.chemistry.opencmis.binding.auth.classname",
+			"sys:localized",
+			"pasteApplication",
+			"copy",
+			"cache",
+			"applications-user",
+			"calculateTotalNumItems",
+			"defaultDisplayDocument",
+			"filter",
+			"filters-provvisorie_inviate",
+			"filters-attivi_scaduti",
+			"displayAtta",
+			"defaultDisplayDocument",
+			"ChangeOwner",
+			"defaultDis",
+			"profile",
+			"development",
+			"development_ribbon.png",
+			"requirejs-maven-plugin",
+			"parentClass",
+			"message.max.length",
+			"maxlengthAlfresco",
+			"minlengthAlfresco",
+			"max",
+			"min",
+			"minLength",
+			"ui.protocollo",
+			"Widget",
+			"developer",
+			"URL.Data.node.node",
+			"code",
+			"register",
+			"http://utenti.cnr.it",
+			"Per modificare la password occorre seguire il seguente link",
+			"publish",
+			"fiscale",
+			"ActionButton",
+			"maxUploadSize",
+			"isActive",
+			"format",
+			"org.apache.chemistry.opencmis.binding.atompub.url",
+			"filter",
+			"status.",
+			"mail.confirm.application.1",
+			"publishCall",
+			"remove",
+			"azioni",
+			"importo",
+			"email",
+			"data",
+			"inputType=\"TEXTAREA\" ",
+			"d:double",
+			"common.User.isGuest",
+			"common.User.isAdmin",
+			"common.User.",
+			"common.User.groups",
+			"content",
+			"field",
+			"cache",
+			"common",
+			"cache",
+			"affix",
+			"call_generic",
+			"filter",
+			"off",
+			"handle",
+			"common.",
+			"filterFn",
+			"search.execute",
+			"search",
+			"elements",
+			"pagination",
+			"itemsPagination",
+			"filter",
+			"callId",
+			"common.",
+			"filters",
+			"common.",
+			"page.",
+			"callId",
+			"join",
+			"calculateT",
+			"displayCu",
+			"findAllegati",
+			"completeList",
+			"getTypeForDropDown",
+			"cnr.application",
+			"displaySchedaAnonima",
+			"ObjectMapper",
+			"label.secondoscritto",
+			"PROVASCRITTA",
+			"PRIMAPROVASCRITTA",
+			"cache",
+			"ajax",
+			"jconon.",
+			"jconon.Data",
+			"label.jconon_application_nazione_nascita",
+			"Nazione",
+			"protocol.path",
+			"filters",
+			"incorso"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"sigla-bootstrap",
+			"common.User.guest",
+			"common.User.admin",
+			"common.User.groupsArray",
+			"http://contab.cnr.it:90/SIGLA",
+			"'workspace",
+			"',",
+			"Comunicazioni",
+			"comunicazioni",
+			"comunicazione",
+			"comunicazioni",
+			"Comunicazione",
+			"comunicazioni",
+			"comunicazione",
+			"esclusione",
+			"esclusioni",
+			"jconon_esclusione",
+			"current_date",
+			" ",
+			"git add src",
+			".xml\" relativeToChangelogFile=\"false\"/>",
+			"<include file=\"classpath:config/liquibase/changelog/",
+			"",
+			"PRINT_SPOOLER_PARAM",
+			"'workspace",
+			"',",
+			"'workspace",
+			"',",
+			"delete",
+			"search.findNode(\"workspace",
+			"\").remove();",
+			"//SpacesStore/",
+			"",
+			",",
+			"workspace://SpacesStore",
+			"",
+			"COMMISSIONE",
+			"COMMISSIONE_",
+			"COMMISSIONI_CONCORSO",
+			".fullName;",
+			"groups.getGroup(\"",
+			"//SendMail.sendErrorMail",
+			"SendMail.sendErrorMail",
+			"//SendMail.sendErrorMail",
+			"SendMail.sendErrorMail",
+			"//SendMail.sendErrorMail",
+			"SendMail.sendErrorMail",
+			"') OR ",
+			"IN_TREE('",
+			"",
+			"') OR ",
+			"IN_TREE('",
+			"",
+			"') OR ",
+			"' OR ",
+			"' OR",
+			"IN_TREE('",
+			"",
+			"jconon_attachment:call_atti_concorsuali",
+			"",
+			"replace: cnrapp8\ncnrapp8: no",
+			"changetype: Modify",
+			"changetype: modify\ncnrapp8: no\n",
+			"cnrapp8: no",
+			"esperienza_ricerca",
+			"jconon_scheda_anonima:phd",
+			"jconon_scheda_anonima:",
+			"jconon_scheda_anonima:laurea",
+			"",
+			"\"",
+			"'",
+			"150.146.40.173",
+			" ",
+			"jconon_scheda_anonima:dottorato_di_ricerca",
+			"",
+			"warning\n\n",
+			"globalVariable\n\n",
+			",\n\n",
+			"",
+			"$scope.$parent",
+			"$rootScope.currentPage",
+			".pdf\" --user=spaclient --password=manijada! \n\n",
+			"wget \"http://as11.cedrc.cnr.it:8180/alfresco/service/api/node/content/",
+			"http://as11.cedrc.cnr.it:8180/alfresco/d/d/workspace/",
+			"",
+			"a'",
+			"'",
+			"${alfresco.repo.url}",
+			"https://gestdoc.cnr.it",
+			" ",
+			":",
+			" ",
+			"’",
+			"\\'",
+			"/'",
+			"\\'\\'",
+			"incompatibilita",
+			"esperienza_gestionale",
+			"",
+			"alta_qualificazione",
+			"aspect_alta_qualificazione",
+			"comparto_universita",
+			"aspect_superato_periodo_prova",
+			"universita",
+			"ente_comparto_universita",
+			"Universita",
+			"ente_comparto_universita_appartenenza",
+			"attestati",
+			"epas",
+			"static final Logger",
+			"LoggerFactory.getLogger",
+			"static Logger ",
+			"import org.slf4j.LoggerFactory;",
+			"import org.slf4j.Logger;",
+			" WHERE IDENTIFICATIVO_SDI = 55710;",
+			" WHERE IDENTIFICATIVO_SDI = 55710",
+			"WHERE IDENTIFICATIVO_SDI = 55710",
+			"DELETE FROM  ",
+			"/opt/jdk1.7.0_71/jre/lib/security/cacerts",
+			"CD_UNITA_COMPETENZA",
+			"identificativoSdi",
+			"documentoEleTestata.identificativoSdi",
+			"identificativoSdi",
+			"java.lang.Long identificativoSdi",
+			"identificativoSdi",
+			"java.lang.Long identificativoSdi",
+			"identificativoSdi",
+			"java.lang.Long identificativoSdi"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 5,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "pom.xml",
+					"settings":
+					{
+						"buffer_size": 2542,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								330,
+								330
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/XML/XML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/main/resources/static/src/index.html",
+					"settings":
+					{
+						"buffer_size": 1858,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								440,
+								440
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/home/mspasiano/Massimo Zaccardelli.html",
+					"settings":
+					{
+						"buffer_size": 1627,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1627,
+								1627
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/home/mspasiano/Alessandro Mangione.html",
+					"settings":
+					{
+						"buffer_size": 1627,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1627,
+								1627
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/home/mspasiano/Gerardo Bellantone.html",
+					"settings":
+					{
+						"buffer_size": 1626,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1626,
+								1626
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/home/mspasiano/buttami/angular2-registration-login-example/app/login/login.component.js",
+					"settings":
+					{
+						"buffer_size": 2413,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "src/main/resources/static/src/app/app.component.html",
+					"settings":
+					{
+						"buffer_size": 3828,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								725,
+								725
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 34.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 166.0
+	},
+	"output.jslint_result_view":
+	{
+		"height": 118.0
+	},
+	"output.unsaved_changes":
+	{
+		"height": 210.0
+	},
+	"replace":
+	{
+		"height": 67.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"cnr.ca",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/js/cnr/cnr.call.js"
+			],
+			[
+				"application-sen",
+				"cool-jconon-remote/src/main/resources/remote/Data Dictionary/Web Scripts/it/cnr/jconon/application-send.post.js"
+			],
+			[
+				"cnr.jco",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/js/cnr/cnr.jconon.js"
+			],
+			[
+				"cnr.app",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/js/cnr/cnr.application.js"
+			],
+			[
+				"appl",
+				"cool-jconon-backend/src/main/resources/application.properties"
+			],
+			[
+				"cnr.call",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/js/cnr/cnr.call.js"
+			],
+			[
+				"application.js",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/js/ws/application/application.js"
+			],
+			[
+				"cnr.jcon",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/js/cnr/cnr.jconon.js"
+			],
+			[
+				"cnrcall",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/js/cnr/cnr.call.js"
+			],
+			[
+				"cnr.jc",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/js/cnr/cnr.jconon.js"
+			],
+			[
+				"cnr.jcono",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/js/cnr/cnr.jconon.js"
+			],
+			[
+				"cnr.ui",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/js/cnr/cnr.ui.protocollo.js"
+			],
+			[
+				"header",
+				"cool-jconon-webapp-resources/src/main/resources/pages/header/header.get.html.ftl"
+			],
+			[
+				"application",
+				"cool-jconon-backend/src/main/resources/application.properties"
+			],
+			[
+				"f_jconon_appl",
+				"cool-jconon-webapp-resources/src/main/resources/bulkInfo/F_jconon_application_folder.xml"
+			],
+			[
+				"cnr.jconon",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/js/cnr/cnr.jconon.js"
+			],
+			[
+				"app",
+				"cool-jconon-backend/src/main/resources/application.properties"
+			],
+			[
+				"cnr",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/js/cnr/cnr.jconon.js"
+			],
+			[
+				"call-main",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/js/handlebars/call-main-results.handlebars"
+			],
+			[
+				"call-main-results",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/js/handlebars/call-main-results.handlebars"
+			],
+			[
+				"call.get",
+				"cool-jconon-webapp-resources/src/main/resources/pages/call/call.get.html.ftl"
+			],
+			[
+				"application.",
+				"cool-jconon-backend/src/main/resources/application.properties"
+			],
+			[
+				"common.",
+				"cool-jconon-backend/src/main/java/it/cnr/si/cool/jconon/rest/CommonRest.java"
+			],
+			[
+				"f_jconon_call",
+				"cool-jconon-webapp-resources/src/main/resources/bulkInfo/F_jconon_call_aric_folder.xml"
+			],
+			[
+				"call.js",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/js/ws/call/call.js"
+			],
+			[
+				"jconon_atta",
+				"cool-jconon-remote/src/main/resources/remote/Data Dictionary/Models/jconon_attachment_folder.xml"
+			],
+			[
+				"cool",
+				"cool-jconon-webapp-resources/src/main/resources/i18n/cool-jconon_it.properties"
+			],
+			[
+				"pages",
+				"cool-jconon-webapp-resources/src/main/resources/pages/pages.xml"
+			],
+			[
+				"page.",
+				"cool-jconon-backend/src/test/resources/pages/pages.xml"
+			],
+			[
+				"my",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/js/ws/my-applications/main.get.js"
+			],
+			[
+				"p_jconon",
+				"cool-jconon-webapp-resources/src/main/resources/bulkInfo/P_jconon_application_aspect_dottorato.xml"
+			],
+			[
+				"cnr.appl",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/js/cnr/cnr.application.js"
+			],
+			[
+				"f_jconon_a",
+				"cool-jconon-webapp-resources/src/main/resources/bulkInfo/F_jconon_application_folder.xml"
+			],
+			[
+				"gest",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/js/ws/groups/gestori.get.js"
+			],
+			[
+				"jconon_esclusione_attachment",
+				"cool-jconon-webapp-resources/src/main/resources/bulkInfo/D_jconon_esclusione_attachment.xml"
+			],
+			[
+				"send",
+				"cool-jconon-remote/src/main/resources/remote/Data Dictionary/Web Scripts/it/cnr/jconon/application-send.post.js"
+			],
+			[
+				"paesi",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/json/paesi.json"
+			],
+			[
+				"a",
+				"cool-jconon-backend/src/main/resources/application.properties"
+			],
+			[
+				"application.prop",
+				"cool-jconon-backend/src/main/resources/application.properties"
+			],
+			[
+				"relazione_attivita_svolta",
+				"cool-jconon-webapp-resources/src/main/resources/bulkInfo/D_jconon_relazione_attivita_svolta_attachment.xml"
+			],
+			[
+				"jconon_modello_verifica_attivita_attachment",
+				"cool-jconon-webapp-resources/src/main/resources/bulkInfo/D_jconon_modello_verifica_attivita_attachment.xml"
+			],
+			[
+				"applica",
+				"cool-jconon-backend/src/main/resources/application.properties"
+			],
+			[
+				"header.get",
+				"cool-jconon-webapp-resources/src/main/resources/pages/header/header.get.html.ftl"
+			],
+			[
+				"header.js",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/js/ws/header.js"
+			],
+			[
+				"cnr.",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/js/cnr/cnr.application.js"
+			],
+			[
+				"laurea",
+				"cool-jconon-webapp-resources/src/main/resources/bulkInfo/D_jconon_tesi_laurea_attachment.xml"
+			],
+			[
+				"jconon_documento_riconoscimento",
+				"cool-jconon-webapp-resources/src/main/resources/bulkInfo/D_jconon_documento_riconoscimento_attachment.xml"
+			],
+			[
+				"jconon_attachment_doc",
+				"cool-jconon-webapp-resources/src/main/resources/bulkInfo/D_jconon_attachment_document.xml"
+			],
+			[
+				"d_jconon_esclusione_attachment",
+				"cool-jconon-webapp-resources/src/main/resources/bulkInfo/D_jconon_esclusione_attachment.xml"
+			],
+			[
+				"application.j",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/js/ws/application/application.js"
+			],
+			[
+				"cmisobjectcache",
+				"cool-jconon-backend/src/main/java/it/cnr/si/cool/jconon/repository/dto/CmisObjectCache.java"
+			],
+			[
+				"application.java",
+				"cool-jconon-backend/src/main/java/it/cnr/si/cool/jconon/rest/Application.java"
+			],
+			[
+				"callse",
+				"cool-jconon-backend/src/main/java/it/cnr/jconon/service/call/CallService.java"
+			],
+			[
+				"printser",
+				"cool-jconon-backend/src/main/java/it/cnr/jconon/service/PrintService.java"
+			],
+			[
+				"cooo",
+				"cool-jconon-webapp-resources/src/main/resources/i18n/cool-jconon_it.properties"
+			],
+			[
+				"cool-j",
+				"cool-jconon-backend/src/test/resources/i18n/cool-jconon_it.properties"
+			],
+			[
+				"pages.",
+				"cool-jconon-webapp-resources/src/main/resources/pages/pages.xml"
+			],
+			[
+				"jconon_call",
+				"cool-jconon-remote/src/main/resources/remote/Data Dictionary/Models/jconon_call_folder.xml"
+			],
+			[
+				"home",
+				"cool-jconon-webapp-resources/src/main/resources/i18n/home_it.properties"
+			],
+			[
+				"callha",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/js/handlebars/call-main-results.handlebars"
+			],
+			[
+				"mainha",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/js/handlebars/application-main-results.handlebars"
+			],
+			[
+				"jconon",
+				"cool-jconon/cool-jconon-remote/src/main/resources/remote/Data Dictionary/Models/jconon_application_folder.xml"
+			],
+			[
+				"applicationha",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/js/handlebars/application-main-results.handlebars"
+			],
+			[
+				"convocazioni",
+				"cool-jconon-remote/src/main/resources/remote/Data Dictionary/Web Scripts/it/cnr/jconon/firma-convocazioni.post.js"
+			],
+			[
+				"jconon_application",
+				"cool-jconon-remote/src/main/resources/remote/Data Dictionary/Models/jconon_application_folder.xml"
+			],
+			[
+				"gestori",
+				"cool-jconon-remote/src/main/resources/remote/Data Dictionary/Web Scripts/it/cnr/jconon/sedi-gestori.get.js"
+			],
+			[
+				"prints",
+				"cool-jconon/cool-jconon-backend/src/main/java/it/cnr/jconon/service/PrintService.java"
+			],
+			[
+				"firma",
+				"cool-jconon-remote/src/main/resources/remote/Data Dictionary/Web Scripts/it/cnr/jconon/firma-convocazioni.post.js"
+			],
+			[
+				"",
+				"cool-jconon-remote/src/main/resources/remote/Data Dictionary/Models/jconon_attachment_folder.xml"
+			],
+			[
+				"pages.xm",
+				"cool-jconon-webapp-resources/src/main/resources/pages/pages.xml"
+			],
+			[
+				"esclusioneb",
+				"cool-jconon-webapp-resources/src/main/resources/bulkInfo/esclusioneBulkInfo.xml"
+			],
+			[
+				"d_jconon_co",
+				"cool-jconon-webapp-resources/src/main/resources/bulkInfo/D_jconon_convocazione_attachment.xml"
+			],
+			[
+				"jconon_appli",
+				"cool-jconon-remote/src/main/resources/remote/Data Dictionary/Models/jconon_application_folder.xml"
+			],
+			[
+				"d_jconon_esclusi",
+				"cool-jconon-webapp-resources/src/main/resources/bulkInfo/D_jconon_esclusione_attachment.xml"
+			],
+			[
+				"d_jconon_es",
+				"cool-jconon-webapp-resources/src/main/resources/bulkInfo/D_jconon_esclusione_attachment.xml"
+			],
+			[
+				"d_jconon_conv",
+				"cool-jconon-webapp-resources/src/main/resources/bulkInfo/D_jconon_convocazione_attachment.xml"
+			],
+			[
+				"d_jconon_attachment_c",
+				"cool-jconon-webapp-resources/src/main/resources/bulkInfo/D_jconon_attachment_call_abstract.xml"
+			],
+			[
+				"esclusione.jr",
+				"cool-jconon-print/src/main/resources/it/cnr/jconon/print/esclusione.jrxml"
+			],
+			[
+				"convocazionebulk",
+				"cool-jconon-webapp-resources/src/main/resources/bulkInfo/convocazioneBulkInfo.xml"
+			],
+			[
+				"esclusione.get.js",
+				"cool-jconon-webapp-resources/src/main/resources/META-INF/js/ws/call/esclusione.get.js"
+			],
+			[
+				"esclusione.get.html.ftl",
+				"cool-jconon-webapp-resources/src/main/resources/pages/call/esclusione.get.html.ftl"
+			],
+			[
+				"page",
+				"cool-jconon-webapp-resources/src/main/resources/pages/pages.xml"
+			],
+			[
+				"applicationse",
+				"cool-jconon-backend/src/main/java/it/cnr/jconon/service/application/ApplicationService.java"
+			],
+			[
+				"pdgvariazionicomponent",
+				"sigla-main/sigla-ejb/src/main/java/it/cnr/contab/pdg00/comp/PdGVariazioniComponent.java"
+			],
+			[
+				"application-main",
+				"cool-jconon/src/main/resources/META-INF/js/handlebars/application-main-results.handlebars"
+			],
+			[
+				"rbac",
+				"cool/cool-common/cool-common-core/target/test-classes/rbac.get.json.ftl"
+			],
+			[
+				"documenticontabiliservice",
+				"sigla-main/sigla-ejb/src/main/java/it/cnr/contab/doccont00/service/DocumentiContabiliService.java"
+			],
+			[
+				"crudabstractmandatobp",
+				"sigla-main/sigla-ejb/src/main/java/it/cnr/contab/doccont00/bp/CRUDAbstractMandatoBP.java"
+			],
+			[
+				"crudma",
+				"sigla-main/sigla-ejb/src/main/java/it/cnr/contab/doccont00/bp/CRUDMandatoBP.java"
+			],
+			[
+				"cnr.ac",
+				"cool/cool-common/cool-common-web-js/src/main/resources/META-INF/js/cnr/cnr.ace.js"
+			],
+			[
+				"autoco",
+				"cool/cool-common/cool-common-web/src/main/resources/remote/Data Dictionary/Web Scripts/it/cnr/cool/person/autocomplete-person.get.js"
+			],
+			[
+				"cnr.url",
+				"cool/cool-common/cool-common-web-js/src/main/resources/META-INF/js/cnr/cnr.url.js"
+			],
+			[
+				"cnr.us",
+				"cool/cool-common/cool-common-web-js/src/main/resources/META-INF/js/cnr/cnr.user.js"
+			],
+			[
+				"cnr.sear",
+				"cool/cool-common/cool-common-web-js/src/main/resources/META-INF/js/cnr/cnr.search.js"
+			],
+			[
+				"cnr.butto",
+				"cool/cool-common/cool-common-web-js/src/main/resources/META-INF/js/cnr/cnr.actionbutton.js"
+			],
+			[
+				"convocazione.jr",
+				"cool-jconon/src/main/resources/it/cnr/jconon/print/convocazione.jrxml"
+			],
+			[
+				"f_jconon_application_folder",
+				"cool-jconon/src/main/resources/bulkInfo/F_jconon_application_folder.xml"
+			],
+			[
+				"cnr.bulki",
+				"cool/cool-common/cool-common-web-js/src/main/resources/META-INF/js/cnr/cnr.bulkinfo.js"
+			],
+			[
+				"cm_pers",
+				"cool/cool-common/cool-common-web/src/main/resources/bulkInfo/cm_person.xml"
+			],
+			[
+				"cnr.ace",
+				"cool/cool-common/cool-common-web-js/src/main/resources/META-INF/js/cnr/cnr.ace.js"
+			],
+			[
+				"cnr.node",
+				"cool/cool-common/cool-common-web-js/src/main/resources/META-INF/js/cnr/cnr.node.js"
+			],
+			[
+				"application-main-results",
+				"cool-jconon/src/main/resources/META-INF/js/handlebars/application-main-results.handlebars"
+			],
+			[
+				"f_jconon_sche",
+				"cool-jconon/target/classes/bulkInfo/D_jconon_scheda_anonima_document.xml"
+			],
+			[
+				"application.prope",
+				"cool-jconon/src/main/resources/application.properties"
+			],
+			[
+				"content",
+				"cool/cool-common/cool-common-rest/src/main/java/it/cnr/cool/rest/Content.java"
+			],
+			[
+				"cnr.url.js",
+				"cool/cool-common/cool-common-web-js/src/main/resources/META-INF/js/cnr/cnr.url.js"
+			],
+			[
+				"applicationmodel",
+				"cool-jconon/src/main/java/it/cnr/jconon/model/ApplicationModel.java"
+			],
+			[
+				"cnr.bulk",
+				"cool/cool-common/cool-common-web-js/src/main/resources/META-INF/js/cnr/cnr.bulkinfo.js"
+			],
+			[
+				"d_jconon_scheda_anonima",
+				"cool-jconon/src/main/resources/bulkInfo/D_jconon_scheda_anonima_document.xml"
+			],
+			[
+				"anonima",
+				"cool-jconon/target/classes/bulkInfo/D_jconon_scheda_anonima_document.xml"
+			],
+			[
+				"f_application.xml",
+				"cool-jconon/src/main/resources/bulkInfo/F_jconon_application_folder.xml"
+			],
+			[
+				"jconon_convocazione",
+				"cool-jconon/src/main/resources/bulkInfo/D_jconon_convocazione_attachment.xml"
+			],
+			[
+				"schede-anonime.js",
+				"cool-jconon/src/main/resources/META-INF/js/ws/application/schede-anonime.js"
+			],
+			[
+				"application-s",
+				"cool-jconon/src/main/resources/remote/Data Dictionary/Web Scripts/it/cnr/jconon/application-send.post.js"
+			],
+			[
+				"calls",
+				"cool-jconon/src/main/java/it/cnr/jconon/util/CallStato.java"
+			],
+			[
+				"convocazionebulkinfo",
+				"cool-jconon/src/main/resources/bulkInfo/convocazioneBulkInfo.xml"
+			],
+			[
+				"cnr.search",
+				"cool/cool-common/cool-common-web-js/target/classes/META-INF/js/cnr/cnr.search.js"
+			],
+			[
+				"applicationser",
+				"cool-jconon/src/main/java/it/cnr/jconon/service/application/ApplicationService.java"
+			],
+			[
+				"cnr.crite",
+				"cool/cool-common/cool-common-web-js/src/main/resources/META-INF/js/cnr/cnr.criteria.js"
+			],
+			[
+				"aclt",
+				"cool/cool-common/cool-common-core/src/main/java/it/cnr/cool/cmis/model/ACLType.java"
+			],
+			[
+				"permission",
+				"cool/cool-common/cool-common-web/target/classes/remote/Data Dictionary/Web Scripts/it/cnr/cool/nodes/permissions.post.json.js"
+			],
+			[
+				"aclser",
+				"cool/cool-common/cool-common-core/src/main/java/it/cnr/cool/cmis/service/ACLService.java"
+			],
+			[
+				"group",
+				"cool/cool-common/cool-common-web/target/classes/remote/Data Dictionary/Web Scripts/it/cnr/cool/groups/group.post.js"
+			],
+			[
+				"protocollo.jso",
+				"cool-jconon/src/main/resources/remote/Data Dictionary/Web Applications/jconon/WEB-INF/classes/protocollo.json"
+			],
+			[
+				"f_jconon_call_folder",
+				"cool-jconon/src/main/resources/bulkInfo/F_jconon_call_folder.xml"
+			],
+			[
+				"permissionrepository",
+				"cool/cool-common/cool-common-core/src/main/java/it/cnr/cool/repository/PermissionRepository.java"
+			],
+			[
+				"permissionserviceimpl",
+				"cool/cool-common/cool-common-core/src/main/java/it/cnr/cool/web/PermissionServiceImpl.java"
+			],
+			[
+				"f_appli",
+				"cool-jconon/src/main/resources/bulkInfo/F_jconon_application_folder.xml"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 268.0,
+	"status_bar_visible": true
+}
