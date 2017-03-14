@@ -1,8 +1,7 @@
 package it.cnr.rsi.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import it.cnr.rsi.domain.AlberoMain;
+import it.cnr.rsi.domain.TreeNode;
 import it.cnr.rsi.repository.AlberoMainRepository;
 import it.cnr.rsi.repository.RuoloAccessoRepository;
 import it.cnr.rsi.repository.UtenteUnitaAccessoRepository;
@@ -15,7 +14,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -44,7 +46,7 @@ public class AlberoMainService {
 
     //@Cacheable(value="tree", key="#userId, #unitaOrganizzativa")
     @Transactional
-    public List<AlberoMain> tree(String userId, String unitaOrganizzativa) {
+    public Map<String, List<TreeNode>> tree(String userId, String unitaOrganizzativa) {
     	LOGGER.info("GET Tree for User: {} and Unita Organizzativa: {}", userId, unitaOrganizzativa);
     	Stream<String> accessiPerUtente = utenteUnitaAccessoRepository.findAccessiByCdUtente(userId, unitaOrganizzativa);    	
     	//accessiPerUtente.forEach(accesso -> LOGGER.info("Accesso: {}", accesso));
@@ -59,7 +61,7 @@ public class AlberoMainService {
     	leafs.forEach(leaf -> visit(leaf, m));
     	LOGGER.info("mappa {}", m.toString());
 
-        Map<String, List<List<String>>> fullMap = m
+        Map<String, List<TreeNode>> fullMap = m
                 .keySet()
                 .stream()
                 .map(id -> Pair.of(id, orderedValues(m.get(id))))
@@ -67,25 +69,18 @@ public class AlberoMainService {
 
         LOGGER.info("full map {}", fullMap);
 
-        try {
-            String json = new ObjectMapper().writeValueAsString(fullMap);
-            LOGGER.info("json {}", json);
-        } catch (JsonProcessingException e) {
-            LOGGER.error("error creating tree {} {}", userId, unitaOrganizzativa, e);
-        }
 
-    	return null;
+    	return fullMap;
     }
 
-    private List<List<String>> orderedValues(Collection<AlberoMain> values) {
+    private List<TreeNode> orderedValues(Collection<AlberoMain> values) {
 
         return  values
                 .stream()
-                .sorted(Comparator.comparingInt(x -> x.getPgOrdinamento().intValue()))
-                .map(node -> Arrays.asList(node.getCdNodo(), node.getDsNodo(), node.getBusinessProcess()))
+                .sorted(Comparator.comparingInt(node -> node.getPgOrdinamento().intValue()))
+                .map(node -> new TreeNode(node.getCdNodo(), node.getDsNodo(), node.getBusinessProcess()))
                 .collect(Collectors.toList());
     }
-
 
 
     private void visit(AlberoMain node, MultiValuedMap<String, AlberoMain> m) {
@@ -108,7 +103,6 @@ public class AlberoMainService {
             }
 
             m.put(parentCdNodo, node);
-
 
         }
     }
