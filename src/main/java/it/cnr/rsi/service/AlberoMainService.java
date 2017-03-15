@@ -6,20 +6,24 @@ import it.cnr.rsi.repository.AlberoMainRepository;
 import it.cnr.rsi.repository.RuoloAccessoRepository;
 import it.cnr.rsi.repository.UtenteUnitaAccessoRepository;
 import it.cnr.rsi.repository.UtenteUnitaRuoloRepository;
+
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.transaction.Transactional;
+
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.HashSetValuedHashMap;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by francesco on 07/03/17.
@@ -45,17 +49,17 @@ public class AlberoMainService {
     }
 
 
-    //@Cacheable(value="tree", key="#userId, #unitaOrganizzativa")
+    @Cacheable(value="tree", key="{#userId, #unitaOrganizzativa}")
     @Transactional
     public Map<String, List<TreeNode>> tree(String userId, String unitaOrganizzativa) {
     	LOGGER.info("GET Tree for User: {} and Unita Organizzativa: {}", userId, unitaOrganizzativa);
-    	Stream<String> accessiPerUtente = utenteUnitaAccessoRepository.findAccessiByCdUtente(userId, unitaOrganizzativa);    	
-    	//accessiPerUtente.forEach(accesso -> LOGGER.info("Accesso: {}", accesso));
-    	Stream<String> ruoliPerUtente = utenteUnitaRuoloRepository.findRuoliByCdUtente(userId, unitaOrganizzativa);
-    	Stream<String> accessiPerRuoli = ruoloAccessoRepository.findAccessiByRuoli(ruoliPerUtente.collect(Collectors.toList()));
-    	//accessiPerRuoli.forEach(accesso -> LOGGER.info("Accessi per Ruolo: {}", accesso));    	
-    	Stream<String> accessi = Stream.concat(accessiPerUtente, accessiPerRuoli).distinct();
-    	Stream<AlberoMain> leafs = alberoMainRepository.findAlberoMainByAccessi(accessi.collect(Collectors.toList()));
+    	List<String> findRuoliByCdUtente = utenteUnitaRuoloRepository.findRuoliByCdUtente(userId, unitaOrganizzativa).collect(Collectors.toList());    	
+    	List<String> accessi = Stream.concat(
+    			utenteUnitaAccessoRepository.findAccessiByCdUtente(userId, unitaOrganizzativa),     			
+    	    	Optional.ofNullable(findRuoliByCdUtente).filter(x -> !x.isEmpty()).map(x -> ruoloAccessoRepository.findAccessiByRuoli(x)).orElse(Stream.empty())
+    			).distinct().collect(Collectors.toList());
+    	Stream<AlberoMain> leafs = Optional.ofNullable(accessi).filter(x -> !x.isEmpty())
+    			.map(x -> alberoMainRepository.findAlberoMainByAccessi(x)).orElse(Stream.empty());
 
         MultiValuedMap<String, AlberoMain> rawMap = new HashSetValuedHashMap<>();
     	leafs.forEach(leaf -> visit(leaf, rawMap));
@@ -66,14 +70,11 @@ public class AlberoMainService {
                 .stream()
                 .map(id -> Pair.of(id, orderedValues(rawMap.get(id))))
                 .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
-
         LOGGER.debug("tree: {}", tree);
-
     	return tree;
     }
 
     private List<TreeNode> orderedValues(Collection<AlberoMain> values) {
-
         return  values
                 .stream()
                 .sorted(Comparator.comparingInt(node -> node.getPgOrdinamento().intValue()))
@@ -83,22 +84,16 @@ public class AlberoMainService {
 
 
     private void visit(AlberoMain node, MultiValuedMap<String, AlberoMain> m) {
-
-        String cdNodo = node.getCdNodo();
-
         AlberoMain parent = node.getAlberoMain();
-
         if (parent == null) {
             m.put(ROOT, node);
         } else {
             String parentCdNodo = parent.getCdNodo();
-
             if (m.containsKey(parentCdNodo)) {
                 LOGGER.debug("{} gia' visitato", parentCdNodo);
             } else {
                 visit(parent, m);
             }
-
             m.put(parentCdNodo, node);
 
         }
