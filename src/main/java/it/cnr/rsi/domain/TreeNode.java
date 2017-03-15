@@ -1,11 +1,14 @@
 package it.cnr.rsi.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by francesco on 14/03/17.
  */
-public class TreeNode {
+public class TreeNode implements Serializable{
 
-    private String id;
+	private static final long serialVersionUID = 1L;
+	private String id;
     private String description;
     private String process;
 
