@@ -26,10 +26,10 @@ public class AssBpAccesso implements Serializable {
 	private Date duva;
 
 	@Column(name="ESERCIZIO_FINE_VALIDITA")
-	private BigDecimal esercizioFineValidita;
+	private Integer esercizioFineValidita;
 
 	@Column(name="ESERCIZIO_INIZIO_VALIDITA")
-	private BigDecimal esercizioInizioValidita;
+	private Integer esercizioInizioValidita;
 
 	@Column(name="PG_VER_REC")
 	private BigDecimal pgVerRec;
@@ -73,19 +73,19 @@ public class AssBpAccesso implements Serializable {
 		this.duva = duva;
 	}
 
-	public BigDecimal getEsercizioFineValidita() {
+	public Integer getEsercizioFineValidita() {
 		return this.esercizioFineValidita;
 	}
 
-	public void setEsercizioFineValidita(BigDecimal esercizioFineValidita) {
+	public void setEsercizioFineValidita(Integer esercizioFineValidita) {
 		this.esercizioFineValidita = esercizioFineValidita;
 	}
 
-	public BigDecimal getEsercizioInizioValidita() {
+	public Integer getEsercizioInizioValidita() {
 		return this.esercizioInizioValidita;
 	}
 
-	public void setEsercizioInizioValidita(BigDecimal esercizioInizioValidita) {
+	public void setEsercizioInizioValidita(Integer esercizioInizioValidita) {
 		this.esercizioInizioValidita = esercizioInizioValidita;
 	}
 

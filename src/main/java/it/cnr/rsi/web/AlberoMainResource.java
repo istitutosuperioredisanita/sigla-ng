@@ -37,9 +37,9 @@ public class AlberoMainResource {
 
 
     @GetMapping(API_ALBERO_MAIN)
-    public Map<String, List<TreeNode>> tree(String userId, String unitaOrganizzativa){
-        LOGGER.info("GET Tree for User: {} and Unita Organizzativa: {}", userId, unitaOrganizzativa);
-        return alberoMainService.tree(userId, unitaOrganizzativa);
+    public Map<String, List<TreeNode>> tree(String userId, Integer esercizio, String unitaOrganizzativa){
+        LOGGER.info("GET Tree for User: {} esercizio {} and Unita Organizzativa: {}", userId, esercizio, unitaOrganizzativa);
+        return alberoMainService.tree(userId, esercizio, unitaOrganizzativa);
     }
 
     @PostMapping(value = API_ALBERO_MAIN, consumes = MediaType.APPLICATION_JSON_VALUE)
