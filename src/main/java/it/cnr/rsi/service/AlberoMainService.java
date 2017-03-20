@@ -49,14 +49,14 @@ public class AlberoMainService {
     }
 
 
-    @Cacheable(value="tree", key="{#userId, #unitaOrganizzativa}")
+    @Cacheable(value="tree", key="{#userId, #esecizio, #unitaOrganizzativa}")
     @Transactional
-    public Map<String, List<TreeNode>> tree(String userId, String unitaOrganizzativa) {
+    public Map<String, List<TreeNode>> tree(String userId, Integer esecizio, String unitaOrganizzativa) {
     	LOGGER.info("GET Tree for User: {} and Unita Organizzativa: {}", userId, unitaOrganizzativa);
     	List<String> findRuoliByCdUtente = utenteUnitaRuoloRepository.findRuoliByCdUtente(userId, unitaOrganizzativa).collect(Collectors.toList());    	
     	List<String> accessi = Stream.concat(
-    			utenteUnitaAccessoRepository.findAccessiByCdUtente(userId, unitaOrganizzativa),     			
-    	    	Optional.ofNullable(findRuoliByCdUtente).filter(x -> !x.isEmpty()).map(x -> ruoloAccessoRepository.findAccessiByRuoli(x)).orElse(Stream.empty())
+    			utenteUnitaAccessoRepository.findAccessiByCdUtente(userId, esecizio, unitaOrganizzativa),     			
+    	    	Optional.ofNullable(findRuoliByCdUtente).filter(x -> !x.isEmpty()).map(x -> ruoloAccessoRepository.findAccessiByRuoli(esecizio, x)).orElse(Stream.empty())
     			).distinct().collect(Collectors.toList());
     	Stream<AlberoMain> leafs = Optional.ofNullable(accessi).filter(x -> !x.isEmpty())
     			.map(x -> alberoMainRepository.findAlberoMainByAccessi(x)).orElse(Stream.empty());
