@@ -17,6 +17,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RuoloAccessoRepository extends JpaRepository<RuoloAccesso, RuoloAccessoPK> {
-	@Query("select id.cdAccesso from RuoloAccesso a where id.cdRuolo IN :ruoli")
-	Stream<String> findAccessiByRuoli(@Param("ruoli")List<String> ruoli);	
+	@Query("select id.cdAccesso from RuoloAccesso a join a.accesso.assBpAccessos ass " +
+			"where a.id.cdRuolo IN :ruoli" +
+			"AND ass.esercizioInizioValidita >= :esercizio AND ass.esercizioFineValidita <= :esercizio")
+	Stream<String> findAccessiByRuoli(@Param("esercizio")Integer esercizio, @Param("ruoli")List<String> ruoli);	
 }

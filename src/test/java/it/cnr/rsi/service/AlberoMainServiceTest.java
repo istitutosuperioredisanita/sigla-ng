@@ -26,6 +26,7 @@ public class AlberoMainServiceTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AlberoMainServiceTest.class);
     private static final String USER_ID = "MSPASIANO";
+    private static final Integer ESERCIZIO = 2016;
     private static final String UNITA_ORGANIZZATIVA = "999.000";
 
     @Autowired
@@ -34,7 +35,7 @@ public class AlberoMainServiceTest {
     @Test
     public void tree() throws Exception {
 
-        Map<String, List<TreeNode>> fullMap = alberoMainService.tree(USER_ID, UNITA_ORGANIZZATIVA);
+        Map<String, List<TreeNode>> fullMap = alberoMainService.tree(USER_ID, ESERCIZIO, UNITA_ORGANIZZATIVA);
 
         try {
             String json = new ObjectMapper().writeValueAsString(fullMap);
