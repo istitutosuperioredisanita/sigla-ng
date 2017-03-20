@@ -82,7 +82,6 @@ public class AlberoMainService {
                 .collect(Collectors.toList());
     }
 
-
     private void visit(AlberoMain node, MultiValuedMap<String, AlberoMain> m) {
         AlberoMain parent = node.getAlberoMain();
         if (parent == null) {
@@ -95,7 +94,6 @@ public class AlberoMainService {
                 visit(parent, m);
             }
             m.put(parentCdNodo, node);
-
         }
     }
 

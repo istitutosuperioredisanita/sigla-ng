@@ -16,6 +16,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UtenteUnitaAccessoRepository extends JpaRepository<UtenteUnitaAccesso, UtenteUnitaAccessoPK> {
-	@Query("select id.cdAccesso from UtenteUnitaAccesso a where id.cdUtente = :cdUtente AND id.cdUnitaOrganizzativa = :cdUnitaOrganizzativa")
+	@Query("select id.cdAccesso from UtenteUnitaAccesso a where id.cdUtente = :cdUtente AND (id.cdUnitaOrganizzativa = :cdUnitaOrganizzativa  OR id.cdUnitaOrganizzativa = '*')")
 	Stream<String> findAccessiByCdUtente(@Param("cdUtente")String cdUtente, @Param("cdUnitaOrganizzativa")String cdUnitaOrganizzativa);	
 }

@@ -4,12 +4,20 @@ import it.cnr.rsi.security.AjaxAuthenticationFailureHandler;
 import it.cnr.rsi.security.AjaxAuthenticationSuccessHandler;
 import it.cnr.rsi.security.AjaxLogoutSuccessHandler;
 import it.cnr.rsi.security.Http401UnauthorizedEntryPoint;
+import it.cnr.rsi.service.UtenteService;
+
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,10 +25,9 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator;
-
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import org.springframework.util.Base64Utils;
 
 /**
  * Created by francesco on 07/03/17.
@@ -36,7 +43,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private LdapConfigurationProperties ldapConfigurationProperties;
-
+    @Autowired
+    private UtenteService utenteService;
+    
     @Override
     public void configure(WebSecurity web) throws Exception {
         web
@@ -70,19 +79,49 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
 
+    @SuppressWarnings("deprecation")
+	@Bean 
+    public AuthenticationProvider customAuthenticationProvider(){
+    	DaoAuthenticationProvider customAuthenticationProvider = new DaoAuthenticationProvider();
+    	customAuthenticationProvider.setUserDetailsService(utenteService);
+    	customAuthenticationProvider.setPasswordEncoder(new org.springframework.security.authentication.encoding.PasswordEncoder(){
+			@Override
+			public String encodePassword(String rawPass, Object salt) {
+				return rawPass;
+			}
+
+			@Override
+			public boolean isPasswordValid(String encPass, String rawPass,
+					Object salt) {
+				byte[] buser = String.valueOf(salt).getBytes();
+				byte[] bpassword = rawPass.toUpperCase().getBytes();
+				byte h = 0;
+				for (int i = 0;i < bpassword.length;i++) {
+					h = (byte)(bpassword[i] ^ h);
+					for (int j = 0;j < buser.length;j++)
+						bpassword[i] ^= buser[j] ^ h;
+				}
+				return Base64Utils.encodeToString(bpassword).equals(encPass);
+			}
+    		
+    	});
+    	customAuthenticationProvider.setSaltSource(new SaltSource() {			
+			@Override
+			public Object getSalt(UserDetails user) {
+				return user.getUsername();
+			}
+		});
+    	return customAuthenticationProvider;
+    }
+    
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
 
         LOGGER.info("ldap config: {}", ldapConfigurationProperties.getUrl());
 
         LdapAuthoritiesPopulator ldapAuthoritiesPopulator = (userData, username) -> {
-
-
             LOGGER.info("user: {}", username);
-
             LOGGER.info("user data {}", userData.toString());
-
-
             return Stream
                     .of("employee", "ACTUATOR")
                     .map(name -> new SimpleGrantedAuthority(name))
@@ -98,6 +137,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .url(ldapConfigurationProperties.getUrl())
                 .managerDn(ldapConfigurationProperties.getManagerDn())
                 .managerPassword(ldapConfigurationProperties.getManagerPassword());
+        auth
+        	.authenticationProvider(customAuthenticationProvider());
 
     }
 
@@ -122,6 +163,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public Http401UnauthorizedEntryPoint http401UnauthorizedEntryPoint() {
         return new Http401UnauthorizedEntryPoint();
     }
-
-
 }
