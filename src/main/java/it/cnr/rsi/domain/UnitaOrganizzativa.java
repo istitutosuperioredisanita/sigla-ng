@@ -107,6 +107,14 @@ public class UnitaOrganizzativa implements Serializable {
 	@OneToMany(mappedBy="unitaOrganizzativa2")
 	private List<UnitaOrganizzativa> unitaOrganizzativas2;
 
+	//bi-directional many-to-one association to UnitaOrganizzativa
+	@OneToMany(mappedBy="unitaOrganizzativa")
+	private List<UtenteUnitaRuolo> utenteUnitaRuolos;
+
+	//bi-directional many-to-one association to UnitaOrganizzativa
+	@OneToMany(mappedBy="unitaOrganizzativa")
+	private List<UtenteUnitaAccesso> utenteUnitaAccessos;
+	
 	public UnitaOrganizzativa() {
 	}
 
@@ -388,6 +396,22 @@ public class UnitaOrganizzativa implements Serializable {
 		unitaOrganizzativas2.setUnitaOrganizzativa2(null);
 
 		return unitaOrganizzativas2;
+	}
+
+	public List<UtenteUnitaRuolo> getUtenteUnitaRuolos() {
+		return utenteUnitaRuolos;
+	}
+
+	public void setUtenteUnitaRuolos(List<UtenteUnitaRuolo> utenteUnitaRuolos) {
+		this.utenteUnitaRuolos = utenteUnitaRuolos;
+	}
+
+	public List<UtenteUnitaAccesso> getUtenteUnitaAccessos() {
+		return utenteUnitaAccessos;
+	}
+
+	public void setUtenteUnitaAccessos(List<UtenteUnitaAccesso> utenteUnitaAccessos) {
+		this.utenteUnitaAccessos = utenteUnitaAccessos;
 	}
 
 }
