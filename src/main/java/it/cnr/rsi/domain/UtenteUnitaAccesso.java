@@ -1,7 +1,9 @@
 package it.cnr.rsi.domain;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -41,6 +43,11 @@ public class UtenteUnitaAccesso implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="CD_UTENTE", insertable=false, updatable=false)
 	private Utente utente;
+
+	//bi-directional many-to-one association to UnitaOrganizzativa
+	@ManyToOne
+	@JoinColumn(name="CD_UNITA_ORGANIZZATIVA", insertable=false, updatable=false)
+	private UnitaOrganizzativa unitaOrganizzativa;
 
 	public UtenteUnitaAccesso() {
 	}
@@ -107,6 +114,14 @@ public class UtenteUnitaAccesso implements Serializable {
 
 	public void setUtente(Utente utente) {
 		this.utente = utente;
+	}
+
+	public UnitaOrganizzativa getUnitaOrganizzativa() {
+		return unitaOrganizzativa;
+	}
+
+	public void setUnitaOrganizzativa(UnitaOrganizzativa unitaOrganizzativa) {
+		this.unitaOrganizzativa = unitaOrganizzativa;
 	}
 
 }
