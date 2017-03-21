@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Entity
 @NamedQuery(name="Utente.findAll", query="SELECT u FROM Utente u")
-public class Utente implements Serializable, UserDetails {
+public class Utente implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -446,39 +446,5 @@ public class Utente implements Serializable, UserDetails {
 		utenteUnitaRuolo.setUtente(null);
 
 		return utenteUnitaRuolo;
-	}
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Collections.emptyList();
-	}
-
-	@Override
-	public String getUsername() {
-		return getCdUtente();
-	}
-
-	@Override
-	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return true;
 	}
 }

@@ -3,9 +3,6 @@ package it.cnr.rsi.service;
 import it.cnr.rsi.domain.AlberoMain;
 import it.cnr.rsi.domain.TreeNode;
 import it.cnr.rsi.repository.AlberoMainRepository;
-import it.cnr.rsi.repository.RuoloAccessoRepository;
-import it.cnr.rsi.repository.UtenteUnitaAccessoRepository;
-import it.cnr.rsi.repository.UtenteUnitaRuoloRepository;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -36,28 +33,19 @@ public class AlberoMainService {
     public static final String ROOT = "ROOT";
 
     private AlberoMainRepository alberoMainRepository;    
-    private UtenteUnitaAccessoRepository utenteUnitaAccessoRepository;
-    private UtenteUnitaRuoloRepository utenteUnitaRuoloRepository;
-    private RuoloAccessoRepository ruoloAccessoRepository;
+    private AccessoService accessoService;
 
-    public AlberoMainService(AlberoMainRepository alberoMainRepository, UtenteUnitaAccessoRepository utenteUnitaAccessoRepository, 
-    		UtenteUnitaRuoloRepository utenteUnitaRuoloRepository, RuoloAccessoRepository ruoloAccessoRepository) {
+    public AlberoMainService(AlberoMainRepository alberoMainRepository, AccessoService accessoService) {
         this.alberoMainRepository = alberoMainRepository;
-        this.utenteUnitaAccessoRepository = utenteUnitaAccessoRepository;
-        this.utenteUnitaRuoloRepository = utenteUnitaRuoloRepository;
-        this.ruoloAccessoRepository = ruoloAccessoRepository;
+        this.accessoService = accessoService;
     }
 
 
-    @Cacheable(value="tree", key="{#userId, #esecizio, #unitaOrganizzativa}")
+    @Cacheable(value="tree", key="{#userId, #esercizio, #unitaOrganizzativa}")
     @Transactional
-    public Map<String, List<TreeNode>> tree(String userId, Integer esecizio, String unitaOrganizzativa) {
+    public Map<String, List<TreeNode>> tree(String userId, Integer esercizio, String unitaOrganizzativa) {
     	LOGGER.info("GET Tree for User: {} and Unita Organizzativa: {}", userId, unitaOrganizzativa);
-    	List<String> findRuoliByCdUtente = utenteUnitaRuoloRepository.findRuoliByCdUtente(userId, unitaOrganizzativa).collect(Collectors.toList());    	
-    	List<String> accessi = Stream.concat(
-    			utenteUnitaAccessoRepository.findAccessiByCdUtente(userId, esecizio, unitaOrganizzativa),     			
-    	    	Optional.ofNullable(findRuoliByCdUtente).filter(x -> !x.isEmpty()).map(x -> ruoloAccessoRepository.findAccessiByRuoli(esecizio, x)).orElse(Stream.empty())
-    			).distinct().collect(Collectors.toList());
+    	List<String> accessi = accessoService.accessi(userId, esercizio, unitaOrganizzativa);
     	Stream<AlberoMain> leafs = Optional.ofNullable(accessi).filter(x -> !x.isEmpty())
     			.map(x -> alberoMainRepository.findAlberoMainByAccessi(x)).orElse(Stream.empty());
 
