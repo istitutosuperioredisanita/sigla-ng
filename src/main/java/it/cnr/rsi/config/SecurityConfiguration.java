@@ -5,10 +5,6 @@ import it.cnr.rsi.security.AjaxAuthenticationSuccessHandler;
 import it.cnr.rsi.security.AjaxLogoutSuccessHandler;
 import it.cnr.rsi.security.Http401UnauthorizedEntryPoint;
 import it.cnr.rsi.service.UtenteService;
-
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +23,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator;
+import org.springframework.security.ldap.userdetails.PersonContextMapper;
 import org.springframework.util.Base64Utils;
+
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by francesco on 07/03/17.
@@ -45,7 +45,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private LdapConfigurationProperties ldapConfigurationProperties;
     @Autowired
     private UtenteService utenteService;
-    
+
     @Override
     public void configure(WebSecurity web) throws Exception {
         web
@@ -80,7 +80,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 
     @SuppressWarnings("deprecation")
-	@Bean 
+	@Bean
     public AuthenticationProvider customAuthenticationProvider(){
     	DaoAuthenticationProvider customAuthenticationProvider = new DaoAuthenticationProvider();
     	customAuthenticationProvider.setUserDetailsService(utenteService);
@@ -103,9 +103,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				}
 				return Base64Utils.encodeToString(bpassword).equals(encPass);
 			}
-    		
+
     	});
-    	customAuthenticationProvider.setSaltSource(new SaltSource() {			
+    	customAuthenticationProvider.setSaltSource(new SaltSource() {
 			@Override
 			public Object getSalt(UserDetails user) {
 				return user.getUsername();
@@ -113,7 +113,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		});
     	return customAuthenticationProvider;
     }
-    
+
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
 
