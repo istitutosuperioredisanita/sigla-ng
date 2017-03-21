@@ -6,6 +6,7 @@ import it.cnr.rsi.security.AjaxLogoutSuccessHandler;
 import it.cnr.rsi.security.Http401UnauthorizedEntryPoint;
 import it.cnr.rsi.service.UtenteService;
 
+import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -15,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.ldap.core.DirContextAdapter;
+import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.authentication.dao.SaltSource;
@@ -24,9 +27,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator;
+import org.springframework.security.ldap.userdetails.UserDetailsContextMapper;
 import org.springframework.util.Base64Utils;
 
 /**
@@ -131,6 +136,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .ldapAuthentication()
                 .ldapAuthoritiesPopulator(ldapAuthoritiesPopulator)
                 .userSearchBase(ldapConfigurationProperties.getUserSearchBase())
+                .userDetailsContextMapper(new UserDetailsContextMapper() {					
+					@Override
+					public void mapUserToContext(UserDetails user, DirContextAdapter ctx) {
+						throw new UnsupportedOperationException(
+								"LdapUserDetailsMapper only supports reading from a context. Please"
+										+ "use a subclass if mapUserToContext() is required.");
+					}					
+					@Override
+					public UserDetails mapUserFromContext(DirContextOperations ctx,
+							String username, Collection<? extends GrantedAuthority> authorities) {
+						return utenteService.loadUserByUid(username);
+					}
+				})
                 .userSearchFilter(ldapConfigurationProperties.getUserSearchFilter())
                 .groupSearchBase(null)
                 .contextSource()
@@ -141,7 +159,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         	.authenticationProvider(customAuthenticationProvider());
 
     }
-
 
 
     @Bean
