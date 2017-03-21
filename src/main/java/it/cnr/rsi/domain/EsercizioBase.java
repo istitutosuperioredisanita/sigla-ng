@@ -1,14 +1,14 @@
 package it.cnr.rsi.domain;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 
 /**
  * The persistent class for the ESERCIZIO_BASE database table.
- * 
+ *
  */
 @Entity
 @Table(name="ESERCIZIO_BASE")

@@ -1,25 +1,23 @@
 package it.cnr.rsi.security;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.cnr.rsi.domain.Utente;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class UserContext implements UserDetails {
 	private static final long serialVersionUID = 1L;
-	
+
 	@JsonIgnore
 	private Utente currentUser;
 
-	private Map<String, Serializable> attributes;	
-		
+	private Map<String, Serializable> attributes;
+
 	public UserContext(Utente currentUser) {
 		super();
 		this.currentUser = currentUser;
@@ -28,7 +26,7 @@ public class UserContext implements UserDetails {
 	public Serializable addAttribute(String key, Serializable value) {
 		return attributes.put(key, value);
 	}
-	
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return Collections.emptyList();

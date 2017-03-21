@@ -1,1 +1,6 @@
 spring.profiles.active: dev,swagger
+
+management:
+    security:
+        roles: ADMIN
+    context-path: /management
