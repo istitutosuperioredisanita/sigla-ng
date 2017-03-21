@@ -15,6 +15,9 @@ public class UserDTO {
     private String lastName;
     private String email;
     private List<String> authorities;
+
+    private String langKey;
+
     public Long getId() {
         return id;
     }
@@ -64,4 +67,11 @@ public class UserDTO {
     }
 
 
+    public String getLangKey() {
+        return langKey;
+    }
+
+    public void setLangKey(String langKey) {
+        this.langKey = langKey;
+    }
 }

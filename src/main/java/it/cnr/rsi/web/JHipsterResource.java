@@ -11,7 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.ldap.userdetails.LdapUserDetailsImpl;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -58,12 +57,12 @@ public class JHipsterResource {
 
 
         UserDetails userDetails = getUserDetails();
-
-        LdapUserDetailsImpl ldapUserDetails = Optional
-            .ofNullable(userDetails)
-            .filter(x -> x instanceof LdapUserDetailsImpl)
-            .map(LdapUserDetailsImpl.class::cast)
-            .orElseThrow(() -> new RuntimeException("not an ldap user"));
+//
+//        LdapUserDetailsImpl ldapUserDetails = Optional
+//            .ofNullable(userDetails)
+//            .filter(x -> x instanceof LdapUserDetailsImpl)
+//            .map(LdapUserDetailsImpl.class::cast)
+//            .orElseThrow(() -> new RuntimeException("not an ldap user"));
 
 
         List<String> authorities = userDetails
@@ -80,8 +79,9 @@ public class JHipsterResource {
         userDTO.setAuthorities(authorities);
         userDTO.setId(0l);
         userDTO.setLogin(userDetails.getUsername());
-        userDTO.setEmail("???");
+        userDTO.setLangKey("IT");
 
+        LOGGER.warn("populate user dto");
 
 
         /*
