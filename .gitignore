@@ -24,3 +24,6 @@ nbdist/
 .nb-gradle/
 
 bower_components/
+
+/node_modules/
+/yarn.lock
