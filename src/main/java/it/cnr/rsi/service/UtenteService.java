@@ -1,6 +1,7 @@
 package it.cnr.rsi.service;
 
 import it.cnr.rsi.repository.UtenteRepository;
+import it.cnr.rsi.security.UserContext;
 
 import java.util.Optional;
 
@@ -28,14 +29,17 @@ public class UtenteService implements UserDetailsService {
 	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		LOGGER.info("Find user by username {}", username);
-		return Optional.ofNullable(utenteRepository.findUserWithAuthenticationLDAP(Optional.ofNullable(username.toUpperCase()).orElse(""), "N")).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+		return new UserContext(Optional.ofNullable(
+				utenteRepository.findUserWithAuthenticationLDAP(
+						Optional.ofNullable(username.toUpperCase()).orElse(""), "N"))
+				.orElseThrow(() -> new UsernameNotFoundException("User not found")));
 	}	
 	@Transactional
 	public UserDetails loadUserByUid(String uid) throws UsernameNotFoundException {
 		LOGGER.info("Find user by uid {}", uid);
-		return utenteRepository.findUsersForUid(uid).reduce((a, b) -> {
+		return new UserContext(utenteRepository.findUsersForUid(uid).reduce((a, b) -> {
             throw new IllegalStateException("Multiple elements: " + a + ", " + b);
         })
-        .get();
+        .get());
 	}
 }
