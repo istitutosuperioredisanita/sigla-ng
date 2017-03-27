@@ -1,11 +1,12 @@
 {
     "login": {
-        "title": "Accedi",
+        "title": "Inserire l'utente e la password per accedere all'applicazione",
         "form": {
             "password": "Password",
             "password.placeholder": "La tua password",
             "rememberme": "Ricordami",
-            "button": "Accedi"
+            "button": "Accedi",
+            "change-password": "Cambia password"
         },
         "messages": {
             "error": {

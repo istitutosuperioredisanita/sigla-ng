@@ -4,13 +4,15 @@ import { Observable } from 'rxjs/Observable';
 import { Injector } from '@angular/core';
 import { AuthServerProvider } from '../../shared/auth/auth-session.service';
 import { StateStorageService } from '../../shared/auth/state-storage.service';
-import { LoginModalService } from '../../shared/login/login-modal.service';
+import { Router } from '@angular/router';
 
 export class AuthExpiredInterceptor extends HttpInterceptor {
 
-    constructor(private injector: Injector,
-        private stateStorageService: StateStorageService) {
-
+    constructor(
+        private injector: Injector,
+        private stateStorageService: StateStorageService,
+        private router: Router
+    ) {
         super();
     }
 
@@ -31,9 +33,7 @@ export class AuthExpiredInterceptor extends HttpInterceptor {
                 if (to.name === 'accessdenied') {
                     self.stateStorageService.storePreviousState(to.name, toParams);
                 }
-
-                let loginServiceModal = self.injector.get(LoginModalService);
-                loginServiceModal.open();
+                this.router.navigate(['']);
 
             }
             return Observable.throw(error);

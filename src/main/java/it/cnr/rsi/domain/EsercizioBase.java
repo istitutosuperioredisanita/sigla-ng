@@ -17,7 +17,7 @@ public class EsercizioBase implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private long esercizio;
+	private Integer esercizio;
 
 	@Temporal(TemporalType.DATE)
 	private Date dacr;
@@ -35,11 +35,11 @@ public class EsercizioBase implements Serializable {
 	public EsercizioBase() {
 	}
 
-	public long getEsercizio() {
+	public Integer getEsercizio() {
 		return this.esercizio;
 	}
 
-	public void setEsercizio(long esercizio) {
+	public void setEsercizio(Integer esercizio) {
 		this.esercizio = esercizio;
 	}
 

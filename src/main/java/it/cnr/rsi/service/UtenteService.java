@@ -2,15 +2,16 @@ package it.cnr.rsi.service;
 
 import it.cnr.rsi.repository.UtenteRepository;
 import it.cnr.rsi.security.UserContext;
+
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
-import java.util.Optional;
 
 @Service
 public class UtenteService implements UserDetailsService {
@@ -25,7 +26,7 @@ public class UtenteService implements UserDetailsService {
 
 	@Override
 	@Transactional
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserContext loadUserByUsername(String username) throws UsernameNotFoundException {
 		LOGGER.info("Find user by username {}", username);
 		return new UserContext(Optional.ofNullable(
 				utenteRepository.findUserWithAuthenticationLDAP(
@@ -33,7 +34,7 @@ public class UtenteService implements UserDetailsService {
 				.orElseThrow(() -> new UsernameNotFoundException("User not found")));
 	}
 	@Transactional
-	public UserDetails loadUserByUid(String uid) throws UsernameNotFoundException {
+	public UserContext loadUserByUid(String uid) throws UsernameNotFoundException {
 		LOGGER.info("Find user by uid {}", uid);
 		return new UserContext(utenteRepository.findUsersForUid(uid).reduce((a, b) -> {
             throw new IllegalStateException("Multiple elements: " + a + ", " + b);

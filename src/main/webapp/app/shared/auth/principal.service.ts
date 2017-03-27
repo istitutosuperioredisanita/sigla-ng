@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { AccountService } from './account.service';
+import { Account } from '../user/account.model';
 
 @Injectable()
 export class Principal {
-    private userIdentity: any;
+    private userIdentity: Account;
     private authenticated = false;
     private authenticationState = new Subject<any>();
 
@@ -77,6 +78,10 @@ export class Principal {
 
     isAuthenticated (): boolean {
         return this.authenticated;
+    }
+
+    getAccount (): Account {
+        return this.userIdentity;
     }
 
     isIdentityResolved (): boolean {

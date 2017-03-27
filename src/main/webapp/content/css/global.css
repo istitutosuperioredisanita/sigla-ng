@@ -4,6 +4,7 @@ Bootstrap tweaks
 
 body, h1, h2, h3, h4 {
     font-weight: 300;
+    font-family: 'Titillium Web', sans-serif;
 }
 
 /* ==========================================================================
@@ -195,3 +196,11 @@ ui bootstrap tweaks
 }
 
 /* jhipster-needle-css-add-main JHipster will add new css style */
+.display-inherit {
+    display: inherit
+}
+.navbar-input-inline {
+    border: none;
+    background: none;
+    padding-bottom: inherit;
+}

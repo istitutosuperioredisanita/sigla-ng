@@ -1,6 +1,7 @@
 import { Injector } from '@angular/core';
 import { Http, XHRBackend, RequestOptions } from '@angular/http';
 import { EventManager, InterceptableHttp } from 'ng-jhipster';
+import { Router } from '@angular/router';
 
 import { StateStorageService } from '../../shared/auth/state-storage.service';
 import { AuthExpiredInterceptor } from './auth-expired.interceptor';
@@ -12,13 +13,14 @@ export function interceptableFactory(
     defaultOptions: RequestOptions,
     injector: Injector,
     stateStorageService: StateStorageService,
+    router: Router,
     eventManager: EventManager
 ) {
     return new InterceptableHttp(
         backend,
         defaultOptions,
         [
-            new AuthExpiredInterceptor(injector, stateStorageService),
+            new AuthExpiredInterceptor(injector, stateStorageService, router),
             // Other interceptors can be added here
             new ErrorHandlerInterceptor(eventManager),
             new NotificationInterceptor()

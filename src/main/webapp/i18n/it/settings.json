@@ -25,6 +25,15 @@
                     "required": "Il cognome è obbligatorio.",
                     "minlength": "Il cognome deve essere di almeno 1 carattere",
                     "maxlength": "Il cognome non può contenere più di 50 caratteri"
+                },
+                "cds": {
+                    "required": "Il Centro di Spesa è obbligatorio."
+                },
+                "uo": {
+                    "required": "L'Unita Organizzativa è obbligatoria."
+                },
+                "cdr": {
+                    "required": "Il Centro di Responsabilità è obbligatorio."
                 }
             }
         }
