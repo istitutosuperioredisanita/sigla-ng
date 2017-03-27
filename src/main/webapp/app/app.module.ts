@@ -24,8 +24,6 @@ import {
     ActiveMenuDirective,
     ErrorComponent
 } from './layouts';
-
-
 @NgModule({
     imports: [
         BrowserModule,

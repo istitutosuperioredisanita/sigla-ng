@@ -5,6 +5,7 @@ import { JhiLanguageService } from 'ng-jhipster';
 
 import { ProfileService } from '../profiles/profile.service'; // FIXME barrel doesnt work here
 import { JhiLanguageHelper, Principal, LoginModalService, LoginService } from '../../shared';
+import { ContextComponent} from '../../context';
 
 import { VERSION, DEBUG_INFO_ENABLED } from '../../app.constants';
 
@@ -33,7 +34,7 @@ export class NavbarComponent implements OnInit {
         private profileService: ProfileService,
         private router: Router
     ) {
-        this.version = DEBUG_INFO_ENABLED ? 'v' + VERSION : '';
+        this.version = DEBUG_INFO_ENABLED ? 'v. ' + VERSION : '';
         this.isNavbarCollapsed = true;
         this.languageService.addLocation('home');
     }

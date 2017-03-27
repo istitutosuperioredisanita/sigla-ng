@@ -17,6 +17,7 @@ import {
     HasAnyAuthorityDirective,
     JhiLoginModalComponent
 } from './';
+import {ContextComponent} from '../context';
 
 @NgModule({
     imports: [
@@ -25,7 +26,8 @@ import {
     ],
     declarations: [
         JhiLoginModalComponent,
-        HasAnyAuthorityDirective
+        HasAnyAuthorityDirective,
+        ContextComponent
     ],
     providers: [
         CookieService,
@@ -45,7 +47,8 @@ import {
         SiglaSharedCommonModule,
         JhiLoginModalComponent,
         HasAnyAuthorityDirective,
-        DatePipe
+        DatePipe,
+        ContextComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 

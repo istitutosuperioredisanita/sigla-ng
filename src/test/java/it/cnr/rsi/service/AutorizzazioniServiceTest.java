@@ -5,6 +5,7 @@ import it.cnr.rsi.domain.UnitaOrganizzativa;
 
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -23,20 +24,31 @@ public class AutorizzazioniServiceTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AutorizzazioniServiceTest.class);
     private static final String USER_ID = "MSPASIANO";
-    private static final Integer ESERCIZIO = 2016;
-    private static final String UNITA_ORGANIZZATIVA = "999.000";
-
+    private static final Integer ESERCIZIO = 2017;
     @Autowired
     private UnitaOrganizzativaService unitaOrganizzativaService;
+    @Autowired
+    private EsercizioBaseService esercizioBaseService;
 
     @Test
     public void listaUnitaOrganizzativeAbilitate() throws Exception {
-        List<UnitaOrganizzativa> listaUnitaOrganizzativeAbilitate = unitaOrganizzativaService.listaUnitaOrganizzativeAbilitate(USER_ID);
+        List<UnitaOrganizzativa> listaUnitaOrganizzativeAbilitate = unitaOrganizzativaService.listaUnitaOrganizzativeAbilitate(USER_ID, ESERCIZIO);
         listaUnitaOrganizzativeAbilitate
         	.stream()
         	.map(x -> x.getCdUnitaOrganizzativa())
         	.forEach(x -> LOGGER.info(x));
         assertTrue(!listaUnitaOrganizzativeAbilitate.isEmpty());
+    }
+
+    @Test
+    @Ignore
+    public void listaEsercizi() throws Exception {
+        List<Integer> listaEsercizi = esercizioBaseService.findEsercizi();
+        listaEsercizi
+        	.stream()
+        	.map(String::valueOf)
+        	.forEach(x -> LOGGER.info(x));
+        assertTrue(!listaEsercizi.isEmpty());
     }
 
 }
