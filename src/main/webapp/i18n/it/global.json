@@ -1,6 +1,6 @@
 {
     "global": {
-        "title": "Sigla",
+        "title": "SIGLA",
         "browsehappy": "Stai utilizzando un browser <strong> non aggiornato </ strong> <a href=\"http://browsehappy.com/?locale=it\"> Aggiorna il tuo browser per </a> migliorare la tua esperienza.",
         "menu": {
             "home": "Home",
@@ -127,5 +127,5 @@
         "emailexists": "L'email è già in uso!",
         "idexists": "Un(a) nuovo/a {{entityName}} non può già avere un ID"
     },
-    "footer": "Piè di pagina"
+    "footer": "copyright ©2017 Consiglio Nazionale delle Ricerche"
 }

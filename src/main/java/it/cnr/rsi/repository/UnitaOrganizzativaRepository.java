@@ -15,8 +15,17 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UnitaOrganizzativaRepository extends JpaRepository<UnitaOrganizzativa, String> {
-	@Query("select distinct a from UnitaOrganizzativa a join a.utenteUnitaRuolos ruolos join a.utenteUnitaAccessos accessos " +
-			"where ruolos.id.cdUtente = :userId " +
-			"and accessos.id.cdUtente = :userId")
-	Stream<UnitaOrganizzativa> findUnitaOrganizzativeAbilitate(@Param("userId")String userId);
+	@Query("select a from UnitaOrganizzativa a join a.utenteUnitaRuolos ruolos " +
+			"where ruolos.id.cdUtente = :userId" +
+			" and a.esercizioInizio <= :esercizio and a.esercizioFine <= :esercizio")
+	Stream<UnitaOrganizzativa> findUnitaOrganizzativeAbilitateByRuolo(@Param("userId")String userId, @Param("esercizio")Integer esercizio);
+	@Query("select a from UnitaOrganizzativa a join a.utenteUnitaAccessos accessos " +
+			"where accessos.id.cdUtente = :userId" +
+			" and a.esercizioInizio <= :esercizio and a.esercizioFine >= :esercizio")
+	Stream<UnitaOrganizzativa> findUnitaOrganizzativeAbilitateByAccesso(@Param("userId")String userId, @Param("esercizio")Integer esercizio);
+	@Query("select a from UnitaOrganizzativa a " +
+			"where a.esercizioInizio <= :esercizio and a.esercizioFine >= :esercizio and a.flCds = 'N'")
+	Stream<UnitaOrganizzativa> findUnitaOrganizzativeValida(@Param("esercizio")Integer esercizio);
+
+	
 }

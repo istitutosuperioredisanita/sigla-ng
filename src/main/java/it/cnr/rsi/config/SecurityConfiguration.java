@@ -4,7 +4,13 @@ import it.cnr.rsi.security.AjaxAuthenticationFailureHandler;
 import it.cnr.rsi.security.AjaxAuthenticationSuccessHandler;
 import it.cnr.rsi.security.AjaxLogoutSuccessHandler;
 import it.cnr.rsi.security.Http401UnauthorizedEntryPoint;
+import it.cnr.rsi.security.UserContext;
 import it.cnr.rsi.service.UtenteService;
+
+import java.util.Collection;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +30,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator;
 import org.springframework.security.ldap.userdetails.UserDetailsContextMapper;
 import org.springframework.util.Base64Utils;
-
-import java.util.Collection;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by francesco on 07/03/17.
@@ -146,9 +147,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 					@Override
 					public UserDetails mapUserFromContext(DirContextOperations ctx,
 							String username, Collection<? extends GrantedAuthority> authorities) {
-
-                        UserDetails userDetails = utenteService.loadUserByUid(username);
-                        return new User(username, "???", authorities);
+                        UserContext userContext = utenteService.loadUserByUid(username);
+                        userContext.addAttribute("firstName", ctx.getStringAttribute("cnrnome"));
+                        userContext.addAttribute("lastName", ctx.getStringAttribute("cnrcognome"));
+                        userContext.addAttribute("email", ctx.getStringAttribute("mail"));
+                        userContext.addAttribute("login", username);                        
+                        return userContext;
 					}
 				})
                 .userSearchFilter(ldapConfigurationProperties.getUserSearchFilter())

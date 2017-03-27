@@ -1,19 +1,9 @@
 {
     "home": {
-        "title": "Benvenuto, Java Hipster!",
-        "subtitle": "Questa è la tua home page",
+        "title": "Sistema Informativo per la Gestione delle Linee di Attività",
+        "subtitle": "Documenti contabili/amministrativi",
         "logged": {
             "message": "Autenticato come \"{{username}}\"."
-        },
-        "question": "In caso di domande su JHipster:",
-        "link": {
-            "homepage": "Homepage JHipster",
-            "stackoverflow": "JHipster su Stack Overflow",
-            "bugtracker": "JHipster tracciamento errori",
-            "chat": "Chat room pubblica di JHipster",
-            "follow": "segui @java_hipster su Twitter"
-        },
-        "like": "Se ti piace JHipster, non dimenticarti di darci una stella su",
-        "github": "GitHub"
+        }
     }
 }

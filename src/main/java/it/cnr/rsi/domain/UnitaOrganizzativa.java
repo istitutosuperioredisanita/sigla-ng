@@ -46,10 +46,10 @@ public class UnitaOrganizzativa implements Serializable {
 	private Date duva;
 
 	@Column(name="ESERCIZIO_FINE")
-	private BigDecimal esercizioFine;
+	private Integer esercizioFine;
 
 	@Column(name="ESERCIZIO_INIZIO")
-	private BigDecimal esercizioInizio;
+	private Integer esercizioInizio;
 
 	@Column(name="FL_CDS")
 	private String flCds;
@@ -190,19 +190,19 @@ public class UnitaOrganizzativa implements Serializable {
 		this.duva = duva;
 	}
 
-	public BigDecimal getEsercizioFine() {
+	public Integer getEsercizioFine() {
 		return this.esercizioFine;
 	}
 
-	public void setEsercizioFine(BigDecimal esercizioFine) {
+	public void setEsercizioFine(Integer esercizioFine) {
 		this.esercizioFine = esercizioFine;
 	}
 
-	public BigDecimal getEsercizioInizio() {
+	public Integer getEsercizioInizio() {
 		return this.esercizioInizio;
 	}
 
-	public void setEsercizioInizio(BigDecimal esercizioInizio) {
+	public void setEsercizioInizio(Integer esercizioInizio) {
 		this.esercizioInizio = esercizioInizio;
 	}
 
