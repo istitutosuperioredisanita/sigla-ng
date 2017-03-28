@@ -1,4 +1,5 @@
 <div *ngIf="!isNavbar">
+    <template #rt let-r="result" let-t="term">{{ r.first}} - {{r.second}}</template>    
     <form class="form" role="form" (ngSubmit)="saveContext()" #contextForm="ngForm">
         <div class="form-group row">
             <label for="esercizio" class="col-2 col-form-label">Esercizio</label>
@@ -27,7 +28,7 @@
             <label for="uo" class="col-2 col-form-label">Unità Organizzativa</label>
             <div class="col-8">
                 <div class="input-group form-group">
-                    <input 
+                    <input
                         class="form-control" 
                         id="uo" 
                         name="uo" 
