@@ -5,7 +5,6 @@ import it.cnr.rsi.domain.UnitaOrganizzativa;
 
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -25,6 +24,9 @@ public class AutorizzazioniServiceTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(AutorizzazioniServiceTest.class);
     private static final String USER_ID = "MSPASIANO";
     private static final Integer ESERCIZIO = 2017;
+    private static final String CDS = "084";
+    private static final String UO = "084.000";
+    
     @Autowired
     private UnitaOrganizzativaService unitaOrganizzativaService;
     @Autowired
@@ -32,16 +34,25 @@ public class AutorizzazioniServiceTest {
 
     @Test
     public void listaUnitaOrganizzativeAbilitate() throws Exception {
-        List<UnitaOrganizzativa> listaUnitaOrganizzativeAbilitate = unitaOrganizzativaService.listaUnitaOrganizzativeAbilitate(USER_ID, ESERCIZIO);
+        List<UnitaOrganizzativa> listaUnitaOrganizzativeAbilitate = unitaOrganizzativaService.listaUnitaOrganizzativeAbilitate(USER_ID, ESERCIZIO, CDS);
         listaUnitaOrganizzativeAbilitate
         	.stream()
-        	.map(x -> x.getCdUnitaOrganizzativa())
-        	.forEach(x -> LOGGER.info(x));
+        	.map(x -> x.getCdUnitaOrganizzativa() + " - " + x.getDsUnitaOrganizzativa())
+        	.forEach(x -> LOGGER.info("UO:" + x));
         assertTrue(!listaUnitaOrganizzativeAbilitate.isEmpty());
     }
 
     @Test
-    @Ignore
+    public void listaCDSAbilitati() throws Exception {
+        List<UnitaOrganizzativa> listaCDSAbilitati = unitaOrganizzativaService.listaCDSAbilitati(USER_ID, ESERCIZIO, UO);
+        listaCDSAbilitati
+        	.stream()
+        	.map(x -> x.getCdUnitaOrganizzativa() + " - " + x.getDsUnitaOrganizzativa())
+        	.forEach(x -> LOGGER.info("CDS:" + x));
+        assertTrue(!listaCDSAbilitati.isEmpty());
+    }
+    
+    @Test
     public void listaEsercizi() throws Exception {
         List<Integer> listaEsercizi = esercizioBaseService.findEsercizi();
         listaEsercizi

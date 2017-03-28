@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ContextService } from './context.service';
 import { Principal, UserContext, JhiLanguageHelper} from '../shared';
 import { LocalStateStorageService } from '../shared/auth/local-storage.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
     selector: 'jhi-context',
