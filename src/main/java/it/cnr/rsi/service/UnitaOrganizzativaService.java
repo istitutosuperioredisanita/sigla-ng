@@ -5,15 +5,15 @@ import it.cnr.rsi.domain.Utente;
 import it.cnr.rsi.repository.UnitaOrganizzativaRepository;
 import it.cnr.rsi.repository.UtenteRepository;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
-
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javax.transaction.Transactional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UnitaOrganizzativaService {
@@ -28,18 +28,39 @@ public class UnitaOrganizzativaService {
 	}
 
 	@Transactional
-	public List<UnitaOrganizzativa> listaUnitaOrganizzativeAbilitate(String userId, Integer esercizio) {
+	public List<UnitaOrganizzativa> listaUnitaOrganizzativeAbilitate(String userId, Integer esercizio, String cds) {
 		LOGGER.info("UnitaOrganizzativa for User: {} ", userId);
 		Utente utente = utenteRepository.findOne(userId);
-		Stream<UnitaOrganizzativa> uosByAccessi = Stream.concat(
-				unitaOrganizzativaRepository.findUnitaOrganizzativeAbilitateByAccesso(userId, esercizio), 
-				unitaOrganizzativaRepository.findUnitaOrganizzativeAbilitateByRuolo(userId, esercizio));
+		Stream<UnitaOrganizzativa> uosByAccessi;
 		if (utente.isUtenteSupervisore()) {
-			uosByAccessi = Stream.concat(uosByAccessi, unitaOrganizzativaRepository.findUnitaOrganizzativeValida(esercizio));
-		}		
+			uosByAccessi = unitaOrganizzativaRepository.findUnitaOrganizzativeValida(esercizio, cds);
+		} else {
+			uosByAccessi = Stream.concat(
+					unitaOrganizzativaRepository.findUnitaOrganizzativeAbilitateByAccesso(userId, esercizio, cds), 
+					unitaOrganizzativaRepository.findUnitaOrganizzativeAbilitateByRuolo(userId, esercizio, cds));
+		}
 		return uosByAccessi
 				.distinct()
 				.sorted((x, y) -> x.getCdUnitaOrganizzativa().compareTo(y.getCdUnitaOrganizzativa()))
 				.collect(Collectors.toList());
 	}
+
+	@Transactional
+	public List<UnitaOrganizzativa> listaCDSAbilitati(String userId, Integer esercizio, String cdUnitaOrganizzativa) {
+		LOGGER.info("CDS for User: {} ", userId);
+		Utente utente = utenteRepository.findOne(userId);
+		Stream<UnitaOrganizzativa> cdsByAccessi;
+		if (utente.isUtenteSupervisore()) {
+			cdsByAccessi = unitaOrganizzativaRepository.findCdsValido(esercizio, cdUnitaOrganizzativa);
+		} else {
+			cdsByAccessi = Stream.concat(
+					unitaOrganizzativaRepository.findCdsAbilitatiByAccesso(userId, esercizio, cdUnitaOrganizzativa), 
+					unitaOrganizzativaRepository.findCdsAbilitatiByRuolo(userId, esercizio, cdUnitaOrganizzativa));
+		}
+		return cdsByAccessi
+				.distinct()
+				.sorted((x, y) -> x.getCdUnitaOrganizzativa().compareTo(y.getCdUnitaOrganizzativa()))
+				.collect(Collectors.toList());
+	}
+
 }
