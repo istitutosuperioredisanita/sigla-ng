@@ -15,17 +15,17 @@ import { Pair } from './pair.model';
 })
 export class ContextComponent implements OnInit {
     @Input() isNavbar: boolean;
-    private esercizi: number[];
-    private cdsPairs: Pair[];
-    private uoPairs: Pair[];
-    private cdrPairs: Pair[];
-    private cdsModel: Pair;
-    private uoModel: Pair;
-    private cdrModel: Pair;
+    esercizi: number[];
+    cdsPairs: Pair[];
+    uoPairs: Pair[];
+    cdrPairs: Pair[];
+    cdsModel: Pair;
+    uoModel: Pair;
+    cdrModel: Pair;
 
     constructor(
         private contextService: ContextService,
-        private principal: Principal,
+        public principal: Principal,
         private localStateStorageService: LocalStateStorageService,
         private languageService: JhiLanguageService,
         private languageHelper: JhiLanguageHelper
@@ -48,6 +48,28 @@ export class ContextComponent implements OnInit {
         .slice(0, 10));
 
     formatter = (pair: Pair) => pair.first + ' - ' + pair.second;
+    formatterFirst = (pair: Pair) => pair.first;
+
+    onSelectCds = (item: Pair) => {
+        this.contextService
+            .getUo(item ? item.first : '')
+            .subscribe(uo => {
+                this.uoPairs = uo;
+                if (uo.length === 1) {
+                    this.uoModel = uo[0];
+                }
+            });
+    }
+    onSelectUo = (item: Pair) => {
+        this.contextService
+            .getCds(item ? item.first : '')
+            .subscribe(cds =>  {
+                this.cdsPairs = cds;
+                if (cds.length === 1) {
+                    this.cdsModel = cds[0];
+                }
+            });
+    }
 
     ngOnInit(): void {
         this.contextService
