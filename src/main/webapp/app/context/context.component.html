@@ -5,7 +5,7 @@
             <label for="esercizio" class="col-2 col-form-label">Esercizio</label>
             <div class="col-2">
                 <select class="form-control" id="esercizio" name="esercizio" required (ngModelChange)="setEsercizio($event)" [(ngModel)]="principal.userIdentity.esercizio">
-                    <option *ngFor="let esercizio of esercizi" [ngValue]="esercizio">{{esercizio}}</option>
+                    <option *ngFor="let esercizio of contextService.esercizi" [ngValue]="esercizio">{{esercizio}}</option>
                 </select>            
             </div>
         </div>
@@ -14,7 +14,7 @@
             <div class="col-8">
                 <div class="input-group form-group">
                     <input 
-                        [(ngModel)]="cdsModel" 
+                        [(ngModel)]="contextService.cdsModel" 
                         [ngbTypeahead]="searchcds" 
                         [resultTemplate]="rt" 
                         [inputFormatter]="formatter"
@@ -27,7 +27,7 @@
                         #cdsInput="ngModel"  
                         required 
                         type="text"> 
-                    <a class="input-group-addon btn btn-danger" (click)="cdsModel = null; onSelectCds();"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></a>
+                    <a class="input-group-addon btn btn-danger" (click)="contextService.cdsModel = null; onSelectCds();"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></a>
                 </div>
                 <div *ngIf="cdsInput.dirty && cdsInput.invalid">
                     <small class="form-text text-danger"
@@ -42,7 +42,7 @@
             <div class="col-8">
                 <div class="input-group form-group">
                     <input
-                        [(ngModel)]="uoModel" 
+                        [(ngModel)]="contextService.uoModel" 
                         [ngbTypeahead]="searchuo" 
                         [resultTemplate]="rt" 
                         [inputFormatter]="formatter"
@@ -55,7 +55,7 @@
                         #uoInput="ngModel" 
                         required 
                         type="text">        
-                    <a class="input-group-addon btn-danger" (click)="uoModel = null; onSelectUo();"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></a>
+                    <a class="input-group-addon btn-danger" (click)="contextService.uoModel = null; onSelectUo();"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></a>
                 </div>                
                 <div *ngIf="uoInput.dirty && uoInput.invalid">
                     <small class="form-text text-danger"
@@ -93,7 +93,7 @@
         </span>
     </a>
     <ul class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>        
-        <li *ngFor="let esercizio of esercizi">
+        <li *ngFor="let esercizio of contextService.esercizi">
             <a class="dropdown-item"  (click)="setEsercizio(esercizio)">
                 <span>{{esercizio}}</span>
             </a>
@@ -103,7 +103,7 @@
 <span *ngIf="isNavbar" class="navbar-input-inline navbar-text">
     <i class="fa fa-toggle-on" aria-hidden="true"> UO: </i>
     <input 
-        [(ngModel)]="uoModel" 
+        [(ngModel)]="contextService.uoModel" 
         [ngbTypeahead]="searchuo" 
         [resultTemplate]="rt" 
         [inputFormatter]="formatterFirst"
