@@ -13,7 +13,19 @@
             <label for="cds" class="col-2 col-form-label">Centro di Spesa</label>
             <div class="col-8">
                 <div class="input-group form-group">
-                    <input class="form-control" id="cds" name="cds" [(ngModel)]="principal.userIdentity.cds" #cdsInput="ngModel"  required type="text"> 
+                    <input 
+                        [(ngModel)]="cdsModel" 
+                        [ngbTypeahead]="searchcds" 
+                        [resultTemplate]="rt" 
+                        [inputFormatter]="formatter"
+                        [resultFormatter]="formatter"
+                        [editable]="false"
+                        class="form-control" 
+                        id="cds" 
+                        name="cds" 
+                        #cdsInput="ngModel"  
+                        required 
+                        type="text"> 
                     <span class="input-group-addon"><i class="fa fa-search fa-fw" aria-hidden="true"></i></span>
                 </div>
                 <div *ngIf="cdsInput.dirty && cdsInput.invalid">
@@ -29,10 +41,15 @@
             <div class="col-8">
                 <div class="input-group form-group">
                     <input
+                        [(ngModel)]="uoModel" 
+                        [ngbTypeahead]="searchuo" 
+                        [resultTemplate]="rt" 
+                        [inputFormatter]="formatter"
+                        [resultFormatter]="formatter"
+                        [editable]="false"
                         class="form-control" 
                         id="uo" 
                         name="uo" 
-                        [(ngModel)]="principal.userIdentity.uo" 
                         #uoInput="ngModel" 
                         required 
                         type="text">        
