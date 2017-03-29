@@ -20,13 +20,14 @@
                         [inputFormatter]="formatter"
                         [resultFormatter]="formatter"
                         [editable]="false"
+                        (selectItem)="onSelectCds($event.item)"
                         class="form-control" 
                         id="cds" 
                         name="cds" 
                         #cdsInput="ngModel"  
                         required 
                         type="text"> 
-                    <span class="input-group-addon"><i class="fa fa-search fa-fw" aria-hidden="true"></i></span>
+                    <a class="input-group-addon btn btn-danger" (click)="cdsModel = null; onSelectCds();"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></a>
                 </div>
                 <div *ngIf="cdsInput.dirty && cdsInput.invalid">
                     <small class="form-text text-danger"
@@ -47,13 +48,14 @@
                         [inputFormatter]="formatter"
                         [resultFormatter]="formatter"
                         [editable]="false"
+                        (selectItem)="onSelectUo($event.item)"
                         class="form-control" 
                         id="uo" 
                         name="uo" 
                         #uoInput="ngModel" 
                         required 
                         type="text">        
-                    <span class="input-group-addon"><i class="fa fa-search fa-fw" aria-hidden="true"></i></span>
+                    <a class="input-group-addon btn-danger" (click)="uoModel = null; onSelectUo();"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></a>
                 </div>                
                 <div *ngIf="uoInput.dirty && uoInput.invalid">
                     <small class="form-text text-danger"
@@ -68,7 +70,7 @@
             <div class="col-8">
                 <div class="input-group form-group">                
                     <input class="form-control" id="cdr" name="cdr" [(ngModel)]="principal.userIdentity.cdr" #cdrInput="ngModel" required type="text">        
-                    <span class="input-group-addon"><i class="fa fa-search fa-fw" aria-hidden="true"></i></span>
+                    <a class="input-group-addon btn-danger"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></a>
                 </div>
                 <div *ngIf="cdrInput.dirty && cdrInput.invalid">
                     <small class="form-text text-danger"
@@ -100,5 +102,13 @@
 </li>
 <span *ngIf="isNavbar" class="navbar-input-inline navbar-text">
     <i class="fa fa-toggle-on" aria-hidden="true"> UO: </i>
-    <input class="navbar-input-inline form-control-sm navbar-text col-sm-5" value="{{principal.userIdentity.uo}}"/>
+    <input 
+        [(ngModel)]="uoModel" 
+        [ngbTypeahead]="searchuo" 
+        [resultTemplate]="rt" 
+        [inputFormatter]="formatterFirst"
+        [resultFormatter]="formatterFirst"
+        [editable]="false"
+        (selectItem)="onSelectUo($event.item)"    
+        class="navbar-input-inline form-control-sm navbar-text col-sm-5" />
 </span>

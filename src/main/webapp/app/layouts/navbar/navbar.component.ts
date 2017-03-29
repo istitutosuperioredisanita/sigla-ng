@@ -29,7 +29,7 @@ export class NavbarComponent implements OnInit {
         private loginService: LoginService,
         private languageHelper: JhiLanguageHelper,
         private languageService: JhiLanguageService,
-        private principal: Principal,
+        public principal: Principal,
         private loginModalService: LoginModalService,
         private profileService: ProfileService,
         private router: Router
