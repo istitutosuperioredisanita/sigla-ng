@@ -14,6 +14,7 @@ import { SiglaEntityModule } from './entities/entity.module';
 import { LayoutRoutingModule } from './layouts';
 import { customHttpProvider } from './blocks/interceptor/http.provider';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
+import { ContextService } from './context';
 
 import {
     JhiMainComponent,
@@ -49,7 +50,8 @@ import {
         { provide: Document, useValue: document },
         customHttpProvider(),
         PaginationConfig,
-        UserRouteAccessService
+        UserRouteAccessService,
+        ContextService
     ],
     bootstrap: [ JhiMainComponent ]
 })
