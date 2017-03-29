@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Response, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { UserContext } from '../shared';
 import { Pair } from './pair.model';
@@ -15,13 +15,13 @@ export class ContextService  {
     getUo(cds: string): Observable<Pair[]> {
         let params: URLSearchParams = new URLSearchParams();
         params.set('cds', cds);
-        return this.http.get('/api/context/uo', params).map((res: Response) => res.json());
+        return this.http.get('/api/context/uo', {search: params}).map((res: Response) => res.json());
     }
 
     getCds(uo: string): Observable<Pair[]> {
         let params: URLSearchParams = new URLSearchParams();
         params.set('uo', uo);
-        return this.http.get('/api/context/cds', params).map((res: Response) => res.json());
+        return this.http.get('/api/context/cds', {search: params}).map((res: Response) => res.json());
     }
 
     saveEsecizio(esercizio: number): Observable<Response> {
