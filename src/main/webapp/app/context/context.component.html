@@ -1,5 +1,14 @@
-<div *ngIf="!isNavbar">
-    <template #rt let-r="result" let-t="term">{{ r.first}} - {{r.second}}</template>    
+<template #rt let-r="result" let-t="term">
+    <div class="d-flex w-100 justify-content-between">
+        <h6>{{r.second}}</h6><span class="badge badge-pill badge-primary">{{r.first}}</span>        
+    </div>
+</template>
+<template #rtNavbar let-r="result" let-t="term">
+    <div class="d-flex w-100">
+    <span>{{r.first}}</span><span class="col-sm-6 text-truncate">{{r.second}}</span>
+    </div>
+</template> 
+<div *ngIf="!isNavbar">  
     <form class="form" role="form" (ngSubmit)="saveContext()" #contextForm="ngForm">
         <div class="form-group row">
             <label for="esercizio" class="col-2 col-form-label">Esercizio</label>
@@ -85,30 +94,40 @@
         </div>        
     </form>        
 </div>
-<li *ngIf="isNavbar" ngbDropdown class="nav-item dropdown pointer">
-    <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="esercizio-menu">
-        <i class="fa fa-calendar-o" aria-hidden="true"></i>
-        <span>Esercizio: {{principal.userIdentity.esercizio}}</span>
-            <b class="caret"></b>
-        </span>
-    </a>
-    <ul class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>        
-        <li *ngFor="let esercizio of contextService.esercizi">
-            <a class="dropdown-item"  (click)="setEsercizio(esercizio)">
-                <span>{{esercizio}}</span>
+<div *ngIf="isNavbar" class="form-inline">
+        <li ngbDropdown class="nav-item dropdown pointer">
+            <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="esercizio-menu">
+                <i class="fa fa-calendar-o" aria-hidden="true"></i>
+                <span>Esercizio: {{principal.userIdentity.esercizio}}</span>
+                    <b class="caret"></b>
+                </span>
             </a>
+            <ul class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>        
+                <li *ngFor="let esercizio of contextService.esercizi">
+                    <a class="dropdown-item"  (click)="setEsercizio(esercizio)">
+                        <span>{{esercizio}}</span>
+                    </a>
+                </li>
+            </ul>
         </li>
-    </ul>
-</li>
-<span *ngIf="isNavbar" class="navbar-input-inline navbar-text">
-    <i class="fa fa-toggle-on" aria-hidden="true"> UO: </i>
-    <input 
-        [(ngModel)]="contextService.uoModel" 
-        [ngbTypeahead]="searchuo" 
-        [resultTemplate]="rt" 
-        [inputFormatter]="formatterFirst"
-        [resultFormatter]="formatterFirst"
-        [editable]="false"
-        (selectItem)="onSelectUo($event.item)"    
-        class="navbar-input-inline form-control-sm navbar-text col-sm-5" />
-</span>
+        <span class="navbar-text navbar-label">CdS:</span>
+        <input 
+            [(ngModel)]="contextService.cdsModel" 
+            [ngbTypeahead]="searchcds" 
+            [resultTemplate]="rtNavbar" 
+            [inputFormatter]="formatterFirst"
+            [resultFormatter]="formatter"
+            [editable]="false"
+            (selectItem)="onSelectCds($event.item)"    
+            class="navbar-input-inline form-control-sm navbar-text col-md-2" />
+        <label class="navbar-text navbar-label">UO:</label>
+        <input 
+            [(ngModel)]="contextService.uoModel" 
+            [ngbTypeahead]="searchuo" 
+            [resultTemplate]="rtNavbar" 
+            [inputFormatter]="formatterFirst"
+            [resultFormatter]="formatter"
+            [editable]="false"
+            (selectItem)="onSelectUo($event.item)"    
+            class="navbar-input-inline form-control-sm navbar-text col-md-2" />
+</div>
