@@ -18,7 +18,7 @@ public interface UnitaOrganizzativaRepository extends JpaRepository<UnitaOrganiz
 	@Query("select a from UnitaOrganizzativa a join a.utenteUnitaRuolos ruolos " +
 			"where ruolos.id.cdUtente = :userId" +
 			" and (a.unitaOrganizzativaPadre.cdUnitaOrganizzativa = :cds OR :cds is null)" +			
-			" and a.esercizioInizio <= :esercizio and a.esercizioFine <= :esercizio")
+			" and a.esercizioInizio <= :esercizio and a.esercizioFine >= :esercizio")
 	Stream<UnitaOrganizzativa> findUnitaOrganizzativeAbilitateByRuolo(@Param("userId")String userId, @Param("esercizio")Integer esercizio, @Param("cds")String cds);
 	@Query("select a from UnitaOrganizzativa a join a.utenteUnitaAccessos accessos " +
 			"where accessos.id.cdUtente = :userId" +
@@ -38,7 +38,7 @@ public interface UnitaOrganizzativaRepository extends JpaRepository<UnitaOrganiz
 	@Query("select a.unitaOrganizzativaPadre from UnitaOrganizzativa a join a.utenteUnitaRuolos ruolos " +
 			"where ruolos.id.cdUtente = :userId" +
 			" and (a.cdUnitaOrganizzativa = :cdUnitaOrganizzativa OR :cdUnitaOrganizzativa is null)" +			
-			" and a.esercizioInizio <= :esercizio and a.esercizioFine <= :esercizio")
+			" and a.esercizioInizio <= :esercizio and a.esercizioFine >= :esercizio")
 	Stream<UnitaOrganizzativa> findCdsAbilitatiByRuolo(@Param("userId")String userId, @Param("esercizio")Integer esercizio, @Param("cdUnitaOrganizzativa")String cdUnitaOrganizzativa);
 	@Query("select a.unitaOrganizzativaPadre from UnitaOrganizzativa a join a.utenteUnitaAccessos accessos " +
 			"where accessos.id.cdUtente = :userId" +
