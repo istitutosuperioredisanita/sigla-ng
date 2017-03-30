@@ -3,6 +3,8 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { AccountService } from './account.service';
 import { Account } from '../user/account.model';
+import { ContextService } from '../../context/context.service';
+import { LocalStateStorageService } from './local-storage.service';
 
 @Injectable()
 export class Principal {
@@ -11,7 +13,9 @@ export class Principal {
     private authenticationState = new Subject<any>();
 
     constructor(
-        private account: AccountService
+        private account: AccountService,
+        private context: ContextService,
+        private localStateStorageService: LocalStateStorageService
     ) {}
 
     authenticate (identity) {
@@ -60,8 +64,17 @@ export class Principal {
         // retrieve the userIdentity data from the server, update the identity object, and then resolve.
         return this.account.get().toPromise().then(account => {
             if (account) {
+                let that = this;
                 this.userIdentity = account;
                 this.authenticated = true;
+
+                this.context.saveUserContext(
+                    this.localStateStorageService.getUserContext()
+                ).toPromise().then(usercontext => {
+                    that.userIdentity = usercontext;
+                    this.context.findCds(usercontext);
+                    this.context.findUo(usercontext);
+                });
             } else {
                 this.userIdentity = null;
                 this.authenticated = false;
