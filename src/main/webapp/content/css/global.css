@@ -2,7 +2,7 @@
 Bootstrap tweaks
 ===============================================================*/
 
-body, h1, h2, h3, h4 {
+body, h1, h2, h3, h4, button {
     font-weight: 300;
     font-family: 'Titillium Web', sans-serif;
 }
@@ -202,5 +202,8 @@ ui bootstrap tweaks
 .navbar-input-inline {
     border: none;
     background: none;
-    padding-bottom: inherit;
+}
+.navbar-label {
+    padding-left: 0.2em;
+    padding-right: 0.2em;    
 }
