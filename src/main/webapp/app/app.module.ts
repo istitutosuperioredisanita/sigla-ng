@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { Ng2Webstorage } from 'ng2-webstorage';
 
-import { SiglaSharedModule, UserRouteAccessService } from './shared';
+import { SiglaSharedModule, UserRouteAccessService} from './shared';
 import { SiglaHomeModule } from './home/home.module';
 import { SiglaAdminModule } from './admin/admin.module';
 import { SiglaAccountModule } from './account/account.module';
@@ -15,6 +15,7 @@ import { LayoutRoutingModule } from './layouts';
 import { customHttpProvider } from './blocks/interceptor/http.provider';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
 import { ContextService } from './context';
+import { LocalStateStorageService } from './shared/auth/local-storage.service';
 
 import {
     JhiMainComponent,
@@ -51,7 +52,8 @@ import {
         customHttpProvider(),
         PaginationConfig,
         UserRouteAccessService,
-        ContextService
+        ContextService,
+        LocalStateStorageService
     ],
     bootstrap: [ JhiMainComponent ]
 })
