@@ -11,7 +11,12 @@ import { Pair } from './pair.model';
 @Component({
     selector: 'jhi-context',
     templateUrl: './context.component.html',
-    providers: [LocalStateStorageService, NgbDropdown]
+    providers: [LocalStateStorageService, NgbDropdown],
+    styles: [
+        '.navbar-typeahead span {vertical-align:top; display: inline-block;}',
+        '.navbar-typeahead .text-truncate {padding: 0 5px; max-width: 220px}',
+        '.nav-link, .navbar-text {color: #FFF !important}'
+        ]
 })
 
 export class ContextComponent implements OnInit {
