@@ -1,14 +1,14 @@
 <template #rt let-r="result" let-t="term">
     <div class="d-flex w-100 justify-content-between">
-        <h6>{{r.second}}</h6><span class="badge badge-pill badge-primary">{{r.first}}</span>        
+        <h6>{{r.second}}</h6><span class="badge badge-pill badge-primary">{{r.first}}</span>
     </div>
 </template>
 <template #rtNavbar let-r="result" let-t="term">
-    <div class="d-flex w-100">
-    <span>{{r.first}}</span><span class="col-sm-6 text-truncate">{{r.second}}</span>
+    <div class="navbar-typeahead">
+        <span>{{r.first}}</span><span class="text-truncate">{{r.second}}</span>
     </div>
-</template> 
-<div *ngIf="!isNavbar">  
+</template>
+<div *ngIf="!isNavbar">
     <form class="form" role="form" (ngSubmit)="saveContext()" #contextForm="ngForm">
         <div class="form-group row">
             <label for="esercizio" class="col-2 col-form-label">Esercizio</label>
@@ -61,7 +61,7 @@
                         class="form-control" 
                         id="uo" 
                         name="uo" 
-                        #uoInput="ngModel" 
+                        #uoInput="ngModel"
                         required 
                         type="text">        
                     <a class="input-group-addon btn-danger" (click)="contextService.uoModel = null; onSelectUo();"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></a>
@@ -91,11 +91,11 @@
         </div>
         <div class="text-right col-10">
             <button type="submit" [disabled]="contextForm.form.invalid" class="btn btn-primary col-md-5">Conferma</button>
-        </div>        
+        </div>
     </form>        
 </div>
 <div *ngIf="isNavbar" class="form-inline">
-        <li ngbDropdown class="nav-item dropdown pointer">
+        <div ngbDropdown class="nav-item dropdown pointer">
             <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="esercizio-menu">
                 <i class="fa fa-calendar-o" aria-hidden="true"></i>
                 <span>Esercizio: {{principal.userIdentity.esercizio}}</span>
@@ -109,25 +109,25 @@
                     </a>
                 </li>
             </ul>
-        </li>
+        </div>
         <span class="navbar-text navbar-label">CdS:</span>
-        <input 
+        <input
             [(ngModel)]="contextService.cdsModel" 
             [ngbTypeahead]="searchcds" 
-            [resultTemplate]="rtNavbar" 
+            [resultTemplate]="rtNavbar"
             [inputFormatter]="formatterFirst"
             [resultFormatter]="formatter"
             [editable]="false"
             (selectItem)="onSelectCds($event.item)"    
-            class="navbar-input-inline form-control-sm navbar-text col-md-2" />
+            class="form-control" />
         <label class="navbar-text navbar-label">UO:</label>
         <input 
             [(ngModel)]="contextService.uoModel" 
-            [ngbTypeahead]="searchuo" 
-            [resultTemplate]="rtNavbar" 
+            [ngbTypeahead]="searchuo"
+            [resultTemplate]="rtNavbar"
             [inputFormatter]="formatterFirst"
             [resultFormatter]="formatter"
             [editable]="false"
             (selectItem)="onSelectUo($event.item)"    
-            class="navbar-input-inline form-control-sm navbar-text col-md-2" />
+            class="form-control" />
 </div>
