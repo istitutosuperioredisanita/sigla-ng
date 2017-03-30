@@ -11,7 +11,7 @@ import { Pair } from './pair.model';
 @Component({
     selector: 'jhi-context',
     templateUrl: './context.component.html',
-    providers: [LocalStateStorageService, NgbDropdown],
+    providers: [NgbDropdown],
     styles: [
         '.navbar-typeahead span {vertical-align:top; display: inline-block;}',
         '.navbar-typeahead .text-truncate {padding: 0 5px; max-width: 220px}',
@@ -19,7 +19,7 @@ import { Pair } from './pair.model';
         ]
 })
 
-export class ContextComponent implements OnInit {
+export class ContextComponent {
     @Input() isNavbar: boolean;
 
     constructor(
@@ -68,12 +68,6 @@ export class ContextComponent implements OnInit {
                     this.contextService.cdsModel = cds[0];
                 }
             });
-    }
-
-    ngOnInit(): void {
-        this.contextService
-            .saveUserContext(this.localStateStorageService.getUserContext())
-            .subscribe(identity => this.principal.authenticate(identity));
     }
 
     setEsercizio(esercizio: number): void {

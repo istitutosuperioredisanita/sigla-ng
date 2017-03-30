@@ -110,7 +110,7 @@
                 </li>
             </ul>
         </div>
-        <span class="navbar-text navbar-label">CdS:</span>
+        <label class="navbar-text navbar-label">CdS:</label>
         <input
             [(ngModel)]="contextService.cdsModel" 
             [ngbTypeahead]="searchcds" 
@@ -130,4 +130,5 @@
             [editable]="false"
             (selectItem)="onSelectUo($event.item)"    
             class="form-control" />
+        </div>    
 </div>
