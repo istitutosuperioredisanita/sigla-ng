@@ -81,3 +81,6 @@ Logo styles
     background-size: contain;
     width: 100%;
 }
+.nav-link, .navbar-text {
+    color: #FFF !important
+}
