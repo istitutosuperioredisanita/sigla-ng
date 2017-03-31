@@ -16,10 +16,12 @@ export class ContextService  {
 
     constructor(
         private http: Http
-    ) {
+    ) {}
+
+    findEsercizi(): void {
         this.getEsercizi()
             .subscribe(esercizi => this.esercizi = esercizi);
-     }
+    }
 
     getEsercizi(): Observable<number[]> {
         return this.http.get('/api/context/esercizio').map((res: Response) => res.json());
