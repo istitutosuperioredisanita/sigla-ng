@@ -9,14 +9,10 @@ import { Observable } from 'rxjs/Observable';
 import { Pair } from './pair.model';
 
 @Component({
-    selector: 'jhi-context',
+    selector: '[jhi-context]',
     templateUrl: './context.component.html',
     providers: [NgbDropdown],
-    styles: [
-        '.navbar-typeahead span {vertical-align:top; display: inline-block;}',
-        '.navbar-typeahead .text-truncate {padding: 0 5px; max-width: 220px}',
-        '.nav-link, .navbar-text {color: #FFF !important}'
-        ]
+    styleUrls: ['../layouts/navbar/navbar.css']
 })
 
 export class ContextComponent {
@@ -32,18 +28,33 @@ export class ContextComponent {
         this.languageService.setLocations(['settings', 'home', 'login']);
     }
 
+    filterPair(term : string, pairs : Pair[], type : string): Pair[] {
+        if (term === '') {
+            if (type === 'cds') {
+                this.contextService.getCds('').subscribe(cds => {
+                    this.contextService.cdsPairs = cds;
+                    return cds;
+                });
+            } else if (type === 'uo') {
+                this.contextService.getUo('').subscribe(uo =>  {
+                    this.contextService.uoPairs = uo;
+                    return uo;
+                });
+            }
+        }
+        return pairs.filter(v => new RegExp(term, 'gi').test(v.first) || new RegExp(term, 'gi').test(v.second));
+    }
+
     searchcds = (text$: Observable<string>) =>
         text$
         .debounceTime(200)
-        .map(term => term === '' ? []
-            : this.contextService.cdsPairs.filter(v => new RegExp(term, 'gi').test(v.first) || new RegExp(term, 'gi').test(v.second))
+        .map(term => this.filterPair(term, this.contextService.cdsPairs, 'cds')
         .slice(0, 10));
 
     searchuo = (text$: Observable<string>) =>
         text$
         .debounceTime(200)
-        .map(term => term === '' ? []
-            : this.contextService.uoPairs.filter(v => new RegExp(term, 'gi').test(v.first) || new RegExp(term, 'gi').test(v.second))
+        .map(term => this.filterPair(term, this.contextService.uoPairs, 'uo')
         .slice(0, 10));
 
     formatter = (pair: Pair) => pair.first + ' - ' + pair.second;
@@ -88,6 +99,14 @@ export class ContextComponent {
             .saveUserContext(userContext)
             .subscribe(identity => this.principal.authenticate(identity));
        this.localStateStorageService.storeUserContext(userContext);
+   }
+
+   getCodiceCdS(): string {
+       return this.contextService.cdsModel !== undefined ? this.contextService.cdsModel.first : '';
+   }
+
+   getCodiceUo(): string {
+       return this.contextService.uoModel !== undefined ? this.contextService.uoModel.first : '';
    }
 
 }

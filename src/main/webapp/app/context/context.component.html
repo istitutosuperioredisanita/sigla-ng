@@ -21,23 +21,20 @@
         <div class="form-group row">
             <label for="cds" class="col-2 col-form-label">Centro di Spesa</label>
             <div class="col-8">
-                <div class="input-group form-group">
-                    <input 
-                        [(ngModel)]="contextService.cdsModel" 
-                        [ngbTypeahead]="searchcds" 
-                        [resultTemplate]="rt" 
-                        [inputFormatter]="formatter"
-                        [resultFormatter]="formatter"
-                        [editable]="false"
-                        (selectItem)="onSelectCds($event.item)"
-                        class="form-control" 
-                        id="cds" 
-                        name="cds" 
-                        #cdsInput="ngModel"  
-                        required 
-                        type="text"> 
-                    <a class="input-group-addon btn btn-danger" (click)="contextService.cdsModel = null; onSelectCds();"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></a>
-                </div>
+                <input 
+                    [(ngModel)]="contextService.cdsModel" 
+                    [ngbTypeahead]="searchcds" 
+                    [resultTemplate]="rt" 
+                    [inputFormatter]="formatter"
+                    [resultFormatter]="formatter"
+                    [editable]="false"
+                    (selectItem)="onSelectCds($event.item)"
+                    class="form-control" 
+                    id="cds" 
+                    name="cds" 
+                    #cdsInput="ngModel"  
+                    required 
+                    type="text"> 
                 <div *ngIf="cdsInput.dirty && cdsInput.invalid">
                     <small class="form-text text-danger"
                         *ngIf="cdsInput.errors.required" jhiTranslate="settings.messages.validate.cds.required">
@@ -49,23 +46,20 @@
         <div class="form-group row">
             <label for="uo" class="col-2 col-form-label">Unità Organizzativa</label>
             <div class="col-8">
-                <div class="input-group form-group">
-                    <input
-                        [(ngModel)]="contextService.uoModel" 
-                        [ngbTypeahead]="searchuo" 
-                        [resultTemplate]="rt" 
-                        [inputFormatter]="formatter"
-                        [resultFormatter]="formatter"
-                        [editable]="false"
-                        (selectItem)="onSelectUo($event.item)"
-                        class="form-control" 
-                        id="uo" 
-                        name="uo" 
-                        #uoInput="ngModel"
-                        required 
-                        type="text">        
-                    <a class="input-group-addon btn-danger" (click)="contextService.uoModel = null; onSelectUo();"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></a>
-                </div>                
+                <input
+                    [(ngModel)]="contextService.uoModel" 
+                    [ngbTypeahead]="searchuo" 
+                    [resultTemplate]="rt" 
+                    [inputFormatter]="formatter"
+                    [resultFormatter]="formatter"
+                    [editable]="false"
+                    (selectItem)="onSelectUo($event.item)"
+                    class="form-control" 
+                    id="uo" 
+                    name="uo" 
+                    #uoInput="ngModel"
+                    required 
+                    type="text">        
                 <div *ngIf="uoInput.dirty && uoInput.invalid">
                     <small class="form-text text-danger"
                         *ngIf="uoInput.errors.required" jhiTranslate="settings.messages.validate.uo.required">
@@ -77,10 +71,7 @@
         <div class="form-group row">
             <label for="cdr" class="col-2 col-form-label">Centro di Responsabilità</label>
             <div class="col-8">
-                <div class="input-group form-group">                
-                    <input class="form-control" id="cdr" name="cdr" [(ngModel)]="principal.userIdentity.cdr" #cdrInput="ngModel" required type="text">        
-                    <a class="input-group-addon btn-danger"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i></a>
-                </div>
+                <input class="form-control" id="cdr" name="cdr" [(ngModel)]="principal.userIdentity.cdr" #cdrInput="ngModel" required type="text">        
                 <div *ngIf="cdrInput.dirty && cdrInput.invalid">
                     <small class="form-text text-danger"
                         *ngIf="cdrInput.errors.required" jhiTranslate="settings.messages.validate.cdr.required">
@@ -94,41 +85,52 @@
         </div>
     </form>        
 </div>
-<div *ngIf="isNavbar" class="form-inline">
-        <div ngbDropdown class="nav-item dropdown pointer">
-            <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="esercizio-menu">
-                <i class="fa fa-calendar-o" aria-hidden="true"></i>
-                <span>Esercizio: {{principal.userIdentity.esercizio}}</span>
-                    <b class="caret"></b>
-                </span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>        
-                <li *ngFor="let esercizio of contextService.esercizi">
-                    <a class="dropdown-item"  (click)="setEsercizio(esercizio)">
-                        <span>{{esercizio}}</span>
-                    </a>
-                </li>
-            </ul>
+<li *ngIf="isNavbar" ngbDropdown class="nav-item dropdown pointer" id="context-menu">
+    <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" data-toggle="dropdown">CdS: {{getCodiceCdS()}} UO: {{getCodiceUo()}}</a>
+    <ul class="dropdown-menu dropdown-menu-right navbar-form" role="menu" ngbDropdownMenu>
+        <div class="form-group">
+            <label class="form-control-label" for="navbar-cds">Centro di Spesa</label>  
+            <input
+                [(ngModel)]="contextService.cdsModel" 
+                [ngbTypeahead]="searchcds" 
+                [resultTemplate]="rtNavbar"
+                [inputFormatter]="formatterFirst"
+                [resultFormatter]="formatter"
+                [editable]="false"
+                (selectItem)="onSelectCds($event.item)" 
+                class="form-control"
+                (click)="$event.stopPropagation()"
+                id="navbar-cds"/>
+        </div>     
+        <div class="form-group">
+            <label class="form-control-label" for="navbar-uo">Unita Organizzativa</label>
+            <input 
+                [(ngModel)]="contextService.uoModel" 
+                [ngbTypeahead]="searchuo"
+                [resultTemplate]="rtNavbar"
+                [inputFormatter]="formatterFirst"
+                [resultFormatter]="formatter"
+                [editable]="false"
+                (selectItem)="onSelectUo($event.item)"
+                (click)="$event.stopPropagation()" 
+                class="form-control"
+                id="navbar-uo"/>
         </div>
-        <label class="navbar-text navbar-label">CdS:</label>
-        <input
-            [(ngModel)]="contextService.cdsModel" 
-            [ngbTypeahead]="searchcds" 
-            [resultTemplate]="rtNavbar"
-            [inputFormatter]="formatterFirst"
-            [resultFormatter]="formatter"
-            [editable]="false"
-            (selectItem)="onSelectCds($event.item)"    
-            class="form-control" />
-        <label class="navbar-text navbar-label">UO:</label>
-        <input 
-            [(ngModel)]="contextService.uoModel" 
-            [ngbTypeahead]="searchuo"
-            [resultTemplate]="rtNavbar"
-            [inputFormatter]="formatterFirst"
-            [resultFormatter]="formatter"
-            [editable]="false"
-            (selectItem)="onSelectUo($event.item)"    
-            class="form-control" />
-        </div>    
-</div>
+        <button type="submit" class="btn btn-block btn-primary" (click)="saveContext()">Conferma</button>
+    </ul>
+</li>
+<li *ngIf="isNavbar" ngbDropdown class="nav-item dropdown pointer">
+    <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="esercizio-menu">
+        <i class="fa fa-calendar-o" aria-hidden="true"></i>
+        <span>Esercizio: {{principal.userIdentity.esercizio}}</span>
+            <b class="caret"></b>
+        </span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>        
+        <li *ngFor="let esercizio of contextService.esercizi">
+            <a class="dropdown-item"  (click)="setEsercizio(esercizio)">
+                <span>{{esercizio}}</span>
+            </a>
+        </li>
+    </ul>
+</li>
