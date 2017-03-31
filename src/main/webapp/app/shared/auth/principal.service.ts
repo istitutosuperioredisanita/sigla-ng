@@ -72,6 +72,7 @@ export class Principal {
                     this.localStateStorageService.getUserContext()
                 ).toPromise().then(usercontext => {
                     that.userIdentity = usercontext;
+                    this.context.findEsercizi();
                     this.context.findCds(usercontext);
                     this.context.findUo(usercontext);
                 });

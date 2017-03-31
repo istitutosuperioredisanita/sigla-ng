@@ -84,3 +84,46 @@ Logo styles
 .nav-link, .navbar-text {
     color: #FFF !important
 }
+.navbar-typeahead span {
+    vertical-align:top; display: inline-block;
+}
+.navbar-typeahead .text-truncate {
+    padding: 0 5px; 
+    max-width: 220px
+}
+.navbar-form {
+    padding: 17px
+}
+.navbar .pull-right > li > .dropdown-menu:after,
+.navbar .navbar-nav > li > .dropdown-menu.pull-right:after,
+.navbar .navbar-nav > div > li > ul.dropdown-menu.pull-right:after {
+  left: auto;
+  right: 13px;
+}
+.navbar .navbar-nav > li > .dropdown-menu:before,
+.navbar .navbar-nav > div > li > ul.dropdown-menu:before {
+  content: '';
+  display: inline-block;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 7px solid #ccc;
+  border-bottom-color: rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: -7px;
+  left: 9px;
+}
+.navbar .navbar-nav > li > .dropdown-menu:after,
+.navbar .navbar-nav > div > li > ul.dropdown-menu:after {
+  content: '';
+  display: inline-block;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #ffffff;
+  position: absolute;
+  top: -6px;
+  left: 10px;
+}
+#context-menu { 
+    text-align: right;
+    min-width: 280px; 
+}
