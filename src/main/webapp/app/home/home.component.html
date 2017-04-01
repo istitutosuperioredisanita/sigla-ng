@@ -8,7 +8,7 @@
 
         <div [ngSwitch]="isAuthenticated()">
             <div *ngSwitchCase="true">
-                <div jhi-context [isNavbar]="false">Loading context.....</div>
+                <jhi-context [isNavbar]="false">Loading context.....</jhi-context>
             </div>
             <div *ngSwitchCase="false">
                 <div class="col-md-8">

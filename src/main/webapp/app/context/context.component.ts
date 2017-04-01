@@ -9,17 +9,18 @@ import { Observable } from 'rxjs/Observable';
 import { Pair } from './pair.model';
 
 @Component({
-    selector: '[jhi-context]',
+    selector: 'jhi-context',
     templateUrl: './context.component.html',
     providers: [NgbDropdown],
     styleUrls: ['../layouts/navbar/navbar.css']
 })
 
-export class ContextComponent {
+export class ContextComponent implements OnInit {
     @Input() isNavbar: boolean;
 
     constructor(
         public contextService: ContextService,
+        private el: ElementRef,
         public principal: Principal,
         private localStateStorageService: LocalStateStorageService,
         private languageService: JhiLanguageService,
@@ -28,21 +29,28 @@ export class ContextComponent {
         this.languageService.setLocations(['settings', 'home', 'login']);
     }
 
-    filterPair(term : string, pairs : Pair[], type : string): Pair[] {
+    // wait for the component to render completely
+    ngOnInit() {
+        let nativeElement: HTMLElement = this.el.nativeElement,
+            parentElement: HTMLElement = nativeElement.parentElement;
+        // move all children out of the element
+        while (nativeElement.firstChild) {
+            parentElement.insertBefore(nativeElement.firstChild, nativeElement);
+        }
+        // remove the empty element(the host)
+        parentElement.removeChild(nativeElement);
+    }
+
+    filterPair(term: string, pairs: Pair[], type: string): Pair[] {
         if (term === '') {
             if (type === 'cds') {
-                this.contextService.getCds('').subscribe(cds => {
-                    this.contextService.cdsPairs = cds;
-                    return cds;
-                });
-            } else if (type === 'uo') {
-                this.contextService.getUo('').subscribe(uo =>  {
-                    this.contextService.uoPairs = uo;
-                    return uo;
-                });
+                return this.contextService.resetCds();
+            } else {
+                return pairs;
             }
+        } else {
+            return pairs.filter(v => new RegExp(term, 'gi').test(v.first) || new RegExp(term, 'gi').test(v.second));
         }
-        return pairs.filter(v => new RegExp(term, 'gi').test(v.first) || new RegExp(term, 'gi').test(v.second));
     }
 
     searchcds = (text$: Observable<string>) =>
