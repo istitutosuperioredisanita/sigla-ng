@@ -20,7 +20,7 @@ export class ContextComponent {
 
     constructor(
         public contextService: ContextService,
-        private el: ElementRef,
+        private router: Router,
         public principal: Principal,
         private localStateStorageService: LocalStateStorageService,
         private languageService: JhiLanguageService,
@@ -109,10 +109,8 @@ export class ContextComponent {
         this.contextService
             .saveUserContext(userContext)
             .subscribe(identity => this.principal.authenticate(identity));
-       this.localStateStorageService.storeUserContext(userContext);
-    }
-    isAuthenticated() {
-        return this.principal.isAuthenticated();
+        this.localStateStorageService.storeUserContext(userContext);
+        this.router.navigate(['workspace']);
     }
 
     getCodiceCdS(): string {
