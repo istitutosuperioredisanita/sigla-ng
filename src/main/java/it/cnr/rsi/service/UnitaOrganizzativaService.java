@@ -1,7 +1,9 @@
 package it.cnr.rsi.service;
 
+import it.cnr.rsi.domain.Cdr;
 import it.cnr.rsi.domain.UnitaOrganizzativa;
 import it.cnr.rsi.domain.Utente;
+import it.cnr.rsi.repository.CdrRepository;
 import it.cnr.rsi.repository.UnitaOrganizzativaRepository;
 import it.cnr.rsi.repository.UtenteRepository;
 
@@ -20,11 +22,14 @@ public class UnitaOrganizzativaService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UnitaOrganizzativaService.class);
 
 	private UnitaOrganizzativaRepository unitaOrganizzativaRepository;
+	private CdrRepository cdrRepository;
+
 	private UtenteRepository utenteRepository;
 	
-	public UnitaOrganizzativaService(UnitaOrganizzativaRepository unitaOrganizzativaRepository, UtenteRepository utenteRepository) {
+	public UnitaOrganizzativaService(UnitaOrganizzativaRepository unitaOrganizzativaRepository, UtenteRepository utenteRepository, CdrRepository cdrRepository) {
 		this.unitaOrganizzativaRepository = unitaOrganizzativaRepository;
 		this.utenteRepository = utenteRepository;
+		this.cdrRepository = cdrRepository; 
 	}
 
 	@Transactional
@@ -60,6 +65,15 @@ public class UnitaOrganizzativaService {
 		return cdsByAccessi
 				.distinct()
 				.sorted((x, y) -> x.getCdUnitaOrganizzativa().compareTo(y.getCdUnitaOrganizzativa()))
+				.collect(Collectors.toList());
+	}
+
+	@Transactional
+	public List<Cdr> listaCdr(String userId, Integer esercizio, String cdUnitaOrganizzativa) {
+		LOGGER.info("CDR for User: {} ", userId);
+		return cdrRepository.findCdrByUnitaOrganizzativa(esercizio, cdUnitaOrganizzativa)
+				.distinct()
+				.sorted((x, y) -> x.getCdCentroResponsabilita().compareTo(y.getCdCentroResponsabilita()))
 				.collect(Collectors.toList());
 	}
 

@@ -71,7 +71,19 @@
         <div class="form-group row">
             <label for="cdr" class="col-2 col-form-label">Centro di Responsabilità</label>
             <div class="col-8">
-                <input class="form-control" id="cdr" name="cdr" [(ngModel)]="principal.userIdentity.cdr" #cdrInput="ngModel" required type="text">        
+                <input
+                    [(ngModel)]="contextService.cdrModel" 
+                    [ngbTypeahead]="searchcdr" 
+                    [resultTemplate]="rt" 
+                    [inputFormatter]="formatter"
+                    [resultFormatter]="formatter"
+                    [editable]="false"
+                    class="form-control" 
+                    id="cdr" 
+                    name="cdr" 
+                    #cdrInput="ngModel"
+                    required 
+                    type="text">        
                 <div *ngIf="cdrInput.dirty && cdrInput.invalid">
                     <small class="form-text text-danger"
                         *ngIf="cdrInput.errors.required" jhiTranslate="settings.messages.validate.cdr.required">
