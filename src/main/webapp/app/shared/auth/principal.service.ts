@@ -76,6 +76,7 @@ export class Principal {
                     this.context.allCds();
                     this.context.findCds(usercontext);
                     this.context.findUo(usercontext);
+                    this.context.findCdr(usercontext);
                 });
             } else {
                 this.userIdentity = null;
