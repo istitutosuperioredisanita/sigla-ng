@@ -7,6 +7,7 @@ import { Pair } from './pair.model';
 @Injectable()
 export class ContextService  {
     esercizi: number[];
+    allCdsPairs: Pair[];
     cdsPairs: Pair[];
     uoPairs: Pair[];
     cdrPairs: Pair[];
@@ -41,6 +42,19 @@ export class ContextService  {
         let params: URLSearchParams = new URLSearchParams();
         params.set('cds', cds);
         return this.http.get('/api/context/uo', {search: params}).map((res: Response) => res.json());
+    }
+
+    resetCds(): Pair[] {
+        this.uoModel = undefined;
+        this.cdsPairs = this.allCdsPairs;
+        return this.allCdsPairs;
+    }
+
+    allCds(): void {
+        this.getCds('')
+            .subscribe(cds => {
+                this.allCdsPairs = cds;
+            });
     }
 
     findCds(account: Account): void {

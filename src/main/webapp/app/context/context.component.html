@@ -81,12 +81,12 @@
             </div>
         </div>
         <div class="text-right col-10">
-            <button type="submit" [disabled]="contextForm.form.invalid" class="btn btn-primary col-md-5">Conferma</button>
+            <button type="submit" [disabled]="contextForm.form.invalid" class="btn btn-primary col-md-5"><i class="fa fa-floppy-o" aria-hidden="true"></i> Conferma</button>
         </div>
     </form>        
 </div>
 <li *ngIf="isNavbar" ngbDropdown class="nav-item dropdown pointer" id="context-menu">
-    <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" data-toggle="dropdown">CdS: {{getCodiceCdS()}} UO: {{getCodiceUo()}}</a>
+    <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" data-toggle="dropdown"><i class="fa fa-bars" aria-hidden="true"></i> CdS: {{getCodiceCdS()}} UO: {{getCodiceUo()}}</a>
     <ul class="dropdown-menu dropdown-menu-right navbar-form" role="menu" ngbDropdownMenu>
         <div class="form-group">
             <label class="form-control-label" for="navbar-cds">Centro di Spesa</label>  
@@ -116,7 +116,7 @@
                 class="form-control"
                 id="navbar-uo"/>
         </div>
-        <button type="submit" class="btn btn-block btn-primary" (click)="saveContext()">Conferma</button>
+        <button type="submit" class="btn btn-block btn-primary" (click)="saveContext()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Conferma</button>
     </ul>
 </li>
 <li *ngIf="isNavbar" ngbDropdown class="nav-item dropdown pointer">

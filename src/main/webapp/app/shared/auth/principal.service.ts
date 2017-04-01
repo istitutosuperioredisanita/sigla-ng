@@ -73,6 +73,7 @@ export class Principal {
                 ).toPromise().then(usercontext => {
                     that.userIdentity = usercontext;
                     this.context.findEsercizi();
+                    this.context.allCds();
                     this.context.findCds(usercontext);
                     this.context.findUo(usercontext);
                 });
