@@ -15,7 +15,7 @@ import { Pair } from './pair.model';
     styleUrls: ['../layouts/navbar/navbar.css']
 })
 
-export class ContextComponent implements OnInit {
+export class ContextComponent {
     @Input() isNavbar: boolean;
 
     constructor(
@@ -27,18 +27,6 @@ export class ContextComponent implements OnInit {
         private languageHelper: JhiLanguageHelper
     ) {
         this.languageService.setLocations(['settings', 'home', 'login']);
-    }
-
-    // wait for the component to render completely
-    ngOnInit() {
-        let nativeElement: HTMLElement = this.el.nativeElement,
-            parentElement: HTMLElement = nativeElement.parentElement;
-        // move all children out of the element
-        while (nativeElement.firstChild) {
-            parentElement.insertBefore(nativeElement.firstChild, nativeElement);
-        }
-        // remove the empty element(the host)
-        parentElement.removeChild(nativeElement);
     }
 
     filterPair(term: string, pairs: Pair[], type: string): Pair[] {
@@ -65,6 +53,12 @@ export class ContextComponent implements OnInit {
         .map(term => this.filterPair(term, this.contextService.uoPairs, 'uo')
         .slice(0, 10));
 
+    searchcdr = (text$: Observable<string>) =>
+        text$
+        .debounceTime(200)
+        .map(term => this.filterPair(term, this.contextService.cdrPairs, 'cdr')
+        .slice(0, 10));
+
     formatter = (pair: Pair) => pair.first + ' - ' + pair.second;
     formatterFirst = (pair: Pair) => pair.first;
 
@@ -78,6 +72,7 @@ export class ContextComponent implements OnInit {
                 }
             });
     }
+
     onSelectUo = (item: Pair) => {
         this.contextService
             .getCds(item ? item.first : '')
@@ -85,6 +80,14 @@ export class ContextComponent implements OnInit {
                 this.contextService.cdsPairs = cds;
                 if (cds.length === 1) {
                     this.contextService.cdsModel = cds[0];
+                }
+            });
+        this.contextService
+            .getCdr(item ? item.first : '')
+            .subscribe(cdr =>  {
+                this.contextService.cdrPairs = cdr;
+                if (cdr.length === 1) {
+                    this.contextService.cdrModel = cdr[0];
                 }
             });
     }
@@ -101,20 +104,23 @@ export class ContextComponent implements OnInit {
                 this.principal.getAccount().esercizio,
                 this.contextService.cdsModel.first,
                 this.contextService.uoModel.first,
-                this.principal.getAccount().cdr
+                this.contextService.cdrModel.first
             );
         this.contextService
             .saveUserContext(userContext)
             .subscribe(identity => this.principal.authenticate(identity));
        this.localStateStorageService.storeUserContext(userContext);
-   }
+    }
+    isAuthenticated() {
+        return this.principal.isAuthenticated();
+    }
 
-   getCodiceCdS(): string {
-       return this.contextService.cdsModel !== undefined ? this.contextService.cdsModel.first : '';
-   }
+    getCodiceCdS(): string {
+        return this.contextService.cdsModel !== undefined ? this.contextService.cdsModel.first : '';
+    }
 
-   getCodiceUo(): string {
-       return this.contextService.uoModel !== undefined ? this.contextService.uoModel.first : '';
-   }
+    getCodiceUo(): string {
+        return this.contextService.uoModel !== undefined ? this.contextService.uoModel.first : '';
+    }
 
 }

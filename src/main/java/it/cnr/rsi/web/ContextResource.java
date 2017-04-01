@@ -31,7 +31,7 @@ public class ContextResource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContextResource.class);
 
-    public static final String API_ESERCIZIO = "/esercizio", API_UO = "/uo", API_CDS = "/cds";
+    public static final String API_ESERCIZIO = "/esercizio", API_UO = "/uo", API_CDS = "/cds", API_CDR = "/cdr";
 
     private EsercizioBaseService esercizioBaseService;
     private UnitaOrganizzativaService unitaOrganizzativaService;
@@ -68,6 +68,17 @@ public class ContextResource {
         	.listaCDSAbilitati(userDetails.getUsername(), userDetails.getEsercizio(), uo)
         	.stream()
         	.map(x -> Pair.of(x.getCdUnitaOrganizzativa(), x.getDsUnitaOrganizzativa()))
+        	.collect(Collectors.toList());
+	}
+
+    @GetMapping(API_CDR)
+    public List<Pair<String, String>> findCdr(String uo){
+    	UserContext userDetails = getUserDetails();
+        LOGGER.info("GET CDS for User: {}", userDetails.getUsername());
+        return unitaOrganizzativaService
+        	.listaCdr(userDetails.getUsername(), userDetails.getEsercizio(), uo)
+        	.stream()
+        	.map(x -> Pair.of(x.getCdCentroResponsabilita(), x.getDsCdr()))
         	.collect(Collectors.toList());
 	}
     
