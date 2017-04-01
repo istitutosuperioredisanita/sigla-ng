@@ -34,7 +34,6 @@ export class AuthExpiredInterceptor extends HttpInterceptor {
                     self.stateStorageService.storePreviousState(to.name, toParams);
                 }
                 this.router.navigate(['']);
-
             }
             return Observable.throw(error);
         });
