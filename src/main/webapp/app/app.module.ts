@@ -10,6 +10,7 @@ import { SiglaHomeModule } from './home/home.module';
 import { SiglaAdminModule } from './admin/admin.module';
 import { SiglaAccountModule } from './account/account.module';
 import { SiglaEntityModule } from './entities/entity.module';
+import { SiglaWorkspaceModule } from './workspace/workspace.module';
 
 import { LayoutRoutingModule } from './layouts';
 import { customHttpProvider } from './blocks/interceptor/http.provider';
@@ -35,7 +36,8 @@ import {
         SiglaHomeModule,
         SiglaAdminModule,
         SiglaAccountModule,
-        SiglaEntityModule
+        SiglaEntityModule,
+        SiglaWorkspaceModule
     ],
     declarations: [
         JhiMainComponent,

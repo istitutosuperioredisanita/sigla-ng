@@ -51,9 +51,7 @@ export class AuthService {
                             let toStateParamsInfo = this.stateStorageService.getDestinationState().params;
                             this.stateStorageService.storePreviousState(toStateInfo.name, toStateParamsInfo);
                             // now, send them to the signin state so they can log in
-                            this.router.navigate(['accessdenied']).then(() => {
-                                this.loginModalService.open();
-                            });
+                            this.router.navigate(['']);
                         }
                     }
                     return hasAnyAuthority;

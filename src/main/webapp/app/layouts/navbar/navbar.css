@@ -96,6 +96,9 @@ Logo styles
     padding: 17px
 }
 @media(min-width: 992px) {
+    .display-inherit {
+        display: inherit
+    }
     .dropdown-menu { 
         min-width: 80px; 
     }
