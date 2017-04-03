@@ -69,6 +69,7 @@ export class ContextComponent {
                 this.contextService.uoPairs = uo;
                 if (uo.length === 1) {
                     this.contextService.uoModel = uo[0];
+                    this.onSelectCdr(uo[0]);
                 }
             });
     }
@@ -82,13 +83,15 @@ export class ContextComponent {
                     this.contextService.cdsModel = cds[0];
                 }
             });
+        this.onSelectCdr(item);
+    }
+
+    onSelectCdr = (item: Pair) => {
         this.contextService
             .getCdr(item ? item.first : '')
             .subscribe(cdr =>  {
                 this.contextService.cdrPairs = cdr;
-                if (cdr.length === 1) {
-                    this.contextService.cdrModel = cdr[0];
-                }
+                this.contextService.cdrModel = cdr[0];
             });
     }
 
@@ -97,6 +100,7 @@ export class ContextComponent {
             .saveEsecizio(esercizio)
             .subscribe(identity => this.principal.authenticate(identity));
         this.localStateStorageService.storeEsercizio(esercizio);
+        this.router.navigate(['/workspace']);
     }
 
     saveContext(): void {
@@ -110,7 +114,7 @@ export class ContextComponent {
             .saveUserContext(userContext)
             .subscribe(identity => this.principal.authenticate(identity));
         this.localStateStorageService.storeUserContext(userContext);
-        this.router.navigate(['workspace']);
+        this.router.navigate(['/workspace']);
     }
 
     getCodiceCdS(): string {

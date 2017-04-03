@@ -63,12 +63,12 @@ public class AlberoMain implements Serializable {
 	private Accesso accesso;
 
 	//bi-directional many-to-one association to AlberoMain
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="CD_NODO_PADRE")
 	private AlberoMain alberoMain;
 
 	//bi-directional many-to-one association to AlberoMain
-	@OneToMany(mappedBy="alberoMain")
+	@OneToMany(mappedBy="alberoMain", fetch=FetchType.LAZY)
 	private List<AlberoMain> alberoMains;
 
 	public AlberoMain() {

@@ -1,1 +1,18 @@
-<span>TEST</span>
+<div class="row">
+    <div class="col-md-3">
+        <ngb-accordion>
+            <ngb-panel *ngFor="let leaf of maintree" [id]="leaf.id">
+                <template ngbPanelTitle>
+                    <span><i [class]="getIcon(leaf.id)" aria-hidden="true"></i></span>
+                    <span>{{getDescription(leaf)}}</span>
+                </template>
+                <template ngbPanelContent>
+                    <jhi-tree-leaf [leafs]="leafs" [parent]="leaf"></jhi-tree-leaf>
+                </template>
+            </ngb-panel>
+        </ngb-accordion>        
+    </div>
+    <div class="col-md-9">
+        <h1>MAPPA</h1>
+    </div>    
+</div>
