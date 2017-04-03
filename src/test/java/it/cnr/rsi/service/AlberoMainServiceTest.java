@@ -27,7 +27,7 @@ public class AlberoMainServiceTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(AlberoMainServiceTest.class);
     private static final String USER_ID = "MSPASIANO";
     private static final Integer ESERCIZIO = 2017;
-    private static final String UNITA_ORGANIZZATIVA = "999.000";
+    private static final String UNITA_ORGANIZZATIVA = "075.000";
 
     @Autowired
     private AlberoMainService alberoMainService;
