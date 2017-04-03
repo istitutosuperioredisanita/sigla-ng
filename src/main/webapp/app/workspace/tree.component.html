@@ -1,0 +1,11 @@
+<ngb-accordion>
+    <ngb-panel *ngFor="let leaf of maintree" [id]="leaf.id">
+        <template ngbPanelTitle>
+            <span><i [class]="getIcon(leaf.id)" aria-hidden="true"></i></span>
+            <span>{{getDescription(leaf)}}</span>
+        </template>
+        <template ngbPanelContent>
+            <jhi-tree-leaf [leafs]="leafs" [parent]="leaf"></jhi-tree-leaf>
+        </template>
+    </ngb-panel>
+</ngb-accordion>
