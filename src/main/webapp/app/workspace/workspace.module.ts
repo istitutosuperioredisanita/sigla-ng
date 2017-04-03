@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { SiglaSharedModule } from '../shared';
 
-import { WORKSPACE_ROUTE, WorkspaceComponent, WorkspaceService, TreeLeafComponent } from './';
+import { WORKSPACE_ROUTE, WorkspaceComponent, WorkspaceService, TreeComponent, TreeLeafComponent } from './';
 
 @NgModule({
     imports: [
@@ -12,6 +12,7 @@ import { WORKSPACE_ROUTE, WorkspaceComponent, WorkspaceService, TreeLeafComponen
     ],
     declarations: [
         WorkspaceComponent,
+        TreeComponent,
         TreeLeafComponent
     ],
     entryComponents: [
