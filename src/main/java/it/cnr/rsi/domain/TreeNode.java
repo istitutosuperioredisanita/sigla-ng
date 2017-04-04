@@ -11,11 +11,14 @@ public class TreeNode implements Serializable{
 	private String id;
     private String description;
     private String process;
+    private String breadcrumb;
+    
 
-    public TreeNode(String id, String description, String process) {
+    public TreeNode(String id, String description, String process, String breadcrumb) {
         this.id = id;
         this.description = description;
         this.process = process;
+        this.breadcrumb = breadcrumb;
     }
 
     public String getId() {
@@ -30,13 +33,17 @@ public class TreeNode implements Serializable{
         return process;
     }
 
+    public String getBreadcrumb() {
+		return breadcrumb;
+	}
 
-    @Override
+	@Override
     public String toString() {
         return "TreeNode{" +
                 "id='" + id + '\'' +
                 ", description='" + description + '\'' +
                 ", process='" + process + '\'' +
+                ", breadcrumb='" + breadcrumb + '\'' +
                 '}';
     }
 }

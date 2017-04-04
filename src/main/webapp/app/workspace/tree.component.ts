@@ -1,8 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { JhiLanguageService } from 'ng-jhipster';
 import { Principal } from '../shared';
 import { Leaf } from './leaf.model';
 import { WorkspaceService } from './workspace.service';
+import { Observable } from 'rxjs/Observable';
+import { TreeLeafComponent } from './tree-leaf.component';
+
 import { NgbAccordion, NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -13,6 +16,7 @@ import { NgbAccordion, NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
 export class TreeComponent implements OnInit {
     account: Account;
     leafs: Map<String, Leaf[]>;
+    alltree: Leaf[] = [];
     maintree: Leaf[];
     icons = {
         '0.SERV' : 'fa-cog',
@@ -25,16 +29,31 @@ export class TreeComponent implements OnInit {
         '0.CNS' : 'fa-gg-circle',
         '0.RIP' : 'fa-undo'
     };
+    @ViewChild('accordion') accordion: NgbAccordion;
+    @ViewChildren('child') child: QueryList<TreeLeafComponent>;
 
     constructor(
         private jhiLanguageService: JhiLanguageService,
         private workspaceService: WorkspaceService,
         private principal: Principal,
-        private accordion: NgbAccordion,
         private config: NgbAccordionConfig
     ) {
         this.jhiLanguageService.setLocations(['workspace']);
         this.config.closeOthers = true;
+    }
+
+    searchtree = (text$: Observable<string>) =>
+        text$
+        .debounceTime(200)
+        .map(term => this.alltree.filter(v => new RegExp(term, 'gi').test(v.breadcrumb))
+        .slice(0, 20));
+    formatter = (leaf: Leaf) => '';
+
+    onSelectLeaf = (leaf: Leaf) => {
+        this.accordion.toggle(leaf.id);
+        this.child.forEach(treeLeaf => {
+            treeLeaf.accordion.toggle(leaf.id);
+        });
     }
 
     ngOnInit() {
@@ -42,6 +61,11 @@ export class TreeComponent implements OnInit {
             leafs => {
                 this.leafs = leafs;
                 this.maintree = leafs['0'];
+                Object.keys(this.leafs).forEach(key => {
+                    this.leafs[key].forEach(leaf => {
+                        this.alltree.push(leaf);
+                    });
+                });
             }
         );
         this.principal.identity().then((account) => {
