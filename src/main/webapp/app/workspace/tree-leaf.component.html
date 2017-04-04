@@ -1,17 +1,17 @@
-<ngb-accordion (panelChange)="beforeChange($event)">
+<ngb-accordion (panelChange)="beforeChange($event)" #accordion>
     <div *ngFor="let child of getChildren(parent.id)">
-        <ngb-panel [id]="child.id" *ngIf="hasChildren(child.id)">
+        <ngb-panel [id]="child.id" *ngIf="hasChildren(child.id)" type="outline-info card-no-border">
             <template ngbPanelTitle>
-                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                <i [class]="chevronClass(child.id)" aria-hidden="true"></i>
                 <span>{{child.description}}</span>
             </template>
             <template ngbPanelContent>
                 <jhi-tree-leaf [leafs]="leafs" [parent]="child"></jhi-tree-leaf>
             </template>
         </ngb-panel>
-        <ngb-panel *ngIf="!hasChildren(child.id)">
+        <ngb-panel *ngIf="!hasChildren(child.id)" type="outline-info card-no-border">
             <template ngbPanelTitle>
-                <span>{{child.description}}</span>
+                <span (click)="attivaNodo(child.id)">{{child.description}}</span>
             </template>
         </ngb-panel>
     </div>
