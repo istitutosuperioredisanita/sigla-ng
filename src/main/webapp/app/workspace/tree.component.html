@@ -1,11 +1,28 @@
-<ngb-accordion>
-    <ngb-panel *ngFor="let leaf of maintree" [id]="leaf.id">
+<template #rt let-r="result" let-t="term">
+    <div>
+        <span>{{r.breadcrumb}}</span>
+    </div>
+</template>
+<div class="input-group">
+    <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>  
+    <input
+        [ngbTypeahead]="searchtree"
+        [resultTemplate]="rt" 
+        [inputFormatter]="formatter"
+        [resultFormatter]="formatter"
+        (selectItem)="onSelectLeaf($event.item)"
+        class="form-control"
+        placeholder="Cerca nel menu......"
+        id="search-tree"/>
+</div>
+<ngb-accordion #accordion>
+    <ngb-panel *ngFor="let leaf of maintree" [id]="leaf.id" type="outline-info card-no-border">
         <template ngbPanelTitle>
             <span><i [class]="getIcon(leaf.id)" aria-hidden="true"></i></span>
             <span>{{getDescription(leaf)}}</span>
         </template>
         <template ngbPanelContent>
-            <jhi-tree-leaf [leafs]="leafs" [parent]="leaf"></jhi-tree-leaf>
+            <jhi-tree-leaf [leafs]="leafs" [parent]="leaf" #child></jhi-tree-leaf>
         </template>
     </ngb-panel>
 </ngb-accordion>

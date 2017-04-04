@@ -1,8 +1,12 @@
 package it.cnr.rsi.domain;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -222,6 +226,17 @@ public class AlberoMain implements Serializable {
 		alberoMain.setAlberoMain(null);
 
 		return alberoMain;
+	}
+	
+	public String getBreadcrumb() {
+		List<String> breadcrumb = new ArrayList<String>();
+		AlberoMain nodo = this;
+		do {
+			breadcrumb.add(nodo.getDsNodo());
+			nodo = nodo.getAlberoMain();
+		} while (nodo != null && nodo.getAlberoMain() != null);
+		Collections.reverse(breadcrumb);
+		return String.join(" > ", breadcrumb);
 	}
 
 }
