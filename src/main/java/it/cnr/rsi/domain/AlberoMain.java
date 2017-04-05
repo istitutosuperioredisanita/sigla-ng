@@ -1,9 +1,9 @@
 package it.cnr.rsi.domain;
 
-import java.io.Serializable;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.persistence.*;
-
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * The persistent class for the ALBERO_MAIN database table.
- * 
+ *
  */
 @Entity
 @Table(name="ALBERO_MAIN")
@@ -227,16 +227,25 @@ public class AlberoMain implements Serializable {
 
 		return alberoMain;
 	}
-	
-	public String getBreadcrumb() {
-		List<String> breadcrumb = new ArrayList<String>();
+
+	public List<Pair<String, String>> getBreadcrumb() {
+		List<Pair<String, String>> breadcrumb = new ArrayList<>();
 		AlberoMain nodo = this;
+
 		do {
-			breadcrumb.add(nodo.getDsNodo());
+            Pair<String, String> p = Pair.of(nodo.getCdNodo(), nodo.getDsNodo());
+            breadcrumb.add(p);
+
+			nodo.getDsNodo();
+
 			nodo = nodo.getAlberoMain();
 		} while (nodo != null && nodo.getAlberoMain() != null);
+
 		Collections.reverse(breadcrumb);
-		return String.join(" > ", breadcrumb);
+
+		return breadcrumb;
+
+
 	}
 
 }

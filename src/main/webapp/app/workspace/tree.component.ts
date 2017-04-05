@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { TreeLeafComponent } from './tree-leaf.component';
 
 import { NgbAccordion, NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
+import * as _ from "lodash";
 
 @Component({
     selector: 'jhi-tree',
@@ -17,6 +18,7 @@ export class TreeComponent implements OnInit {
     account: Account;
     leafs: Map<String, Leaf[]>;
     alltree: Leaf[] = [];
+    leafz: Leaf[] = [];
     maintree: Leaf[];
     icons = {
         '0.SERV' : 'fa-cog',
@@ -44,9 +46,25 @@ export class TreeComponent implements OnInit {
 
     searchtree = (text$: Observable<string>) =>
         text$
-        .debounceTime(200)
-        .map(term => this.alltree.filter(v => new RegExp(term, 'gi').test(v.breadcrumb))
-        .slice(0, 20));
+        .debounceTime(50)
+        .map(term => {
+            const limit = 10;
+            var i = 0;
+            const regex = new RegExp(term.replace(/\s/g, '.*'), 'gi');
+
+            return this.leafz.filter(v => {
+                if (i > limit) {
+                    return false;
+                } else {
+                    const match = regex.test(v.breadcrumbS);
+                    if (match) {
+                        ++i;
+                    }
+                    return match;
+                }
+            });
+        });
+
     formatter = (leaf: Leaf) => '';
 
     onSelectLeaf = (leaf: Leaf) => {
@@ -61,11 +79,15 @@ export class TreeComponent implements OnInit {
             leafs => {
                 this.leafs = leafs;
                 this.maintree = leafs['0'];
-                Object.keys(this.leafs).forEach(key => {
-                    this.leafs[key].forEach(leaf => {
-                        this.alltree.push(leaf);
+
+                const nodes = _.flatten(_.values<Leaf>(this.leafs));
+                this.leafz = nodes
+                    .filter(node => node.process)
+                    .map(node => {
+                        node.breadcrumbS = node.breadcrumb.map(segment => _.values(segment)[0]).join(' > ');
+                        return node;
                     });
-                });
+                this.alltree = nodes;
             }
         );
         this.principal.identity().then((account) => {
