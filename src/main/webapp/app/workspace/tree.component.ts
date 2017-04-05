@@ -14,6 +14,7 @@ import { NgbAccordion, NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
     providers: [NgbAccordion, NgbAccordionConfig]
 })
 export class TreeComponent implements OnInit {
+    isRequesting: boolean;
     account: Account;
     leafs: Map<String, Leaf[]>;
     alltree: Leaf[] = [];
@@ -57,6 +58,7 @@ export class TreeComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.isRequesting = true;
         this.workspaceService.getTree().subscribe(
             leafs => {
                 this.leafs = leafs;
@@ -66,6 +68,7 @@ export class TreeComponent implements OnInit {
                         this.alltree.push(leaf);
                     });
                 });
+                this.stopRefreshing();
             }
         );
         this.principal.identity().then((account) => {
@@ -73,6 +76,9 @@ export class TreeComponent implements OnInit {
         });
     }
 
+    private stopRefreshing() {
+        this.isRequesting = false;
+    }
     getDescription = (leaf: Leaf) => {
         return leaf.description.toLocaleUpperCase();
     }

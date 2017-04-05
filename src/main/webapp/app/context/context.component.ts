@@ -100,7 +100,6 @@ export class ContextComponent {
             .saveEsecizio(esercizio)
             .subscribe(identity => this.principal.authenticate(identity));
         this.localStateStorageService.storeEsercizio(esercizio);
-        this.router.navigate(['/workspace']);
     }
 
     saveContext(): void {
