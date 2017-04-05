@@ -1,13 +1,13 @@
 <template #rt let-r="result" let-t="term">
     <div>
-        <span>{{r.breadcrumb}}</span>
+        <span>{{r.breadcrumbS}}</span>
     </div>
 </template>
 <div class="input-group">
     <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>  
     <input
         [ngbTypeahead]="searchtree"
-        [resultTemplate]="rt" 
+        [resultTemplate]="rt"
         [inputFormatter]="formatter"
         [resultFormatter]="formatter"
         (selectItem)="onSelectLeaf($event.item)"

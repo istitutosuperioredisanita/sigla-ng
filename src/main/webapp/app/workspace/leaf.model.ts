@@ -3,6 +3,7 @@ export class Leaf {
         public id: string,
         public description: string,
         public process: string,
-        public breadcrumb: string
+        public breadcrumb: [string, string][],
+        public breadcrumbS: string
     ) { }
 }
