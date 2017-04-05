@@ -9,13 +9,12 @@ import java.util.List;
  * Created by francesco on 14/03/17.
  */
 public class TreeNode implements Serializable{
+    private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-	private String id;
+    private String id;
     private String description;
     private String process;
     private List<Pair<String, String>> breadcrumb;
-
     public TreeNode(String id, String description, String process, List<Pair<String, String>> breadcrumb) {
         this.id = id;
         this.description = description;
@@ -37,6 +36,16 @@ public class TreeNode implements Serializable{
 
     public String getProcess() {
         return process;
+    }
+
+    @Override
+    public String toString() {
+        return "TreeNode{" +
+            "id='" + id + '\'' +
+            ", description='" + description + '\'' +
+            ", process='" + process + '\'' +
+            ", breadcrumb=" + breadcrumb +
+            '}';
     }
 
 }
