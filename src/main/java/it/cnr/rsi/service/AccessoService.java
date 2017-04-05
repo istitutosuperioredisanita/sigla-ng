@@ -1,14 +1,18 @@
 package it.cnr.rsi.service;
 
+import it.cnr.rsi.domain.Utente;
 import it.cnr.rsi.repository.RuoloAccessoRepository;
+import it.cnr.rsi.repository.UtenteRepository;
 import it.cnr.rsi.repository.UtenteUnitaAccessoRepository;
 import it.cnr.rsi.repository.UtenteUnitaRuoloRepository;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,19 +30,25 @@ public class AccessoService {
     private UtenteUnitaAccessoRepository utenteUnitaAccessoRepository;
     private UtenteUnitaRuoloRepository utenteUnitaRuoloRepository;
     private RuoloAccessoRepository ruoloAccessoRepository;
+	private UtenteRepository utenteRepository;
 
     public AccessoService(UtenteUnitaAccessoRepository utenteUnitaAccessoRepository,
-    		UtenteUnitaRuoloRepository utenteUnitaRuoloRepository, RuoloAccessoRepository ruoloAccessoRepository) {
+    		UtenteUnitaRuoloRepository utenteUnitaRuoloRepository, RuoloAccessoRepository ruoloAccessoRepository, UtenteRepository utenteRepository) {
         this.utenteUnitaAccessoRepository = utenteUnitaAccessoRepository;
         this.utenteUnitaRuoloRepository = utenteUnitaRuoloRepository;
         this.ruoloAccessoRepository = ruoloAccessoRepository;
+        this.utenteRepository = utenteRepository;
     }
 
     @Cacheable(value="accessi", key="{#userId, #esercizio, #unitaOrganizzativa}")
     @Transactional
     public List<String> accessi(String userId, Integer esercizio, String unitaOrganizzativa) {
     	LOGGER.info("Accessi for User: {} esercizio {} and Unita Organizzativa: {}", userId, esercizio, unitaOrganizzativa);
+		Utente utente = utenteRepository.findOne(userId);    	
     	List<String> findRuoliByCdUtente = utenteUnitaRuoloRepository.findRuoliByCdUtente(userId, unitaOrganizzativa).collect(Collectors.toList());
+    	if (utente.isUtenteSupervisore()) {
+    		findRuoliByCdUtente.add(utente.getCdRuoloSupervisore());
+    	}
     	return Stream.concat(
     			utenteUnitaAccessoRepository.findAccessiByCdUtente(userId, esercizio, unitaOrganizzativa),
     	    	Optional.ofNullable(findRuoliByCdUtente).filter(x -> !x.isEmpty()).map(x -> ruoloAccessoRepository.findAccessiByRuoli(esercizio, x)).orElse(Stream.empty())
