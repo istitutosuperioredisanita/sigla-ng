@@ -15,6 +15,7 @@
         placeholder="Cerca nel menu......"
         id="search-tree"/>
 </div>
+<i *ngIf="isRequesting" class="fa fa-spinner fa-spin fa-2x"></i>
 <ngb-accordion #accordion>
     <ngb-panel *ngFor="let leaf of maintree" [id]="leaf.id" type="outline-info card-no-border">
         <template ngbPanelTitle>
