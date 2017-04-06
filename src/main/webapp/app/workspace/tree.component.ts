@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { TreeLeafComponent } from './tree-leaf.component';
 
 import { NgbAccordion, NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
-import * as _ from "lodash";
+import * as _ from 'lodash';
 
 @Component({
     selector: 'jhi-tree',
@@ -50,7 +50,7 @@ export class TreeComponent implements OnInit {
         .debounceTime(50)
         .map(term => {
             const limit = 10;
-            var i = 0;
+            let i = 0;
             const regex = new RegExp(term.replace(/\s/g, '.*'), 'gi');
 
             return this.leafz.filter(v => {
@@ -64,14 +64,21 @@ export class TreeComponent implements OnInit {
                     return match;
                 }
             });
-        });
+        })
 
     formatter = (leaf: Leaf) => '';
 
     onSelectLeaf = (leaf: Leaf) => {
-        this.accordion.toggle(leaf.id);
-        this.child.forEach(treeLeaf => {
-            treeLeaf.accordion.toggle(leaf.id);
+        leaf.breadcrumb.map(segment => {
+            let leafId = _.keys(segment)[0];
+            if (this.accordion.activeIds.indexOf(leafId) === -1) {
+                this.accordion.toggle(leafId);
+            }
+            this.child.forEach(treeLeaf => {
+                if (treeLeaf.accordion.activeIds.indexOf(leafId) === -1) {
+                    treeLeaf.accordion.toggle(leafId);
+                }
+            });
         });
     }
 
