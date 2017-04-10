@@ -9,6 +9,13 @@ import { TreeLeafComponent } from './tree-leaf.component';
 import { NgbAccordion, NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 
+export class TreeNode {
+    id: String;
+    name: String;
+    children:  TreeNode[]
+
+}
+
 @Component({
     selector: 'jhi-tree',
     templateUrl: './tree.component.html',
@@ -21,6 +28,7 @@ export class TreeComponent implements OnInit {
     alltree: Leaf[] = [];
     leafz: Leaf[] = [];
     maintree: Leaf[];
+    nodes = [];
     icons = {
         '0.SERV' : 'fa-cog',
         '0.CFG' : 'fa-cogs',
@@ -97,11 +105,24 @@ export class TreeComponent implements OnInit {
                         return node;
                     });
                 this.alltree = nodes;
+
+                this.nodes = this.getChildNodes('0');
+
                 this.stopRefreshing();
             }
         );
         this.principal.identity().then((account) => {
             this.account = account;
+        });
+    }
+
+    private getChildNodes(id) : TreeNode[] {
+        return _.map(this.leafs[id], (node: Leaf, id) => {
+            return {
+                id: node.id,
+                name: node.description,
+                children: this.getChildNodes(node.id)
+            };
         });
     }
 
