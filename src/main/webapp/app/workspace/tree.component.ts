@@ -4,30 +4,25 @@ import { Principal } from '../shared';
 import { Leaf } from './leaf.model';
 import { WorkspaceService } from './workspace.service';
 import { Observable } from 'rxjs/Observable';
-import { TreeLeafComponent } from './tree-leaf.component';
-
-import { NgbAccordion, NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
+import { TreeComponent, TreeNode } from 'angular-tree-component';
 import * as _ from 'lodash';
 
-export class TreeNode {
+export class SIGLATreeNode {
     id: String;
     name: String;
-    children:  TreeNode[]
-
+    children:  SIGLATreeNode[];
 }
 
 @Component({
     selector: 'jhi-tree',
     templateUrl: './tree.component.html',
-    providers: [NgbAccordion, NgbAccordionConfig]
+    styles: ['.node-wrapper {color: #0066CC;}']
 })
-export class TreeComponent implements OnInit {
+export class SIGLATreeComponent implements OnInit {
     isRequesting: boolean;
     account: Account;
     leafs: Map<String, Leaf[]>;
-    alltree: Leaf[] = [];
     leafz: Leaf[] = [];
-    maintree: Leaf[];
     nodes = [];
     icons = {
         '0.SERV' : 'fa-cog',
@@ -40,17 +35,14 @@ export class TreeComponent implements OnInit {
         '0.CNS' : 'fa-gg-circle',
         '0.RIP' : 'fa-undo'
     };
-    @ViewChild('accordion') accordion: NgbAccordion;
-    @ViewChildren('child') child: QueryList<TreeLeafComponent>;
+    @ViewChild(TreeComponent) tree: TreeComponent;
 
     constructor(
         private jhiLanguageService: JhiLanguageService,
         private workspaceService: WorkspaceService,
-        private principal: Principal,
-        private config: NgbAccordionConfig
+        private principal: Principal
     ) {
         this.jhiLanguageService.setLocations(['workspace']);
-        this.config.closeOthers = true;
     }
 
     searchtree = (text$: Observable<string>) =>
@@ -79,14 +71,9 @@ export class TreeComponent implements OnInit {
     onSelectLeaf = (leaf: Leaf) => {
         leaf.breadcrumb.map(segment => {
             let leafId = _.keys(segment)[0];
-            if (this.accordion.activeIds.indexOf(leafId) === -1) {
-                this.accordion.toggle(leafId);
-            }
-            this.child.forEach(treeLeaf => {
-                if (treeLeaf.accordion.activeIds.indexOf(leafId) === -1) {
-                    treeLeaf.accordion.toggle(leafId);
-                }
-            });
+            let node = this.tree.treeModel.getNodeById(leafId);
+            this.tree.treeModel.setFocusedNode(node);
+            this.tree.treeModel.focusDrillDown();
         });
     }
 
@@ -95,8 +82,6 @@ export class TreeComponent implements OnInit {
         this.workspaceService.getTree().subscribe(
             leafs => {
                 this.leafs = leafs;
-                this.maintree = leafs['0'];
-
                 const nodes = _.flatten(_.values<Leaf>(this.leafs));
                 this.leafz = nodes
                     .filter(node => node.process)
@@ -104,10 +89,7 @@ export class TreeComponent implements OnInit {
                         node.breadcrumbS = node.breadcrumb.map(segment => _.values(segment)[0]).join(' > ');
                         return node;
                     });
-                this.alltree = nodes;
-
                 this.nodes = this.getChildNodes('0');
-
                 this.stopRefreshing();
             }
         );
@@ -116,8 +98,8 @@ export class TreeComponent implements OnInit {
         });
     }
 
-    private getChildNodes(id) : TreeNode[] {
-        return _.map(this.leafs[id], (node: Leaf, id) => {
+    private getChildNodes(id): SIGLATreeNode[] {
+        return _.map(this.leafs[id], (node: Leaf) => {
             return {
                 id: node.id,
                 name: node.description,
@@ -128,9 +110,6 @@ export class TreeComponent implements OnInit {
 
     private stopRefreshing() {
         this.isRequesting = false;
-    }
-    getDescription = (leaf: Leaf) => {
-        return leaf.description.toLocaleUpperCase();
     }
 
     getIcon = (id: string) => {

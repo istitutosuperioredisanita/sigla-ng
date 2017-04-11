@@ -196,14 +196,3 @@ ui bootstrap tweaks
 }
 
 /* jhipster-needle-css-add-main JHipster will add new css style */
-.card-no-border, #tree .card, #tree .card-block {
-    border: none!important;
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
-}
-.card-no-border > a {
-    text-decoration: none !important;
-}
-.card-no-border > a:hover {
-    color:#1c2024;
-}
