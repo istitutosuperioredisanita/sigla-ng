@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ViewChildren, QueryList, enableProdMode } from '@angular/core';
 import { JhiLanguageService } from 'ng-jhipster';
 import { Principal } from '../shared';
 import { Leaf } from './leaf.model';
@@ -6,11 +6,14 @@ import { WorkspaceService } from './workspace.service';
 import { Observable } from 'rxjs/Observable';
 import { TreeComponent, TreeNode } from 'angular-tree-component';
 import * as _ from 'lodash';
+import { TREE_ACTIONS, KEYS, IActionMapping } from 'angular-tree-component';
+
+enableProdMode();
 
 export class SIGLATreeNode {
     id: String;
     name: String;
-    children:  SIGLATreeNode[];
+    children:  TreeNode[];
 }
 
 @Component({
@@ -24,6 +27,19 @@ export class SIGLATreeComponent implements OnInit {
     leafs: Map<String, Leaf[]>;
     leafz: Leaf[] = [];
     nodes = [];
+    options = {
+        actionMapping: {
+            mouse: {
+                click: null,
+                dblclick: null,
+                contextmenu: null
+            },
+            keys: {
+            }
+        },
+        allowDrop: false,
+        getChildren: (node: TreeNode) => this.getChildNodes(node.id)
+    };
     icons = {
         '0.SERV' : 'fa-cog',
         '0.CFG' : 'fa-cogs',
@@ -78,6 +94,7 @@ export class SIGLATreeComponent implements OnInit {
     }
 
     ngOnInit() {
+
         this.isRequesting = true;
         this.workspaceService.getTree().subscribe(
             leafs => {
@@ -102,8 +119,9 @@ export class SIGLATreeComponent implements OnInit {
         return _.map(this.leafs[id], (node: Leaf) => {
             return {
                 id: node.id,
+                hasChildren: this.leafs[node.id],
                 name: node.description,
-                children: this.getChildNodes(node.id)
+                children: null // this.getChildNodes(node.id)
             };
         });
     }
