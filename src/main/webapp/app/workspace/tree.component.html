@@ -16,7 +16,7 @@
         id="search-tree"/>
 </div>
 <i *ngIf="isRequesting" class="fa fa-spinner fa-spin fa-2x"></i>
-<tree-root [nodes]="nodes">
+<tree-root [nodes]="nodes" [options]="options">
     <template #treeNodeFullTemplate
             let-node="node"
             let-index="index"
