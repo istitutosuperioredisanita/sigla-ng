@@ -40,7 +40,6 @@ export class TreeComponent implements OnInit {
                 contextmenu: null
             },
             keys: {
-                [KEYS.ENTER]: (tree, node, $event) => alert(`This is ${node.data.name}`)
             }
         },
         allowDrop: false,
