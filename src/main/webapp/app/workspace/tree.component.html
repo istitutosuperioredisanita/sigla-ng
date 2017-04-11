@@ -16,18 +16,35 @@
         id="search-tree"/>
 </div>
 <i *ngIf="isRequesting" class="fa fa-spinner fa-spin fa-2x"></i>
-<ngb-accordion #accordion>
-    <ngb-panel *ngFor="let leaf of maintree" [id]="leaf.id" type="outline-info card-no-border">
-        <template ngbPanelTitle>
-            <span><i [class]="getIcon(leaf.id)" aria-hidden="true"></i></span>
-            <span>{{getDescription(leaf)}}</span>
-        </template>
-        <template ngbPanelContent>
-            <jhi-tree-leaf [leafs]="leafs" [parent]="leaf" #child></jhi-tree-leaf>
-        </template>
-    </ngb-panel>
-</ngb-accordion>
+<tree-root [nodes]="nodes">
+    <template #treeNodeFullTemplate
+            let-node="node"
+            let-index="index"
+            let-templates="templates">
+        <div
+            class="tree-node tree-node-level-{{ node.level }}"
+            [class]="node.getClass()"
+            [class.tree-node-expanded]="node.isExpanded && node.hasChildren"
+            [class.tree-node-collapsed]="node.isCollapsed && node.hasChildren"
+            [class.tree-node-leaf]="node.isLeaf"
+            [class.tree-node-active]="node.isActive"
+            [class.tree-node-focused]="node.isFocused">
 
-
-
-<tree-root [nodes]="nodes"></tree-root>
+            <div class="node-wrapper" [style.padding-left]="node.getNodePadding()">
+                <span *ngIf="!node.isLeaf">
+                    <i *ngIf="!node.isExpanded && node.level !== 1" class="fa fa-caret-right" aria-hidden="true" (click)="node.toggleExpanded()"></i>
+                    <i *ngIf="node.isExpanded  && node.level !== 1" class="fa fa-caret-down" aria-hidden="true" (click)="node.toggleExpanded()"></i>
+                    <i *ngIf="node.level == 1" [class]="getIcon(node.id)" aria-hidden="true" (click)="node.toggleExpanded()"></i>
+                </span>
+                <div class="node-content-wrapper"
+                    (click)="node.mouseAction('click', $event)"
+                    (dblclick)="node.toggleExpanded()">
+                    <span *ngIf="node.level == 1">{{node.data.name.toLocaleUpperCase()}}</span>
+                    <span *ngIf="node.level !== 1">{{node.data.name}}</span>                    
+                </div>
+            </div>
+            <tree-node-children [node]="node" [templates]="templates">
+            </tree-node-children>
+        </div>
+    </template>
+</tree-root>
