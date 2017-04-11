@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ViewChildren, QueryList, enableProdMode } from '@angular/core';
 import { JhiLanguageService } from 'ng-jhipster';
 import { Principal } from '../shared';
 import { Leaf } from './leaf.model';
@@ -9,11 +9,14 @@ import { TreeLeafComponent } from './tree-leaf.component';
 import { NgbAccordion, NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 
+import { TREE_ACTIONS, KEYS, IActionMapping } from 'angular-tree-component';
+
+enableProdMode();
+
 export class TreeNode {
     id: String;
     name: String;
-    children:  TreeNode[]
-
+    children:  TreeNode[];
 }
 
 @Component({
@@ -29,6 +32,20 @@ export class TreeComponent implements OnInit {
     leafz: Leaf[] = [];
     maintree: Leaf[];
     nodes = [];
+    options = {
+        actionMapping: {
+            mouse: {
+                click: null,
+                dblclick: null,
+                contextmenu: null
+            },
+            keys: {
+                [KEYS.ENTER]: (tree, node, $event) => alert(`This is ${node.data.name}`)
+            }
+        },
+        allowDrop: false,
+        getChildren: (node: TreeNode) => this.getChildNodes(node.id)
+    };
     icons = {
         '0.SERV' : 'fa-cog',
         '0.CFG' : 'fa-cogs',
@@ -91,6 +108,7 @@ export class TreeComponent implements OnInit {
     }
 
     ngOnInit() {
+
         this.isRequesting = true;
         this.workspaceService.getTree().subscribe(
             leafs => {
@@ -116,12 +134,13 @@ export class TreeComponent implements OnInit {
         });
     }
 
-    private getChildNodes(id) : TreeNode[] {
-        return _.map(this.leafs[id], (node: Leaf, id) => {
+    private getChildNodes(id): TreeNode[] {
+        return _.map(this.leafs[id], (node: Leaf) => {
             return {
                 id: node.id,
+                hasChildren: this.leafs[node.id],
                 name: node.description,
-                children: this.getChildNodes(node.id)
+                children: null // this.getChildNodes(node.id)
             };
         });
     }
