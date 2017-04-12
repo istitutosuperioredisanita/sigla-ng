@@ -1,8 +1,6 @@
 <div class="row">
     <div class="col-md-3">
-        <jhi-tree id="tree"></jhi-tree>       
+        <jhi-tree id="tree" (notify)='onNotify($event)'></jhi-tree>       
     </div>
-    <div class="col-md-9">
-        <h1>MAPPA</h1>
-    </div>    
+    <div class="col-md-9 e2e-trusted-url" [innerHTML]="desktop"></div>    
 </div>
