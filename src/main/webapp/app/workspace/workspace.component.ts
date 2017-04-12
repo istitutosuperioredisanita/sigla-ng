@@ -1,6 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { JhiLanguageService } from 'ng-jhipster';
 import { Principal } from '../shared';
+import { Observable } from 'rxjs/Rx';
+import { WorkspaceService } from './workspace.service';
+import { DomSanitizer, SafeResourceUrl, SafeUrl, SafeHtml} from '@angular/platform-browser';
 
 @Component({
     selector: 'jhi-workspace',
@@ -8,10 +11,13 @@ import { Principal } from '../shared';
 })
 export class WorkspaceComponent implements OnInit {
     account: Account;
+    desktop: SafeHtml;
 
     constructor(
         private jhiLanguageService: JhiLanguageService,
-        private principal: Principal
+        private principal: Principal,
+        private workspaceService: WorkspaceService,
+        private _sanitizer: DomSanitizer
     ) {
         this.jhiLanguageService.setLocations(['workspace']);
     }
@@ -22,4 +28,9 @@ export class WorkspaceComponent implements OnInit {
         });
     }
 
+    onNotify(nodoid: string): void {
+        this.workspaceService.invoke(nodoid).subscribe(html =>
+            this.desktop = this._sanitizer.bypassSecurityTrustHtml(html)
+        );
+    }
 }
