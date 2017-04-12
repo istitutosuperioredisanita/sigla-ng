@@ -1,25 +1,23 @@
-import { Component, OnInit, Input, ViewChild, ViewChildren, QueryList, enableProdMode } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ContentChild, Output, EventEmitter } from '@angular/core';
 import { JhiLanguageService } from 'ng-jhipster';
 import { Principal } from '../shared';
 import { Leaf } from './leaf.model';
 import { WorkspaceService } from './workspace.service';
 import { Observable } from 'rxjs/Observable';
 import { TreeComponent, TreeNode } from 'angular-tree-component';
+import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
-import { TREE_ACTIONS, KEYS, IActionMapping } from 'angular-tree-component';
-
-enableProdMode();
 
 export class SIGLATreeNode {
     id: String;
     name: String;
-    children:  TreeNode[];
+    children:  SIGLATreeNode[];
 }
 
 @Component({
     selector: 'jhi-tree',
     templateUrl: './tree.component.html',
-    styles: ['.node-wrapper {color: #0066CC;}']
+    styles: ['.node-wrapper, .fa-spinner {color: #0066CC;} .search-typehead {margin-bottom: 15px}']
 })
 export class SIGLATreeComponent implements OnInit {
     isRequesting: boolean;
@@ -27,19 +25,6 @@ export class SIGLATreeComponent implements OnInit {
     leafs: Map<String, Leaf[]>;
     leafz: Leaf[] = [];
     nodes = [];
-    options = {
-        actionMapping: {
-            mouse: {
-                click: null,
-                dblclick: null,
-                contextmenu: null
-            },
-            keys: {
-            }
-        },
-        allowDrop: false,
-        getChildren: (node: TreeNode) => this.getChildNodes(node.id)
-    };
     icons = {
         '0.SERV' : 'fa-cog',
         '0.CFG' : 'fa-cogs',
@@ -52,6 +37,8 @@ export class SIGLATreeComponent implements OnInit {
         '0.RIP' : 'fa-undo'
     };
     @ViewChild(TreeComponent) tree: TreeComponent;
+    @ViewChild(NgbTypeahead) inputTypeahead: NgbTypeahead;
+    @Output() notify: EventEmitter<string> = new EventEmitter<string>();
 
     constructor(
         private jhiLanguageService: JhiLanguageService,
@@ -90,11 +77,13 @@ export class SIGLATreeComponent implements OnInit {
             let node = this.tree.treeModel.getNodeById(leafId);
             this.tree.treeModel.setFocusedNode(node);
             this.tree.treeModel.focusDrillDown();
+            if (node.isLeaf) {
+                this.activateTreeNode(node, null);
+            }
         });
     }
 
     ngOnInit() {
-
         this.isRequesting = true;
         this.workspaceService.getTree().subscribe(
             leafs => {
@@ -121,7 +110,7 @@ export class SIGLATreeComponent implements OnInit {
                 id: node.id,
                 hasChildren: this.leafs[node.id],
                 name: node.description,
-                children: null // this.getChildNodes(node.id)
+                children: this.getChildNodes(node.id)
             };
         });
     }
@@ -134,8 +123,12 @@ export class SIGLATreeComponent implements OnInit {
         return 'fa ' + (this.icons[id] || '') + ' fa-fw';
     }
 
-    getChildren = (id: string) => {
-        return this.leafs[id];
+    activateTreeNode = (node: TreeNode, $event: any) => {
+        if (node.isLeaf) {
+            console.log('ATTIVO MAPPA: ' + node.data.id);
+            this.notify.emit(node.data.id);
+        } else {
+            node.mouseAction('click', $event);
+        }
     }
-
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Response, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { Leaf } from './leaf.model';
 
@@ -13,6 +13,12 @@ export class WorkspaceService {
 
     getTree(): Observable<Map<String, Leaf[]>> {
         return this.http.get(this.resourceUrl).map((res: Response) => res.json());
+    }
+
+    invoke(nodoid: string): Observable<string> {
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('nodoid', nodoid);
+        return this.http.get('api/sigla/invoke', {search: params}).map((res: Response) => res.text());
     }
 
 }
