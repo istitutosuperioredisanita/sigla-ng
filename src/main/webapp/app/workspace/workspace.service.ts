@@ -18,7 +18,6 @@ export class WorkspaceService {
     invoke(nodoid: string): Observable<string> {
         let params: URLSearchParams = new URLSearchParams();
         params.set('comando', 'doSelezionaMenu(' + nodoid + ')');
-        
         return this.http.get('/SIGLA/GestioneMenu.do', {
            search: params
         }).map((res: Response) => res.text());
