@@ -22,6 +22,18 @@ export class AuthServerProvider {
         });
     }
 
+    loginWildfly (credentials): Observable<any> {
+        let data = 'main.userid=' + encodeURIComponent(credentials.username) +
+            '&main.password=' + encodeURIComponent(credentials.password) +
+            '&comando=doEntra';
+        let headers = new Headers ({
+            'Content-Type': 'application/x-www-form-urlencoded'
+        });
+        return this.http.post('/SIGLA/Login.do', data, {
+            headers: headers
+        });
+    }
+
     logout (): Observable<any> {
         // logout from the server
         return this.http.post('api/logout', {}).map((response: Response) => {
