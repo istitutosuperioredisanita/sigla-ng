@@ -1,11 +1,10 @@
-import { Component, OnInit, Input, ViewChild, ContentChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, EventEmitter, Output } from '@angular/core';
 import { JhiLanguageService } from 'ng-jhipster';
 import { Principal } from '../shared';
 import { Leaf } from './leaf.model';
 import { WorkspaceService } from './workspace.service';
 import { Observable } from 'rxjs/Observable';
 import { TreeComponent, TreeNode } from 'angular-tree-component';
-import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 
 export class SIGLATreeNode {
@@ -17,7 +16,7 @@ export class SIGLATreeNode {
 @Component({
     selector: 'jhi-tree',
     templateUrl: './tree.component.html',
-    styles: ['.node-wrapper, .fa-spinner {color: #0066CC;} .search-typehead {margin-bottom: 15px}']
+    styles: ['.node-wrapper {color: #0066CC;}']
 })
 export class SIGLATreeComponent implements OnInit {
     isRequesting: boolean;
@@ -37,8 +36,7 @@ export class SIGLATreeComponent implements OnInit {
         '0.RIP' : 'fa-undo'
     };
     @ViewChild(TreeComponent) tree: TreeComponent;
-    @ViewChild(NgbTypeahead) inputTypeahead: NgbTypeahead;
-    @Output() notify: EventEmitter<string> = new EventEmitter<string>();
+    @Output() activateLeaf = new EventEmitter();
 
     constructor(
         private jhiLanguageService: JhiLanguageService,
@@ -77,9 +75,6 @@ export class SIGLATreeComponent implements OnInit {
             let node = this.tree.treeModel.getNodeById(leafId);
             this.tree.treeModel.setFocusedNode(node);
             this.tree.treeModel.focusDrillDown();
-            if (node.isLeaf) {
-                this.activateTreeNode(node, null);
-            }
         });
     }
 
@@ -123,12 +118,15 @@ export class SIGLATreeComponent implements OnInit {
         return 'fa ' + (this.icons[id] || '') + ' fa-fw';
     }
 
-    activateTreeNode = (node: TreeNode, $event: any) => {
+    getChildren = (id: string) => {
+        return this.leafs[id];
+    }
+
+    activateTreeNode = (node: TreeNode) => {
         if (node.isLeaf) {
-            console.log('ATTIVO MAPPA: ' + node.data.id);
-            this.notify.emit(node.data.id);
+            this.activateLeaf.emit(node.id);
         } else {
-            node.mouseAction('click', $event);
+            node.toggleExpanded();
         }
     }
 }

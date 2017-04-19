@@ -29,7 +29,16 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
             ],
             target: 'http://127.0.0.1:8080',
             secure: false
-        }]
+        },
+        {
+            context: [
+                <!-- jhipster-needle-add-entity-to-webpack - JHipster will add entity api paths here -->
+                '/SIGLA'
+            ],
+            target: 'http://127.0.0.1:8180',
+            secure: false
+        }
+        ]
     },
     output: {
         path: path.resolve('target/www'),
