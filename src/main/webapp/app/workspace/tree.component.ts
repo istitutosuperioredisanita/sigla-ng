@@ -74,7 +74,7 @@ export class SIGLATreeComponent implements OnInit {
             let leafId = _.keys(segment)[0];
             let node = this.tree.treeModel.getNodeById(leafId);
             this.tree.treeModel.setFocusedNode(node);
-            this.tree.treeModel.focusDrillDown();
+            this.activateTreeNode(this.tree.treeModel.getFocusedNode());
         });
     }
 

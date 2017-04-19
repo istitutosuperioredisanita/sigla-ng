@@ -98,8 +98,11 @@ export class ContextComponent {
     setEsercizio(esercizio: number): void {
         this.contextService
             .saveEsecizio(esercizio)
-            .subscribe(identity => this.principal.authenticate(identity));
-        this.localStateStorageService.storeEsercizio(esercizio);
+            .subscribe(identity => {
+                this.principal.authenticate(identity);
+                this.contextService.saveWildflyEsercizio(esercizio).subscribe();
+                this.localStateStorageService.storeEsercizio(esercizio);
+            });
     }
 
     saveContext(): void {
@@ -111,8 +114,11 @@ export class ContextComponent {
             );
         this.contextService
             .saveUserContext(userContext)
-            .subscribe(identity => this.principal.authenticate(identity));
-        this.localStateStorageService.storeUserContext(userContext);
+            .subscribe(identity => {
+                this.principal.authenticate(identity);
+                this.contextService.saveWildflyUserContext(userContext).subscribe();
+                this.localStateStorageService.storeUserContext(userContext);
+            });
         this.router.navigate(['/workspace']);
     }
 
