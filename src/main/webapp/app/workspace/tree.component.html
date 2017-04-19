@@ -39,7 +39,7 @@
                     <i *ngIf="node.level == 1" [class]="getIcon(node.id)" aria-hidden="true" (click)="node.toggleExpanded()"></i>
                 </span>
                 <div class="node-content-wrapper"
-                    (click)="activateTreeNode(node,$event)"
+                    (click)="activateTreeNode(node)"
                     (dblclick)="node.toggleExpanded()">
                     <span *ngIf="node.level == 1">{{node.data.name.toLocaleUpperCase()}}</span>
                     <span *ngIf="node.level !== 1">{{node.data.name}}</span>                    
