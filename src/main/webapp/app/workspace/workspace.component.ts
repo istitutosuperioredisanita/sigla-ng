@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, Renderer } from '@angular/core';
 import { JhiLanguageService } from 'ng-jhipster';
 import { Principal } from '../shared';
 import { Observable } from 'rxjs/Rx';
@@ -17,9 +17,19 @@ export class WorkspaceComponent implements OnInit {
         private jhiLanguageService: JhiLanguageService,
         private principal: Principal,
         private workspaceService: WorkspaceService,
-        private _sanitizer: DomSanitizer
+        private _sanitizer: DomSanitizer,
+        private elementRef: ElementRef,
+        private renderer: Renderer
     ) {
         this.jhiLanguageService.setLocations(['workspace']);
+        renderer.listen(elementRef.nativeElement, 'submit', (event) => {
+            this.workspaceService.postForm(event.target, new FormData(elementRef.nativeElement.querySelector('form')))
+                .subscribe(html => {
+                    this.desktop = this._sanitizer.bypassSecurityTrustHtml(html);
+                }
+            );
+            return false;
+        });
     }
 
     ngOnInit() {
@@ -29,7 +39,7 @@ export class WorkspaceComponent implements OnInit {
     }
 
     onNotify(nodoid: string): void {
-        this.workspaceService.invoke(nodoid).subscribe(html =>
+        this.workspaceService.openMenu(nodoid).subscribe(html =>
             this.desktop = this._sanitizer.bypassSecurityTrustHtml(html)
         );
     }

@@ -15,12 +15,16 @@ export class WorkspaceService {
         return this.http.get(this.resourceUrl).map((res: Response) => res.json());
     }
 
-    invoke(nodoid: string): Observable<string> {
+    openMenu(nodoid: string): Observable<string> {
         let params: URLSearchParams = new URLSearchParams();
         params.set('comando', 'doSelezionaMenu(' + nodoid + ')');
         return this.http.get('/SIGLA/GestioneMenu.do', {
            search: params
         }).map((res: Response) => res.text());
+    }
+
+    postForm(form: any, formData: FormData): Observable<string> {
+        return this.http.post('/SIGLA/' + form.action.replace(form.baseURI, ''), formData).map((res: Response) => res.text());
     }
 
 }
