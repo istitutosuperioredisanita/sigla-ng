@@ -22,14 +22,19 @@ export class WorkspaceComponent implements OnInit {
         private renderer: Renderer
     ) {
         this.jhiLanguageService.setLocations(['workspace']);
-        renderer.listenGlobal('body', 'submit', (event) => {
-            this.workspaceService.postForm(event.target, new FormData(elementRef.nativeElement.querySelector('form')))
+        renderer.listen(elementRef.nativeElement, 'submit', (event) => {
+            return false;
+        });
+        renderer.listenGlobal('body', 'submitForm', (event) => {
+            let form = elementRef.nativeElement.querySelector('form');
+            this.workspaceService.postForm(form)
                 .subscribe(html => {
                     this.desktop = this._sanitizer.bypassSecurityTrustHtml(html);
                 }
             );
             return false;
         });
+
     }
 
     ngOnInit() {
