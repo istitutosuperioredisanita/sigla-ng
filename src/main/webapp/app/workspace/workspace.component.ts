@@ -22,7 +22,7 @@ export class WorkspaceComponent implements OnInit {
         private renderer: Renderer
     ) {
         this.jhiLanguageService.setLocations(['workspace']);
-        renderer.listen(elementRef.nativeElement, 'submit', (event) => {
+        renderer.listenGlobal('body', 'submit', (event) => {
             this.workspaceService.postForm(event.target, new FormData(elementRef.nativeElement.querySelector('form')))
                 .subscribe(html => {
                     this.desktop = this._sanitizer.bypassSecurityTrustHtml(html);
