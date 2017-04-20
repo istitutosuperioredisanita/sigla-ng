@@ -24,5 +24,105 @@
         r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
         ga('create','UA-XXXXX-X');ga('send','pageview');
     </script>-->
+    <!-- SCRIPT per innerHtml-->
+    <script>
+        function submitForm(comando) {
+            document.mainForm.comando.value = comando;
+            document.mainForm.submit();
+        }
+        function disableDblClick() {
+            if(document.mainForm.submitted != true)
+                return true;
+            return false;
+        }
+        function focused(element) {
+            if (document.mainForm.focusedElement)
+                document.mainForm.focusedElement.value = element.name;
+        }        
+        // Funzioni per implementare effetto di rollover
+        function setClassNames(element) {
+            if (!element.originalClassName) {
+                element.originalClassName = element.className;
+                element.upClassName = element.className+"Up";
+                element.downClassName = element.className+"Down";
+                element.overClassName = element.className+"Over";
+            }
+        }
+        function mouseOver(element) {
+            if (document.mainForm.submitted) return;
+            setClassNames(element);
+            element.className = element.overClassName;
+        }
+        function mouseOut(element) {
+            if (document.mainForm.submitted) return;
+            setClassNames(element);
+            element.className = element.originalClassName;
+        }
+        function mouseDown(element) {
+            if (document.mainForm.submitted) return;
+            setClassNames(element);
+            element.className=element.downClassName
+        }
+        function mouseUp(element) {
+            if (document.mainForm.submitted) return;
+            setClassNames(element);
+            element.className=element.upClassName
+        }
+        // Funzione per evitare propagazioni di eventi in IE
+        function cancelBubble(event) {
+            if (event)
+                event.cancelBubble = true;
+        }
+        // Funzione invocata per cambiare pagina in un tab
+        function doTab(tabName,pageName) {
+            submitForm("doTab("+tabName+","+pageName+")");
+        }        
+        // Funzioni invocate dai bottoni di una finestra di CRUD
+        function doCerca() {
+            submitForm('doCerca');
+        }
+
+        function doRicercaLibera() {
+            submitForm('doRicercaLibera');
+        }
+
+        function doSalva() {
+            submitForm('doSalva');
+        }
+
+        function doNuovo() {
+            submitForm('doNuovo');
+        }
+
+        function doElimina() {
+            if (confirm('Vuoi confermare la cancellazione?'))
+                submitForm('doElimina');
+        }
+
+        function doNuovaRicerca() {
+            submitForm('doNuovaRicerca');
+        }
+
+        function doRiporta() {
+            submitForm('doRiporta');
+        }
+
+        function doAnnullaRiporta() {
+            submitForm('doAnnullaRiporta');
+        }
+
+        function doChiudiForm() {
+            submitForm('doCloseForm');
+        }
+
+        function doStampa() {
+            submitForm('doPrint');
+        }
+
+        function doExcel() {
+            submitForm('doExcel');
+        }
+        
+    </script>
 </body>
 </html>
