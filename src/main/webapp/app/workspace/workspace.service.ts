@@ -23,8 +23,8 @@ export class WorkspaceService {
         }).map((res: Response) => res.text());
     }
 
-    postForm(form: any, formData: FormData): Observable<string> {
-        return this.http.post('/SIGLA/' + form.action.replace(form.baseURI, ''), formData).map((res: Response) => res.text());
+    postForm(form: any): Observable<string> {
+        return this.http.post('/SIGLA/' + form.action.replace(form.baseURI, ''), new FormData(form)).map((res: Response) => res.text());
     }
 
 }
