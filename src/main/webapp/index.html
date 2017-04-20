@@ -28,7 +28,8 @@
     <script>
         function submitForm(comando) {
             document.mainForm.comando.value = comando;
-            document.mainForm.submit();
+            document.body.dispatchEvent(new Event('submitForm'));
+            return false;
         }
         function disableDblClick() {
             if(document.mainForm.submitted != true)
@@ -76,7 +77,40 @@
         // Funzione invocata per cambiare pagina in un tab
         function doTab(tabName,pageName) {
             submitForm("doTab("+tabName+","+pageName+")");
-        }        
+        }
+        // funzione invocata per selezionare una riga in una tabella
+        function select(name,index) {
+            if (disableDblClick()) {
+                document.mainForm.elements[name+".focus"].value=index;
+                submitForm("doSelection("+name+")");
+            }
+        }
+
+        // funzione invocata per selezionare una riga in una tabella
+        function doNavigate(name,index) {
+            if (disableDblClick())
+                submitForm("doNavigate("+name+","+index+")");
+        }
+
+        function sort(name,property) {
+            if (disableDblClick()) {
+                submitForm("doSort("+name+","+property+")");
+            }
+        }
+
+        function hiddenColumn(name,property) {
+            if (disableDblClick()) {
+                submitForm("doHiddenColumn("+name+","+property+")");
+            }
+        }
+
+        function selectAll(tableName) {
+            elementName = tableName+".selection";
+            for (j = 0;j < document.mainForm.elements.length;j++)
+                if (document.mainForm.elements[j].name == elementName && document.mainForm.elements[j].checked != null)
+                            document.mainForm.elements[j].checked = !document.mainForm.elements[j].checked;
+        }
+        
         // Funzioni invocate dai bottoni di una finestra di CRUD
         function doCerca() {
             submitForm('doCerca');
@@ -122,7 +156,66 @@
         function doExcel() {
             submitForm('doExcel');
         }
-        
+        // Funzioni per gli input modali
+        function modalInputFocused(input) {
+            var form = input.form
+            var confirmButton = form.elements[input.name+".confirm"]
+            var cancelButton = form.elements[input.name+".cancel"]
+            if (input.changed || input.modal) return;
+            form.modal = true
+            input.modal = true
+            input.old_value = input.value
+            for (i = 0;i < form.elements.length;i++) {
+                var element = form.elements[i]
+            if (element != input && 
+                    element != confirmButton && 
+                    element != cancelButton && 
+                    !element.disabled &&
+                    element.className != "fieldset" 
+                    //r.p. 28/11/2007 firefox non disabilitava i bottoni e le tab
+                    //&& element.type != "submit"
+                    ) {
+                        element.modal_disabled = element.disabled 
+                        element.disabled = true 
+                } else {
+                        element.modal_disabled = null 
+                }
+            }
+        }
+        function modalInputChanged(input) {
+            input.changed = true
+        }
+        function resetModalDisabled(form,input) {
+            form.modal = false
+            if (input != null)
+                input.modal = false;
+            for (i = 0;i < form.elements.length;i++) {
+                var element = form.elements[i]
+            if (element.modal_disabled != null)
+                        element.disabled = element.modal_disabled 
+            }
+        }
+        function modalInputButtonFocused(button,name) {
+            var form = button.form
+            var input = form.elements[name]
+            if (input.changed) return
+            resetModalDisabled(form,input)
+        }
+        function cancelModalInputChange(button,name) {
+            var form = button.form
+            var input = form.elements[name]
+            if (!input.changed) return;
+            input.value = input.old_value
+            input.changed = false
+            resetModalDisabled(form,input)
+        }
+        function confirmModalInputChange(button,name,command) {
+            var form = button.form
+            var input = form.elements[name]
+            if (!input.changed) return;
+            form.modal = false
+            submitForm(command)
+        }        
     </script>
 </body>
 </html>
