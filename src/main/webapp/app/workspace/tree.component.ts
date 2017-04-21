@@ -123,10 +123,21 @@ export class SIGLATreeComponent implements OnInit {
     }
 
     activateTreeNode = (node: TreeNode) => {
+        let leaf = this.leafz.filter(v => {
+            return v.id === node.id;
+        })[0];        
         if (node.isLeaf) {
-            this.activateLeaf.emit(node.id);
+            this.activateLeaf.emit({
+                id: node.id,
+                leaf: leaf
+            });
         } else {
             node.toggleExpanded();
+            this.tree.treeModel.expandedNodes.forEach((treeNode: TreeNode) => {
+                if (treeNode.level === node.level && treeNode.id !== node.id) {
+                    treeNode.collapse();
+                }
+            });
         }
     }
 }

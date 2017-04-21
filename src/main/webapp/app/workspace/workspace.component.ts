@@ -4,6 +4,7 @@ import { Principal } from '../shared';
 import { Observable } from 'rxjs/Rx';
 import { WorkspaceService } from './workspace.service';
 import { DomSanitizer, SafeResourceUrl, SafeUrl, SafeHtml} from '@angular/platform-browser';
+import { Leaf } from './leaf.model';
 
 @Component({
     selector: 'jhi-workspace',
@@ -12,6 +13,7 @@ import { DomSanitizer, SafeResourceUrl, SafeUrl, SafeHtml} from '@angular/platfo
 export class WorkspaceComponent implements OnInit {
     account: Account;
     desktop: SafeHtml;
+    leaf: Leaf;
 
     constructor(
         private jhiLanguageService: JhiLanguageService,
@@ -43,8 +45,9 @@ export class WorkspaceComponent implements OnInit {
         });
     }
 
-    onNotify(nodoid: string): void {
-        this.workspaceService.openMenu(nodoid).subscribe(html =>
+    onNotify(nodo: any): void {
+        this.leaf = nodo.leaf;
+        this.workspaceService.openMenu(nodo.id).subscribe(html =>
             this.desktop = this._sanitizer.bypassSecurityTrustHtml(html)
         );
     }
