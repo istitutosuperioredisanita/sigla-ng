@@ -4,7 +4,6 @@
     </div>
 </template>
 <div class="input-group search-typehead">
-    <a class="input-group-addon btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i></a>  
     <input
         [ngbTypeahead]="searchtree"
         [resultTemplate]="rt"
@@ -17,7 +16,7 @@
         <a class="input-group-addon btn btn-primary"  (click)="tree.treeModel.collapseAll()"><i class="fa fa-minus-square-o" aria-hidden="true"></i></a> 
         <a class="input-group-addon btn btn-primary"  (click)="tree.treeModel.expandAll()"><i class="fa fa-plus-square-o" aria-hidden="true"></i></a> 
 </div>
-<i *ngIf="isRequesting" class="fa fa-spinner fa-spin fa-2x"></i>
+<i *ngIf="isRequesting" class="fa fa-spinner fa-spin fa-2x text-primary"></i>
 <tree-root [nodes]="nodes">
     <template #treeNodeFullTemplate
             let-node="node"
