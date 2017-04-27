@@ -8,12 +8,14 @@ import { Leaf } from './leaf.model';
 
 @Component({
     selector: 'jhi-workspace',
-    templateUrl: './workspace.component.html'
+    templateUrl: './workspace.component.html',
+    styles: ['#crudToolbar {padding-bottom: 10px;}']
 })
 export class WorkspaceComponent implements OnInit {
     account: Account;
     desktop: SafeHtml;
     leaf: Leaf;
+    isRequesting: boolean;
 
     constructor(
         private jhiLanguageService: JhiLanguageService,
@@ -28,15 +30,18 @@ export class WorkspaceComponent implements OnInit {
             return false;
         });
         renderer.listenGlobal('body', 'submitForm', (event) => {
-            let form = elementRef.nativeElement.querySelector('form');
-            this.workspaceService.postForm(form)
-                .subscribe(html => {
-                    this.desktop = this._sanitizer.bypassSecurityTrustHtml(html);
-                }
-            );
+            if (event.detail.comando) {
+                let form = elementRef.nativeElement.querySelector('form');
+                this.startRefreshing();
+                this.workspaceService.postForm(form)
+                    .subscribe(html => {
+                        this.desktop = this._sanitizer.bypassSecurityTrustHtml(html);
+                        this.stopRefreshing();
+                    }
+                );
+            }
             return false;
         });
-
     }
 
     ngOnInit() {
@@ -47,8 +52,18 @@ export class WorkspaceComponent implements OnInit {
 
     onNotify(nodo: any): void {
         this.leaf = nodo.leaf;
-        this.workspaceService.openMenu(nodo.id).subscribe(html =>
-            this.desktop = this._sanitizer.bypassSecurityTrustHtml(html)
-        );
+        this.startRefreshing();
+        this.workspaceService.openMenu(nodo.id).subscribe(html => {
+            this.desktop = this._sanitizer.bypassSecurityTrustHtml(html);
+            this.stopRefreshing();
+        });
+    }
+
+    private startRefreshing() {
+        this.isRequesting = true;
+    }
+
+    private stopRefreshing() {
+        this.isRequesting = false;
     }
 }

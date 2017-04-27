@@ -181,7 +181,7 @@ entity detail page css
 /* ==========================================================================
 ui bootstrap tweaks
 ========================================================================== */
-.nav, .pagination, .carousel, .panel-title a {
+.nav, .carousel, .panel-title a {
     cursor: pointer;
 }
 
@@ -196,3 +196,6 @@ ui bootstrap tweaks
 }
 
 /* jhipster-needle-css-add-main JHipster will add new css style */
+#crudToolbar {
+    padding-bottom: 10px;
+}

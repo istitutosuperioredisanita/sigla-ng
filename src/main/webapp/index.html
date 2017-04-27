@@ -28,7 +28,11 @@
     <script>
         function submitForm(comando) {
             document.mainForm.comando.value = comando;
-            document.body.dispatchEvent(new Event('submitForm'));
+            document.body.dispatchEvent(new CustomEvent('submitForm',{
+                 'detail': {
+                     'comando': comando
+                 }
+            }));
             return false;
         }
         function disableDblClick() {
