@@ -199,3 +199,13 @@ ui bootstrap tweaks
 #crudToolbar {
     padding-bottom: 10px;
 }
+
+
+.form-control {
+    width: inherit;
+    display: inherit;
+}
+
+.fa-spinner {
+    margin: 0 10px
+}
