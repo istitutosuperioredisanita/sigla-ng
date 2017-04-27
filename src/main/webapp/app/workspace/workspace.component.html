@@ -4,7 +4,7 @@
     </div>
     <div class="col-md-9">
         <nav *ngIf="leaf" class="breadcrumb">
-            <span class="breadcrumb-item active h5">{{leaf.breadcrumbS}}</span> <i *ngIf="isRequesting" class="fa fa-spinner fa-spin fa-2x text-primary"></i>
+            <span class="breadcrumb-item active">{{leaf.breadcrumbS}}</span> <i *ngIf="isRequesting" class="fa fa-spinner fa-spin text-muted"></i>
         </nav>
         <div id="desktop" class="e2e-trusted-url" [innerHTML]="desktop"></div>
     </div>
