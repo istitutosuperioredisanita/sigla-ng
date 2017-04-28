@@ -42,7 +42,7 @@ export class NavbarComponent implements OnInit {
         this.isNavbarCollapsed = true;
         this.languageService.addLocation('home');
 
-        workspaceService.isNavbarHidden()
+        workspaceService.isMenuHidden()
             .subscribe(hidden => this.hidden = hidden);
 
     }
@@ -88,7 +88,7 @@ export class NavbarComponent implements OnInit {
         return this.isAuthenticated() ? this.principal.getImageUrl() : null;
     }
 
-    setVisible(hidden: boolean) {
-        this.workspaceService.navbarHidden(hidden);
+    setHidden(hidden: boolean) {
+        this.workspaceService.menuHidden(hidden);
     }
 }

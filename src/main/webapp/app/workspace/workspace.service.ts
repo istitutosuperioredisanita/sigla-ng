@@ -37,11 +37,11 @@ export class WorkspaceService {
         return this.http.post('/SIGLA/' + form.action.replace(form.baseURI, ''), new FormData(form)).map((res: Response) => res.text());
     }
 
-    isNavbarHidden(): Observable<boolean> {
+    isMenuHidden(): Observable<boolean> {
         return this.observable;
     }
 
-    navbarHidden(hide: boolean) {
+    menuHidden(hide: boolean) {
         this.observers.forEach(observer => observer.next(hide));
     }
 
