@@ -44,7 +44,7 @@ export class WorkspaceComponent implements OnInit {
             return false;
         });
 
-        workspaceService.isNavbarHidden()
+        workspaceService.isMenuHidden()
           .subscribe(hidden => this.hidden = hidden);
 
     }
