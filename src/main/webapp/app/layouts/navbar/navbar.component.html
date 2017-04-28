@@ -1,7 +1,6 @@
 <nav class="navbar navbar-inverse navbar-toggleable-md jh-navbar">
 
-
-    <button *ngIf="isAuthenticated()" (click)="setVisible(!hidden)" class="Header-button Header-navToggle" data-action="toggle-sidebar">
+    <button *ngIf="isAuthenticated()" (click)="setHidden(!hidden)" class="Header-button Header-navToggle" data-action="toggle-sidebar">
         <svg [ngClass]="{'hidden': hidden}" class="Header-navToggleIcon Header-navToggleIcon--open" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
             <path d="M0 0h24v24H0z" fill="none"></path>
             <path d="M19 6.4L17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"></path>
