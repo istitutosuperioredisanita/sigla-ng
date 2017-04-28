@@ -9,6 +9,8 @@ import { ContextComponent} from '../../context';
 
 import { VERSION, DEBUG_INFO_ENABLED } from '../../app.constants';
 
+import { WorkspaceService } from '../../workspace/workspace.service';
+
 @Component({
     selector: 'jhi-navbar',
     templateUrl: './navbar.component.html',
@@ -24,6 +26,7 @@ export class NavbarComponent implements OnInit {
     swaggerEnabled: boolean;
     modalRef: NgbModalRef;
     version: string;
+    hidden: boolean;
 
     constructor(
         private loginService: LoginService,
@@ -32,11 +35,16 @@ export class NavbarComponent implements OnInit {
         public principal: Principal,
         private loginModalService: LoginModalService,
         private profileService: ProfileService,
-        private router: Router
+        private router: Router,
+        private workspaceService: WorkspaceService
     ) {
         this.version = DEBUG_INFO_ENABLED ? 'v. ' + VERSION : '';
         this.isNavbarCollapsed = true;
         this.languageService.addLocation('home');
+
+        workspaceService.isNavbarHidden()
+            .subscribe(hidden => this.hidden = hidden);
+
     }
 
     ngOnInit() {
@@ -78,5 +86,9 @@ export class NavbarComponent implements OnInit {
 
     getImageUrl() {
         return this.isAuthenticated() ? this.principal.getImageUrl() : null;
+    }
+
+    setVisible(hidden: boolean) {
+        this.workspaceService.navbarHidden(hidden);
     }
 }

@@ -16,6 +16,7 @@ export class WorkspaceComponent implements OnInit {
     desktop: SafeHtml;
     leaf: Leaf;
     isRequesting: boolean;
+    hidden: boolean;
 
     constructor(
         private jhiLanguageService: JhiLanguageService,
@@ -42,6 +43,10 @@ export class WorkspaceComponent implements OnInit {
             }
             return false;
         });
+
+        workspaceService.isNavbarHidden()
+          .subscribe(hidden => this.hidden = hidden);
+
     }
 
     ngOnInit() {

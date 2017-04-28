@@ -1,8 +1,9 @@
 <div class="row">
-    <div class="col-md-3">
-        <jhi-tree id="tree" (activateLeaf)='onNotify($event)'></jhi-tree>       
+    <div class="col-md-3" [hidden]="hidden">
+        <jhi-tree id="tree" (activateLeaf)='onNotify($event)'></jhi-tree>
     </div>
-    <div class="col-md-9">
+
+    <div [ngClass]="{'col-md-9': !hidden, 'col-md-12': hidden}">
         <nav *ngIf="leaf" class="breadcrumb">
             <span class="breadcrumb-item active">{{leaf.breadcrumbS}}</span> <i *ngIf="isRequesting" class="fa fa-spinner fa-spin text-muted"></i>
         </nav>

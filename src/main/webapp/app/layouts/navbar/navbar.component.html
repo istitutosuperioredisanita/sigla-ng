@@ -1,4 +1,18 @@
 <nav class="navbar navbar-inverse navbar-toggleable-md jh-navbar">
+
+
+    <button *ngIf="isAuthenticated()" (click)="setVisible(!hidden)" class="Header-button Header-navToggle" data-action="toggle-sidebar">
+        <svg [ngClass]="{'hidden': hidden}" class="Header-navToggleIcon Header-navToggleIcon--open" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M19 6.4L17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"></path>
+        </svg>
+        <svg [ngClass]="{'hidden': !hidden}" class="Header-navToggleIcon Header-navToggleIcon--closed" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
+        </svg>
+        <span class="Header-toggleText">Menu</span>
+    </button>
+
     <div class="jh-logo-container float-left">
         <a class="jh-navbar-toggler hidden-lg-up float-right" href="javascript:void(0);" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()">
             <i class="fa fa-bars"></i>
