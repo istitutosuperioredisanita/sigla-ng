@@ -200,7 +200,6 @@ ui bootstrap tweaks
     padding-bottom: 10px;
 }
 
-
 .form-control {
     width: inherit;
     display: inherit;
@@ -208,4 +207,31 @@ ui bootstrap tweaks
 
 .fa-spinner {
     margin: 0 10px
+}
+
+ul.freesearch {
+    padding: 0 0 0 1px;
+    margin: 1px 0 0 15px;
+    border-left: 1px dotted #0066CC;
+    list-style-type: none;
+}
+
+ul.freesearch li  {
+    position: relative;
+}
+
+ul.freesearch > li  {
+    margin-bottom: 10px;
+}
+
+ul.freesearch li:before {
+    content: '';
+    width: 14px;
+    position: absolute;
+    border-bottom: 1px dotted #0066CC;
+    left: 0px;
+    top: 12px;
+}
+ul.freesearch > li > a  {
+    margin-left: 20px;
 }

@@ -171,18 +171,13 @@
             input.old_value = input.value
             for (i = 0;i < form.elements.length;i++) {
                 var element = form.elements[i]
-            if (element != input && 
-                    element != confirmButton && 
-                    element != cancelButton && 
-                    !element.disabled &&
-                    element.className != "fieldset" 
-                    //r.p. 28/11/2007 firefox non disabilitava i bottoni e le tab
-                    //&& element.type != "submit"
-                    ) {
-                        element.modal_disabled = element.disabled 
-                        element.disabled = true 
+                if (element != input && element != confirmButton && 
+                    element != cancelButton && !element.disabled &&
+                    element.className.indexOf("fieldset") == -1) {
+                    element.modal_disabled = element.disabled;
+                    element.disabled = true;
                 } else {
-                        element.modal_disabled = null 
+                    element.modal_disabled = null;
                 }
             }
         }
@@ -194,9 +189,9 @@
             if (input != null)
                 input.modal = false;
             for (i = 0;i < form.elements.length;i++) {
-                var element = form.elements[i]
-            if (element.modal_disabled != null)
-                        element.disabled = element.modal_disabled 
+                var element = form.elements[i];
+                if (element.modal_disabled != null)
+                    element.disabled = element.modal_disabled;
             }
         }
         function modalInputButtonFocused(button,name) {
@@ -206,20 +201,28 @@
             resetModalDisabled(form,input)
         }
         function cancelModalInputChange(button,name) {
-            var form = button.form
-            var input = form.elements[name]
-            if (!input.changed) return;
-            input.value = input.old_value
-            input.changed = false
-            resetModalDisabled(form,input)
+            var form = button.form;
+            var input = form.elements[name];
+            if (!input.changed) 
+                return;
+            input.value = input.old_value;
+            input.changed = false;
+            resetModalDisabled(form,input);
         }
         function confirmModalInputChange(button,name,command) {
-            var form = button.form
-            var input = form.elements[name]
-            if (!input.changed) return;
-            form.modal = false
-            submitForm(command)
-        }        
+            var form = button.form;
+            var input = form.elements[name];
+            if (!input.changed) 
+                return;
+            form.modal = false;
+            resetModalDisabled(form,input);
+            submitForm(command);
+        }
+
+		function selezionaCondizione(riga) {
+            document.mainForm.rigaSelezionata.value = riga;
+            submitForm("doSelezionaCondizione");
+		}        
     </script>
 </body>
 </html>

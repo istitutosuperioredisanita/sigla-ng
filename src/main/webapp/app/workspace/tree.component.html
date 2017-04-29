@@ -14,7 +14,7 @@
         placeholder="Cerca nel menu......"
         id="search-tree"/>
     <span class="input-group-btn">
-        <a class="btn btn-secondary"  (click)="tree.treeModel.collapseAll()"><i class="fa fa-minus-square-o" aria-hidden="true"></i></a>
+        <a class="btn btn-secondary"  (click)="tree.treeModel.collapseAll()" placement="right" ngbTooltip="Comprimi tutte le voci"><i class="fa fa-minus-square-o" aria-hidden="true"></i></a>
     </span>
 </div>
 <i *ngIf="isRequesting" class="fa fa-spinner fa-spin text-muted"></i>
