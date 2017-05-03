@@ -200,9 +200,19 @@ ui bootstrap tweaks
     padding-bottom: 10px;
 }
 
+td > div.input-group {
+    width: inherit;
+    display: inline-flex;
+}
 .form-control {
     width: inherit;
     display: inherit;
+}
+.custom-file-control::after {
+  content: "Scegli file...";
+}
+.custom-file-control::before {
+  content: "Browse";
 }
 
 .fa-spinner {

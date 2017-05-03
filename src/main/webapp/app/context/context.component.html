@@ -97,38 +97,42 @@
         </div>
     </form>        
 </div>
-<li *ngIf="isNavbar" ngbDropdown class="nav-item dropdown pointer" id="context-menu">
+<li *ngIf="isNavbar" #contextDrop="ngbDropdown" ngbDropdown class="nav-item dropdown pointer" id="context-menu" (click)="$event.stopPropagation()">
     <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" data-toggle="dropdown"><i class="fa fa-bars" aria-hidden="true"></i> CdS: {{getCodiceCdS()}} UO: {{getCodiceUo()}}</a>
     <ul class="dropdown-menu dropdown-menu-right navbar-form" role="menu" ngbDropdownMenu>
-        <div class="form-group">
-            <label class="form-control-label" for="navbar-cds">Centro di Spesa</label>  
-            <input
-                [(ngModel)]="contextService.cdsModel" 
-                [ngbTypeahead]="searchcds" 
-                [resultTemplate]="rtNavbar"
-                [inputFormatter]="formatterFirst"
-                [resultFormatter]="formatter"
-                [editable]="false"
-                (selectItem)="onSelectCds($event.item)" 
-                class="form-control"
-                (click)="$event.stopPropagation()"
-                id="navbar-cds"/>
-        </div>     
-        <div class="form-group">
-            <label class="form-control-label" for="navbar-uo">Unita Organizzativa</label>
-            <input 
-                [(ngModel)]="contextService.uoModel" 
-                [ngbTypeahead]="searchuo"
-                [resultTemplate]="rtNavbar"
-                [inputFormatter]="formatterFirst"
-                [resultFormatter]="formatter"
-                [editable]="false"
-                (selectItem)="onSelectUo($event.item)"
-                (click)="$event.stopPropagation()" 
-                class="form-control"
-                id="navbar-uo"/>
-        </div>
-        <button type="submit" class="btn btn-block btn-primary" (click)="saveContext()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Conferma</button>
+        <form class="form" role="form" (ngSubmit)="saveContext()" #contextForm="ngForm">
+            <div class="form-group">
+                <label class="form-control-label" for="navbar-cds">Centro di Spesa</label>  
+                <input
+                    [(ngModel)]="contextService.cdsModel" 
+                    [ngbTypeahead]="searchcds" 
+                    [resultTemplate]="rtNavbar"
+                    [inputFormatter]="formatterFirst"
+                    [resultFormatter]="formatter"
+                    [editable]="false"
+                    (selectItem)="onSelectCds($event.item)"
+                    required
+                    name="cds" 
+                    class="form-control"                
+                    id="navbar-cds"/>
+            </div>     
+            <div class="form-group">
+                <label class="form-control-label" for="navbar-uo">Unita Organizzativa</label>
+                <input 
+                    [(ngModel)]="contextService.uoModel" 
+                    [ngbTypeahead]="searchuo"
+                    [resultTemplate]="rtNavbar"
+                    [inputFormatter]="formatterFirst"
+                    [resultFormatter]="formatter"
+                    [editable]="false"
+                    (selectItem)="onSelectUo($event.item)"
+                    required
+                    name="uo"
+                    class="form-control"
+                    id="navbar-uo"/>
+            </div>
+            <button type="submit" [disabled]="contextForm.form.invalid" (click)="contextDrop.close();" class="btn btn-block btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i> Conferma</button>
+        </form>
     </ul>
 </li>
 <li *ngIf="isNavbar" ngbDropdown class="nav-item dropdown pointer">
