@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, ElementRef, Renderer } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, Renderer, ViewChild } from '@angular/core';
 import { JhiLanguageService } from 'ng-jhipster';
 import { Principal } from '../shared';
 import { Observable } from 'rxjs/Rx';
 import { WorkspaceService } from './workspace.service';
-import { DomSanitizer, SafeResourceUrl, SafeUrl, SafeHtml} from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl, SafeScript, SafeHtml} from '@angular/platform-browser';
 import { Leaf } from './leaf.model';
 
 @Component({
@@ -17,6 +17,7 @@ export class WorkspaceComponent implements OnInit {
     leaf: Leaf;
     isRequesting: boolean;
     hidden: boolean;
+    @ViewChild('htmlContainer') container;
 
     constructor(
         private jhiLanguageService: JhiLanguageService,
@@ -37,6 +38,17 @@ export class WorkspaceComponent implements OnInit {
                 this.workspaceService.postForm(form)
                     .subscribe(html => {
                         this.desktop = this._sanitizer.bypassSecurityTrustHtml(html);
+                        setTimeout(() => { // wait for DOM rendering
+                            let scripts = this.container.nativeElement.getElementsByTagName('script');
+                            for (let script of scripts){
+                                if (script.text && script.text.indexOf('baseTag') === -1) {
+                                    script.type = 'text/javascript';
+                                    script.language = 'javascript';
+                                    // script.text = this._sanitizer.bypassSecurityTrustHtml(script.text);
+                                    document.head.appendChild(script);
+                                }
+                            }
+                        });
                         this.stopRefreshing();
                     }
                 );

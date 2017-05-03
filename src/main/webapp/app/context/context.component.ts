@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Renderer, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 import { JhiLanguageService } from 'ng-jhipster';
 import { Router } from '@angular/router';
@@ -17,6 +17,7 @@ import { Pair } from './pair.model';
 
 export class ContextComponent {
     @Input() isNavbar: boolean;
+    @ViewChild('contextDrop') contextDrop;
 
     constructor(
         public contextService: ContextService,
