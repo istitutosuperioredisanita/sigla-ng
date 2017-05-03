@@ -25,7 +25,7 @@
         ga('create','UA-XXXXX-X');ga('send','pageview');
     </script>-->
     <!-- SCRIPT per innerHtml-->
-    <script>
+    <script id='sigla-script'>
         function submitForm(comando) {
             document.mainForm.comando.value = comando;
             document.body.dispatchEvent(new CustomEvent('submitForm',{
@@ -160,6 +160,12 @@
         function doExcel() {
             submitForm('doExcel');
         }
+        function doScaricaExcel(url) {
+            window.open(url, "Excel", 'toolbar=no,resizable,scrollbars,width=800,height=600').focus() 
+        }
+        function doPrint(url) {
+            window.open(url, "Stampa", 'toolbar=no,resizable,scrollbars,width=800,height=600').focus() 
+        }        
         // Funzioni per gli input modali
         function modalInputFocused(input) {
             var form = input.form
@@ -222,7 +228,10 @@
 		function selezionaCondizione(riga) {
             document.mainForm.rigaSelezionata.value = riga;
             submitForm("doSelezionaCondizione");
-		}        
+		}
+		function hideAlert(button) {
+            button.parentElement.hidden = true;
+        }
     </script>
 </body>
 </html>

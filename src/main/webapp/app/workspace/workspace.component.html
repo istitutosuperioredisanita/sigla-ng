@@ -1,3 +1,4 @@
+<script>{{scriptFunction}}</script>
 <div class="row">
     <div class="col-md-3" [hidden]="hidden">
         <jhi-tree id="tree" (activateLeaf)='onNotify($event)'></jhi-tree>
@@ -7,6 +8,6 @@
         <nav *ngIf="leaf" class="breadcrumb">
             <span class="breadcrumb-item active">{{leaf.breadcrumbS}}</span> <i *ngIf="isRequesting" class="fa fa-spinner fa-spin text-muted"></i>
         </nav>
-        <div id="desktop" class="e2e-trusted-url" [innerHTML]="desktop"></div>
+        <div #htmlContainer class="e2e-trusted-html" [innerHTML]="desktop"></div>
     </div>
 </div>
