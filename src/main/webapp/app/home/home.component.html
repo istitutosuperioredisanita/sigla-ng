@@ -1,0 +1,56 @@
+<div class="row">
+    <div class="col-md-3">
+        <span class="hipster img-fluid img-rounded"></span>
+    </div>
+    <div class="col-md-9">
+        <h1 jhiTranslate="home.title">Welcome, Java Hipster!</h1>
+        <p class="lead" jhiTranslate="home.subtitle">This is your homepage</p>
+
+        <div [ngSwitch]="isAuthenticated()">
+            <div *ngSwitchCase="true">
+                <jhi-context [isNavbar]="false">Loading context.....</jhi-context>
+            </div>
+            <div *ngSwitchCase="false">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 jhiTranslate="login.title">Sign in</h3>
+                        </div>    
+                        <div class="card-block">
+                            <div>
+                                <div class="alert alert-danger" *ngIf="authenticationError">
+                                    <div jhiTranslate="login.messages.error.authentication">
+                                        <strong>Failed to sign in!</strong> Please check your credentials and try again.
+                                    </div>
+                                </div>
+                            </div>                              
+                            <form class="form" role="form" (ngSubmit)="login()" #loginForm="ngForm">
+                                <div class="form-group input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user fa-fw" aria-hidden="true"></i></span>
+                                    <input type="text" class="form-control" name="username" id="username" required placeholder="{{'global.form.username.placeholder' | translate}}"
+                                    [(ngModel)]="username">
+                                </div>
+                                <div class="form-group input-group">
+                                    <span class="input-group-addon"><i class="fa fa-key fa-fw" aria-hidden="true"></i></span>
+                                    <input type="password" class="form-control" name="password" id="password" required placeholder="{{'login.form.password.placeholder' | translate}}"
+                                           [(ngModel)]="password">
+                                </div>
+                                <div class="form-check">
+                                    <label class="form-check-label" for="rememberMe">
+                                        <input class="form-check-input" type="checkbox" name="rememberMe" id="rememberMe" [(ngModel)]="rememberMe" checked>
+                                        <span jhiTranslate="login.form.rememberme">Remember me</span>
+                                    </label>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" [disabled]="loginForm.form.invalid" class="btn btn-primary col-md-5" jhiTranslate="login.form.button">Sign in</button>
+                                    <button type="button" [disabled]="loginForm.form.invalid" class="btn btn-info col-md-5" jhiTranslate="login.form.change-password">Cambia Password</button>
+                                </div>
+                            </form>
+                              
+                        </div>
+                    </div>
+                </div>    
+            </div>
+        </div>
+    </div>
+</div>

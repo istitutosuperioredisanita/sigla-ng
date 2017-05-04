@@ -1,0 +1,170 @@
+/* ==========================================================================
+Navbar
+========================================================================== */
+.navbar-version {
+    font-size: 10px;
+    color: #ccc
+}
+
+.jh-navbar {
+    background-color: #0066CC;
+    padding: .2em 1em;
+	filter: none !important;
+	box-shadow: 0 2px 15px rgba(0,0,0,0.25);
+	-moz-box-shadow: 0 2px 15px rgba(0,0,0,0.25);
+	-webkit-box-shadow: 0 2px 15px rgba(0,0,0,0.25);
+	border-bottom: 3px solid rgba(0,0,0,0.2);    
+	border-top: 1px solid rgba(0,0,0,0.2);    
+}
+.jh-navbar .profile-image {
+    margin: -10px 0px;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}
+
+.jh-navbar .dropdown-item.active, .jh-navbar .dropdown-item.active:focus, .jh-navbar .dropdown-item.active:hover {
+    background-color: #0066CC;
+}
+
+.jh-navbar .dropdown-toggle::after {
+    margin-left: 0.15em;
+}
+
+.jh-navbar ul.navbar-nav {
+    padding: 0.5em;
+}
+
+.jh-navbar a.nav-link {
+    font-weight: 400;
+}
+
+.jh-navbar .jh-navbar-toggler {
+    color: #ccc;
+    font-size: 1.5em;
+    padding: 10px;
+}
+
+.jh-navbar .jh-navbar-toggler:hover {
+    color: #fff;
+}
+
+
+
+@media screen and (max-width: 992px) {
+    .jh-logo-container {
+        width: 100%;
+    }
+}
+
+.navbar-title {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* ==========================================================================
+Logo styles
+========================================================================== */
+.navbar-brand.logo {
+    padding: 5px 15px;
+}
+
+.logo .logo-img {
+    height: 45px;
+    display: inline-block;
+    vertical-align: middle;
+    width: 70px;
+}
+
+.logo-img {
+    height: 100%;
+    background: url("../../../content/images/logo-cnr.png") no-repeat center center;
+    background-size: contain;
+    width: 100%;
+}
+.nav-link, .navbar-text {
+    color: #FFF !important
+}
+.navbar-typeahead span {
+    vertical-align:top; display: inline-block;
+}
+.navbar-typeahead .text-truncate {
+    padding: 0 5px; 
+    max-width: 220px
+}
+.navbar-form {
+    padding: 17px
+}
+@media(min-width: 992px) {
+    .display-inherit {
+        display: inherit
+    }
+    .dropdown-menu { 
+        min-width: 80px; 
+    }
+    #context-menu { 
+        padding-left: 7px;
+        text-align: right;
+        min-width: 320px; 
+    }
+
+    .dropdown-menu:before {
+        position: absolute;
+        top: -7px;
+        left: 9px;
+        display: inline-block;
+        border-right: 7px solid transparent;
+        border-bottom: 7px solid #CCC;
+        border-left: 7px solid transparent;
+        border-bottom-color: rgba(0, 0, 0, 0.2);
+        content: '';
+    }
+
+    .dropdown-menu:after {
+        position: absolute;
+        top: -6px;
+        left: 10px;
+        display: inline-block;
+        border-right: 6px solid transparent;
+        border-bottom: 6px solid white;
+        border-left: 6px solid transparent;
+        content: '';
+    }
+
+    .dropdown-menu:before, .dropdown-menu.pull-right:before {
+        right: 12px;
+        left: auto;
+    }
+
+    .dropdown-menu::after, .dropdown-menu.pull-right:after {
+        right: 13px;
+        left: auto;
+    }
+
+
+    .Header-navToggle {
+        border: none;
+        color: white;
+        background: transparent;
+    }
+
+    svg {
+        fill: #fff;
+        height: 3rem;
+        width: 3rem;
+    }
+
+    svg.hidden {
+        display: none;
+    }
+
+    .Header-toggleText {
+        margin-top: -0.6rem;
+        display: block;
+        letter-spacing: .1em!important;
+        font-weight: 700!important;
+        font-size: 0.9rem!important;
+        text-transform: uppercase;
+    }
+
+}

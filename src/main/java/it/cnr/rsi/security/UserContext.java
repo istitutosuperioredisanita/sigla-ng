@@ -5,36 +5,59 @@ import it.cnr.rsi.domain.Utente;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class UserContext implements UserDetails {
 	private static final long serialVersionUID = 1L;
-	
+
 	@JsonIgnore
 	private Utente currentUser;
 
-	private Map<String, Serializable> attributes;	
-		
+	private Map<String, Serializable> attributes;
+
 	public UserContext(Utente currentUser) {
 		super();
 		this.currentUser = currentUser;
+		this.attributes = new HashMap<String, Serializable>();
 	}
 
 	public Serializable addAttribute(String key, Serializable value) {
 		return attributes.put(key, value);
 	}
+
+	public Serializable getAttribute(String key) {
+		return attributes.get(key);
+	}
 	
 	@Override
+	@JsonIgnore
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Collections.emptyList();
+		return Collections.singletonList(
+				new SimpleGrantedAuthority("ROLE_USER")
+		);
 	}
 
+	@JsonProperty("authorities")
+	public Collection<String> getAuthoritiesHipster() {
+		return getAuthorities()
+				.stream()
+				.map(x -> x.getAuthority())
+				.collect(Collectors.toList());
+	}
+	
 	@Override
+	@JsonIgnore
 	public String getPassword() {
 		return currentUser.getPassword();
 	}
@@ -67,5 +90,42 @@ public class UserContext implements UserDetails {
 		// TODO Auto-generated method stub
 		return true;
 	}
+
+    public Long getId() {
+        return 0L;
+    }
+	
+    public String getLogin() {
+        return Optional.ofNullable((String)attributes.get("login")).orElse(currentUser.getCdUtente());
+    }
+
+    public String getFirstName() {
+        return Optional.ofNullable((String)attributes.get("firstName")).orElse(currentUser.getNome());
+    }
+
+    public String getLastName() {
+        return Optional.ofNullable((String)attributes.get("lastName")).orElse(currentUser.getCognome());
+    }
+	
+    public String getEmail() {
+        return Optional.ofNullable((String)attributes.get("email")).orElse("");
+    }
+
+    public String getLangKey() {
+    	return Locale.ITALIAN.getLanguage();
+    }
+
+    public Integer getEsercizio() {
+        return Optional.ofNullable((Integer)attributes.get("esercizio")).orElse(null);
+    }
+    public String getCds() {
+        return Optional.ofNullable((String)attributes.get("cds")).orElse(null);
+    }
+    public String getUo() {
+        return Optional.ofNullable((String)attributes.get("uo")).orElse(null);
+    }
+    public String getCdr() {
+        return Optional.ofNullable((String)attributes.get("cdr")).orElse(null);
+    }
 
 }

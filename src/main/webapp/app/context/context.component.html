@@ -1,0 +1,152 @@
+<template #rt let-r="result" let-t="term">
+    <div>
+        <span>{{r.first}} - {{r.second}}</span>
+    </div>
+</template>
+<template #rtNavbar let-r="result" let-t="term">
+    <div class="navbar-typeahead">
+        <span>{{r.first}}</span><span class="text-truncate">{{r.second}}</span>
+    </div>
+</template>
+<div *ngIf="!isNavbar">
+    <form class="form" role="form" (ngSubmit)="saveContext()" #contextForm="ngForm">
+        <div class="form-group row">
+            <label for="esercizio" class="col-2 col-form-label">Esercizio</label>
+            <div class="col-2">
+                <select class="form-control" id="esercizio" name="esercizio" required (ngModelChange)="setEsercizio($event)" [(ngModel)]="principal.userIdentity.esercizio">
+                    <option *ngFor="let esercizio of contextService.esercizi" [ngValue]="esercizio">{{esercizio}}</option>
+                </select>            
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="cds" class="col-2 col-form-label">Centro di Spesa</label>
+            <div class="col-8">
+                <input 
+                    [(ngModel)]="contextService.cdsModel" 
+                    [ngbTypeahead]="searchcds" 
+                    [resultTemplate]="rt" 
+                    [inputFormatter]="formatter"
+                    [resultFormatter]="formatter"
+                    [editable]="false"
+                    (selectItem)="onSelectCds($event.item)"
+                    class="form-control" 
+                    id="cds" 
+                    name="cds" 
+                    #cdsInput="ngModel"  
+                    required 
+                    type="text"> 
+                <div *ngIf="cdsInput.dirty && cdsInput.invalid">
+                    <small class="form-text text-danger"
+                        *ngIf="cdsInput.errors.required" jhiTranslate="settings.messages.validate.cds.required">
+                        CdS is required.
+                    </small>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="uo" class="col-2 col-form-label">Unità Organizzativa</label>
+            <div class="col-8">
+                <input
+                    [(ngModel)]="contextService.uoModel" 
+                    [ngbTypeahead]="searchuo" 
+                    [resultTemplate]="rt" 
+                    [inputFormatter]="formatter"
+                    [resultFormatter]="formatter"
+                    [editable]="false"
+                    (selectItem)="onSelectUo($event.item)"
+                    class="form-control" 
+                    id="uo" 
+                    name="uo" 
+                    #uoInput="ngModel"
+                    required 
+                    type="text">        
+                <div *ngIf="uoInput.dirty && uoInput.invalid">
+                    <small class="form-text text-danger"
+                        *ngIf="uoInput.errors.required" jhiTranslate="settings.messages.validate.uo.required">
+                        UO is required.
+                    </small>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="cdr" class="col-2 col-form-label">Centro di Responsabilità</label>
+            <div class="col-8">
+                <input
+                    [(ngModel)]="contextService.cdrModel" 
+                    [ngbTypeahead]="searchcdr" 
+                    [resultTemplate]="rt" 
+                    [inputFormatter]="formatter"
+                    [resultFormatter]="formatter"
+                    [editable]="false"
+                    class="form-control" 
+                    id="cdr" 
+                    name="cdr" 
+                    #cdrInput="ngModel"
+                    required 
+                    type="text">        
+                <div *ngIf="cdrInput.dirty && cdrInput.invalid">
+                    <small class="form-text text-danger"
+                        *ngIf="cdrInput.errors.required" jhiTranslate="settings.messages.validate.cdr.required">
+                        UO is required.
+                    </small>
+                </div>
+            </div>
+        </div>
+        <div class="text-right col-10">
+            <button type="submit" [disabled]="contextForm.form.invalid" class="btn btn-primary col-md-5"><i class="fa fa-floppy-o" aria-hidden="true"></i> Conferma</button>
+        </div>
+    </form>        
+</div>
+<li *ngIf="isNavbar" #contextDrop="ngbDropdown" ngbDropdown class="nav-item dropdown pointer" id="context-menu" (click)="$event.stopPropagation()">
+    <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" data-toggle="dropdown"><i class="fa fa-bars" aria-hidden="true"></i> CdS: {{getCodiceCdS()}} UO: {{getCodiceUo()}}</a>
+    <ul class="dropdown-menu dropdown-menu-right navbar-form" role="menu" ngbDropdownMenu>
+        <form class="form" role="form" (ngSubmit)="saveContext()" #contextForm="ngForm">
+            <div class="form-group">
+                <label class="form-control-label" for="navbar-cds">Centro di Spesa</label>  
+                <input
+                    [(ngModel)]="contextService.cdsModel" 
+                    [ngbTypeahead]="searchcds" 
+                    [resultTemplate]="rtNavbar"
+                    [inputFormatter]="formatterFirst"
+                    [resultFormatter]="formatter"
+                    [editable]="false"
+                    (selectItem)="onSelectCds($event.item)"
+                    required
+                    name="cds" 
+                    class="form-control"                
+                    id="navbar-cds"/>
+            </div>     
+            <div class="form-group">
+                <label class="form-control-label" for="navbar-uo">Unita Organizzativa</label>
+                <input 
+                    [(ngModel)]="contextService.uoModel" 
+                    [ngbTypeahead]="searchuo"
+                    [resultTemplate]="rtNavbar"
+                    [inputFormatter]="formatterFirst"
+                    [resultFormatter]="formatter"
+                    [editable]="false"
+                    (selectItem)="onSelectUo($event.item)"
+                    required
+                    name="uo"
+                    class="form-control"
+                    id="navbar-uo"/>
+            </div>
+            <button type="submit" [disabled]="contextForm.form.invalid" (click)="contextDrop.close();" class="btn btn-block btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i> Conferma</button>
+        </form>
+    </ul>
+</li>
+<li *ngIf="isNavbar" ngbDropdown class="nav-item dropdown pointer">
+    <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="esercizio-menu">
+        <i class="fa fa-calendar-o" aria-hidden="true"></i>
+        <span>Esercizio: {{principal.userIdentity.esercizio}}</span>
+            <b class="caret"></b>
+        </span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>        
+        <li *ngFor="let esercizio of contextService.esercizi">
+            <a class="dropdown-item"  (click)="setEsercizio(esercizio)">
+                <span>{{esercizio}}</span>
+            </a>
+        </li>
+    </ul>
+</li>
