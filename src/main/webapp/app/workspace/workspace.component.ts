@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef, Renderer, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, Renderer, ViewChild, Inject } from '@angular/core';
 import { JhiLanguageService } from 'ng-jhipster';
 import { Principal } from '../shared';
 import { Observable } from 'rxjs/Rx';
@@ -15,9 +15,10 @@ export class WorkspaceComponent implements OnInit {
     account: Account;
     desktop: SafeHtml;
     leaf: Leaf;
+    siglaPageTitle: string;
     isRequesting: boolean;
     hidden: boolean;
-    @ViewChild('htmlContainer') container;
+    @ViewChild('htmlContainer') container: ElementRef;
 
     constructor(
         private jhiLanguageService: JhiLanguageService,
@@ -37,28 +38,15 @@ export class WorkspaceComponent implements OnInit {
                 this.startRefreshing();
                 this.workspaceService.postForm(form)
                     .subscribe(html => {
-                        this.desktop = this._sanitizer.bypassSecurityTrustHtml(html);
-                        setTimeout(() => { // wait for DOM rendering
-                            let scripts = this.container.nativeElement.getElementsByTagName('script');
-                            for (let script of scripts){
-                                if (script.text && script.text.indexOf('baseTag') === -1) {
-                                    script.type = 'text/javascript';
-                                    script.language = 'javascript';
-                                    // script.text = this._sanitizer.bypassSecurityTrustHtml(script.text);
-                                    document.head.appendChild(script);
-                                }
-                            }
-                        });
+                        this.renderHtml(html);
                         this.stopRefreshing();
                     }
                 );
             }
             return false;
         });
-
         workspaceService.isMenuHidden()
           .subscribe(hidden => this.hidden = hidden);
-
     }
 
     ngOnInit() {
@@ -71,8 +59,25 @@ export class WorkspaceComponent implements OnInit {
         this.leaf = nodo.leaf;
         this.startRefreshing();
         this.workspaceService.openMenu(nodo.id).subscribe(html => {
-            this.desktop = this._sanitizer.bypassSecurityTrustHtml(html);
+            this.renderHtml(html);
             this.stopRefreshing();
+        });
+    }
+
+    private renderHtml(html: string) {
+        this.desktop = this._sanitizer.bypassSecurityTrustHtml(html);
+        setTimeout(() => { // wait for DOM rendering
+            let s = this.renderer.createElement(this.container.nativeElement, 'script');
+            s.type = 'text/javascript';
+            let scripts = this.container.nativeElement.getElementsByTagName('script');
+            for (let script of scripts){
+                if (script.text && script.text.indexOf('baseTag') === -1) {
+                    s.text = script.text;
+                    this.container.nativeElement.appendChild(s);
+                }
+            }
+            let siglaPageTitle = this.container.nativeElement.getElementsByTagName('sigla-page-title')[0].innerHTML;
+            this.siglaPageTitle = this.leaf.breadcrumbS + siglaPageTitle;
         });
     }
 
