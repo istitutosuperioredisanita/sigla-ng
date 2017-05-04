@@ -22,6 +22,7 @@
     <node.version>v6.10.0</node.version>
     <yarn.version>v0.21.3</yarn.version>
     <spring-boot.version>1.5.3.RELEASE</spring-boot.version>
+    <maven.javadoc.skip>true</maven.javadoc.skip>
   </properties>
   <dependencies>
     <dependency>
