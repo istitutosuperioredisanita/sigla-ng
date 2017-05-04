@@ -41,8 +41,8 @@
       <artifactId>spring-boot-starter-web</artifactId>
       <exclusions>
         <exclusion>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-tomcat</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -93,7 +93,6 @@
       <artifactId>commons-lang3</artifactId>
       <version>3.5</version>
     </dependency>
-
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-undertow</artifactId>
@@ -104,6 +103,13 @@
       <id>prod</id>
       <build>
         <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <additionalparam>-Xdoclint:none</additionalparam>
+            </configuration>
+          </plugin>
           <plugin>
             <artifactId>maven-clean-plugin</artifactId>
             <configuration>
@@ -118,7 +124,7 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-war-plugin</artifactId>
             <configuration>
-	      <failOnMissingWebXml>false</failOnMissingWebXml>
+              <failOnMissingWebXml>false</failOnMissingWebXml>
               <warSourceDirectory>target/www/</warSourceDirectory>
             </configuration>
           </plugin>
@@ -182,25 +188,25 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <executions>
-              <execution>
-                <goals>
-                    <goal>repackage</goal>
-                </goals>
-            </execution>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
         </executions>
       </plugin>
     </plugins>
   </build>
   <dependencyManagement>
-      <dependencies>
-          <dependency>
-              <!-- Import dependency management from Spring Boot -->
-              <groupId>org.springframework.boot</groupId>
-              <artifactId>spring-boot-dependencies</artifactId>
-              <version>${spring-boot.version}</version>
-              <type>pom</type>
-              <scope>import</scope>
-          </dependency>
-      </dependencies>
+    <dependencies>
+      <dependency>
+        <!-- Import dependency management from Spring Boot -->
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
   </dependencyManagement>
 </project>
