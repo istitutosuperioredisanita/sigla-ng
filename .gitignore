@@ -8,6 +8,7 @@ target/
 .project
 .settings
 .springBeans
+.vscode
 
 ### IntelliJ IDEA ###
 .idea
@@ -24,3 +25,6 @@ nbdist/
 .nb-gradle/
 
 bower_components/
+
+/node_modules/
+/yarn.lock

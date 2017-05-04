@@ -4,6 +4,7 @@ import it.cnr.rsi.security.AjaxAuthenticationFailureHandler;
 import it.cnr.rsi.security.AjaxAuthenticationSuccessHandler;
 import it.cnr.rsi.security.AjaxLogoutSuccessHandler;
 import it.cnr.rsi.security.Http401UnauthorizedEntryPoint;
+import it.cnr.rsi.security.UserContext;
 import it.cnr.rsi.service.UtenteService;
 
 import java.util.Collection;
@@ -50,7 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private LdapConfigurationProperties ldapConfigurationProperties;
     @Autowired
     private UtenteService utenteService;
-    
+
     @Override
     public void configure(WebSecurity web) throws Exception {
         web
@@ -85,7 +86,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 
     @SuppressWarnings("deprecation")
-	@Bean 
+    @Bean
     public AuthenticationProvider customAuthenticationProvider(){
     	DaoAuthenticationProvider customAuthenticationProvider = new DaoAuthenticationProvider();
     	customAuthenticationProvider.setUserDetailsService(utenteService);
@@ -108,9 +109,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				}
 				return Base64Utils.encodeToString(bpassword).equals(encPass);
 			}
-    		
+
     	});
-    	customAuthenticationProvider.setSaltSource(new SaltSource() {			
+    	customAuthenticationProvider.setSaltSource(new SaltSource() {
 			@Override
 			public Object getSalt(UserDetails user) {
 				return user.getUsername();
@@ -118,7 +119,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		});
     	return customAuthenticationProvider;
     }
-    
+
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
 
@@ -128,7 +129,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             LOGGER.info("user: {}", username);
             LOGGER.info("user data {}", userData.toString());
             return Stream
-                    .of("employee", "ACTUATOR")
+                    .of("employee", "ACTUATOR", "ROLE_ADMIN")
                     .map(name -> new SimpleGrantedAuthority(name))
                     .collect(Collectors.toList());
         };
@@ -136,17 +137,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .ldapAuthentication()
                 .ldapAuthoritiesPopulator(ldapAuthoritiesPopulator)
                 .userSearchBase(ldapConfigurationProperties.getUserSearchBase())
-                .userDetailsContextMapper(new UserDetailsContextMapper() {					
+                .userDetailsContextMapper(new UserDetailsContextMapper() {
 					@Override
 					public void mapUserToContext(UserDetails user, DirContextAdapter ctx) {
 						throw new UnsupportedOperationException(
 								"LdapUserDetailsMapper only supports reading from a context. Please"
 										+ "use a subclass if mapUserToContext() is required.");
-					}					
+					}
 					@Override
 					public UserDetails mapUserFromContext(DirContextOperations ctx,
 							String username, Collection<? extends GrantedAuthority> authorities) {
-						return utenteService.loadUserByUid(username);
+                        UserContext userContext = utenteService.loadUserByUid(username);
+                        userContext.addAttribute("firstName", ctx.getStringAttribute("cnrnome"));
+                        userContext.addAttribute("lastName", ctx.getStringAttribute("cnrcognome"));
+                        userContext.addAttribute("email", ctx.getStringAttribute("mail"));
+                        userContext.addAttribute("login", username);                        
+                        return userContext;
 					}
 				})
                 .userSearchFilter(ldapConfigurationProperties.getUserSearchFilter())
@@ -155,6 +161,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .url(ldapConfigurationProperties.getUrl())
                 .managerDn(ldapConfigurationProperties.getManagerDn())
                 .managerPassword(ldapConfigurationProperties.getManagerPassword());
+
+
         auth
         	.authenticationProvider(customAuthenticationProvider());
 

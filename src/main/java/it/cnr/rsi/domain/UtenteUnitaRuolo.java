@@ -1,16 +1,14 @@
 package it.cnr.rsi.domain;
 
-import java.io.Serializable;
-
 import javax.persistence.*;
-
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 
 /**
  * The persistent class for the UTENTE_UNITA_RUOLO database table.
- * 
+ *
  */
 @Entity
 @Table(name="UTENTE_UNITA_RUOLO")
@@ -48,7 +46,7 @@ public class UtenteUnitaRuolo implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="CD_UNITA_ORGANIZZATIVA", insertable=false, updatable=false)
 	private UnitaOrganizzativa unitaOrganizzativa;
-	
+
 	public UtenteUnitaRuolo() {
 	}
 

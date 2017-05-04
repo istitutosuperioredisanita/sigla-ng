@@ -1,0 +1,20 @@
+{
+    "login": {
+        "title": "Inserire l'utente e la password per accedere all'applicazione",
+        "form": {
+            "password": "Password",
+            "password.placeholder": "La tua password",
+            "rememberme": "Ricordami",
+            "button": "Accedi",
+            "change-password": "Cambia password"
+        },
+        "messages": {
+            "error": {
+                "authentication": "<strong>Accesso non riuscito!</strong> Si prega di controllare le credenziali e riprovare."
+            }
+        },
+        "password" : {
+            "forgot": "Password dimenticata?"
+        }
+    }
+}

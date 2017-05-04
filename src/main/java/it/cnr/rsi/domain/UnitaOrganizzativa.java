@@ -46,10 +46,10 @@ public class UnitaOrganizzativa implements Serializable {
 	private Date duva;
 
 	@Column(name="ESERCIZIO_FINE")
-	private BigDecimal esercizioFine;
+	private Integer esercizioFine;
 
 	@Column(name="ESERCIZIO_INIZIO")
-	private BigDecimal esercizioInizio;
+	private Integer esercizioInizio;
 
 	@Column(name="FL_CDS")
 	private String flCds;
@@ -90,7 +90,7 @@ public class UnitaOrganizzativa implements Serializable {
 	private List<Ruolo> ruolos;
 
 	//bi-directional many-to-one association to UnitaOrganizzativa
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="CD_AREA_RICERCA")
 	private UnitaOrganizzativa unitaOrganizzativa1;
 
@@ -99,12 +99,12 @@ public class UnitaOrganizzativa implements Serializable {
 	private List<UnitaOrganizzativa> unitaOrganizzativas1;
 
 	//bi-directional many-to-one association to UnitaOrganizzativa
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="CD_UNITA_PADRE")
-	private UnitaOrganizzativa unitaOrganizzativa2;
+	private UnitaOrganizzativa unitaOrganizzativaPadre;
 
 	//bi-directional many-to-one association to UnitaOrganizzativa
-	@OneToMany(mappedBy="unitaOrganizzativa2")
+	@OneToMany(mappedBy="unitaOrganizzativaPadre")
 	private List<UnitaOrganizzativa> unitaOrganizzativas2;
 
 	//bi-directional many-to-one association to UnitaOrganizzativa
@@ -190,19 +190,19 @@ public class UnitaOrganizzativa implements Serializable {
 		this.duva = duva;
 	}
 
-	public BigDecimal getEsercizioFine() {
+	public Integer getEsercizioFine() {
 		return this.esercizioFine;
 	}
 
-	public void setEsercizioFine(BigDecimal esercizioFine) {
+	public void setEsercizioFine(Integer esercizioFine) {
 		this.esercizioFine = esercizioFine;
 	}
 
-	public BigDecimal getEsercizioInizio() {
+	public Integer getEsercizioInizio() {
 		return this.esercizioInizio;
 	}
 
-	public void setEsercizioInizio(BigDecimal esercizioInizio) {
+	public void setEsercizioInizio(Integer esercizioInizio) {
 		this.esercizioInizio = esercizioInizio;
 	}
 
@@ -368,12 +368,12 @@ public class UnitaOrganizzativa implements Serializable {
 		return unitaOrganizzativas1;
 	}
 
-	public UnitaOrganizzativa getUnitaOrganizzativa2() {
-		return this.unitaOrganizzativa2;
+	public UnitaOrganizzativa getUnitaOrganizzativaPadre() {
+		return this.unitaOrganizzativaPadre;
 	}
 
-	public void setUnitaOrganizzativa2(UnitaOrganizzativa unitaOrganizzativa2) {
-		this.unitaOrganizzativa2 = unitaOrganizzativa2;
+	public void setUnitaOrganizzativaPadre(UnitaOrganizzativa unitaOrganizzativa2) {
+		this.unitaOrganizzativaPadre = unitaOrganizzativa2;
 	}
 
 	public List<UnitaOrganizzativa> getUnitaOrganizzativas2() {
@@ -386,14 +386,14 @@ public class UnitaOrganizzativa implements Serializable {
 
 	public UnitaOrganizzativa addUnitaOrganizzativas2(UnitaOrganizzativa unitaOrganizzativas2) {
 		getUnitaOrganizzativas2().add(unitaOrganizzativas2);
-		unitaOrganizzativas2.setUnitaOrganizzativa2(this);
+		unitaOrganizzativas2.setUnitaOrganizzativaPadre(this);
 
 		return unitaOrganizzativas2;
 	}
 
 	public UnitaOrganizzativa removeUnitaOrganizzativas2(UnitaOrganizzativa unitaOrganizzativas2) {
 		getUnitaOrganizzativas2().remove(unitaOrganizzativas2);
-		unitaOrganizzativas2.setUnitaOrganizzativa2(null);
+		unitaOrganizzativas2.setUnitaOrganizzativaPadre(null);
 
 		return unitaOrganizzativas2;
 	}
