@@ -1,0 +1,9 @@
+{
+    "home": {
+        "title": "Sistema Informativo per la Gestione delle Linee di Attività",
+        "subtitle": "Documenti contabili/amministrativi",
+        "logged": {
+            "message": "Autenticato come \"{{username}}\"."
+        }
+    }
+}

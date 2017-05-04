@@ -1,0 +1,52 @@
+<template #rt let-r="result" let-t="term">
+    <div>
+        <span>{{r.breadcrumbS}}</span>
+    </div>
+</template>
+<div class="input-group search-typehead">
+    <input
+        [ngbTypeahead]="searchtree"
+        [resultTemplate]="rt"
+        [inputFormatter]="formatter"
+        [resultFormatter]="formatter"
+        (selectItem)="onSelectLeaf($event.item)"
+        class="form-control"
+        placeholder="Cerca nel menu......"
+        id="search-tree"/>
+    <span class="input-group-btn">
+        <a class="btn btn-secondary"  (click)="tree.treeModel.collapseAll()" placement="right" ngbTooltip="Comprimi tutte le voci"><i class="fa fa-minus-square-o" aria-hidden="true"></i></a>
+    </span>
+</div>
+<i *ngIf="isRequesting" class="fa fa-spinner fa-spin text-muted"></i>
+<tree-root [nodes]="nodes">
+    <template #treeNodeFullTemplate
+            let-node="node"
+            let-index="index"
+            let-templates="templates">
+        <div
+            class="tree-node tree-node-level-{{ node.level }}"
+            [class]="node.getClass()"
+            [class.tree-node-expanded]="node.isExpanded && node.hasChildren"
+            [class.tree-node-collapsed]="node.isCollapsed && node.hasChildren"
+            [class.tree-node-leaf]="node.isLeaf"
+            [class.tree-node-active]="node.isActive"
+            [class.tree-node-focused]="node.isFocused">
+
+            <div class="node-wrapper" [style.padding-left]="node.getNodePadding()">
+                <span *ngIf="!node.isLeaf">
+                    <i *ngIf="!node.isExpanded && node.level !== 1" class="fa fa-caret-right" aria-hidden="true" (click)="node.toggleExpanded()"></i>
+                    <i *ngIf="node.isExpanded  && node.level !== 1" class="fa fa-caret-down" aria-hidden="true" (click)="node.toggleExpanded()"></i>
+                    <i *ngIf="node.level == 1" [class]="getIcon(node.id)" aria-hidden="true" (click)="node.toggleExpanded()"></i>
+                </span>
+                <div class="node-content-wrapper"
+                    (click)="activateTreeNode(node)"
+                    (dblclick)="node.toggleExpanded()">
+                    <span *ngIf="node.level == 1">{{node.data.name.toLocaleUpperCase()}}</span>
+                    <span *ngIf="node.level !== 1">{{node.data.name}}</span>                    
+                </div>
+            </div>
+            <tree-node-children [node]="node" [templates]="templates">
+            </tree-node-children>
+        </div>
+    </template>
+</tree-root>

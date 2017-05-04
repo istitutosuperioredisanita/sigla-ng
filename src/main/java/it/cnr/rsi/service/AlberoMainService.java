@@ -66,7 +66,7 @@ public class AlberoMainService {
         return  values
                 .stream()
                 .sorted(Comparator.comparingInt(node -> node.getPgOrdinamento().intValue()))
-                .map(node -> new TreeNode(node.getCdNodo(), node.getDsNodo(), node.getBusinessProcess()))
+                .map(node -> new TreeNode(node.getCdNodo(), node.getDsNodo(), node.getBusinessProcess(), node.getBreadcrumb()))
                 .collect(Collectors.toList());
     }
 

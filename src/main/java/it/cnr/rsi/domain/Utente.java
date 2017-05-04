@@ -1,17 +1,17 @@
 package it.cnr.rsi.domain;
 
 import java.io.Serializable;
-
-import javax.persistence.*;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 /**
@@ -446,5 +446,9 @@ public class Utente implements Serializable{
 		utenteUnitaRuolo.setUtente(null);
 
 		return utenteUnitaRuolo;
+	}
+	
+	public boolean isUtenteSupervisore() {
+		return getFlSupervisore().equalsIgnoreCase("Y");
 	}
 }

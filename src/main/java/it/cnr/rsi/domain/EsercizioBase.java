@@ -1,14 +1,14 @@
 package it.cnr.rsi.domain;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 
 /**
  * The persistent class for the ESERCIZIO_BASE database table.
- * 
+ *
  */
 @Entity
 @Table(name="ESERCIZIO_BASE")
@@ -17,7 +17,7 @@ public class EsercizioBase implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private long esercizio;
+	private Integer esercizio;
 
 	@Temporal(TemporalType.DATE)
 	private Date dacr;
@@ -35,11 +35,11 @@ public class EsercizioBase implements Serializable {
 	public EsercizioBase() {
 	}
 
-	public long getEsercizio() {
+	public Integer getEsercizio() {
 		return this.esercizio;
 	}
 
-	public void setEsercizio(long esercizio) {
+	public void setEsercizio(Integer esercizio) {
 		this.esercizio = esercizio;
 	}
 
