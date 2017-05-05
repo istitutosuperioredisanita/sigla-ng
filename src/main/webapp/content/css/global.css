@@ -208,6 +208,11 @@ td > div.input-group {
     width: inherit;
     display: inherit;
 }
+
+.FormLabel.required::after {
+  content:" *";color:red;
+}
+
 .custom-file-control::after {
   content: "Scegli file...";
 }

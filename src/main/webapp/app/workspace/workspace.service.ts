@@ -34,7 +34,9 @@ export class WorkspaceService {
     }
 
     postForm(form: any): Observable<string> {
-        return this.http.post('/SIGLA/' + form.action.replace(form.baseURI, ''), new FormData(form)).map((res: Response) => res.text());
+        if (form.comando.value) {
+            return this.http.post('/SIGLA/' + form.action.replace(form.baseURI, ''), new FormData(form)).map((res: Response) => res.text());
+        }
     }
 
     isMenuHidden(): Observable<boolean> {
