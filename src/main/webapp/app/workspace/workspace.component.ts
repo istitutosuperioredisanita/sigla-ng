@@ -57,6 +57,7 @@ export class WorkspaceComponent implements OnInit {
 
     onNotify(nodo: any): void {
         this.leaf = nodo.leaf;
+        this.siglaPageTitle = this.leaf.breadcrumbS;
         this.startRefreshing();
         this.workspaceService.openMenu(nodo.id).subscribe(html => {
             this.renderHtml(html);
