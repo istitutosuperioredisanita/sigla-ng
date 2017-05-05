@@ -34,9 +34,8 @@
 
             <div class="node-wrapper" [style.padding-left]="node.getNodePadding()">
                 <span *ngIf="!node.isLeaf">
-                    <i *ngIf="!node.isExpanded && node.level !== 1" class="fa fa-caret-right" aria-hidden="true" (click)="node.toggleExpanded()"></i>
-                    <i *ngIf="node.isExpanded  && node.level !== 1" class="fa fa-caret-down" aria-hidden="true" (click)="node.toggleExpanded()"></i>
-                    <i *ngIf="node.level == 1" [class]="getIcon(node.id)" aria-hidden="true" (click)="node.toggleExpanded()"></i>
+                    <i *ngIf="!node.isExpanded" class="fa fa-caret-right" aria-hidden="true" (click)="node.toggleExpanded()"></i>
+                    <i *ngIf="node.isExpanded"  class="fa fa-caret-down" aria-hidden="true" (click)="node.toggleExpanded()"></i>
                 </span>
                 <div class="node-content-wrapper"
                     (click)="activateTreeNode(node)"
