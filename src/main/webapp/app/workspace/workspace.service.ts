@@ -34,7 +34,6 @@ export class WorkspaceService {
     }
 
     postForm(form: any): Observable<string> {
-        console.log('invoke post');
         return this.http.post('/SIGLA/' + form.action.replace(form.baseURI, ''), new FormData(form)).map((res: Response) => res.text());
     }
 

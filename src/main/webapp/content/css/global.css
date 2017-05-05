@@ -255,3 +255,10 @@ ul.freesearch li:before {
 ul.freesearch > li > a  {
     margin-left: 20px;
 }
+
+.node-content-wrapper {
+    display: inline-block;
+    padding: 2px 5px;
+    border-radius: 2px;
+    transition: background-color .15s,box-shadow .15s;
+}
