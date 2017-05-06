@@ -226,10 +226,15 @@ legend {
     border-color: inherit;
 }
 
-.card {
+.fieldset.card {
     margin-bottom: 1.5em;
 }
-
+div.div-sigla-table {
+    padding-left: 0px;
+}
+table.Toolbar {
+    border: 1px solid #eceeef;
+}
 .fa-spinner {
     margin: 0 10px
 }
