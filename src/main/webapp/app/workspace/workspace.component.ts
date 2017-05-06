@@ -66,15 +66,20 @@ export class WorkspaceComponent implements OnInit {
     }
 
     private renderHtml(html: string) {
+        let siglaScript = document.head.children.namedItem('siglaScript');
+        if (siglaScript) {
+            document.head.removeChild(siglaScript);
+        }
         this.desktop = this._sanitizer.bypassSecurityTrustHtml(html);
         setTimeout(() => { // wait for DOM rendering
-            let s = this.renderer.createElement(this.container.nativeElement, 'script');
+            let s = document.createElement('script');
             s.type = 'text/javascript';
+            s.id = 'siglaScript';
             let scripts = this.container.nativeElement.getElementsByTagName('script');
             for (let script of scripts){
                 if (script.text && script.text.indexOf('baseTag') === -1) {
                     s.text = script.text;
-                    this.container.nativeElement.appendChild(s);
+                    document.head.appendChild(s);
                 }
             }
             let siglaPageTitle = this.container.nativeElement.getElementsByTagName('sigla-page-title')[0].innerHTML;
