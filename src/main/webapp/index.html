@@ -165,7 +165,45 @@
         }
         function doPrint(url) {
             window.open(url, "Stampa", 'toolbar=no,resizable,scrollbars,width=800,height=600').focus() 
-        }        
+        }
+        function handleOnLoad() {
+            window.onloadHandlers.evaluate()
+        }
+
+        function MultiEventHandler(handler,next,priority) {
+            this.handler = handler;
+            this.next = next;
+            this.priority = priority;
+            function evaluate() {
+                if (this.next) this.next.evaluate()
+                if (this.handler) this.handler();
+            }
+            this.evaluate = evaluate
+        }
+
+        function addOnloadHandler(handler,priority) {
+            var curr = window.onloadHandlers;
+            var prev = null;
+            while((curr != null) && (priority >= curr.priority)) {
+                prev = curr;
+                curr = curr.next;
+            }
+            var meh = new MultiEventHandler(handler,curr,priority);
+            if (prev == null)
+                window.onloadHandlers = meh;
+            else {
+        //		prev.handler = function() { alert('ciao') }
+                prev.next = meh;
+            }
+            window.onload = handleOnLoad;
+        }
+        function scrollIntoView(elementName) {
+            try {
+                document.getElementById(elementName).scrollIntoView(false);
+            } catch(e) {
+            }
+        }
+        
         // Funzioni per gli input modali
         function modalInputFocused(input) {
             var form = input.form

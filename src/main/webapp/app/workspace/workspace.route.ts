@@ -7,7 +7,7 @@ export const WORKSPACE_ROUTE: Route = {
     path: 'workspace',
     component: WorkspaceComponent,
     data: {
-        authorities: ['ROLE_USER'],
+        authorities: ['ROLE_ADMIN'],
         pageTitle: 'global.menu.workspace'
     },
     canActivate: [UserRouteAccessService]

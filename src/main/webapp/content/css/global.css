@@ -210,7 +210,7 @@ td > div.input-group {
 }
 
 .FormLabel.required::after {
-  content:" *";color:red;
+  content:"*";color:red;
 }
 
 .custom-file-control::after {
@@ -231,6 +231,11 @@ legend {
 }
 div.div-sigla-table {
     padding-left: 0px;
+    min-height: 200px;
+}
+table.Window.card.col-5 {
+    padding-left: 0px;
+    padding-right: 0px;
 }
 table.Toolbar {
     border: 1px solid #eceeef;
