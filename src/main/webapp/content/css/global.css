@@ -196,7 +196,7 @@ ui bootstrap tweaks
 }
 
 /* jhipster-needle-css-add-main JHipster will add new css style */
-#crudToolbar {
+.btn-toolbar {
     padding-bottom: 10px;
 }
 
@@ -209,6 +209,11 @@ td > div.input-group {
     display: inherit;
 }
 
+div.form-group .form-control {
+    width: 100%;
+    display: block;
+}
+
 .FormLabel.required::after {
   content:"*";color:red;
 }
@@ -218,6 +223,11 @@ td > div.input-group {
 }
 .custom-file-control::before {
   content: "Browse";
+}
+
+.btn-title::before {
+    content: attr(title);
+    padding-right: 5px;
 }
 
 legend {
