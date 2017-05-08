@@ -30,7 +30,12 @@ export class WorkspaceService {
         params.set('comando', 'doSelezionaMenu(' + nodoid + ')');
         return this.http.get('/SIGLA/GestioneMenu.do', {
            search: params
-        }).map((res: Response) => res.text());
+        })
+        .map((res: Response) => res.text())
+        .catch(err => {
+            console.log(err);
+            return null;
+        });
     }
 
     postForm(form: any): Observable<string> {
