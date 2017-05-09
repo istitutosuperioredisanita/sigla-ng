@@ -9,7 +9,7 @@ import { TreeModule } from 'angular-tree-component';
 @NgModule({
     imports: [
         SiglaSharedModule,
-        RouterModule.forRoot([ WORKSPACE_ROUTE ]),
+        RouterModule.forRoot([ WORKSPACE_ROUTE ], { useHash: true } ),
         TreeModule
     ],
     declarations: [
