@@ -51,11 +51,12 @@ export class NavbarComponent implements OnInit {
         this.languageHelper.getAll().then((languages) => {
             this.languages = languages;
         });
-
-        this.profileService.getProfileInfo().subscribe(profileInfo => {
-            this.inProduction = profileInfo.inProduction;
-            this.swaggerEnabled = profileInfo.swaggerEnabled;
-        });
+        if (this.isAuthenticated()) {
+            this.profileService.getProfileInfo().subscribe(profileInfo => {
+                this.inProduction = profileInfo.inProduction;
+                this.swaggerEnabled = profileInfo.swaggerEnabled;
+            });
+        }
     }
 
     changeLanguage(languageKey: string) {
