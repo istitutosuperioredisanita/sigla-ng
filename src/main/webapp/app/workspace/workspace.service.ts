@@ -31,11 +31,7 @@ export class WorkspaceService {
         return this.http.get('/SIGLA/GestioneMenu.do', {
            search: params
         })
-        .map((res: Response) => res.text())
-        .catch(err => {
-            console.log(err);
-            return null;
-        });
+        .map((res: Response) => res.text());
     }
 
     postForm(form: any): Observable<string> {

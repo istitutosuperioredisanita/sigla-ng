@@ -3,6 +3,7 @@ import { JhiLanguageService } from 'ng-jhipster';
 
 import { Principal } from '../auth/principal.service';
 import { AuthServerProvider } from '../auth/auth-session.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class LoginService {
@@ -10,7 +11,8 @@ export class LoginService {
     constructor (
         private languageService: JhiLanguageService,
         private principal: Principal,
-        private authServerProvider: AuthServerProvider
+        private authServerProvider: AuthServerProvider,
+        private router: Router
     ) {}
 
     login (credentials, callback?) {
@@ -20,7 +22,6 @@ export class LoginService {
             this.authServerProvider.login(credentials).subscribe(data => {
                 this.principal.identity(true).then(account => {
                     this.authServerProvider.loginWildfly(credentials).subscribe(dataWildfly => {
-                        console.log(dataWildfly);
                     });
                     // After the login the language will be changed to
                     // the language selected by the user during his registration
@@ -36,6 +37,11 @@ export class LoginService {
                 return cb(err);
             });
         });
+    }
+
+    logoutAndRedirect (): void {
+        this.logout();
+        this.router.navigate(['']);
     }
 
     logout () {

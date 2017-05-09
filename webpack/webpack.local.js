@@ -34,8 +34,7 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
             context: [
                 '/SIGLA'
             ],
-            target: 'http://as4dock.si.cnr.it',
-            headers: {host:'sigla-main-angular2.test.si.cnr.it'},
+            target: 'http://localhost:8180',
             secure: false
         }
         ]

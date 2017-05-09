@@ -2,7 +2,7 @@ import { HttpInterceptor } from 'ng-jhipster';
 import { RequestOptionsArgs, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Injector } from '@angular/core';
-import { AuthServerProvider } from '../../shared/auth/auth-session.service';
+import { LoginService } from '../../shared/login/login.service';
 import { StateStorageService } from '../../shared/auth/state-storage.service';
 import { Router } from '@angular/router';
 
@@ -21,19 +21,17 @@ export class AuthExpiredInterceptor extends HttpInterceptor {
     }
     responseIntercept(observable: Observable<Response>): Observable<Response> {
         let self = this;
-
         return <Observable<Response>> observable.catch((error) => {
-            if (error.status === 401 && error.text() !== '' && error.json().path && error.json().path.indexOf('/api/account') === -1) {
-                let authServerProvider = self.injector.get(AuthServerProvider);
+            if (error.status === 401 && error.text() !== '') {
+                let loginService = self.injector.get(LoginService);
                 let destination = this.stateStorageService.getDestinationState();
                 let to = destination.destination;
                 let toParams = destination.params;
-                authServerProvider.logout();
-
                 if (to.name === 'accessdenied') {
                     self.stateStorageService.storePreviousState(to.name, toParams);
                 }
-                this.router.navigate(['']);
+                loginService.logoutAndRedirect();
+                return Observable.empty();
             }
             return Observable.throw(error);
         });

@@ -1,5 +1,5 @@
 import { Routes, CanActivate } from '@angular/router';
-
+import { WORKSPACE_ROUTE } from '../workspace';
 import { UserRouteAccessService } from '../shared';
 
 import {
@@ -19,7 +19,8 @@ let ACCOUNT_ROUTES = [
    passwordResetInitRoute,
    registerRoute,
    sessionsRoute,
-   settingsRoute
+   settingsRoute,
+   WORKSPACE_ROUTE
 ];
 
 export const accountState: Routes = [{
