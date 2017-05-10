@@ -30,7 +30,8 @@
             document.mainForm.comando.value = comando;
             document.body.dispatchEvent(new CustomEvent('submitForm',{
                  'detail': {
-                     'comando': comando
+                     'comando': comando,
+                     'form' : document.mainForm
                  }
             }));
             return false;

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef, Renderer, ViewChild, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ElementRef, Renderer, ViewChild, Inject } from '@angular/core';
 import { JhiLanguageService } from 'ng-jhipster';
 import { Principal } from '../shared';
 import { Observable } from 'rxjs/Rx';
@@ -11,13 +11,15 @@ import { Leaf } from './leaf.model';
     templateUrl: './workspace.component.html',
     styles: ['#crudToolbar {padding-bottom: 10px;}']
 })
-export class WorkspaceComponent implements OnInit {
+export class WorkspaceComponent implements OnInit, OnDestroy {
     account: Account;
     desktop: SafeHtml;
     leaf: Leaf;
     siglaPageTitle: string;
     isRequesting: boolean;
     hidden: boolean;
+    listenerSubmit: Function;
+    listenerSubmitForm: Function;
     @ViewChild('htmlContainer') container: ElementRef;
 
     constructor(
@@ -29,12 +31,12 @@ export class WorkspaceComponent implements OnInit {
         private renderer: Renderer
     ) {
         this.jhiLanguageService.setLocations(['workspace']);
-        renderer.listen(elementRef.nativeElement, 'submit', (event) => {
+        this.listenerSubmit = renderer.listenGlobal('body', 'submit', (event) => {
             return false;
         });
-        renderer.listenGlobal('body', 'submitForm', (event) => {
+        this.listenerSubmitForm = renderer.listenGlobal('body', 'submitForm', (event) => {
             if (event.detail.comando) {
-                let form = elementRef.nativeElement.querySelector('form');
+                let form = event.detail.form;
                 this.startRefreshing();
                 this.workspaceService.postForm(form)
                     .subscribe(html => {
@@ -53,6 +55,11 @@ export class WorkspaceComponent implements OnInit {
         this.principal.identity().then((account) => {
             this.account = account;
         });
+    }
+
+    ngOnDestroy() {
+        this.listenerSubmit();
+        this.listenerSubmitForm();
     }
 
     onNotify(nodo: any): void {
@@ -82,8 +89,9 @@ export class WorkspaceComponent implements OnInit {
                     document.head.appendChild(s);
                 }
             }
+            let siglaTitle = this.container.nativeElement.getElementsByTagName('title')[0].innerHTML;
             let siglaPageTitle = this.container.nativeElement.getElementsByTagName('sigla-page-title')[0].innerHTML;
-            this.siglaPageTitle = this.leaf.breadcrumbS + siglaPageTitle;
+            this.siglaPageTitle = this.leaf.breadcrumbS + ' - ' + siglaTitle + siglaPageTitle;
         });
     }
 
