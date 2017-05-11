@@ -208,7 +208,10 @@ td > div.input-group {
     width: inherit;
     display: inherit;
 }
-
+.form-control.column {
+    width: 100%;
+    display: block;
+}
 div.form-group .form-control {
     width: 100%;
     display: block;
@@ -235,13 +238,22 @@ legend {
     border-style: inherit;
     border-color: inherit;
 }
-
+input.inputFieldReadOnly {
+	background: #F5F5DC;
+	background-color:transparent;
+	border-style : none; 
+	cursor:default;
+}
 .fieldset.card {
     margin-bottom: 1.5em;
 }
 div.div-sigla-table {
     padding-left: 0px;
     min-height: 200px;
+}
+div.Group.card {
+    padding: 5px;
+    margin-bottom: 5px;
 }
 table.Window.card.col-5 {
     padding-left: 0px;
