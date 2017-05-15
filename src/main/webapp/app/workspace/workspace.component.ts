@@ -21,6 +21,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     listenerSubmit: Function;
     listenerSubmitForm: Function;
     @ViewChild('htmlContainer') container: ElementRef;
+    @ViewChild('scriptContainer') scriptContainer: ElementRef;
 
     constructor(
         private jhiLanguageService: JhiLanguageService,
@@ -73,26 +74,24 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     }
 
     private renderHtml(html: string) {
-        let siglaScript = document.head.children.namedItem('siglaScript');
-        if (siglaScript) {
-            document.head.removeChild(siglaScript);
+        let siglaScripts = this.scriptContainer.nativeElement.getElementsByTagName('script');
+        for (let siglaScript of siglaScripts){
+            this.scriptContainer.nativeElement.removeChild(siglaScript);
         }
         this.desktop = this._sanitizer.bypassSecurityTrustHtml(html);
         setTimeout(() => { // wait for DOM rendering
-            let s = document.createElement('script');
-            s.type = 'text/javascript';
-            s.id = 'siglaScript';
             let scripts = this.container.nativeElement.getElementsByTagName('script');
             for (let script of scripts){
+                let s = document.createElement('script');
+                s.type = 'text/javascript';
                 if (script.text && script.text.indexOf('baseTag') === -1) {
                     s.text = script.text;
-                    eval(script.text);
-                    document.head.appendChild(s);
+                    this.scriptContainer.nativeElement.appendChild(s);
                 }
             }
             let siglaTitle = this.container.nativeElement.getElementsByTagName('title')[0].innerHTML;
             let siglaPageTitle = this.container.nativeElement.getElementsByTagName('sigla-page-title')[0].innerHTML;
-            this.siglaPageTitle = this.leaf.breadcrumbS + ' - ' + siglaTitle + siglaPageTitle;            
+            this.siglaPageTitle = this.leaf.breadcrumbS + ' - ' + siglaTitle + siglaPageTitle;
         });
     }
 
