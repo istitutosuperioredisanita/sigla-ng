@@ -14,14 +14,9 @@ html {
         font-size: 16px;
     }
 }
-@media screen and (min-width: 1600px) {
-    html {
-        font-size: 18px;
-    }
-}
 @media screen and (min-width: 1920px) {
     html {
-        font-size: 20px;
+        font-size: 18px;
     }
 }
 body, h1, h2, h3, h4, button {
@@ -242,9 +237,16 @@ div.form-group .form-control {
 .FormLabel.required::after {
   content:"*";color:red;
 }
+.custom-file-control{
+    white-space: nowrap;
+    width:100%;
+    max-width:100%;
+    overflow: hidden;
+    text-overflow:ellipsis;    
+}
 
 .custom-file-control::after {
-  content: "Scegli file...";
+  content: attr(title);
 }
 .custom-file-control::before {
   content: "Browse";
@@ -266,7 +268,7 @@ input.inputFieldReadOnly {
 	border-style : none; 
 	cursor:default;
 }
-.fieldset.card {
+.fieldset.card, fieldset.card {
     margin-bottom: 1.5em;
 }
 div.div-sigla-table {
@@ -283,6 +285,12 @@ table.Window.card.col-5 {
 }
 table.Toolbar {
     border: 1px solid #eceeef;
+}
+.TabLabel.btn-primary.hand.h6 {
+    border-bottom: -2px!important;
+}
+span.TabLabel[disabled] {
+   cursor: not-allowed;
 }
 .fa-spinner {
     margin: 0 10px
