@@ -11,7 +11,7 @@ export class LocalStateStorageService {
         private $localStorage: LocalStorageService
     ) {}
 
-    getUserContext() {
+    getUserContext(): UserContext {
         return this.$localStorage.retrieve('usercontext') || this.initUserContext;
     }
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
+import { UserContext } from '../../shared';
 
 @Injectable()
 export class AuthServerProvider {
@@ -22,14 +23,28 @@ export class AuthServerProvider {
         });
     }
 
-    loginWildfly (credentials): Observable<any> {
+    loginWildfly (credentials, userContext: UserContext): Observable<any> {
         let data = 'main.userid=' + encodeURIComponent(credentials.username) +
             '&main.password=' + encodeURIComponent(credentials.password) +
+            '&context.esercizio=' + userContext.esercizio +
+            '&context.cds=' + userContext.cds +
+            '&context.uo=' + userContext.uo +
+            '&context.cdr=' + userContext.cdr +
             '&comando=doEntra';
         let headers = new Headers ({
             'Content-Type': 'application/x-www-form-urlencoded'
         });
         return this.http.post('/SIGLA/Login.do', data, {
+            headers: headers
+        });
+    }
+
+    logoutWildfly (): Observable<any> {
+        let data = 'comando=doLogout';
+        let headers = new Headers ({
+            'Content-Type': 'application/x-www-form-urlencoded'
+        });
+        return this.http.post('/SIGLA/GestioneMenu.do', data, {
             headers: headers
         });
     }

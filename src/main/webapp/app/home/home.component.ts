@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 
 import { Account, LoginService, Principal, StateStorageService } from '../shared';
 import { ContextComponent} from '../context';
+import { LocalStateStorageService } from '../shared/auth/local-storage.service';
 
 @Component({
     selector: 'jhi-home',
@@ -31,7 +32,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         private eventManager: EventManager,
         private elementRef: ElementRef,
         private router: Router,
-        private renderer: Renderer
+        private renderer: Renderer,
+        private localStateStorageService: LocalStateStorageService
     ) {
         this.jhiLanguageService.setLocations(['home', 'login']);
     }
@@ -82,7 +84,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 name: 'authenticationSuccess',
                 content: 'Sending Authentication Success'
             });
-
+            if (this.localStateStorageService.getUserContext().cds) {
+                this.router.navigate(['workspace']);
+            }
             // // previousState was set in the authExpiredInterceptor before being redirected to login modal.
             // // since login is succesful, go to stored previousState and clear previousState
             let previousState = this.stateStorageService.getPreviousState();

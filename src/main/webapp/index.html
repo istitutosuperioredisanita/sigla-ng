@@ -271,6 +271,11 @@
 		function hideAlert(button) {
             button.parentElement.hidden = true;
         }
+		function inputFileName(element) {
+            var filename = element.value.replace(/^.*\\/, "");
+            document.getElementById('span-' + element.name).title = filename;
+        }
+        
         function restoreWorkspace() {            
         }
         function showMessage(level,img,text) {
