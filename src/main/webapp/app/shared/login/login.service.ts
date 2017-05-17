@@ -42,8 +42,10 @@ export class LoginService {
     }
 
     logoutAndRedirect (): void {
-        this.logout();
-        this.router.navigate(['']);
+        if (this.principal.isAuthenticated()) {
+            this.logout();
+            this.router.navigate(['']);
+        }
     }
 
     logout () {
