@@ -277,6 +277,9 @@ input.inputFieldReadOnly {
 div.div-sigla-table {
     padding-left: 0px;
     min-height: 200px;
+    border-color: #d9edf7;
+    border-style: solid;
+    border-width: 1px;
 }
 div.Group.card {
     padding: 5px;
@@ -287,8 +290,12 @@ table.Window.card.col-5 {
     padding-right: 0px;
 }
 table.Toolbar {
-    border: 1px solid #eceeef;
+    border: 1px solid #d9edf7;
+    border-top: none;
+    border-top-style: none;
+    border-top-color: transparent;
 }
+
 .fa-spinner {
     margin: 0 10px
 }
