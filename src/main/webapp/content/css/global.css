@@ -216,7 +216,10 @@ ui bootstrap tweaks
 .btn-toolbar {
     padding-bottom: 10px;
 }
-
+div.input-group > .input-group-addon {
+    color: inherit;
+    background-color: inherit;
+}
 td > div.input-group {
     width: inherit;
     display: inline-flex;
@@ -285,12 +288,6 @@ table.Window.card.col-5 {
 }
 table.Toolbar {
     border: 1px solid #eceeef;
-}
-.TabLabel.btn-primary.hand.h6 {
-    border-bottom: -2px!important;
-}
-span.TabLabel[disabled] {
-   cursor: not-allowed;
 }
 .fa-spinner {
     margin: 0 10px
