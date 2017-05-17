@@ -95,7 +95,7 @@
     "lint:fix": "tslint 'src/main/webapp/app/**/*.ts' --fix --force",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
-    "start": "yarn run webpack:local",
+    "start": "yarn run webpack:dev",
     "webpack:build": "webpack --config webpack/webpack.vendor.js && webpack --config webpack/webpack.dev.js",
     "webpack:build:dev": "webpack --config webpack/webpack.dev.js",
     "webpack:build:vendor": "webpack --config webpack/webpack.vendor.js",
