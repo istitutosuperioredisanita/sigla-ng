@@ -1,6 +1,6 @@
 {
     "login": {
-        "title": "Inserire l'utente e la password per accedere all'applicazione",
+        "title": "Inserire le credenziali",
         "form": {
             "password": "Password",
             "password.placeholder": "La tua password",
