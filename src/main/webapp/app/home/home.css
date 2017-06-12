@@ -5,8 +5,9 @@ Main page styles
 .hipster {
     display: inline-block;
     width: 347px;
-    height: 497px;
-    background: url("../../content/images/hipster.png") no-repeat center top;
+    height: 350px;
+    margin-top: 4px;
+    background: url("../../content/images/immagine-Sigla.svg") no-repeat center top;
     background-size: contain;
 }
 

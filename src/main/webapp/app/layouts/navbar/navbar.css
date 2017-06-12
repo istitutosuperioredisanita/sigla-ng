@@ -3,7 +3,8 @@ Navbar
 ========================================================================== */
 .navbar-version {
     font-size: 10px;
-    color: #ccc
+    color: #ccc;
+    vertical-align: bottom
 }
 
 .jh-navbar {
@@ -70,18 +71,31 @@ Logo styles
 }
 
 .logo .logo-img {
-    height: 45px;
+    height: 30px;
     display: inline-block;
     vertical-align: middle;
-    width: 70px;
+    width: 30px;
 }
 
 .logo-img {
-    height: 100%;
-    background: url("../../../content/images/logo-cnr.png") no-repeat center center;
+    margin-left: 75px;
+    height: 24px;
+    background: url("../../../content/images/logo_CNR_bianco.svg") no-repeat center center;
     background-size: contain;
-    width: 100%;
+    width: 24px;
 }
+
+.logo-text {
+    height: 27px;
+    display: inline-block;
+    vertical-align: bottom;
+    background: url("../../../content/images/SIGLA-LOGO.svg") no-repeat center center;
+    background-size: contain;
+    width: 70px;
+    margin-left: 15px
+}
+
+
 .nav-link, .navbar-text {
     color: #FFF !important
 }
