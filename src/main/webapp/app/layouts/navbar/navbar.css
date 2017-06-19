@@ -67,34 +67,20 @@ Navbar
 Logo styles
 ========================================================================== */
 .navbar-brand.logo {
-    padding: 5px 15px;
 }
 
 .logo .logo-img {
-    height: 30px;
     display: inline-block;
     vertical-align: middle;
-    width: 30px;
 }
 
 .logo-img {
-    margin-left: 75px;
-    height: 24px;
-    background: url("../../../content/images/logo_CNR_bianco.svg") no-repeat center center;
-    background-size: contain;
-    width: 24px;
+margin-top: 5px;
+    margin-left: 25px;
+    height: 55px;
+    background: url("../../../content/images/ISS-SIGLA-logo.png") no-repeat center center;
+    width: 216px;
 }
-
-.logo-text {
-    height: 27px;
-    display: inline-block;
-    vertical-align: bottom;
-    background: url("../../../content/images/SIGLA-LOGO.svg") no-repeat center center;
-    background-size: contain;
-    width: 70px;
-    margin-left: 15px
-}
-
 
 .nav-link, .navbar-text {
     color: #FFF !important
@@ -116,7 +102,7 @@ Logo styles
     .dropdown-menu { 
         min-width: 80px; 
     }
-    #context-menu { 
+    #context-menu {
         padding-left: 7px;
         text-align: right;
         min-width: 320px; 
