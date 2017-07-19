@@ -127,12 +127,13 @@ export class SIGLATreeComponent implements OnInit {
             return v.id === node.id;
         })[0];
         if (node.isLeaf) {
+            node.focus(true);
             this.activateLeaf.emit({
                 id: node.id,
                 leaf: leaf
             });
         } else {
-            node.toggleExpanded();
+            node.expand();
             this.tree.treeModel.expandedNodes.forEach((treeNode: TreeNode) => {
                 if (treeNode.level === node.level && treeNode.id !== node.id) {
                     treeNode.collapse();
