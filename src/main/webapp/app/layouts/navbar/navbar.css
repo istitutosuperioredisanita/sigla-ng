@@ -3,7 +3,8 @@ Navbar
 ========================================================================== */
 .navbar-version {
     font-size: 10px;
-    color: #ccc
+    color: #ccc;
+    vertical-align: bottom
 }
 
 .jh-navbar {
@@ -66,22 +67,21 @@ Navbar
 Logo styles
 ========================================================================== */
 .navbar-brand.logo {
-    padding: 5px 15px;
 }
 
 .logo .logo-img {
-    height: 45px;
     display: inline-block;
     vertical-align: middle;
-    width: 70px;
 }
 
 .logo-img {
-    height: 100%;
-    background: url("../../../content/images/logo-cnr.png") no-repeat center center;
-    background-size: contain;
-    width: 100%;
+margin-top: 5px;
+    margin-left: 25px;
+    height: 55px;
+    background: url("../../../content/images/ISS-SIGLA-logo.png") no-repeat center center;
+    width: 216px;
 }
+
 .nav-link, .navbar-text {
     color: #FFF !important
 }
@@ -102,7 +102,7 @@ Logo styles
     .dropdown-menu { 
         min-width: 80px; 
     }
-    #context-menu { 
+    #context-menu {
         padding-left: 7px;
         text-align: right;
         min-width: 320px; 
