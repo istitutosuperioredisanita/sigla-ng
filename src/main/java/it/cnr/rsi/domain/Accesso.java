@@ -1,7 +1,7 @@
 package it.cnr.rsi.domain;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * The persistent class for the ACCESSO database table.
- * 
+ *
  */
 @Entity
 @NamedQuery(name="Accesso.findAll", query="SELECT a FROM Accesso a")

@@ -1,11 +1,12 @@
 package it.cnr.rsi.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import java.io.Serializable;
-import javax.persistence.*;
 
 /**
  * The primary key class for the UTENTE_GESTORE database table.
- * 
+ *
  */
 @Embeddable
 public class UtenteGestorePK implements Serializable {
@@ -41,7 +42,7 @@ public class UtenteGestorePK implements Serializable {
 			return false;
 		}
 		UtenteGestorePK castOther = (UtenteGestorePK)other;
-		return 
+		return
 			this.cdUtente.equals(castOther.cdUtente)
 			&& this.cdGestore.equals(castOther.cdGestore);
 	}
@@ -51,7 +52,7 @@ public class UtenteGestorePK implements Serializable {
 		int hash = 17;
 		hash = hash * prime + this.cdUtente.hashCode();
 		hash = hash * prime + this.cdGestore.hashCode();
-		
+
 		return hash;
 	}
 }

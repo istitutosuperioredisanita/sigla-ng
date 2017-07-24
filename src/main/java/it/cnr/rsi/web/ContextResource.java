@@ -1,25 +1,22 @@
 package it.cnr.rsi.web;
 
+import it.cnr.rsi.domain.Preferiti;
 import it.cnr.rsi.security.UserContext;
 import it.cnr.rsi.service.EsercizioBaseService;
 import it.cnr.rsi.service.UnitaOrganizzativaService;
+import it.cnr.rsi.service.UtenteService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.util.Pair;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.util.Pair;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by marco.spasiano on 23/03/17.
@@ -31,14 +28,22 @@ public class ContextResource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContextResource.class);
 
-    public static final String API_ESERCIZIO = "/esercizio", API_UO = "/uo", API_CDS = "/cds", API_CDR = "/cdr";
+    public static final String API_ESERCIZIO = "/esercizio",
+        API_UO = "/uo",
+        API_CDS = "/cds",
+        API_CDR = "/cdr",
+        API_PREFERITI = "/preferiti";
 
     private EsercizioBaseService esercizioBaseService;
     private UnitaOrganizzativaService unitaOrganizzativaService;
+    private UtenteService utenteService;
 
-    public ContextResource(EsercizioBaseService esercizioBaseService, UnitaOrganizzativaService unitaOrganizzativaService) {
+    public ContextResource(EsercizioBaseService esercizioBaseService,
+                           UnitaOrganizzativaService unitaOrganizzativaService,
+                           UtenteService utenteService) {
         this.esercizioBaseService = esercizioBaseService;
         this.unitaOrganizzativaService = unitaOrganizzativaService;
+        this.utenteService = utenteService;
     }
 
 
@@ -81,7 +86,14 @@ public class ContextResource {
         	.map(x -> Pair.of(x.getCdCentroResponsabilita(), x.getDsCdr()))
         	.collect(Collectors.toList());
 	}
-    
+
+    @GetMapping(API_PREFERITI)
+    public List<Preferiti> preferiti(){
+        UserContext userDetails = getUserDetails();
+        LOGGER.info("GET preferiti for User: {}", userDetails.getUsername());
+        return utenteService.findPreferiti(userDetails.getUsername());
+    }
+
     @PostMapping
     public UserContext save(@RequestBody Map<String, ?> params){
     	UserContext userDetails = getUserDetails();
@@ -90,7 +102,7 @@ public class ContextResource {
         return userDetails;
     }
 
-    
+
     public static UserContext getUserDetails() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return Optional

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild, EventEmitter, Output } from '@angular/core';
 import { JhiLanguageService } from 'ng-jhipster';
-import { Principal } from '../shared';
+import { Principal, EventsService } from '../shared';
 import { Leaf } from './leaf.model';
 import { WorkspaceService } from './workspace.service';
 import { Observable } from 'rxjs/Observable';
@@ -24,24 +24,14 @@ export class SIGLATreeComponent implements OnInit {
     leafs: Map<String, Leaf[]>;
     leafz: Leaf[] = [];
     nodes = [];
-    icons = {
-        '0.SERV' : 'fa-cog',
-        '0.CFG' : 'fa-cogs',
-        '0.PRV' : 'fa-eur',
-        '0.DOC' : 'fa-credit-card-alt',
-        '0.AMM' : 'fa-credit-card',
-        '0.COANCOEP' : 'fa-money',
-        '0.IVA' : 'fa-columns',
-        '0.CNS' : 'fa-gg-circle',
-        '0.RIP' : 'fa-undo'
-    };
     @ViewChild(TreeComponent) tree: TreeComponent;
     @Output() activateLeaf = new EventEmitter();
 
     constructor(
         private jhiLanguageService: JhiLanguageService,
         private workspaceService: WorkspaceService,
-        private principal: Principal
+        private principal: Principal,
+        private eventsService: EventsService
     ) {
         this.jhiLanguageService.setLocations(['workspace']);
     }
@@ -97,6 +87,15 @@ export class SIGLATreeComponent implements OnInit {
         this.principal.identity().then((account) => {
             this.account = account;
         });
+        let that = this;
+        this.eventsService.on('onPreferitiSelected', function(cdNodo: string) {
+            let leaf = that.leafz.filter(v => {
+                return v.id === cdNodo;
+            })[0];
+            if (leaf) {
+                that.onSelectLeaf(leaf);
+            }
+        });
     }
 
     private getChildNodes(id): SIGLATreeNode[] {
@@ -115,7 +114,7 @@ export class SIGLATreeComponent implements OnInit {
     }
 
     getIcon = (id: string) => {
-        return 'fa ' + (this.icons[id] || '') + ' fa-fw';
+        return 'fa fa-fw';
     }
 
     getChildren = (id: string) => {

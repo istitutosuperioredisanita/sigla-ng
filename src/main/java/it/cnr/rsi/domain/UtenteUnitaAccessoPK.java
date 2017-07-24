@@ -1,11 +1,12 @@
 package it.cnr.rsi.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import java.io.Serializable;
-import javax.persistence.*;
 
 /**
  * The primary key class for the UTENTE_UNITA_ACCESSO database table.
- * 
+ *
  */
 @Embeddable
 public class UtenteUnitaAccessoPK implements Serializable {
@@ -50,7 +51,7 @@ public class UtenteUnitaAccessoPK implements Serializable {
 			return false;
 		}
 		UtenteUnitaAccessoPK castOther = (UtenteUnitaAccessoPK)other;
-		return 
+		return
 			this.cdUtente.equals(castOther.cdUtente)
 			&& this.cdUnitaOrganizzativa.equals(castOther.cdUnitaOrganizzativa)
 			&& this.cdAccesso.equals(castOther.cdAccesso);
@@ -62,7 +63,7 @@ public class UtenteUnitaAccessoPK implements Serializable {
 		hash = hash * prime + this.cdUtente.hashCode();
 		hash = hash * prime + this.cdUnitaOrganizzativa.hashCode();
 		hash = hash * prime + this.cdAccesso.hashCode();
-		
+
 		return hash;
 	}
 }

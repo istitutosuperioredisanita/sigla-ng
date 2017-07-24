@@ -140,31 +140,28 @@ margin-top: 5px;
         right: 13px;
         left: auto;
     }
+}
+.Header-navToggle {
+    border: none;
+    color: white;
+    background: transparent;
+}
 
+svg {
+    fill: #fff;
+    height: 3rem;
+    width: 3rem;
+}
 
-    .Header-navToggle {
-        border: none;
-        color: white;
-        background: transparent;
-    }
+svg.hidden {
+    display: none;
+}
 
-    svg {
-        fill: #fff;
-        height: 3rem;
-        width: 3rem;
-    }
-
-    svg.hidden {
-        display: none;
-    }
-
-    .Header-toggleText {
-        margin-top: -0.6rem;
-        display: block;
-        letter-spacing: .1em!important;
-        font-weight: 700!important;
-        font-size: 0.9rem!important;
-        text-transform: uppercase;
-    }
-
+.Header-toggleText {
+    margin-top: -0.6rem;
+    display: block;
+    letter-spacing: .1em!important;
+    font-weight: 700!important;
+    font-size: 0.9rem!important;
+    text-transform: uppercase;
 }

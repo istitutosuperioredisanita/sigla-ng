@@ -14,6 +14,7 @@ export * from './login/login.component';
 export * from './login/login.service';
 export * from './login/login-modal.service';
 export * from './constants/pagination.constants';
+export * from './constants/events.service';
 export * from './user/account.model';
 export * from './user/user.model';
 export * from './user/user.context.model';
@@ -22,3 +23,4 @@ export * from './shared-libs.module';
 export * from './shared-common.module';
 export * from './shared.module';
 export * from './auth/user-route-access-service';
+

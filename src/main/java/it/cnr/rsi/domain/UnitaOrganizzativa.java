@@ -1,7 +1,7 @@
 package it.cnr.rsi.domain;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * The persistent class for the UNITA_ORGANIZZATIVA database table.
- * 
+ *
  */
 @Entity
 @Table(name="UNITA_ORGANIZZATIVA")
@@ -114,7 +114,7 @@ public class UnitaOrganizzativa implements Serializable {
 	//bi-directional many-to-one association to UnitaOrganizzativa
 	@OneToMany(mappedBy="unitaOrganizzativa")
 	private List<UtenteUnitaAccesso> utenteUnitaAccessos;
-	
+
 	public UnitaOrganizzativa() {
 	}
 

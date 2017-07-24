@@ -1,11 +1,12 @@
 package it.cnr.rsi.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import java.io.Serializable;
-import javax.persistence.*;
 
 /**
  * The primary key class for the ASS_BP_ACCESSO database table.
- * 
+ *
  */
 @Embeddable
 public class AssBpAccessoPK implements Serializable {
@@ -41,7 +42,7 @@ public class AssBpAccessoPK implements Serializable {
 			return false;
 		}
 		AssBpAccessoPK castOther = (AssBpAccessoPK)other;
-		return 
+		return
 			this.cdAccesso.equals(castOther.cdAccesso)
 			&& this.businessProcess.equals(castOther.businessProcess);
 	}
@@ -51,7 +52,7 @@ public class AssBpAccessoPK implements Serializable {
 		int hash = 17;
 		hash = hash * prime + this.cdAccesso.hashCode();
 		hash = hash * prime + this.businessProcess.hashCode();
-		
+
 		return hash;
 	}
 }

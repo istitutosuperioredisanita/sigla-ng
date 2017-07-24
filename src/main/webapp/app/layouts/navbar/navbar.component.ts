@@ -4,12 +4,14 @@ import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiLanguageService } from 'ng-jhipster';
 
 import { ProfileService } from '../profiles/profile.service'; // FIXME barrel doesnt work here
-import { JhiLanguageHelper, Principal, LoginModalService, LoginService } from '../../shared';
+import { JhiLanguageHelper, Principal, LoginModalService, LoginService, EventsService } from '../../shared';
 import { ContextComponent} from '../../context';
+import { Preferiti } from '../../context/preferiti.model';
 
 import { VERSION, DEBUG_INFO_ENABLED } from '../../app.constants';
 
 import { WorkspaceService } from '../../workspace/workspace.service';
+import { NavbarService } from './navbar.service';
 
 @Component({
     selector: 'jhi-navbar',
@@ -27,7 +29,8 @@ export class NavbarComponent implements OnInit {
     modalRef: NgbModalRef;
     version: string;
     hidden: boolean;
-
+    preferiti: Preferiti[];
+    
     constructor(
         private loginService: LoginService,
         private languageHelper: JhiLanguageHelper,
@@ -36,12 +39,13 @@ export class NavbarComponent implements OnInit {
         private loginModalService: LoginModalService,
         private profileService: ProfileService,
         private router: Router,
-        private workspaceService: WorkspaceService
+        private workspaceService: WorkspaceService,
+        public nav: NavbarService,
+        public eventsService: EventsService
     ) {
         this.version = DEBUG_INFO_ENABLED ? 'v. ' + VERSION : '';
         this.isNavbarCollapsed = true;
         this.languageService.addLocation('home');
-
         workspaceService.isMenuHidden()
             .subscribe(hidden => this.hidden = hidden);
 
@@ -55,6 +59,9 @@ export class NavbarComponent implements OnInit {
             this.profileService.getProfileInfo().subscribe(profileInfo => {
                 this.inProduction = profileInfo.inProduction;
                 this.swaggerEnabled = profileInfo.swaggerEnabled;
+            });
+            this.workspaceService.getPreferiti().subscribe(preferiti => {
+                this.preferiti = preferiti;
             });
         }
     }
@@ -91,5 +98,9 @@ export class NavbarComponent implements OnInit {
 
     setHidden(hidden: boolean) {
         this.workspaceService.menuHidden(hidden);
+    }
+
+    openPreferiti(cdNodo: string) {
+        this.eventsService.broadcast('onPreferitiSelected', cdNodo);
     }
 }
