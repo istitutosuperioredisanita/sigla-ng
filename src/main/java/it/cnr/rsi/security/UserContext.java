@@ -1,22 +1,15 @@
 package it.cnr.rsi.security;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.cnr.rsi.domain.Utente;
-
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class UserContext implements UserDetails {
 	private static final long serialVersionUID = 1L;
@@ -39,7 +32,7 @@ public class UserContext implements UserDetails {
 	public Serializable getAttribute(String key) {
 		return attributes.get(key);
 	}
-	
+
 	@Override
 	@JsonIgnore
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -55,7 +48,7 @@ public class UserContext implements UserDetails {
 				.map(x -> x.getAuthority())
 				.collect(Collectors.toList());
 	}
-	
+
 	@Override
 	@JsonIgnore
 	public String getPassword() {
@@ -94,7 +87,7 @@ public class UserContext implements UserDetails {
     public Long getId() {
         return 0L;
     }
-	
+
     public String getLogin() {
         return Optional.ofNullable((String)attributes.get("login")).orElse(currentUser.getCdUtente());
     }
@@ -106,7 +99,7 @@ public class UserContext implements UserDetails {
     public String getLastName() {
         return Optional.ofNullable((String)attributes.get("lastName")).orElse(currentUser.getCognome());
     }
-	
+
     public String getEmail() {
         return Optional.ofNullable((String)attributes.get("email")).orElse("");
     }

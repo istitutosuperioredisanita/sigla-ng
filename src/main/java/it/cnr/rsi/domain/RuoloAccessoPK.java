@@ -1,11 +1,12 @@
 package it.cnr.rsi.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import java.io.Serializable;
-import javax.persistence.*;
 
 /**
  * The primary key class for the RUOLO_ACCESSO database table.
- * 
+ *
  */
 @Embeddable
 public class RuoloAccessoPK implements Serializable {
@@ -41,7 +42,7 @@ public class RuoloAccessoPK implements Serializable {
 			return false;
 		}
 		RuoloAccessoPK castOther = (RuoloAccessoPK)other;
-		return 
+		return
 			this.cdRuolo.equals(castOther.cdRuolo)
 			&& this.cdAccesso.equals(castOther.cdAccesso);
 	}
@@ -51,7 +52,7 @@ public class RuoloAccessoPK implements Serializable {
 		int hash = 17;
 		hash = hash * prime + this.cdRuolo.hashCode();
 		hash = hash * prime + this.cdAccesso.hashCode();
-		
+
 		return hash;
 	}
 }

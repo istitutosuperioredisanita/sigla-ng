@@ -3,17 +3,6 @@ package it.cnr.rsi.service;
 import it.cnr.rsi.domain.AlberoMain;
 import it.cnr.rsi.domain.TreeNode;
 import it.cnr.rsi.repository.AlberoMainRepository;
-
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.transaction.Transactional;
-
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.HashSetValuedHashMap;
 import org.apache.commons.lang3.tuple.Pair;
@@ -21,6 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by francesco on 07/03/17.
@@ -32,7 +26,7 @@ public class AlberoMainService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AlberoMainService.class);
     public static final String ROOT = "ROOT";
 
-    private AlberoMainRepository alberoMainRepository;    
+    private AlberoMainRepository alberoMainRepository;
     private AccessoService accessoService;
 
     public AlberoMainService(AlberoMainRepository alberoMainRepository, AccessoService accessoService) {
@@ -63,10 +57,11 @@ public class AlberoMainService {
     }
 
     private List<TreeNode> orderedValues(Collection<AlberoMain> values) {
-        return  values
+        return values
                 .stream()
                 .sorted(Comparator.comparingInt(node -> node.getPgOrdinamento().intValue()))
                 .map(node -> new TreeNode(node.getCdNodo(), node.getDsNodo(), node.getBusinessProcess(), node.getBreadcrumb()))
+                .map(TreeNode.class::cast)
                 .collect(Collectors.toList());
     }
 

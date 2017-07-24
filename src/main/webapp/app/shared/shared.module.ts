@@ -15,7 +15,8 @@ import {
     LoginModalService,
     Principal,
     HasAnyAuthorityDirective,
-    JhiLoginModalComponent
+    JhiLoginModalComponent,
+    EventsService
 } from './';
 import {ContextComponent} from '../context';
 
@@ -40,7 +41,8 @@ import {ContextComponent} from '../context';
         AuthServerProvider,
         AuthService,
         UserService,
-        DatePipe
+        DatePipe,
+        EventsService
     ],
     entryComponents: [JhiLoginModalComponent],
     exports: [

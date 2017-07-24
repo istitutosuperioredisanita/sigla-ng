@@ -1,22 +1,15 @@
 package it.cnr.rsi.domain;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 
 /**
  * The persistent class for the UTENTE database table.
- * 
+ *
  */
 @Entity
 @NamedQuery(name="Utente.findAll", query="SELECT u FROM Utente u")
@@ -447,7 +440,7 @@ public class Utente implements Serializable{
 
 		return utenteUnitaRuolo;
 	}
-	
+
 	public boolean isUtenteSupervisore() {
 		return getFlSupervisore().equalsIgnoreCase("Y");
 	}
