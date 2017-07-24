@@ -1,14 +1,14 @@
 package it.cnr.rsi.domain;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 
 /**
  * The persistent class for the ASS_BP_ACCESSO database table.
- * 
+ *
  */
 @Entity
 @Table(name="ASS_BP_ACCESSO")

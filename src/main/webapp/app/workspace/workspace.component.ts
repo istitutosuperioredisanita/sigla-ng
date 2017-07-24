@@ -91,15 +91,18 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
             }
             let siglaTitle = this.container.nativeElement.getElementsByTagName('title')[0].innerHTML;
             let siglaPageTitle = this.container.nativeElement.getElementsByTagName('sigla-page-title')[0].innerHTML;
-            this.siglaPageTitle = this.leaf.breadcrumbS + ' - ' + siglaTitle + siglaPageTitle;
+            this.container.nativeElement
+                .getElementsByTagName('sigla-page-title')[0].innerHTML = this.leaf.breadcrumbS + ' - ' + siglaTitle + siglaPageTitle;
         });
     }
 
     private startRefreshing() {
         this.isRequesting = true;
+        document.body.classList.add('cursor-wait');
     }
 
     private stopRefreshing() {
         this.isRequesting = false;
+        document.body.classList.remove('cursor-wait');
     }
 }

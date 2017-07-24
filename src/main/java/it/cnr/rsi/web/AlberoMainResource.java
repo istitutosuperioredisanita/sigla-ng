@@ -5,7 +5,6 @@ import it.cnr.rsi.domain.TreeNode;
 import it.cnr.rsi.repository.AlberoMainRepository;
 import it.cnr.rsi.security.UserContext;
 import it.cnr.rsi.service.AlberoMainService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -41,7 +40,7 @@ public class AlberoMainResource {
     @GetMapping(API_ALBERO_MAIN)
     public Map<String, List<TreeNode>> tree(){
     	UserContext userDetails = ContextResource.getUserDetails();
-    	
+
         LOGGER.info("GET Tree for User: {} esercizio {} and Unita Organizzativa: {}", userDetails.getUsername(), userDetails.getEsercizio(), userDetails.getUo());
         return alberoMainService.tree(userDetails.getUsername(), userDetails.getEsercizio(), userDetails.getUo());
     }

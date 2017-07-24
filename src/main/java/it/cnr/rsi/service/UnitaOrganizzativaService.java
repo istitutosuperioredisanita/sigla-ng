@@ -6,16 +6,14 @@ import it.cnr.rsi.domain.Utente;
 import it.cnr.rsi.repository.CdrRepository;
 import it.cnr.rsi.repository.UnitaOrganizzativaRepository;
 import it.cnr.rsi.repository.UtenteRepository;
-
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.transaction.Transactional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class UnitaOrganizzativaService {
@@ -25,11 +23,11 @@ public class UnitaOrganizzativaService {
 	private CdrRepository cdrRepository;
 
 	private UtenteRepository utenteRepository;
-	
+
 	public UnitaOrganizzativaService(UnitaOrganizzativaRepository unitaOrganizzativaRepository, UtenteRepository utenteRepository, CdrRepository cdrRepository) {
 		this.unitaOrganizzativaRepository = unitaOrganizzativaRepository;
 		this.utenteRepository = utenteRepository;
-		this.cdrRepository = cdrRepository; 
+		this.cdrRepository = cdrRepository;
 	}
 
 	@Transactional
@@ -41,7 +39,7 @@ public class UnitaOrganizzativaService {
 			uosByAccessi = unitaOrganizzativaRepository.findUnitaOrganizzativeValida(esercizio, cds);
 		} else {
 			uosByAccessi = Stream.concat(
-					unitaOrganizzativaRepository.findUnitaOrganizzativeAbilitateByAccesso(userId, esercizio, cds), 
+					unitaOrganizzativaRepository.findUnitaOrganizzativeAbilitateByAccesso(userId, esercizio, cds),
 					unitaOrganizzativaRepository.findUnitaOrganizzativeAbilitateByRuolo(userId, esercizio, cds));
 		}
 		return uosByAccessi
@@ -59,7 +57,7 @@ public class UnitaOrganizzativaService {
 			cdsByAccessi = unitaOrganizzativaRepository.findCdsValido(esercizio, cdUnitaOrganizzativa);
 		} else {
 			cdsByAccessi = Stream.concat(
-					unitaOrganizzativaRepository.findCdsAbilitatiByAccesso(userId, esercizio, cdUnitaOrganizzativa), 
+					unitaOrganizzativaRepository.findCdsAbilitatiByAccesso(userId, esercizio, cdUnitaOrganizzativa),
 					unitaOrganizzativaRepository.findCdsAbilitatiByRuolo(userId, esercizio, cdUnitaOrganizzativa));
 		}
 		return cdsByAccessi

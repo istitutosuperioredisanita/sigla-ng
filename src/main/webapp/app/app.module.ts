@@ -12,6 +12,7 @@ import { SiglaAccountModule } from './account/account.module';
 import { SiglaEntityModule } from './entities/entity.module';
 import { SiglaWorkspaceModule } from './workspace/workspace.module';
 
+import { NavbarService } from './layouts';
 import { LayoutRoutingModule } from './layouts';
 import { customHttpProvider } from './blocks/interceptor/http.provider';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
@@ -55,7 +56,8 @@ import {
         PaginationConfig,
         UserRouteAccessService,
         ContextService,
-        LocalStateStorageService
+        LocalStateStorageService,
+        NavbarService
     ],
     bootstrap: [ JhiMainComponent ]
 })
