@@ -1,6 +1,7 @@
 package it.cnr.rsi.service;
 
 import it.cnr.rsi.domain.Preferiti;
+import it.cnr.rsi.domain.Utente;
 import it.cnr.rsi.repository.AlberoMainRepository;
 import it.cnr.rsi.repository.PreferitiRepository;
 import it.cnr.rsi.repository.UtenteRepository;
@@ -15,6 +16,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class UtenteService implements UserDetailsService {
@@ -43,11 +45,15 @@ public class UtenteService implements UserDetailsService {
 	@Transactional
 	public UserContext loadUserByUid(String uid) throws UsernameNotFoundException {
 		LOGGER.info("Find user by uid {}", uid);
-		return new UserContext(utenteRepository.findUsersForUid(uid).reduce((a, b) -> {
-            throw new IllegalStateException("Multiple elements: " + a + ", " + b);
-        })
-        .get());
+		return new UserContext(utenteRepository.findUsersForUid(uid).findAny().get());
 	}
+
+    @Transactional
+    public Stream<Utente> findUsersForUid(String uid) throws UsernameNotFoundException {
+        LOGGER.info("Find users by uid {}", uid);
+        return utenteRepository.findUsersForUid(uid);
+    }
+
     @Transactional
     public List<Preferiti> findPreferiti(String uid) {
         LOGGER.info("Find preferiti by uid {}", uid);

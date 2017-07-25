@@ -19,7 +19,6 @@ export class LoginService {
 
     login (credentials, callback?) {
         let cb = callback || function() {};
-
         return new Promise((resolve, reject) => {
             this.authServerProvider.login(credentials).subscribe(data => {
                 this.authServerProvider.loginWildfly(credentials, this.localStateStorageService.getUserContext()).subscribe(dataWildfly => {
@@ -34,7 +33,6 @@ export class LoginService {
                     });
                 return cb();
             }, err => {
-                this.logout();
                 reject(err);
                 return cb(err);
             });

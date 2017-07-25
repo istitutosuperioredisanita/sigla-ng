@@ -30,8 +30,10 @@ export class AuthExpiredInterceptor extends HttpInterceptor {
                 if (to.name === 'accessdenied') {
                     self.stateStorageService.storePreviousState(to.name, toParams);
                 }
-                loginService.logoutAndRedirect();
-                return Observable.empty();
+                if (error.url.indexOf('/api/authentication') === -1) {
+                    loginService.logoutAndRedirect();
+                    return Observable.empty();
+                }
             }
             return Observable.throw(error);
         });
