@@ -17,7 +17,7 @@
     "@angular/router": "3.4.9",
     "@ng-bootstrap/ng-bootstrap": "1.0.0-alpha.21",
     "@types/lodash": "^4.14.61",
-    "angular-tree-component": "^3.5.0",
+    "angular-tree-component": "^3.8.0",
     "angular2-cookie": "1.2.6",
     "angular2-infinite-scroll": "0.3.4",
     "bootstrap": "4.0.0-alpha.6",
