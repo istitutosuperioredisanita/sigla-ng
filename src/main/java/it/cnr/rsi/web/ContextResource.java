@@ -1,6 +1,7 @@
 package it.cnr.rsi.web;
 
 import it.cnr.rsi.domain.Preferiti;
+import it.cnr.rsi.domain.Utente;
 import it.cnr.rsi.security.UserContext;
 import it.cnr.rsi.service.EsercizioBaseService;
 import it.cnr.rsi.service.UnitaOrganizzativaService;
@@ -32,7 +33,8 @@ public class ContextResource {
         API_UO = "/uo",
         API_CDS = "/cds",
         API_CDR = "/cdr",
-        API_PREFERITI = "/preferiti";
+        API_PREFERITI = "/preferiti",
+        API_UTENTI_MULTIPLI = "/users";
 
     private EsercizioBaseService esercizioBaseService;
     private UnitaOrganizzativaService unitaOrganizzativaService;
@@ -92,6 +94,13 @@ public class ContextResource {
         UserContext userDetails = getUserDetails();
         LOGGER.info("GET preferiti for User: {}", userDetails.getUsername());
         return utenteService.findPreferiti(userDetails.getUsername());
+    }
+
+    @GetMapping(API_UTENTI_MULTIPLI)
+    public List<Utente> users(){
+        UserContext userDetails = getUserDetails();
+        LOGGER.info("GET preferiti for User: {}", userDetails.getUsername());
+        return utenteService.findUsersForUid(userDetails.getLogin()).collect(Collectors.toList());
     }
 
     @PostMapping
