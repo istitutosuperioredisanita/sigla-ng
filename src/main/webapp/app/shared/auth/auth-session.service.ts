@@ -39,6 +39,17 @@ export class AuthServerProvider {
         });
     }
 
+    loginMultiploWildfly (utenteMultiplo: string): Observable<any> {
+        let data = 'main.utente_multiplo=' + utenteMultiplo +
+            '&comando=doEntraUtenteMultiplo';
+        let headers = new Headers ({
+            'Content-Type': 'application/x-www-form-urlencoded'
+        });
+        return this.http.post('/SIGLA/Login.do', data, {
+            headers: headers
+        });
+    }
+
     logoutWildfly (): Observable<any> {
         let data = 'comando=doLogout';
         let headers = new Headers ({

@@ -344,8 +344,6 @@ ul.freesearch > li > a  {
     padding: .50rem;
     border-radius: .25rem;
     margin-bottom: .25rem;
-    display: inline-table;
-    width: 100%;
 }
 
 .cursor-wait {
