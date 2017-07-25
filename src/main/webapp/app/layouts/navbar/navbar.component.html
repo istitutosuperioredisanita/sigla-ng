@@ -1,6 +1,6 @@
 <nav class="navbar navbar-inverse navbar-toggleable-md jh-navbar">
 
-    <button *ngIf="nav.burgherMenuVisible" (click)="setHidden(!hidden)" class="Header-button Header-navToggle" data-action="toggle-sidebar">
+    <button *ngIf="router.url === '/workspace'" (click)="setHidden(!hidden)" class="Header-button Header-navToggle" data-action="toggle-sidebar">
         <svg [ngClass]="{'hidden': hidden}" class="Header-navToggleIcon Header-navToggleIcon--open" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
             <path d="M0 0h24v24H0z" fill="none"></path>
             <path d="M19 6.4L17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"></path>
@@ -84,22 +84,6 @@
                 </ul>
             </li>
             <jhi-context *ngSwitchCase="true" [isNavbar]="true" class="display-inherit">Loading context.....</jhi-context>
-            <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer">
-                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-preferiti">
-                    <span>
-                        <i class="fa fa-star text-warning" aria-hidden="true"></i>
-                        <span class="text-warning">Preferiti</span>
-                        <b class="caret"></b>
-                    </span>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
-                    <li *ngFor="let prefer of preferiti">
-                        <a class="dropdown-item" (click)="openPreferiti(prefer.cdNodo)">
-                            <span>{{prefer.descrizione}}</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
             <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu">
                   <span *ngIf="!getImageUrl()">

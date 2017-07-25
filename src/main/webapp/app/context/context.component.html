@@ -150,3 +150,19 @@
         </li>
     </ul>
 </li>
+<li *ngIf="isNavbar && router.url === '/workspace'" ngbDropdown class="nav-item dropdown pointer">
+    <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-preferiti">
+        <span>
+            <i class="fa fa-star text-warning" aria-hidden="true"></i>
+            <span class="text-warning">Preferiti</span>
+            <b class="caret"></b>
+        </span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
+        <li *ngFor="let prefer of contextService.preferiti">
+            <a class="dropdown-item" (click)="openPreferiti(prefer.cdNodo)">
+                <span>{{prefer.descrizione}}</span>
+            </a>
+        </li>
+    </ul>
+</li>

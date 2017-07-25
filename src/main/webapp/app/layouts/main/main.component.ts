@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, NavigationEnd, RoutesRecognized } from '@angular/router';
-import { NavbarService } from '../navbar/navbar.service';
-
 import { JhiLanguageHelper, StateStorageService } from '../../shared';
 
 @Component({
@@ -13,8 +11,7 @@ export class JhiMainComponent implements OnInit {
     constructor(
         private jhiLanguageHelper: JhiLanguageHelper,
         private router: Router,
-        private $storageService: StateStorageService,
-        public nav: NavbarService
+        private $storageService: StateStorageService
     ) {}
 
     private getPageTitle(routeSnapshot: ActivatedRouteSnapshot) {
@@ -31,11 +28,6 @@ export class JhiMainComponent implements OnInit {
                 this.jhiLanguageHelper.updateTitle(this.getPageTitle(this.router.routerState.snapshot.root));
             }
             if (event instanceof RoutesRecognized) {
-                if (event.url === '/workspace') {
-                    this.nav.showBurgherMenu();
-                } else {
-                    this.nav.hideBurgherMenu();
-                }
                 let params = {};
                 let destinationData = {};
                 let destinationName = '';
