@@ -3,10 +3,11 @@ import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 import { JhiLanguageService } from 'ng-jhipster';
 import { Router } from '@angular/router';
 import { ContextService } from './context.service';
-import { Principal, UserContext, JhiLanguageHelper} from '../shared';
+import { Principal, UserContext, JhiLanguageHelper, EventsService} from '../shared';
 import { LocalStateStorageService } from '../shared/auth/local-storage.service';
 import { Observable } from 'rxjs/Observable';
 import { Pair } from './pair.model';
+import { WorkspaceService } from '../workspace/workspace.service';
 
 @Component({
     selector: 'jhi-context',
@@ -21,11 +22,13 @@ export class ContextComponent {
 
     constructor(
         public contextService: ContextService,
-        private router: Router,
+        public router: Router,
         public principal: Principal,
         private localStateStorageService: LocalStateStorageService,
         private languageService: JhiLanguageService,
-        private languageHelper: JhiLanguageHelper
+        private languageHelper: JhiLanguageHelper,
+        private workspaceService: WorkspaceService,
+        private eventsService: EventsService
     ) {
         this.languageService.setLocations(['settings', 'home', 'login']);
     }
@@ -131,4 +134,7 @@ export class ContextComponent {
         return this.contextService.uoModel !== undefined ? this.contextService.uoModel.first : '';
     }
 
+    openPreferiti(cdNodo: string) {
+        this.eventsService.broadcast('onPreferitiSelected', cdNodo);
+    }
 }
