@@ -84,15 +84,22 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
             for (let script of scripts){
                 let s = document.createElement('script');
                 s.type = 'text/javascript';
-                if (script.text && script.text.indexOf('baseTag') === -1) {
+                if (script.text && !(
+                    script.text.indexOf('baseTag') === -1 ||
+                    script.text.indexOf('window.top.AttendereText') === -1 ||
+                    script.text.indexOf('restoreWorkspace') === -1)
+                ) {
                     s.text = script.text;
-                    this.scriptContainer.nativeElement.appendChild(s);
+                    if (this.scriptContainer) {
+                        this.scriptContainer.nativeElement.appendChild(s);
+                    }
                 }
             }
             let siglaTitle = this.container.nativeElement.getElementsByTagName('title')[0].innerHTML;
-            let siglaPageTitle = this.container.nativeElement.getElementsByTagName('sigla-page-title')[0].innerHTML;
-            this.container.nativeElement
-                .getElementsByTagName('sigla-page-title')[0].innerHTML = this.leaf.breadcrumbS + ' - ' + siglaTitle + siglaPageTitle;
+            let siglaPageTitle = this.container.nativeElement.getElementsByTagName('sigla-page-title')[0];
+            if (siglaPageTitle) {
+                siglaPageTitle.innerHTML = this.leaf.breadcrumbS + ' - ' + siglaTitle + siglaPageTitle.innerHTML;
+            }
         });
     }
 
