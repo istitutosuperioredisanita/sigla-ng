@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Http, Response, URLSearchParams } from '@angular/http';
 import { Observable, Observer } from 'rxjs/Rx';
 import { Leaf } from './leaf.model';
-import { Preferiti } from '../context/preferiti.model';
 @Injectable()
 export class WorkspaceService {
 
@@ -28,20 +27,6 @@ export class WorkspaceService {
     openMenu(nodoid: string): Observable<string> {
         let params: URLSearchParams = new URLSearchParams();
         params.set('comando', 'doSelezionaMenu(' + nodoid + ')');
-        return this.http.get('/SIGLA/GestioneMenu.do', {
-           search: params
-        })
-        .map((res: Response) => res.text());
-    }
-
-    getPreferiti(): Observable<Preferiti[]> {
-        let params: URLSearchParams = new URLSearchParams();
-        return this.http.get('/api/context/preferiti', {search: params}).map((res: Response) => res.json());
-    }
-
-    openPreferiti(businessProcessName: string, tiFunzione: string): Observable<string> {
-        let params: URLSearchParams = new URLSearchParams();
-        params.set('comando', 'doCallPreferiti(' + businessProcessName + ',' + tiFunzione + ')');
         return this.http.get('/SIGLA/GestioneMenu.do', {
            search: params
         })

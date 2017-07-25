@@ -3,6 +3,7 @@ import { Http, Response, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { UserContext, Account} from '../shared';
 import { Pair } from './pair.model';
+import { Preferiti } from '../context/preferiti.model';
 
 @Injectable()
 export class ContextService  {
@@ -14,6 +15,7 @@ export class ContextService  {
     cdsModel: Pair;
     uoModel: Pair;
     cdrModel: Pair;
+    preferiti: Preferiti[];
 
     constructor(
         private http: Http
@@ -26,6 +28,16 @@ export class ContextService  {
 
     getEsercizi(): Observable<number[]> {
         return this.http.get('/api/context/esercizio').map((res: Response) => res.json());
+    }
+
+    findPreferiti(): void {
+        this.getPreferiti()
+            .subscribe(preferiti => this.preferiti = preferiti);
+    }
+
+    getPreferiti(): Observable<Preferiti[]> {
+        let params: URLSearchParams = new URLSearchParams();
+        return this.http.get('/api/context/preferiti', {search: params}).map((res: Response) => res.json());
     }
 
     findUo(account: Account): void {
