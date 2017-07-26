@@ -86,6 +86,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
                 s.type = 'text/javascript';
                 if (script.text && !(
                     script.text.indexOf('baseTag') !== -1 ||
+                    script.text.indexOf('document.write(document.title)') !== -1 ||
                     script.text.indexOf('window.top.AttendereText') !== -1 ||
                     script.text.indexOf('restoreWorkspace') !== -1)
                 ) {
