@@ -13,16 +13,24 @@ import java.util.stream.Collectors;
 
 public class UserContext implements UserDetails {
 	private static final long serialVersionUID = 1L;
+    public static final GrantedAuthority ROLE_USER = new SimpleGrantedAuthority("ROLE_USER");
+    public static final GrantedAuthority ROLE_SUPERUSER = new SimpleGrantedAuthority("ROLE_SUPERUSER");
+    public static final GrantedAuthority ROLE_ADMIN = new SimpleGrantedAuthority("ROLE_ADMIN");
 
 	@JsonIgnore
 	private Utente currentUser;
 
 	private Map<String, Serializable> attributes;
+    private Map<String, List<GrantedAuthority>> roles;
 
 	public UserContext(Utente currentUser) {
 		super();
 		this.currentUser = currentUser;
 		this.attributes = new HashMap<String, Serializable>();
+		this.roles = new HashMap<String, List<GrantedAuthority>>();
+        this.roles.put("U", Arrays.asList(ROLE_USER));
+        this.roles.put("A", Arrays.asList(ROLE_USER, ROLE_SUPERUSER));
+        this.roles.put("S", Arrays.asList(ROLE_USER, ROLE_ADMIN));
 	}
 
 	public Serializable addAttribute(String key, Serializable value) {
@@ -36,9 +44,10 @@ public class UserContext implements UserDetails {
 	@Override
 	@JsonIgnore
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Collections.singletonList(
-				new SimpleGrantedAuthority("ROLE_USER")
-		);
+        return Optional.ofNullable(currentUser)
+            .map(Utente::getTiUtente)
+            .map(s -> roles.get(s))
+            .orElse(Arrays.asList(ROLE_USER));
 	}
 
 	@JsonProperty("authorities")

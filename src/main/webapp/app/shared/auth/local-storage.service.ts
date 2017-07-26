@@ -4,29 +4,27 @@ import { UserContext } from '../../shared';
 
 @Injectable()
 export class LocalStateStorageService {
-    private initUserContext = new UserContext(
-        new Date().getFullYear(), '', '', ''
-    );
     constructor(
         private $localStorage: LocalStorageService
     ) {}
 
-    getUserContext(): UserContext {
-        return this.$localStorage.retrieve('usercontext') || this.initUserContext;
+    getUserContext(username: string): UserContext {
+        return this.$localStorage.retrieve('usercontext-' + username) ||
+            new UserContext(new Date().getFullYear(), '', '', '');
     }
 
-    resetUserContext() {
-        this.$localStorage.clear('usercontext');
+    resetUserContext(username: string) {
+        this.$localStorage.clear('usercontext-' + username);
     }
 
-    storeEsercizio(esercizio: number) {
-        let userContext = this.getUserContext();
+    storeEsercizio(username: string, esercizio: number) {
+        let userContext = this.getUserContext(username);
         userContext.esercizio = esercizio;
         this.$localStorage.store('usercontext', userContext);
     }
 
-    storeUserContext(usercontext: UserContext) {
-        this.$localStorage.store('usercontext', usercontext);
+    storeUserContext(username: string, usercontext: UserContext) {
+        this.$localStorage.store('usercontext-' + username, usercontext);
     }
 
 }

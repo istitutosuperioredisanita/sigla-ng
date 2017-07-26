@@ -123,7 +123,12 @@ export class ContextService  {
 
     saveWildflyUserContext(userContext: UserContext): Observable<string> {
         let params: URLSearchParams = new URLSearchParams();
-        let parameter = [userContext.esercizio, userContext.cds, userContext.uo, userContext.cdr].join(',');
+        let parameter = [
+            userContext.esercizio,
+            String(userContext.cds),
+            String(userContext.uo),
+            String(userContext.cdr)
+        ].join(',');
         params.set('comando', 'doSelezionaContesto(' + parameter + ')');
         return this.http.get('/SIGLA/Login.do', {
            search: params

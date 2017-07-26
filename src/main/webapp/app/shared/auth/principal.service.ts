@@ -38,6 +38,19 @@ export class Principal {
         return Promise.resolve(false);
     }
 
+    notHaveAuthority (authorities: string[]): Promise<boolean> {
+        if (!this.authenticated || !this.userIdentity || !this.userIdentity.authorities) {
+            return Promise.resolve(false);
+        }
+
+        for (let i = 0; i < authorities.length; i++) {
+            if (this.userIdentity.authorities.indexOf(authorities[i]) !== -1) {
+                return Promise.resolve(false);
+            }
+        }
+        return Promise.resolve(true);
+    }
+
     hasAuthority (authority: string): Promise<boolean> {
         if (!this.authenticated) {
            return Promise.resolve(false);
@@ -68,7 +81,7 @@ export class Principal {
                 this.authenticated = true;
 
                 this.context.saveUserContext(
-                    this.localStateStorageService.getUserContext()
+                    this.localStateStorageService.getUserContext(this.userIdentity.login)
                 ).toPromise().then(usercontext => {
                     that.userIdentity = usercontext;
                     this.context.findEsercizi();

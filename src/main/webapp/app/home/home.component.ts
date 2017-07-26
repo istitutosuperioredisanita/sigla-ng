@@ -84,9 +84,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 name: 'authenticationSuccess',
                 content: 'Sending Authentication Success'
             });
-            if (this.localStateStorageService.getUserContext().cds) {
-                this.router.navigate(['workspace']);
-            }
+            this.principal.hasAnyAuthority(['ROLE_ADMIN', 'ROLE_SUPERUSER']).then(result => {
+                if (!result) {
+                    if (this.localStateStorageService.getUserContext(this.principal.getAccount().login).cds) {
+                        this.router.navigate(['workspace']);
+                    }
+                } else {
+                    this.router.navigate(['workspace']);
+                }
+            });
             // // previousState was set in the authExpiredInterceptor before being redirected to login modal.
             // // since login is succesful, go to stored previousState and clear previousState
             let previousState = this.stateStorageService.getPreviousState();

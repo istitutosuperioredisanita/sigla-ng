@@ -105,33 +105,33 @@ export class ContextComponent {
             .subscribe(identity => {
                 this.principal.authenticate(identity);
                 this.contextService.saveWildflyEsercizio(esercizio).subscribe();
-                this.localStateStorageService.storeEsercizio(esercizio);
+                this.localStateStorageService.storeEsercizio(this.principal.getAccount().login, esercizio);
             });
     }
 
     saveContext(): void {
         let userContext = new UserContext(
                 this.principal.getAccount().esercizio,
-                this.contextService.cdsModel.first,
-                this.contextService.uoModel.first,
-                this.contextService.cdrModel.first
+                Pair.getFirst(this.contextService.cdsModel),
+                Pair.getFirst(this.contextService.uoModel),
+                Pair.getFirst(this.contextService.cdrModel)
             );
         this.contextService
             .saveUserContext(userContext)
             .subscribe(identity => {
                 this.principal.authenticate(identity);
                 this.contextService.saveWildflyUserContext(userContext).subscribe();
-                this.localStateStorageService.storeUserContext(userContext);
+                this.localStateStorageService.storeUserContext(this.principal.getAccount().login, userContext);
             });
         this.router.navigate(['/workspace']);
     }
 
     getCodiceCdS(): string {
-        return this.contextService.cdsModel !== undefined ? this.contextService.cdsModel.first : '';
+        return Pair.getFirst(this.contextService.cdsModel);
     }
 
     getCodiceUo(): string {
-        return this.contextService.uoModel !== undefined ? this.contextService.uoModel.first : '';
+        return Pair.getFirst(this.contextService.uoModel);
     }
 
     openPreferiti(cdNodo: string) {
