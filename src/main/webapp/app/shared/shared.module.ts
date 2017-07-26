@@ -15,6 +15,7 @@ import {
     LoginModalService,
     Principal,
     HasAnyAuthorityDirective,
+    NotHaveAuthorityDirective,
     JhiLoginModalComponent,
     EventsService
 } from './';
@@ -28,6 +29,7 @@ import {ContextComponent} from '../context';
     declarations: [
         JhiLoginModalComponent,
         HasAnyAuthorityDirective,
+        NotHaveAuthorityDirective,
         ContextComponent
     ],
     providers: [
@@ -49,6 +51,7 @@ import {ContextComponent} from '../context';
         SiglaSharedCommonModule,
         JhiLoginModalComponent,
         HasAnyAuthorityDirective,
+        NotHaveAuthorityDirective,
         DatePipe,
         ContextComponent
     ],

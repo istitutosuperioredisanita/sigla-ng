@@ -21,7 +21,8 @@ export class LoginService {
         let cb = callback || function() {};
         return new Promise((resolve, reject) => {
             this.authServerProvider.login(credentials).subscribe(data => {
-                this.authServerProvider.loginWildfly(credentials, this.localStateStorageService.getUserContext()).subscribe(dataWildfly => {
+                this.authServerProvider.loginWildfly(credentials,
+                        this.localStateStorageService.getUserContext(credentials.username)).subscribe(dataWildfly => {
                     this.principal.identity(true).then(account => {
                             // After the login the language will be changed to
                             // the language selected by the user during his registration
