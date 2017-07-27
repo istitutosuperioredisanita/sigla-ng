@@ -153,7 +153,7 @@
             </li>
         </ul>
     </li>
-    <li *ngIf="isNavbar && router.url === '/workspace'" ngbDropdown class="nav-item dropdown pointer">
+    <li *ngIf="isNavbar && router.url === '/workspace' && contextService.preferiti.length > 0" ngbDropdown class="nav-item dropdown pointer">
         <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-preferiti">
             <span>
                 <i class="fa fa-star text-warning" aria-hidden="true"></i>

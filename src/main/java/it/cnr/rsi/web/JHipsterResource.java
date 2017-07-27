@@ -1,19 +1,22 @@
 package it.cnr.rsi.web;
 
+import it.cnr.rsi.security.UserContext;
+import it.cnr.rsi.service.UtenteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by francesco on 21/03/17.
@@ -27,6 +30,8 @@ public class JHipsterResource {
 
     @Autowired
     private Environment env;
+    @Autowired
+    private UtenteService utenteService;
 
     @GetMapping("/profile-info")
     public ResponseEntity<Map<String, Object>> profileInfo() {
@@ -46,7 +51,33 @@ public class JHipsterResource {
     @GetMapping("/account")
     public ResponseEntity<UserDetails> account() {
     	LOGGER.info("get account");
-        return ResponseEntity.ok(ContextResource.getUserDetails());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return ResponseEntity.ok(
+            Optional
+                .ofNullable(authentication)
+                .map(Authentication::getPrincipal)
+                .filter(principal -> principal instanceof UserContext)
+                .map(UserContext.class::cast)
+                .map(userContext ->
+                    userContext.users(utenteService.findUsersForUid(userContext.getLogin()).stream()
+                        .map(utente -> new UserContext(utente))
+                        .collect(Collectors.toList()))
+                )
+                .orElseThrow(() -> new RuntimeException("something went wrong " + authentication.toString()))
+        );
     }
 
+    @GetMapping("/account/{username}")
+    public ResponseEntity<UserDetails> account(@PathVariable String username) {
+        LOGGER.info("get account: {}", username);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return ResponseEntity.ok(
+            Optional
+            .ofNullable(authentication)
+            .map(Authentication::getPrincipal)
+            .filter(principal -> principal instanceof UserContext)
+            .map(UserContext.class::cast)
+            .map(userContext -> userContext.changeUsernameAndAuthority(username))
+            .orElseThrow(() -> new RuntimeException("something went wrong " + authentication.toString())));
+    }
 }

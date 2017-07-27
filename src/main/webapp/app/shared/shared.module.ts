@@ -13,11 +13,12 @@ import {
     StateStorageService,
     LoginService,
     LoginModalService,
+    MultipleUserModalService,
     Principal,
     HasAnyAuthorityDirective,
     NotHaveAuthorityDirective,
     JhiLoginModalComponent,
-    EventsService
+    JhiMultipleUserModalComponent
 } from './';
 import {ContextComponent} from '../context';
 
@@ -28,6 +29,7 @@ import {ContextComponent} from '../context';
     ],
     declarations: [
         JhiLoginModalComponent,
+        JhiMultipleUserModalComponent,
         HasAnyAuthorityDirective,
         NotHaveAuthorityDirective,
         ContextComponent
@@ -36,6 +38,7 @@ import {ContextComponent} from '../context';
         CookieService,
         LoginService,
         LoginModalService,
+        MultipleUserModalService,
         AccountService,
         StateStorageService,
         Principal,
@@ -43,13 +46,13 @@ import {ContextComponent} from '../context';
         AuthServerProvider,
         AuthService,
         UserService,
-        DatePipe,
-        EventsService
+        DatePipe
     ],
-    entryComponents: [JhiLoginModalComponent],
+    entryComponents: [JhiMultipleUserModalComponent],
     exports: [
         SiglaSharedCommonModule,
         JhiLoginModalComponent,
+        JhiMultipleUserModalComponent,
         HasAnyAuthorityDirective,
         NotHaveAuthorityDirective,
         DatePipe,
