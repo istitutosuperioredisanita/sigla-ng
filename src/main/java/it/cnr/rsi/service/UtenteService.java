@@ -33,23 +33,27 @@ public class UtenteService implements UserDetailsService {
 		this.alberoMainRepository = alberoMainRepository;
 	}
 
-	@Override
+    @Override
+    public UserContext loadUserByUsername(String username) {
+        return loadUserByUsername(username, "N");
+    }
+
 	@Transactional
-	public UserContext loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserContext loadUserByUsername(String username, String flAutenticazioneLdap) throws UsernameNotFoundException {
 		LOGGER.info("Find user by username {}", username);
 		return new UserContext(Optional.ofNullable(
 				utenteRepository.findUserWithAuthenticationLDAP(
-						Optional.ofNullable(username.toUpperCase()).orElse(""), "N"))
+						Optional.ofNullable(username.toUpperCase()).orElse(""), flAutenticazioneLdap))
 				.orElseThrow(() -> new UsernameNotFoundException("User not found")));
 	}
 	@Transactional
 	public UserContext loadUserByUid(String uid) throws UsernameNotFoundException {
 		LOGGER.info("Find user by uid {}", uid);
-		return new UserContext(utenteRepository.findUsersForUid(uid).findAny().get());
+		return new UserContext(findUsersForUid(uid).stream().findAny().get());
 	}
 
     @Transactional
-    public Stream<Utente> findUsersForUid(String uid) throws UsernameNotFoundException {
+    public List<Utente> findUsersForUid(String uid) throws UsernameNotFoundException {
         LOGGER.info("Find users by uid {}", uid);
         return utenteRepository.findUsersForUid(uid);
     }

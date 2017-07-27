@@ -1,0 +1,13 @@
+<div class="modal-header">
+    <h4 class="modal-title"><i aria-hidden="true" class="fa fa-user text-primary"></i> Selezionare l'utente applicativo con cui accedere</h4>
+</div>
+<div class="modal-body">
+    <div class="form-group">
+        <select class="form-control" [(ngModel)]="selectedUser">
+            <option *ngFor="let user of account.users" [value]="user.login" [selected]="user.login == account.username ? true : null">{{user.login}} - {{user.dsUtente}}</option>
+        </select>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary btn-block" data-dismiss="modal" (click)="confirm()">Conferma</button>
+</div>

@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, ViewChild, EventEmitter, Output } from '@angular/core';
-import { JhiLanguageService } from 'ng-jhipster';
-import { Principal, EventsService } from '../shared';
+import { Component, OnInit, OnDestroy, Input, ViewChild, EventEmitter, Output } from '@angular/core';
+import { EventManager, JhiLanguageService } from 'ng-jhipster';
+import { Principal } from '../shared';
 import { Leaf } from './leaf.model';
 import { WorkspaceService } from './workspace.service';
 import { Observable } from 'rxjs/Observable';
 import { TreeComponent, TreeNode } from 'angular-tree-component';
+import { Subscription } from 'rxjs/Rx';
 import * as _ from 'lodash';
 
 export class SIGLATreeNode {
@@ -18,12 +19,13 @@ export class SIGLATreeNode {
     templateUrl: './tree.component.html',
     styles: ['.node-wrapper {color: #0066CC;}']
 })
-export class SIGLATreeComponent implements OnInit {
+export class SIGLATreeComponent implements OnInit, OnDestroy {
     isRequesting: boolean;
     account: Account;
     leafs: Map<String, Leaf[]>;
     leafz: Leaf[] = [];
     nodes = [];
+    preferitiListener: Subscription;
     @ViewChild(TreeComponent) tree: TreeComponent;
     @Output() activateLeaf = new EventEmitter();
 
@@ -31,7 +33,7 @@ export class SIGLATreeComponent implements OnInit {
         private jhiLanguageService: JhiLanguageService,
         private workspaceService: WorkspaceService,
         private principal: Principal,
-        private eventsService: EventsService
+        private eventManager: EventManager
     ) {
         this.jhiLanguageService.setLocations(['workspace']);
     }
@@ -69,6 +71,7 @@ export class SIGLATreeComponent implements OnInit {
     }
 
     ngOnInit() {
+        let that = this;
         this.isRequesting = true;
         this.workspaceService.getTree().subscribe(
             leafs => {
@@ -87,15 +90,18 @@ export class SIGLATreeComponent implements OnInit {
         this.principal.identity().then((account) => {
             this.account = account;
         });
-        let that = this;
-        this.eventsService.on('onPreferitiSelected', function(cdNodo: string) {
+        this.preferitiListener = this.eventManager.subscribe('onPreferitiSelected', (message) => {
             let leaf = that.leafz.filter(v => {
-                return v.id === cdNodo;
+                return v.id === message.content;
             })[0];
             if (leaf) {
                 that.onSelectLeaf(leaf);
             }
         });
+    }
+
+    ngOnDestroy() {
+        this.eventManager.destroy(this.preferitiListener);
     }
 
     private getChildNodes(id): SIGLATreeNode[] {

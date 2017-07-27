@@ -444,4 +444,39 @@ public class Utente implements Serializable{
 	public boolean isUtenteSupervisore() {
 		return getFlSupervisore().equalsIgnoreCase("Y");
 	}
+
+    @Override
+    public String toString() {
+        return "Utente{" +
+            "cdUtente='" + cdUtente + '\'' +
+            ", cdCdr='" + cdCdr + '\'' +
+            ", cdCdsConfiguratore='" + cdCdsConfiguratore + '\'' +
+            ", cdDipartimento='" + cdDipartimento + '\'' +
+            ", cdGestore='" + cdGestore + '\'' +
+            ", cdRuoloSupervisore='" + cdRuoloSupervisore + '\'' +
+            ", cdUtenteTempl='" + cdUtenteTempl + '\'' +
+            ", cdUtenteUid='" + cdUtenteUid + '\'' +
+            ", cognome='" + cognome + '\'' +
+            ", dacr=" + dacr +
+            ", dsUtente='" + dsUtente + '\'' +
+            ", dtFineValidita=" + dtFineValidita +
+            ", dtInizioValidita=" + dtInizioValidita +
+            ", dtUltimaVarPassword=" + dtUltimaVarPassword +
+            ", dtUltimoAccesso=" + dtUltimoAccesso +
+            ", duva=" + duva +
+            ", flAltraProc='" + flAltraProc + '\'' +
+            ", flAttivaBlocco='" + flAttivaBlocco + '\'' +
+            ", flAutenticazioneLdap='" + flAutenticazioneLdap + '\'' +
+            ", flPasswordChange='" + flPasswordChange + '\'' +
+            ", flSupervisore='" + flSupervisore + '\'' +
+            ", flUtenteTempl='" + flUtenteTempl + '\'' +
+            ", indirizzo='" + indirizzo + '\'' +
+            ", nome='" + nome + '\'' +
+            ", password='" + password + '\'' +
+            ", pgVerRec=" + pgVerRec +
+            ", tiUtente='" + tiUtente + '\'' +
+            ", utcr='" + utcr + '\'' +
+            ", utuv='" + utuv + '\'' +
+            '}';
+    }
 }

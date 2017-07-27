@@ -20,17 +20,28 @@ public class UserContext implements UserDetails {
 	@JsonIgnore
 	private Utente currentUser;
 
+	private String username;
+    private Collection<? extends GrantedAuthority> authorities;
+
 	private Map<String, Serializable> attributes;
     private Map<String, List<GrantedAuthority>> roles;
+    private List<UserContext> users;
 
 	public UserContext(Utente currentUser) {
 		super();
-		this.currentUser = currentUser;
-		this.attributes = new HashMap<String, Serializable>();
-		this.roles = new HashMap<String, List<GrantedAuthority>>();
+        this.roles = new HashMap<String, List<GrantedAuthority>>();
         this.roles.put("U", Arrays.asList(ROLE_USER));
         this.roles.put("A", Arrays.asList(ROLE_USER, ROLE_SUPERUSER));
         this.roles.put("S", Arrays.asList(ROLE_USER, ROLE_ADMIN));
+
+		this.currentUser = currentUser;
+		this.username = currentUser.getCdUtente();
+        this.authorities = Optional.ofNullable(currentUser)
+            .map(Utente::getTiUtente)
+            .map(s -> roles.get(s))
+            .orElse(Arrays.asList(ROLE_USER));
+		this.attributes = new HashMap<String, Serializable>();
+
 	}
 
 	public Serializable addAttribute(String key, Serializable value) {
@@ -41,13 +52,14 @@ public class UserContext implements UserDetails {
 		return attributes.get(key);
 	}
 
-	@Override
+    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+        this.authorities = authorities;
+    }
+
+    @Override
 	@JsonIgnore
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Optional.ofNullable(currentUser)
-            .map(Utente::getTiUtente)
-            .map(s -> roles.get(s))
-            .orElse(Arrays.asList(ROLE_USER));
+        return authorities;
 	}
 
 	@JsonProperty("authorities")
@@ -66,10 +78,22 @@ public class UserContext implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return currentUser.getCdUtente();
+		return username;
 	}
 
-	@Override
+    public UserContext changeUsernameAndAuthority(String username) {
+        this.username = username;
+        this.setAuthorities(
+            this.users.stream()
+                .filter(userContext -> userContext.getUsername().equals(username))
+                .findAny()
+                .map(userContext -> userContext.getAuthorities())
+                .get()
+        );
+        return this;
+    }
+
+    @Override
 	public boolean isAccountNonExpired() {
 		// TODO Auto-generated method stub
 		return true;
@@ -130,4 +154,22 @@ public class UserContext implements UserDetails {
         return Optional.ofNullable((String)attributes.get("cdr")).orElse(null);
     }
 
+    public List<UserContext> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<UserContext> users) {
+        this.users = users;
+    }
+
+    public UserContext users(List<UserContext> users) {
+        this.users = users;
+        return this;
+    }
+
+    public String getDsUtente() {
+	    return Optional.ofNullable(currentUser)
+            .map(Utente::getDsUtente)
+            .orElse(null);
+    }
 }

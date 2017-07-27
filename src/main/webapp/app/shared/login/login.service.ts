@@ -23,14 +23,12 @@ export class LoginService {
             this.authServerProvider.login(credentials).subscribe(data => {
                 this.authServerProvider.loginWildfly(credentials,
                         this.localStateStorageService.getUserContext(credentials.username)).subscribe(dataWildfly => {
-                    this.principal.identity(true).then(account => {
-                            // After the login the language will be changed to
-                            // the language selected by the user during his registration
-                            if (account !== null) {
-                                this.languageService.changeLanguage(account.langKey);
-                            }
-                            resolve(data);
-                        });
+                            this.principal.identity(true).then(account => {
+                                if (account !== null) {
+                                    resolve(account);
+                                    this.languageService.changeLanguage(account.langKey);
+                                }
+                            });
                     });
                 return cb();
             }, err => {
@@ -53,4 +51,11 @@ export class LoginService {
         });
         this.principal.authenticate(null);
     }
+
+    loginMultiploWildfly (utenteMultiplo: string): void {
+        this.authServerProvider.loginMultiploWildfly(utenteMultiplo).subscribe(() => {
+            this.principal.identity(true, utenteMultiplo);
+        });
+    }
+
 }

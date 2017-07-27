@@ -7,10 +7,12 @@ export class Account {
         public langKey: string,
         public lastName: string,
         public login: string,
+        public dsUtente: string,
         public imageUrl: string,
         public esercizio: number,
         public cds: string,
         public uo: string,
-        public cdr: string
+        public cdr: string,
+        public users: Account[]
     ) { }
 }
