@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
-import { JhiLanguageService } from 'ng-jhipster';
+import { EventManager, JhiLanguageService } from 'ng-jhipster';
 import { Router } from '@angular/router';
 import { ContextService } from './context.service';
-import { Principal, UserContext, JhiLanguageHelper, EventsService} from '../shared';
+import { Principal, UserContext, JhiLanguageHelper} from '../shared';
 import { LocalStateStorageService } from '../shared/auth/local-storage.service';
 import { Observable } from 'rxjs/Observable';
 import { Pair } from './pair.model';
@@ -28,7 +28,7 @@ export class ContextComponent {
         private languageService: JhiLanguageService,
         private languageHelper: JhiLanguageHelper,
         private workspaceService: WorkspaceService,
-        private eventsService: EventsService
+        private eventManager: EventManager
     ) {
         this.languageService.setLocations(['settings', 'home', 'login']);
     }
@@ -135,6 +135,9 @@ export class ContextComponent {
     }
 
     openPreferiti(cdNodo: string) {
-        this.eventsService.broadcast('onPreferitiSelected', cdNodo);
+        this.eventManager.broadcast({
+                name: 'onPreferitiSelected',
+                content: cdNodo
+            });
     }
 }

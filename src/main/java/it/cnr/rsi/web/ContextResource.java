@@ -97,10 +97,12 @@ public class ContextResource {
     }
 
     @GetMapping(API_UTENTI_MULTIPLI)
-    public List<Utente> users(){
+    public List<UserContext> users(){
         UserContext userDetails = getUserDetails();
-        LOGGER.info("GET preferiti for User: {}", userDetails.getUsername());
-        return utenteService.findUsersForUid(userDetails.getLogin()).collect(Collectors.toList());
+        LOGGER.info("GET all users for User: {}", userDetails.getUsername());
+        return utenteService.findUsersForUid(userDetails.getLogin()).stream()
+            .map(utente -> new UserContext(utente))
+            .collect(Collectors.toList());
     }
 
     @PostMapping

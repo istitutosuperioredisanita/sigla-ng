@@ -6,8 +6,12 @@ import { Observable } from 'rxjs/Rx';
 export class AccountService  {
     constructor(private http: Http) { }
 
-    get(): Observable<any> {
-        return this.http.get('api/account').map((res: Response) => res.json());
+    get(user?: string): Observable<any> {
+        let url = 'api/account';
+        if (user) {
+            url += '/' + user;
+        }
+        return this.http.get(url).map((res: Response) => res.json());
     }
 
     save(account: any): Observable<Response> {

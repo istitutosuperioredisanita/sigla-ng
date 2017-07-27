@@ -63,7 +63,7 @@ export class Principal {
         });
     }
 
-    identity (force?: boolean): Promise<any> {
+    identity (force?: boolean, user?: string): Promise<any> {
         if (force === true) {
             this.userIdentity = undefined;
         }
@@ -74,23 +74,28 @@ export class Principal {
             return Promise.resolve(this.userIdentity);
         }
         // retrieve the userIdentity data from the server, update the identity object, and then resolve.
-        return this.account.get().toPromise().then(account => {
+        return this.account.get(user).toPromise().then(account => {
             if (account) {
                 let that = this;
                 this.userIdentity = account;
-                this.authenticated = true;
-
-                this.context.saveUserContext(
-                    this.localStateStorageService.getUserContext(this.userIdentity.login)
-                ).toPromise().then(usercontext => {
-                    that.userIdentity = usercontext;
-                    this.context.findEsercizi();
-                    this.context.findPreferiti();
-                    this.context.allCds();
-                    this.context.findCds(usercontext);
-                    this.context.findUo(usercontext);
-                    this.context.findCdr(usercontext);
-                });
+                if (user) {
+                    this.context.saveUserContext(
+                        this.localStateStorageService.getUserContext(this.userIdentity.login)
+                    ).toPromise().then(usercontext => {
+                        that.userIdentity = usercontext;
+                        this.context.findEsercizi();
+                        this.context.findPreferiti();
+                        this.context.allCds();
+                        this.context.findCds(usercontext);
+                        this.context.findUo(usercontext);
+                        this.context.findCdr(usercontext);
+                    });
+                    this.authenticated = true;
+                } else {
+                    if (this.userIdentity.users.length === 1) {
+                        this.authenticated = true;
+                    }
+                }
             } else {
                 this.userIdentity = null;
                 this.authenticated = false;

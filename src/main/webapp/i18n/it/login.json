@@ -1,6 +1,6 @@
 {
     "login": {
-        "title": "Inserire le credenziali",
+        "title": "Selezionare l'utente applicativo con cui accedere",
         "form": {
             "password": "Password",
             "password.placeholder": "La tua password",

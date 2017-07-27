@@ -96,8 +96,8 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
                     }
                 }
             }
-            let siglaTitle = this.container.nativeElement.getElementsByTagName('title')[0].innerHTML;
-            let siglaPageTitle = this.container.nativeElement.getElementsByTagName('sigla-page-title')[0];
+            let siglaTitle = this.container.nativeElement.querySelector('title').innerHTML;
+            let siglaPageTitle = this.container.nativeElement.querySelector('sigla-page-title');
             if (siglaPageTitle) {
                 siglaPageTitle.innerHTML = this.leaf.breadcrumbS + ' - ' + siglaTitle + siglaPageTitle.innerHTML;
             }

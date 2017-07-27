@@ -36,8 +36,7 @@ export class ContextService  {
     }
 
     getPreferiti(): Observable<Preferiti[]> {
-        let params: URLSearchParams = new URLSearchParams();
-        return this.http.get('/api/context/preferiti', {search: params}).map((res: Response) => res.json());
+        return this.http.get('/api/context/preferiti').map((res: Response) => res.json());
     }
 
     findUo(account: Account): void {
