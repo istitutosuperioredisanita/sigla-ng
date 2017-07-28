@@ -105,7 +105,7 @@ export class ContextComponent {
             .subscribe(identity => {
                 this.principal.authenticate(identity);
                 this.contextService.saveWildflyEsercizio(esercizio).subscribe();
-                this.localStateStorageService.storeEsercizio(this.principal.getAccount().login, esercizio);
+                this.localStateStorageService.storeEsercizio(this.principal.getAccount().username, esercizio);
             });
     }
 
@@ -121,7 +121,7 @@ export class ContextComponent {
             .subscribe(identity => {
                 this.principal.authenticate(identity);
                 this.contextService.saveWildflyUserContext(userContext).subscribe();
-                this.localStateStorageService.storeUserContext(this.principal.getAccount().login, userContext);
+                this.localStateStorageService.storeUserContext(this.principal.getAccount().username, userContext);
             });
         this.router.navigate(['/workspace']);
     }

@@ -80,7 +80,7 @@ export class Principal {
                 this.userIdentity = account;
                 if (user || (this.userIdentity.users.length === 1 || !force)) {
                     this.context.saveUserContext(
-                        this.localStateStorageService.getUserContext(this.userIdentity.login)
+                        this.localStateStorageService.getUserContext(this.userIdentity.username)
                     ).toPromise().then(usercontext => {
                         that.userIdentity = usercontext;
                         this.context.findEsercizi();

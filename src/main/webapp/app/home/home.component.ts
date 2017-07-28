@@ -80,7 +80,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.account = account;
             if (account.users.length === 1) {
                 this.context.saveUserContext(
-                    this.localStateStorageService.getUserContext(account.login)
+                    this.localStateStorageService.getUserContext(account.username)
                 ).subscribe(usercontext => {
                     this.principal.authenticate(usercontext);
                     this.context.findEsercizi();
@@ -100,7 +100,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 });
                 this.principal.hasAnyAuthority(['ROLE_ADMIN', 'ROLE_SUPERUSER']).then(result => {
                     if (!result) {
-                        if (this.localStateStorageService.getUserContext(this.principal.getAccount().login).cds) {
+                        if (this.localStateStorageService.getUserContext(this.principal.getAccount().username).cds) {
                             this.router.navigate(['workspace']);
                         }
                     } else {
