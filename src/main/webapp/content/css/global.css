@@ -87,11 +87,19 @@ table td[class*=col-], table th[class*=col-] {
     display: table-cell;
     float: none;
 }
-
-.footer {
-    border-top: 1px solid rgba(0,0,0,.125);
+.padding-footer {
+    padding-bottom: 40px;
 }
-
+.footer {
+    position: fixed;
+    z-index: 1001;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 40px;
+    line-height: 40px; /* Vertically center the text there */
+    background-color: #f5f5f5;
+}
 /* ==========================================================================
 make sure browsers use the pointer cursor for anchors, even with no href
 ========================================================================== */

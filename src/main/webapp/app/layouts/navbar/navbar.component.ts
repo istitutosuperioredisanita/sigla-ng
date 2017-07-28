@@ -6,7 +6,7 @@ import { JhiLanguageService } from 'ng-jhipster';
 import { ProfileService } from '../profiles/profile.service'; // FIXME barrel doesnt work here
 import { JhiLanguageHelper, Principal, LoginModalService, LoginService } from '../../shared';
 import { ContextComponent} from '../../context';
-
+import { Account } from '../../shared/user/account.model';
 import { VERSION, DEBUG_INFO_ENABLED } from '../../app.constants';
 import { WorkspaceService } from '../../workspace/workspace.service';
 
@@ -67,10 +67,6 @@ export class NavbarComponent implements OnInit {
 
     isAuthenticated() {
         return this.principal.isAuthenticated();
-    }
-
-    login() {
-        this.modalRef = this.loginModalService.open();
     }
 
     logout() {

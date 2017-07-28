@@ -26,6 +26,7 @@ public class UserContext implements UserDetails {
 	private Map<String, Serializable> attributes;
     private Map<String, List<GrantedAuthority>> roles;
     private List<UserContext> users;
+    private Boolean utenteMultiplo;
 
 	public UserContext(Utente currentUser) {
 		super();
@@ -36,6 +37,7 @@ public class UserContext implements UserDetails {
 
 		this.currentUser = currentUser;
 		this.username = currentUser.getCdUtente();
+		this.utenteMultiplo = Boolean.FALSE;
         this.authorities = Optional.ofNullable(currentUser)
             .map(Utente::getTiUtente)
             .map(s -> roles.get(s))
@@ -90,6 +92,7 @@ public class UserContext implements UserDetails {
                 .map(userContext -> userContext.getAuthorities())
                 .get()
         );
+        this.utenteMultiplo = Boolean.TRUE;
         return this;
     }
 
@@ -171,5 +174,13 @@ public class UserContext implements UserDetails {
 	    return Optional.ofNullable(currentUser)
             .map(Utente::getDsUtente)
             .orElse(null);
+    }
+
+    public Boolean getUtenteMultiplo() {
+        return utenteMultiplo;
+    }
+
+    public void setUtenteMultiplo(Boolean utenteMultiplo) {
+        this.utenteMultiplo = utenteMultiplo;
     }
 }
