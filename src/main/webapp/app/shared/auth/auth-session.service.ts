@@ -39,8 +39,12 @@ export class AuthServerProvider {
         });
     }
 
-    loginMultiploWildfly (utenteMultiplo: string): Observable<any> {
+    loginMultiploWildfly (utenteMultiplo: string, userContext: UserContext): Observable<any> {
         let data = 'main.utente_multiplo=' + utenteMultiplo +
+            '&context.esercizio=' + userContext.esercizio +
+            '&context.cds=' + userContext.cds +
+            '&context.uo=' + userContext.uo +
+            '&context.cdr=' + userContext.cdr +
             '&comando=doEntraUtenteMultiplo';
         let headers = new Headers ({
             'Content-Type': 'application/x-www-form-urlencoded'
