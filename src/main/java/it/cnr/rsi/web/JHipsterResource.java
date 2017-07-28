@@ -58,11 +58,11 @@ public class JHipsterResource {
                 .map(Authentication::getPrincipal)
                 .filter(principal -> principal instanceof UserContext)
                 .map(UserContext.class::cast)
-                .map(userContext ->
-                    userContext.users(utenteService.findUsersForUid(userContext.getLogin()).stream()
+                .map(userContext -> {
+                    return userContext.users(utenteService.findUsersForUid(userContext.getLogin()).stream()
                         .map(utente -> new UserContext(utente))
-                        .collect(Collectors.toList()))
-                )
+                        .collect(Collectors.toList()));
+                })
                 .orElseThrow(() -> new RuntimeException("something went wrong " + authentication.toString()))
         );
     }

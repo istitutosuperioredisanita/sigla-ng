@@ -81,7 +81,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
             if (account.users.length === 1) {
                 this.context.saveUserContext(
                     this.localStateStorageService.getUserContext(account.login)
-                ).toPromise().then(usercontext => {
+                ).subscribe(usercontext => {
+                    this.principal.authenticate(usercontext);
                     this.context.findEsercizi();
                     this.context.findPreferiti();
                     this.context.allCds();

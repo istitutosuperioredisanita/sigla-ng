@@ -78,7 +78,7 @@ export class Principal {
             if (account) {
                 let that = this;
                 this.userIdentity = account;
-                if (user) {
+                if (user || (this.userIdentity.users.length === 1 || !force)) {
                     this.context.saveUserContext(
                         this.localStateStorageService.getUserContext(this.userIdentity.login)
                     ).toPromise().then(usercontext => {
@@ -91,10 +91,6 @@ export class Principal {
                         this.context.findCdr(usercontext);
                     });
                     this.authenticated = true;
-                } else {
-                    if (this.userIdentity.users.length === 1) {
-                        this.authenticated = true;
-                    }
                 }
             } else {
                 this.userIdentity = null;
