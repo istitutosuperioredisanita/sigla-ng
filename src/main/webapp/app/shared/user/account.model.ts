@@ -8,6 +8,7 @@ export class Account {
         public lastName: string,
         public login: string,
         public dsUtente: string,
+        public utenteMultiplo: boolean,
         public imageUrl: string,
         public esercizio: number,
         public cds: string,
