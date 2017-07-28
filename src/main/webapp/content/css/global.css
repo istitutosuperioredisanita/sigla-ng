@@ -92,7 +92,7 @@ table td[class*=col-], table th[class*=col-] {
 }
 .footer {
     position: fixed;
-    z-index: 1001;
+    z-index: 999;
     bottom: 0;
     width: 100%;
     /* Set the fixed height of the footer here */
