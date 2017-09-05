@@ -4,7 +4,7 @@ import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiLanguageService } from 'ng-jhipster';
 
 import { ProfileService } from '../profiles/profile.service'; // FIXME barrel doesnt work here
-import { JhiLanguageHelper, Principal, LoginModalService, LoginService } from '../../shared';
+import { JhiLanguageHelper, Principal, MultipleUserModalService, LoginModalService, LoginService } from '../../shared';
 import { ContextComponent} from '../../context';
 import { Account } from '../../shared/user/account.model';
 import { VERSION, DEBUG_INFO_ENABLED } from '../../app.constants';
@@ -31,6 +31,7 @@ export class NavbarComponent implements OnInit {
         private loginService: LoginService,
         private languageHelper: JhiLanguageHelper,
         private languageService: JhiLanguageService,
+        private multipleUserModalService: MultipleUserModalService,
         public principal: Principal,
         private loginModalService: LoginModalService,
         private profileService: ProfileService,
@@ -69,12 +70,21 @@ export class NavbarComponent implements OnInit {
         return this.principal.isAuthenticated();
     }
 
+    isMultipleUser() {
+        return this.principal.getAccount().users.length > 1;
+    }
+
     logout() {
         this.collapseNavbar();
         this.loginService.logout();
         this.router.navigate(['']);
     }
 
+    changeUser() {
+        this.collapseNavbar();
+        this.router.navigate(['']);
+        this.modalRef = this.multipleUserModalService.open('');
+    }
     toggleNavbar() {
         this.isNavbarCollapsed = !this.isNavbarCollapsed;
     }

@@ -17,7 +17,8 @@
                 "sessions": "Sessioni",
                 "login": "Accesso",
                 "logout": "Esci",
-                "register": "Registrazione"
+                "register": "Registrazione",
+                "changeuser": "Cambia utente [<b>{{ username }}</b>]"
             },
             "admin": {
                 "main": "Amministratore",

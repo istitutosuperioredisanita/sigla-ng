@@ -64,13 +64,14 @@ export class Principal {
     }
 
     identity (force?: boolean, user?: string): Promise<any> {
+        let reloadUserIdentity = false;
         if (force === true) {
-            this.userIdentity = undefined;
+            reloadUserIdentity = true;
         }
 
         // check and see if we have retrieved the userIdentity data from the server.
         // if we have, reuse it by immediately resolving
-        if (this.userIdentity) {
+        if (!reloadUserIdentity) {
             return Promise.resolve(this.userIdentity);
         }
         // retrieve the userIdentity data from the server, update the identity object, and then resolve.
