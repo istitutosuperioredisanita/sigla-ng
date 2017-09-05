@@ -14,6 +14,7 @@ import { StateStorageService } from '../auth/state-storage.service';
 export class JhiMultipleUserModalComponent implements OnInit {
     public account: Account;
     public selectedUser: string;
+    public page: string;
 
     constructor(
         private languageService: JhiLanguageService,
@@ -31,7 +32,7 @@ export class JhiMultipleUserModalComponent implements OnInit {
     }
 
     confirm () {
-        this.loginService.loginMultiploWildfly(this.selectedUser);
+        this.loginService.loginMultiploWildfly(this.selectedUser, this.page);
         this.activeModal.dismiss('cancel');
     }
 }
