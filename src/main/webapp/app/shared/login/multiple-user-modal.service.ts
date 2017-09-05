@@ -10,7 +10,7 @@ export class MultipleUserModalService {
         private modalService: NgbModal,
     ) {}
 
-    open (): NgbModalRef {
+    open (page: string): NgbModalRef {
         if (this.isOpen) {
             return;
         }
@@ -19,6 +19,7 @@ export class MultipleUserModalService {
             windowClass: 'fade',
             backdrop: false
         });
+        modalRef.componentInstance.page = page;
         modalRef.result.then(result => {
             this.isOpen = false;
         }, (reason) => {

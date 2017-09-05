@@ -140,4 +140,8 @@ export class ContextComponent {
                 content: cdNodo
             });
     }
+
+    isPreferitiPresent(): boolean {
+        return this.contextService.preferiti && this.contextService.preferiti.length > 0;
+    }
 }

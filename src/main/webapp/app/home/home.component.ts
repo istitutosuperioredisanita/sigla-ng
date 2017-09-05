@@ -116,7 +116,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 }
                 this.authenticationError = false;
             } else {
-                this.modalRef = this.multipleUserModalService.open();
+                this.modalRef = this.multipleUserModalService.open('workspace');
             }
         }).catch(() => {
             this.authenticationError = true;
