@@ -6,6 +6,11 @@
     <div [ngClass]="{'col-md-9': !hidden, 'col-md-12': hidden}">
         <div [ngClass]="{'loading' : isRequesting}"></div>
         <div #htmlContainer class="e2e-trusted-html" [innerHTML]="desktop"></div>
+        <div *ngIf="logoVisible">
+            <h1 jhiTranslate="home.title" class="text-primary">Welcome, Java Hipster!</h1>
+            <p class="lead text-primary" jhiTranslate="home.subtitle">This is your homepage</p>
+            <span class="hipster img-fluid img-rounded"></span>
+        </div>
         <div #scriptContainer></div>
     </div>
 </div>
