@@ -9,7 +9,9 @@ import { Leaf } from './leaf.model';
 @Component({
     selector: 'jhi-workspace',
     templateUrl: './workspace.component.html',
-    styles: ['#crudToolbar {padding-bottom: 10px;}']
+    styleUrls: [
+        'workspace.css'
+    ],
 })
 export class WorkspaceComponent implements OnInit, OnDestroy {
     account: Account;
@@ -18,6 +20,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     siglaPageTitle: string;
     isRequesting: boolean;
     hidden: boolean;
+    logoVisible = true;
     listenerSubmit: Function;
     listenerSubmitForm: Function;
     @ViewChild('htmlContainer') container: ElementRef;
@@ -31,7 +34,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         private elementRef: ElementRef,
         private renderer: Renderer
     ) {
-        this.jhiLanguageService.setLocations(['workspace']);
+        this.jhiLanguageService.setLocations(['workspace', 'home']);
         this.listenerSubmit = renderer.listenGlobal('body', 'submit', (event) => {
             return false;
         });
@@ -53,6 +56,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.jhiLanguageService.setLocations(['workspace', 'home']);
         this.principal.identity().then((account) => {
             this.account = account;
         });
@@ -101,6 +105,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
             if (siglaPageTitle) {
                 siglaPageTitle.innerHTML = this.leaf.breadcrumbS + ' - ' + siglaTitle + siglaPageTitle.innerHTML;
             }
+            this.logoVisible = (siglaTitle === 'Logo');
         });
     }
 
