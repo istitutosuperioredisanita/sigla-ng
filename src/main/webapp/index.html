@@ -28,6 +28,19 @@
     <script>
         function submitForm(comando) {
             document.mainForm.comando.value = comando;
+            if (document.mainForm.scrollx) {
+                if (window.pageXOffset)
+                    document.mainForm.scrollx.value = window.pageXOffset;
+                else
+                    document.mainForm.scrollx.value = document.body.scrollLeft;
+	        }
+	        if (document.mainForm.scrolly) {
+                if (window.pageYOffset)
+                    document.mainForm.scrolly.value = window.pageYOffset;
+                else
+                    document.mainForm.scrolly.value = document.body.scrollTop;
+	        }
+            window.onloadHandlers = undefined;
             document.body.dispatchEvent(new CustomEvent('submitForm',{
                  'detail': {
                      'comando': comando,
@@ -192,19 +205,20 @@
                 curr = curr.next;
             }
             var meh = new MultiEventHandler(handler,curr,priority);
-            if (prev == null)
+            if (prev == null) {
                 window.onloadHandlers = meh;
-            else {
-        //		prev.handler = function() { alert('ciao') }
+            } else {
                 prev.next = meh;
             }
-            window.onload = handleOnLoad;
+            handleOnLoad();
         }
         function scrollIntoView(elementName) {
             try {
                 document.getElementById(elementName).scrollIntoView(false);
             } catch(e) {
+
             }
+            
         }
         
         // Funzioni per gli input modali
@@ -281,6 +295,11 @@
         function restoreWorkspace() {            
         }
         function showMessage(level,img,text) {
+        }
+        function setFocusOnInput(inputName) {
+	        var input = document.mainForm.elements[inputName];
+	        if (input && !input.disabled && input.focus)
+		        input.focus();
         }
     </script>
 </body>
