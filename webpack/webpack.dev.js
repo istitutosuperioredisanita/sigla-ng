@@ -27,15 +27,15 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
                 '/v2/api-docs',
                 '/h2-console'
             ],
-            target: 'http://127.0.0.1:8080',
+            target: 'http://as4dock.si.cnr.it',
+            headers: {host:'sigla-ng-iss.test.si.cnr.it'},
             secure: false
         },
         {
             context: [
                 '/SIGLA'
             ],
-            target: 'http://as4dock.si.cnr.it',
-            headers: {host:'sigla-main.test.si.cnr.it'},
+            target: 'http://127.0.0.1:8080',
             secure: false
         }
         ]
