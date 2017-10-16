@@ -6,17 +6,17 @@ html {
 }
 @media screen and (min-width: 1280px) {
     html {
-        font-size: 14px;
+        font-size: 13px;
     }
 }
 @media screen and (min-width: 1440px) {
     html {
-        font-size: 16px;
+        font-size: 15px;
     }
 }
 @media screen and (min-width: 1920px) {
     html {
-        font-size: 18px;
+        font-size: 17px;
     }
 }
 body, h1, h2, h3, h4, button {
