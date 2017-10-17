@@ -360,6 +360,20 @@ ul.freesearch > li > a  {
 .cursor-help {
     cursor: help;
 }
+/* Table with fixed header and footer */
+td.table-cell-ellipsis {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 100px;
+}
+td.table-cell-ellipsis:hover{
+    cursor: help;
+}
+.btn-link {
+    padding-left: 0rem;
+    padding-right: 0rem;
+}
 /* Absolute Center Spinner */
 .loading {
   position: fixed;
