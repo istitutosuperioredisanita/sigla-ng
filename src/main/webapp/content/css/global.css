@@ -363,9 +363,10 @@ ul.freesearch > li > a  {
 /* Gestione degli alert */
 .alert-message-bp.alert-danger,
 .alert-message-bp.alert-info {
+    left: 50%;
     top: 50%;
-    left: 30%;
-    z-index: 1001;
+    transform: translate(-50%, 0);
+    z-index: 999;
     position: fixed;
 }
 .alert-message-bp.alert-danger > i.fa {
@@ -378,33 +379,37 @@ ul.freesearch > li > a  {
 }
 @-webkit-keyframes fadeinout {
     0% { opacity: 1; }
-    25% { opacity: 0; }
-    50% {  opacity: 1; }
-    75% {  opacity: 0; }
-    90% {  opacity: 1; }
     100% { opacity: 0;}
 }
   
 @keyframes fadeinout {
     0% { opacity: 1; }
-    25% { opacity: 0; }
-    50% {  opacity: 1; }
-    75% {  opacity: 0; }
-    90% {  opacity: 1; }
     100% { opacity: 0;}
 }
 @-webkit-keyframes fadeoutin {
     0% { opacity: 1; }
-    25% { opacity: 0; }
-    50% {  opacity: 1; }
-    75% {  opacity: 0; }
+    10%{ opacity: 0; }
+    20% { opacity: 1; }
+    30%{ opacity: 0; }
+    40% {  opacity: 1; }
+    50% {  opacity: 0; }
+    60% {  opacity: 1; }
+    70% {  opacity: 0; }
+    80% {  opacity: 1; }
+    90% {  opacity: 0; }
     100% { opacity: 1;}
 } 
 @keyframes fadeoutin {
     0% { opacity: 1; }
-    25% { opacity: 0; }
-    50% {  opacity: 1; }
-    75% {  opacity: 0; }
+    10%{ opacity: 0; }
+    20% { opacity: 1; }
+    30%{ opacity: 0; }
+    40% {  opacity: 1; }
+    50% {  opacity: 0; }
+    60% {  opacity: 1; }
+    70% {  opacity: 0; }
+    80% {  opacity: 1; }
+    90% {  opacity: 0; }
     100% { opacity: 1;}
 }
 /* Table with fixed header and footer */
