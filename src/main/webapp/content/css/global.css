@@ -360,6 +360,32 @@ ul.freesearch > li > a  {
 .cursor-help {
     cursor: help;
 }
+.alert-message-bp.alert-danger,
+.alert-message-bp.alert-warning {
+    bottom: 0;
+    z-index: 1000;
+    position: fixed;
+    -webkit-animation: fadeinout 4s linear 1 forwards;
+    animation: fadeinout 4s linear 1 forwards;
+}
+@-webkit-keyframes fadeinout {
+    0% { opacity: 1; }
+    25% { opacity: 0; }
+    50% { opacity: 1; }
+    75% { opacity: 0; }
+    100% { opacity: 1; }
+}
+  
+@keyframes fadeinout {
+    0% { opacity: 1; }
+    25% { opacity: 0; }
+    50% { opacity: 1; }
+    75% { opacity: 0; }
+    100% { opacity: 1; }
+}
+.alert-message-bp.alert-danger {
+    right: 0;
+}
 /* Table with fixed header and footer */
 td.table-cell-ellipsis {
     text-overflow: ellipsis;
