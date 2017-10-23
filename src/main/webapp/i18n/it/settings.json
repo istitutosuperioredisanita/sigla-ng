@@ -7,7 +7,10 @@
             "lastname": "Cognome",
             "lastname.placeholder": "Il tuo cognome",
             "button": "Salva",
-            "language": "Lingua"
+            "language": "Lingua",
+            "delete" : {
+                "cache" : "Rigenera Albero utente"
+            }
         },
         "messages": {
             "error": {
