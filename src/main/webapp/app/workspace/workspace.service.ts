@@ -24,6 +24,10 @@ export class WorkspaceService {
         return this.http.get(this.resourceUrl).map((res: Response) => res.json());
     }
 
+    evictTree(): Observable<boolean> {
+        return this.http.delete(this.resourceUrl).map((res: Response) => res.json());
+    }
+
     openMenu(nodoid: string): Observable<string> {
         let params: URLSearchParams = new URLSearchParams();
         params.set('comando', 'doSelezionaMenu(' + nodoid + ')');

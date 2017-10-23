@@ -8,6 +8,7 @@ import org.apache.commons.collections4.multimap.HashSetValuedHashMap;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,11 @@ public class AlberoMainService {
         this.accessoService = accessoService;
     }
 
+    @CacheEvict(value="tree", key="{#userId, #esercizio, #unitaOrganizzativa}")
+    public boolean evictCacheTree(String userId, Integer esercizio, String unitaOrganizzativa){
+        LOGGER.info("Evict cache Tree for User: {} and Unita Organizzativa: {}", userId, unitaOrganizzativa);
+        return true;
+    }
 
     @Cacheable(value="tree", key="{#userId, #esercizio, #unitaOrganizzativa}")
     @Transactional
