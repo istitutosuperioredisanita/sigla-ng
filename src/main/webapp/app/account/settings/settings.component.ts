@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { JhiLanguageService } from 'ng-jhipster';
 
 import { Principal, AccountService, JhiLanguageHelper } from '../../shared';
+import { WorkspaceService } from '../../workspace/workspace.service';
 
 @Component({
     selector: 'jhi-settings',
@@ -17,7 +18,8 @@ export class SettingsComponent implements OnInit {
         private account: AccountService,
         private principal: Principal,
         private languageService: JhiLanguageService,
-        private languageHelper: JhiLanguageHelper
+        private languageHelper: JhiLanguageHelper,
+        private workspaceService: WorkspaceService
     ) {
         this.languageService.setLocations(['settings']);
     }
@@ -48,7 +50,13 @@ export class SettingsComponent implements OnInit {
             this.error = 'ERROR';
         });
     }
-
+    evictCache () {
+        this.workspaceService.evictTree().subscribe(
+            message => {
+                console.log(message);
+            }
+        );
+    }
     copyAccount (account) {
         return {
             activated: account.activated,
