@@ -246,7 +246,9 @@ div.form-group .form-control {
     width: 100%;
     display: block;
 }
-
+.input-group .form-control:first-child {
+    width: 0%!important;
+}
 .FormLabel.required::after {
   content:"*";color:red;
 }
