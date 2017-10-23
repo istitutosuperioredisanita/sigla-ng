@@ -252,10 +252,10 @@ div.form-group .form-control {
     white-space: nowrap;
 }
 .input-group input:first-child {
-    width: 10%!important;
+    width: 20%!important;
 }
 .input-group  input.form-control:nth-child(2) {
-    width: 60%!important;
+    width: 50%!important;
 }
 
 .FormLabel.required::after {
