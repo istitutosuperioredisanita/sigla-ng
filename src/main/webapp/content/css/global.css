@@ -363,17 +363,23 @@ ul.freesearch > li > a  {
 /* Gestione degli alert */
 .alert-message-bp.alert-danger,
 .alert-message-bp.alert-info {
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, 0);
     z-index: 999;
     position: fixed;
 }
+.alert-message-bp.alert-danger {
+    transform: translate(-50%, 0);
+    left: 50%;
+    top: 50%;
+}
+
 .alert-message-bp.alert-danger > i.fa {
     -webkit-animation: fadeoutin 6s linear 1 forwards;
     animation: fadeoutin 6s linear 1 forwards;    
 }
 .alert-message-bp.alert-info {
+    bottom: 1;
+    right: 0;
+    margin-right: 1.5rem;
     -webkit-animation: fadeinout 10s linear 1 forwards;
     animation: fadeinout 10s linear 1 forwards;
 }
