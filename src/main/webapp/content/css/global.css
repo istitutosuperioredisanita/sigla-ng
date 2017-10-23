@@ -246,9 +246,13 @@ div.form-group .form-control {
     width: 100%;
     display: block;
 }
-.input-group .form-control:first-child {
-    width: 0%!important;
+.input-group input:first-child {
+    width: 10%!important;
 }
+.input-group  input.form-control:nth-child(2) {
+    width: 60%!important;
+}
+
 .FormLabel.required::after {
   content:"*";color:red;
 }
