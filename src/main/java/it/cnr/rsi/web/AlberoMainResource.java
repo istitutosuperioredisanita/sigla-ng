@@ -4,6 +4,7 @@ import it.cnr.rsi.domain.AlberoMain;
 import it.cnr.rsi.domain.TreeNode;
 import it.cnr.rsi.repository.AlberoMainRepository;
 import it.cnr.rsi.security.UserContext;
+import it.cnr.rsi.service.AccessoService;
 import it.cnr.rsi.service.AlberoMainService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,11 +27,14 @@ public class AlberoMainResource {
 
     private AlberoMainRepository alberoMainRepository;
 
+    private AccessoService accessoService;
+
     private AlberoMainService alberoMainService;
 
-    public AlberoMainResource(AlberoMainRepository alberoMainRepository, AlberoMainService alberoMainService) {
+    public AlberoMainResource(AlberoMainRepository alberoMainRepository, AlberoMainService alberoMainService, AccessoService accessoService) {
         this.alberoMainRepository = alberoMainRepository;
         this.alberoMainService = alberoMainService;
+        this.accessoService = accessoService;
     }
 
 
@@ -50,6 +54,7 @@ public class AlberoMainResource {
     @DeleteMapping(value = API_ALBERO_MAIN)
     public boolean evictCacheTree() {
         UserContext userDetails = ContextResource.getUserDetails();
+        accessoService.evictCacheAccessi(userDetails.getUsername(), userDetails.getEsercizio(), userDetails.getUo());
         return alberoMainService.evictCacheTree(userDetails.getUsername(), userDetails.getEsercizio(), userDetails.getUo());
     }
 }
