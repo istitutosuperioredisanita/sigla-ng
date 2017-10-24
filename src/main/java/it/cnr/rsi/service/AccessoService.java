@@ -7,6 +7,7 @@ import it.cnr.rsi.repository.UtenteUnitaAccessoRepository;
 import it.cnr.rsi.repository.UtenteUnitaRuoloRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,11 @@ public class AccessoService {
         this.utenteUnitaRuoloRepository = utenteUnitaRuoloRepository;
         this.ruoloAccessoRepository = ruoloAccessoRepository;
         this.utenteRepository = utenteRepository;
+    }
+    @CacheEvict(value="accessi", key="{#userId, #esercizio, #unitaOrganizzativa}")
+    public boolean evictCacheAccessi(String userId, Integer esercizio, String unitaOrganizzativa){
+        LOGGER.info("Evict cache Accessi for User: {} and Unita Organizzativa: {}", userId, unitaOrganizzativa);
+        return true;
     }
 
     @Cacheable(value="accessi", key="{#userId, #esercizio, #unitaOrganizzativa}")
