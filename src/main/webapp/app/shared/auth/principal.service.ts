@@ -71,7 +71,7 @@ export class Principal {
 
         // check and see if we have retrieved the userIdentity data from the server.
         // if we have, reuse it by immediately resolving
-        if (!reloadUserIdentity) {
+        if (!reloadUserIdentity && this.userIdentity) {
             return Promise.resolve(this.userIdentity);
         }
         // retrieve the userIdentity data from the server, update the identity object, and then resolve.
