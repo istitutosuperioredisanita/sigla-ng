@@ -252,7 +252,7 @@ div.form-group .form-control {
     white-space: nowrap;
 }
 .input-group input:first-child {
-    width: 20%!important;
+    width: 30%!important;
 }
 .input-group  input.form-control:nth-child(2) {
     width: 50%!important;
