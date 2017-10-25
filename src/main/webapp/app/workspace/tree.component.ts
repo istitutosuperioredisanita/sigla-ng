@@ -22,7 +22,7 @@ export class SIGLATreeNode {
 export class SIGLATreeComponent implements OnInit, OnDestroy {
     isRequesting: boolean;
     account: Account;
-    leafs: Map<String, Leaf[]>;
+    leafs: any;
     leafz: Leaf[] = [];
     nodes = [];
     preferitiListener: Subscription;
@@ -78,8 +78,8 @@ export class SIGLATreeComponent implements OnInit, OnDestroy {
                 this.leafs = leafs;
                 const nodes = _.flatten(_.values<Leaf>(this.leafs));
                 this.leafz = nodes
-                    .filter(node => node.process)
-                    .map(node => {
+                    .filter((node: Leaf) => node.process)
+                    .map((node: Leaf) => {
                         node.breadcrumbS = node.breadcrumb.map(segment => _.values(segment)[0]).join(' > ');
                         return node;
                     });
