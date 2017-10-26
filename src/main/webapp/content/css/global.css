@@ -50,7 +50,6 @@ Generic styles
 /* other generic styles */
 
 .jh-card {
-    padding: 0.5%;
     border: none;
 }
 
@@ -266,7 +265,7 @@ div.form-group .form-control {
     width:100%;
     max-width:100%;
     overflow: hidden;
-    text-overflow:ellipsis;    
+    text-overflow:ellipsis;
 }
 
 .custom-file-control::after {
@@ -289,7 +288,7 @@ legend {
 input.inputFieldReadOnly {
 	background: #F5F5DC;
 	background-color:transparent;
-	border-style : none; 
+	border-style : none;
 	cursor:default;
 }
 .fieldset.card, fieldset.card {
@@ -385,7 +384,7 @@ ul.freesearch > li > a  {
 
 .alert-message-bp.alert-danger > i.fa {
     -webkit-animation: fadeoutin 6s linear 1 forwards;
-    animation: fadeoutin 6s linear 1 forwards;    
+    animation: fadeoutin 6s linear 1 forwards;
 }
 .alert-message-bp.alert-info {
     bottom: 1;
@@ -398,7 +397,7 @@ ul.freesearch > li > a  {
     0% { opacity: 1; }
     100% { opacity: 0;}
 }
-  
+
 @keyframes fadeinout {
     0% { opacity: 1; }
     100% { opacity: 0;}
@@ -415,7 +414,7 @@ ul.freesearch > li > a  {
     80% {  opacity: 1; }
     90% {  opacity: 0; }
     100% { opacity: 1;}
-} 
+}
 @keyframes fadeoutin {
     0% { opacity: 1; }
     10%{ opacity: 0; }
@@ -561,4 +560,31 @@ td.table-cell-ellipsis:hover{
     -o-transform: rotate(360deg);
     transform: rotate(360deg);
   }
+}
+
+.tree-menu .chevron {
+    float: right;
+    margin-right: 10px
+}
+
+.tree-menu .node-item:hover {
+    color: #0066CC !important;
+    background-color: #F0F0F0
+}
+
+.tree-menu .node-item {
+    color:#333 !important;
+    padding: 10px 0;
+    font-size: 18px
+}
+
+.tree-shadow {
+    /* background: #FAFAFA;
+    box-shadow: 2px 0 20px rgba(0,0,0,.1); */
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.search-typehead {
+    margin: 10px 0
 }
