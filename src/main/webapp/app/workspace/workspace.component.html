@@ -3,7 +3,7 @@
         <jhi-tree id="tree" (activateLeaf)='onNotify($event)'></jhi-tree>
     </div>
 
-    <div [ngClass]="{'col-md-9': !hidden, 'col-md-12': hidden}">
+    <div [ngClass]="{'col-md-9': !hidden, 'col-md-12': hidden}" class="workspace">
         <div [ngClass]="{'loading' : isRequesting}"></div>
         <div #htmlContainer class="e2e-trusted-html" [innerHTML]="desktop"></div>
         <div *ngIf="logoVisible">
