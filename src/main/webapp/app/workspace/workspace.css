@@ -27,3 +27,15 @@ only screen and (                min-resolution: 2dppx) {
 #crudToolbar {
     padding-bottom: 10px;
 }
+
+.e2e-trusted-html{
+    background: #FAFAFA;
+    padding-top: 10px;
+}
+.tree-shadow {
+    background: #FAFAFA;
+    box-shadow: 2px 0 20px rgba(0,0,0,.1);
+    padding-left: 10px;
+    padding-right: 10px;
+    height: calc(100vh - 140px);
+}

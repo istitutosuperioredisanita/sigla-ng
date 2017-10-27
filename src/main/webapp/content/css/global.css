@@ -348,16 +348,6 @@ ul.freesearch > li > a  {
     margin-left: 20px;
 }
 
-.node-content-wrapper {
-    display: inline-block;
-    padding: 2px 5px;
-    border-radius: 2px;
-    transition: background-color .15s,box-shadow .15s;
-}
-.tree-node-focused {
-    font-style: italic;
-    font-weight: bold;
-}
 .title-bar {
     padding: .50rem;
     border-radius: .25rem;
@@ -562,34 +552,19 @@ td.table-cell-ellipsis:hover{
   }
 }
 
-.tree-menu .chevron {
-    float: right;
-    margin-right: 10px
-}
-
-.tree-menu .node-item:hover {
-    color: #0066CC !important;
-    background-color: #F0F0F0
-}
-
-.tree-menu .node-item {
-    color:#333 !important;
-    padding: 5px 0;
-}
-
-.e2e-trusted-html{
-    background: #FAFAFA;
-    padding-top: 10px;
-}
-
-.tree-shadow {
-    background: #FAFAFA;
-    box-shadow: 2px 0 20px rgba(0,0,0,.1);
-    padding-left: 10px;
-    padding-right: 10px;
-    height: calc(100vh - 140px);
-}
-
 .search-typehead {
     margin: 10px 0
+}
+.tree-children {
+    -webkit-animation: treefadeoutin 0.5s linear 1 forwards;
+    animation: treefadeoutin 0.5s linear 1 forwards;
+}
+@-webkit-keyframes treefadeoutin {
+    0% { opacity: 0; }
+    100% { opacity: 1;}
+}
+
+@keyframes treefadeoutin {
+    0% { opacity: 0; }
+    100% { opacity: 1;}
 }
