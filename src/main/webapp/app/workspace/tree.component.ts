@@ -138,12 +138,16 @@ export class SIGLATreeComponent implements OnInit, OnDestroy {
                 leaf: leaf
             });
         } else {
-            node.expand();
-            this.tree.treeModel.expandedNodes.forEach((treeNode: TreeNode) => {
-                if (treeNode.level === node.level && treeNode.id !== node.id) {
-                    treeNode.collapse();
-                }
-            });
+            if (node.isCollapsed) {
+                node.expand();
+                this.tree.treeModel.expandedNodes.forEach((treeNode: TreeNode) => {
+                    if (treeNode.level === node.level && treeNode.id !== node.id) {
+                        treeNode.collapse();
+                    }
+                });
+            } else {
+                node.toggleExpanded();
+            }
         }
     }
 }
