@@ -32,16 +32,14 @@
             [class.tree-node-active]="node.isActive"
             [class.tree-node-focused]="node.isFocused">
 
-            <div class="node-wrapper node-item" [style.padding-left]="node.getNodePadding()">
-                <div class="node-content-wrapper"
-                    (click)="activateTreeNode(node)"
-                    (dblclick)="node.toggleExpanded()">
+            <div class="node-wrapper node-item" [style.padding-left]="node.getNodePadding()" (click)="activateTreeNode(node)">
+                <div class="node-content-wrapper">
                     <span *ngIf="node.level == 1">{{node.data.name.toLocaleUpperCase()}}</span>
                     <span *ngIf="node.level !== 1">{{node.data.name}}</span>
                 </div>
                 <span *ngIf="!node.isLeaf" class="chevron">
-                    <i *ngIf="!node.isExpanded" class="fa fa-chevron-right" aria-hidden="true" (click)="node.toggleExpanded()"></i>
-                    <i *ngIf="node.isExpanded"  class="fa fa-chevron-up" aria-hidden="true" (click)="node.toggleExpanded()"></i>
+                    <i *ngIf="!node.isExpanded" class="fa fa-fw fa-chevron-right" aria-hidden="true"></i>
+                    <i *ngIf="node.isExpanded"  class="fa fa-fw fa-chevron-up" aria-hidden="true"></i>
                 </span>
             </div>
             <tree-node-children [node]="node" [templates]="templates">
