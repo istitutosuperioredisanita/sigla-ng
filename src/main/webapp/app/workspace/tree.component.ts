@@ -17,7 +17,9 @@ export class SIGLATreeNode {
 @Component({
     selector: 'jhi-tree',
     templateUrl: './tree.component.html',
-    styles: ['.node-wrapper {color: #0066CC;}']
+    styleUrls: [
+        'tree.css'
+    ]
 })
 export class SIGLATreeComponent implements OnInit, OnDestroy {
     isRequesting: boolean;
@@ -128,6 +130,27 @@ export class SIGLATreeComponent implements OnInit, OnDestroy {
     }
 
     activateTreeNode = (node: TreeNode) => {
+        let leaf = this.leafz.filter(v => {
+            return v.id === node.id;
+        })[0];
+        if (node.isLeaf) {
+            node.focus(true);
+            this.activateLeaf.emit({
+                id: node.id,
+                leaf: leaf
+            });
+        } else {
+            node.expand();
+            this.tree.treeModel.expandedNodes.forEach((treeNode: TreeNode) => {
+                if (treeNode.level === node.level && treeNode.id !== node.id) {
+                    treeNode.collapse();
+                }
+            });
+        }
+    }
+
+
+    toggleTreeNode = (node: TreeNode) => {
         let leaf = this.leafz.filter(v => {
             return v.id === node.id;
         })[0];
