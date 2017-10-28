@@ -10,16 +10,15 @@
 
 .tree-menu .node-item {
     color:#333;
-    padding: 5px 0;
+    padding: 2px 0;
 }
-
-.tree-node-focused {
+.tree-node-focused > div:first-child{
     font-style: italic;
     font-weight: bold;
+    color: #0066CC!important;
 }
-.node-content-wrapper {
-    display: inline-block;
-    padding: 2px 5px;
-    border-radius: 2px;
-    transition: background-color .15s,box-shadow .15s;
+
+div.tree-node-level-1 > div:first-child{
+    text-transform: uppercase;
+    font-weight: bold;
 }
