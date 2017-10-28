@@ -33,9 +33,9 @@
             [class.tree-node-focused]="node.isFocused">
 
             <div class="node-wrapper node-item" [style.padding-left]="node.getNodePadding()" (click)="toggleTreeNode(node)">
-                <div class="node-content-wrapper">
-                    <span class="d-inline-block text-truncate col-md-10" title="{{node.data.name}}">{{node.data.name}}</span>
-                    <span *ngIf="!node.isLeaf" class="chevron float-right">
+                <div class="node-content-wrapper row">
+                    <span class="d-inline-block text-truncate col" title="{{node.data.name}}">{{node.data.name}}</span>
+                    <span *ngIf="!node.isLeaf" class="chevron float-right col col-auto">
                         <i *ngIf="!node.isExpanded" class="fa fa-chevron-right" aria-hidden="true"></i>
                         <i *ngIf="node.isExpanded"  class="fa fa-chevron-up" aria-hidden="true"></i>
                     </span>
