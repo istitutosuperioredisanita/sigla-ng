@@ -70,8 +70,6 @@ Navbar
 /* ==========================================================================
 Logo styles
 ========================================================================== */
-.navbar-brand.logo {
-}
 
 .logo .logo-img {
     display: inline-block;
@@ -79,11 +77,17 @@ Logo styles
 }
 
 .logo-img {
-margin-top: 5px;
+    margin-top: 5px;
     margin-left: 25px;
     height: 55px;
-    background: url("../../../content/images/ISS-SIGLA-logo.png") no-repeat center center;
     width: 216px;
+}
+
+.logo-img-ISS {
+    background: url("../../../content/images/ISS-SIGLA-logo.png") no-repeat center center;
+}
+.logo-img-CNR {
+    background: url("../../../content/images/CNR-SIGLA-logo.png") no-repeat center center;
 }
 
 .nav-link, .navbar-text {
