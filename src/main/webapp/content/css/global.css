@@ -230,6 +230,15 @@ td > div.input-group {
     width: inherit;
     display: inline-flex;
 }
+td.TableColumn > div.input-group {
+    display: -webkit-box;
+    width:100%;
+}
+tr.bg-primary > td.TableColumn > div.input-group {
+    background-color: white!important;
+    width:100%;
+}
+
 fieldset > select.form-control {
     display: inline-block;
 }
