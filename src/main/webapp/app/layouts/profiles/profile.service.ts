@@ -17,6 +17,7 @@ export class ProfileService {
                 let data = res.json();
                 let pi = new ProfileInfo();
                 pi.activeProfiles = data.activeProfiles;
+                pi.instituteAcronym = data.instituteAcronym;
                 pi.ribbonEnv = data.ribbonEnv;
                 pi.inProduction = data.activeProfiles.indexOf('prod') !== -1;
                 pi.swaggerEnabled = data.activeProfiles.indexOf('swagger') !== -1;
