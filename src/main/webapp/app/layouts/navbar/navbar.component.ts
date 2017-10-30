@@ -22,6 +22,7 @@ export class NavbarComponent implements OnInit {
     inProduction: boolean;
     isNavbarCollapsed: boolean;
     languages: any[];
+    instituteAcronym: string;
     swaggerEnabled: boolean;
     modalRef: NgbModalRef;
     version: string;
@@ -50,12 +51,15 @@ export class NavbarComponent implements OnInit {
         this.languageHelper.getAll().then((languages) => {
             this.languages = languages;
         });
-        if (this.isAuthenticated()) {
-            this.profileService.getProfileInfo().subscribe(profileInfo => {
-                this.inProduction = profileInfo.inProduction;
-                this.swaggerEnabled = profileInfo.swaggerEnabled;
-            });
-        }
+        this.profileService.getProfileInfo().subscribe(profileInfo => {
+            this.inProduction = profileInfo.inProduction;
+            this.swaggerEnabled = profileInfo.swaggerEnabled;
+            this.instituteAcronym = profileInfo.instituteAcronym;
+        });
+    }
+
+    getLogo() {
+        return 'logo-img-' + this.instituteAcronym;
     }
 
     changeLanguage(languageKey: string) {

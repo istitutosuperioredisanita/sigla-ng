@@ -38,6 +38,7 @@ public class JHipsterResource {
         List<String> profiles = Arrays.asList(env.getActiveProfiles());
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("activeProfiles", profiles);
+        map.put("instituteAcronym", env.getProperty("institute.acronym", "CNR"));
 
         profiles
             .stream()
