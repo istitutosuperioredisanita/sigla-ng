@@ -1,9 +1,11 @@
 <div class="row">
-    <div class="col-md-3 tree-shadow" [hidden]="hidden">
-        <jhi-tree id="tree" (activateLeaf)='onNotify($event)'></jhi-tree>
+    <div class="col-md-4 col-lg-3" [hidden]="hidden">
+        <div class="tree-shadow">
+            <jhi-tree id="tree" (activateLeaf)='onNotify($event)'></jhi-tree>
+        </div>
     </div>
 
-    <div [ngClass]="{'col-md-9': !hidden, 'col-md-12': hidden}" class="workspace">
+    <div [ngClass]="{'col-md-8 col-lg-9': !hidden, 'col-md-12': hidden}" class="workspace">
         <div [ngClass]="{'loading' : isRequesting}"></div>
         <div #htmlContainer class="e2e-trusted-html" [innerHTML]="desktop"></div>
         <div *ngIf="logoVisible">

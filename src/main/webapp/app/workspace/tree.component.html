@@ -3,19 +3,26 @@
         <span>{{r.breadcrumbS}}</span>
     </div>
 </template>
-<div class="input-group search-typehead">
-    <input
-        [ngbTypeahead]="searchtree"
-        [resultTemplate]="rt"
-        [inputFormatter]="formatter"
-        [resultFormatter]="formatter"
-        (selectItem)="onSelectLeaf($event.item)"
-        class="form-control"
-        placeholder="Cerca nel menu......"
-        id="search-tree"/>
-    <span class="input-group-btn">
-        <a class="btn btn-secondary"  (click)="tree.treeModel.collapseAll()" placement="right" ngbTooltip="Comprimi tutte le voci"><i class="fa fa-minus-square-o" aria-hidden="true"></i></a>
-    </span>
+<div class="search-typehead">
+    <div class="input-group">
+        <input
+            [ngbTypeahead]="searchtree"
+            [resultTemplate]="rt"
+            [inputFormatter]="formatter"
+            [resultFormatter]="formatter"
+            (selectItem)="onSelectLeaf($event.item)"
+            class="form-control"
+            placeholder="Cerca nel menu......"
+            id="search-tree"/>
+        <span class="input-group-btn">
+            <a class="btn btn-secondary"  
+                (click)="tree.treeModel.collapseAll()" 
+                placement="right" 
+                ngbTooltip="Comprimi tutte le voci">
+                <i class="fa fa-minus-square-o text-primary" aria-hidden="true"></i>
+            </a>
+        </span>
+    </div>
 </div>
 <i *ngIf="isRequesting" class="fa fa-spinner fa-spin text-muted"></i>
 <tree-root [nodes]="nodes" class="tree-menu">
@@ -34,7 +41,7 @@
 
             <div class="node-wrapper node-item" [style.padding-left]="node.getNodePadding()" (click)="toggleTreeNode(node)">
                 <div class="node-content-wrapper row">
-                    <span class="d-inline-block text-truncate col" title="{{node.data.name}}">{{node.data.name}}</span>
+                    <span class="d-inline-block text-truncate col" placement="top" ngbTooltip="{{node.data.name}}">{{node.data.name}}</span>
                     <span *ngIf="!node.isLeaf" class="chevron float-right col col-auto">
                         <i *ngIf="!node.isExpanded" class="fa fa-chevron-right" aria-hidden="true"></i>
                         <i *ngIf="node.isExpanded"  class="fa fa-chevron-up" aria-hidden="true"></i>
