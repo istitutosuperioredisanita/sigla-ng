@@ -55,7 +55,8 @@
                 "register": {
                     "noaccount": "Non hai ancora un account?",
                     "link": "Crea un account"
-                }
+                },
+                "success": "Operazione effettuata."
             },
             "error": {
                 "dontmatch" : "La password e la sua conferma non corrispondono!"

@@ -37,6 +37,7 @@ export function customHttpProvider() {
             RequestOptions,
             Injector,
             StateStorageService,
+            Router,
             EventManager
         ]
     };
