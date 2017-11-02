@@ -14,8 +14,13 @@ export class ErrorHandlerInterceptor extends HttpInterceptor {
 
     responseIntercept(observable: Observable<Response>): Observable<Response> {
         return <Observable<Response>> observable.catch(error => {
-            if (error.status !== 401 ) {
-                this.eventManager.broadcast( {name: 'siglaApp.httpError', content: error});
+            if (error.status !== 401 && this.eventManager !== undefined) {
+                this.eventManager.broadcast(
+                    {
+                        name: 'siglaApp.httpError',
+                        content: error
+                    }
+                );
             }
             return Observable.throw(error);
         });

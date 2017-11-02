@@ -46,8 +46,9 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
                     .subscribe(html => {
                         this.renderHtml(html);
                         this.stopRefreshing();
-                    }
-                );
+                    }, error => {
+                        this.stopRefreshing();
+                    });
             }
             return false;
         });
@@ -73,6 +74,8 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         this.startRefreshing();
         this.workspaceService.openMenu(nodo.id).subscribe(html => {
             this.renderHtml(html);
+            this.stopRefreshing();
+        }, error => {
             this.stopRefreshing();
         });
     }
@@ -105,7 +108,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
             if (siglaPageTitle) {
                 siglaPageTitle.innerHTML = this.leaf.breadcrumbS + ' - ' + siglaTitle + siglaPageTitle.innerHTML;
             }
-            this.logoVisible = (siglaTitle === 'Logo');
+            this.logoVisible = this.container.nativeElement.querySelector('form') === null;
         });
     }
 

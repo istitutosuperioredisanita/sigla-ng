@@ -34,6 +34,9 @@ only screen and (                min-resolution: 2dppx) {
     padding-left: 10px;
     padding-right: 0px;
 }
+.space {
+    background-color: #fafafa;
+}
 @media screen and (min-width: 768px) {
     .tree-shadow {
         height: calc(100vh - 135px);
