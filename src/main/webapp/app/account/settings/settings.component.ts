@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { JhiLanguageService } from 'ng-jhipster';
+import { JhiLanguageService, AlertService } from 'ng-jhipster';
 
 import { Principal, AccountService, JhiLanguageHelper } from '../../shared';
 import { WorkspaceService } from '../../workspace/workspace.service';
@@ -19,7 +19,8 @@ export class SettingsComponent implements OnInit {
         private principal: Principal,
         private languageService: JhiLanguageService,
         private languageHelper: JhiLanguageHelper,
-        private workspaceService: WorkspaceService
+        private workspaceService: WorkspaceService,
+        private alertService: AlertService
     ) {
         this.languageService.setLocations(['settings']);
     }
@@ -53,7 +54,7 @@ export class SettingsComponent implements OnInit {
     evictCache () {
         this.workspaceService.evictTree().subscribe(
             message => {
-                console.log(message);
+                this.alertService.success('global.messages.info.success').toast;
             }
         );
     }
