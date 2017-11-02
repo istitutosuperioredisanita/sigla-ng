@@ -27,7 +27,6 @@ only screen and (                min-resolution: 2dppx) {
 #crudToolbar {
     padding-bottom: 10px;
 }
-
 .e2e-trusted-html{
     padding-top: 10px;
 }
@@ -37,11 +36,11 @@ only screen and (                min-resolution: 2dppx) {
 }
 @media screen and (min-width: 768px) {
     .tree-shadow {
-        height: calc(100vh - 125px);
+        height: calc(100vh - 135px);
         border-right: 1px solid rgba(0,0,0,.1);
         padding-bottom: 40px;
-        overflow: hidden;
         position: sticky;
         top: 0;
-    }    
+        z-index: 999;
+    }
 }

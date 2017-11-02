@@ -25,3 +25,6 @@ div.tree-node-level-1 > div:first-child{
 .tree-node-leaf {
     font-style: italic;    
 }
+.node-content-wrapper {
+    margin-right: 0px!important;
+}
