@@ -15,7 +15,7 @@ services:
     links:
     - siglang:siglang
     labels:
-    - SERVICE_NAME=##{SERVICE_NAME}##
+      SERVICE_NAME: "##{SERVICE_NAME}##"
     read_only: true
     volumes:
     - ./conf.d/:/etc/nginx/conf.d/
