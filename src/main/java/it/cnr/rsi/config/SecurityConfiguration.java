@@ -61,6 +61,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/profile-info").permitAll()
+                .antMatchers("/api/account").permitAll()
                 .antMatchers("/api/**").fullyAuthenticated()
                 .and()
                 .formLogin()
