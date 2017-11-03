@@ -81,13 +81,17 @@ Logo styles
     margin-left: 25px;
     height: 55px;
     width: 216px;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: center;    
 }
 
 .logo-img-ISS {
-    background: url("../../../content/images/ISS-SIGLA-logo.png") no-repeat center center;
+    background-image: url("../../../content/images/ISS-SIGLA-logo.png");
 }
 .logo-img-CNR {
-    background: url("../../../content/images/CNR-SIGLA-logo.png") no-repeat center center;
+    background-image: url("../../../content/images/CNR-SIGLA-logo.png");    
 }
 
 .nav-link, .navbar-text {
@@ -103,6 +107,25 @@ Logo styles
 .navbar-form {
     padding: 17px
 }
+@media screen and (min-width: 1024px) and (max-width: 1440px) {
+    .logo-img {
+        height: 28px;
+        width: 108px;
+    }
+    .fa-tree-size {
+        font-size: 2em;
+    }
+}
+@media screen and (max-width: 1024px) {
+    .fa-tree-size {
+        font-size: 2.5em;
+    }    
+} 
+@media(min-width: 1441px) {
+    .fa-tree-size {
+        font-size: 2.5em;
+    }    
+}    
 @media(min-width: 992px) {
     .display-inherit {
         display: inherit
@@ -148,28 +171,4 @@ Logo styles
         right: 13px;
         left: auto;
     }
-}
-.Header-navToggle {
-    border: none;
-    color: white;
-    background: transparent;
-}
-
-svg {
-    fill: #fff;
-    height: 3rem;
-    width: 3rem;
-}
-
-svg.hidden {
-    display: none;
-}
-
-.Header-toggleText {
-    margin-top: -0.6rem;
-    display: block;
-    letter-spacing: .1em!important;
-    font-weight: 700!important;
-    font-size: 0.9rem!important;
-    text-transform: uppercase;
 }

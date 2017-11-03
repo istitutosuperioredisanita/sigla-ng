@@ -105,10 +105,15 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
             }
             let siglaTitle = this.container.nativeElement.querySelector('title').innerHTML;
             let siglaPageTitle = this.container.nativeElement.querySelector('sigla-page-title');
+            let form = this.container.nativeElement.querySelector('form');
             if (siglaPageTitle) {
                 siglaPageTitle.innerHTML = this.leaf.breadcrumbS + ' - ' + siglaTitle + siglaPageTitle.innerHTML;
             }
-            this.logoVisible = this.container.nativeElement.querySelector('form') === null;
+            console.log(form);
+            this.logoVisible = (
+                form === null ||
+                (form !== null && form.action.indexOf('GestioneUtente.do') !== -1)
+            );
         });
     }
 

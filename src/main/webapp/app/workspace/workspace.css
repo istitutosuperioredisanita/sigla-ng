@@ -39,11 +39,12 @@ only screen and (                min-resolution: 2dppx) {
 }
 @media screen and (min-width: 768px) {
     .tree-shadow {
-        height: calc(100vh - 135px);
+        height: calc(100vh - 105px);
         border-right: 1px solid rgba(0,0,0,.1);
         padding-bottom: 40px;
         position: sticky;
         top: 0;
+        bottom: 0;
         z-index: 999;
     }
 }
