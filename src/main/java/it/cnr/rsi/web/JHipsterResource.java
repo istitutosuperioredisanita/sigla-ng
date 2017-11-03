@@ -64,7 +64,7 @@ public class JHipsterResource {
                         .map(utente -> new UserContext(utente))
                         .collect(Collectors.toList()));
                 })
-                .orElseThrow(() -> new RuntimeException("something went wrong " + authentication.toString()))
+                .orElse(null)
         );
     }
 
