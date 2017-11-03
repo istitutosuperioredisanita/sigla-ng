@@ -17,6 +17,7 @@
                             <h3 jhiTranslate="login.title">Sign in</h3>
                         </div>    
                         <div class="card-block">
+                            <jhi-alert-error></jhi-alert-error>
                             <div>
                                 <div class="alert alert-danger" *ngIf="authenticationError">
                                     <div jhiTranslate="login.messages.error.authentication">
