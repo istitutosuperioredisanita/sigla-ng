@@ -38,9 +38,9 @@ public class AccessoService {
         this.ruoloAccessoRepository = ruoloAccessoRepository;
         this.utenteRepository = utenteRepository;
     }
-    @CacheEvict(value="accessi", key="{#userId, #esercizio, #unitaOrganizzativa}")
-    public boolean evictCacheAccessi(String userId, Integer esercizio, String unitaOrganizzativa){
-        LOGGER.info("Evict cache Accessi for User: {} and Unita Organizzativa: {}", userId, unitaOrganizzativa);
+    @CacheEvict(value="accessi", key="#{userId*}")
+    public boolean evictCacheAccessi(String userId){
+        LOGGER.info("Evict cache Accessi for User: {}", userId);
         return true;
     }
 
