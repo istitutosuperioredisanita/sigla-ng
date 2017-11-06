@@ -11,7 +11,7 @@ import { HOME_ROUTE, HomeComponent } from './';
         RouterModule.forRoot([ HOME_ROUTE ], { useHash: true })
     ],
     declarations: [
-        HomeComponent
+        HomeComponent,
     ],
     entryComponents: [
     ],

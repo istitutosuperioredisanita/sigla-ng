@@ -1,13 +1,13 @@
-<template #rt let-r="result" let-t="term">
+<ng-template #rt let-r="result" let-t="term">
     <div>
         <span>{{r.first}} - {{r.second}}</span>
     </div>
-</template>
-<template #rtNavbar let-r="result" let-t="term">
+</ng-template>
+<ng-template #rtNavbar let-r="result" let-t="term">
     <div class="navbar-typeahead">
         <span>{{r.first}}</span><span class="text-truncate">{{r.second}}</span>
     </div>
-</template>
+</ng-template>
 <div *ngIf="!isNavbar">
     <form class="form" role="form" (ngSubmit)="saveContext()" #contextForm="ngForm">
         <div class="form-group row">
@@ -162,7 +162,7 @@
                     <b class="caret"></b>
                 </span>
             </a>
-            <ul class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
+            <ul class="dropdown-menu dropdown-peferiti dropdown-menu-right" ngbDropdownMenu>
                 <li *ngFor="let prefer of contextService.preferiti">
                     <a class="dropdown-item" (click)="openPreferiti(prefer.cdNodo)">
                         <span>{{prefer.descrizione}}</span>

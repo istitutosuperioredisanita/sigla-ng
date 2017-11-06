@@ -1,23 +1,21 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { AuthServerProvider } from './auth/auth-session.service';
 
-import { CookieService } from 'angular2-cookie/services/cookies.service';
 import {
     SiglaSharedLibsModule,
     SiglaSharedCommonModule,
     CSRFService,
-    AuthService,
-    AuthServerProvider,
     AccountService,
     UserService,
     StateStorageService,
     LoginService,
     LoginModalService,
     MultipleUserModalService,
-    Principal,
-    HasAnyAuthorityDirective,
-    NotHaveAuthorityDirective,
     JhiLoginModalComponent,
+    Principal,
+    NotHaveAuthorityDirective,
+    HasAnyAuthorityDirective,
     JhiMultipleUserModalComponent
 } from './';
 import {ContextComponent} from '../context';
@@ -35,7 +33,6 @@ import {ContextComponent} from '../context';
         ContextComponent
     ],
     providers: [
-        CookieService,
         LoginService,
         LoginModalService,
         MultipleUserModalService,
@@ -44,11 +41,10 @@ import {ContextComponent} from '../context';
         Principal,
         CSRFService,
         AuthServerProvider,
-        AuthService,
         UserService,
         DatePipe
     ],
-    entryComponents: [JhiMultipleUserModalComponent],
+    entryComponents: [JhiLoginModalComponent],
     exports: [
         SiglaSharedCommonModule,
         JhiLoginModalComponent,

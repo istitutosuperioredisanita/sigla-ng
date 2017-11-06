@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
 import { JhiLanguageService } from 'ng-jhipster';
-
+import { LocalStateStorageService } from '../auth/local-storage.service';
 import { Principal } from '../auth/principal.service';
 import { AuthServerProvider } from '../auth/auth-session.service';
 import { Router } from '@angular/router';
-import { LocalStateStorageService } from '../auth/local-storage.service';
 
 @Injectable()
 export class LoginService {
 
-    constructor (
+    constructor(
         private languageService: JhiLanguageService,
         private principal: Principal,
         private authServerProvider: AuthServerProvider,
