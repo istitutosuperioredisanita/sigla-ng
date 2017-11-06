@@ -42,12 +42,12 @@ export class SIGLATreeComponent implements OnInit, OnDestroy {
     searchtree = (text$: Observable<string>) =>
         text$
         .debounceTime(50)
-        .map(term => {
+        .map((term) => {
             const limit = 10;
             let i = 0;
             const regex = new RegExp(term.replace(/\s/g, '.*'), 'gi');
 
-            return this.leafz.filter(v => {
+            return this.leafz.filter((v) => {
                 if (i > limit) {
                     return false;
                 } else {
@@ -63,25 +63,25 @@ export class SIGLATreeComponent implements OnInit, OnDestroy {
     formatter = (leaf: Leaf) => '';
 
     onSelectLeaf = (leaf: Leaf) => {
-        leaf.breadcrumb.map(segment => {
-            let leafId = _.keys(segment)[0];
-            let node = this.tree.treeModel.getNodeById(leafId);
+        leaf.breadcrumb.map((segment) => {
+            const leafId = _.keys(segment)[0];
+            const node = this.tree.treeModel.getNodeById(leafId);
             this.tree.treeModel.setFocusedNode(node);
             this.activateTreeNode(this.tree.treeModel.getFocusedNode());
         });
     }
 
     ngOnInit() {
-        let that = this;
+        const that = this;
         this.isRequesting = true;
         this.workspaceService.getTree().subscribe(
-            leafs => {
+            (leafs) => {
                 this.leafs = leafs;
                 const nodes = _.flatten(_.values<Leaf>(this.leafs));
                 this.leafz = nodes
                     .filter((node: Leaf) => node.process)
                     .map((node: Leaf) => {
-                        node.breadcrumbS = node.breadcrumb.map(segment => _.values(segment)[0]).join(' > ');
+                        node.breadcrumbS = node.breadcrumb.map((segment) => _.values(segment)[0]).join(' > ');
                         return node;
                     });
                 this.nodes = this.getChildNodes('0');
@@ -92,7 +92,7 @@ export class SIGLATreeComponent implements OnInit, OnDestroy {
             this.account = account;
         });
         this.preferitiListener = this.eventManager.subscribe('onPreferitiSelected', (message) => {
-            let leaf = that.leafz.filter(v => {
+            const leaf = that.leafz.filter((v) => {
                 return v.id === message.content;
             })[0];
             if (leaf) {
@@ -129,14 +129,14 @@ export class SIGLATreeComponent implements OnInit, OnDestroy {
     }
 
     activateTreeNode = (node: TreeNode) => {
-        let leaf = this.leafz.filter(v => {
+        const aleaf = this.leafz.filter((v) => {
             return v.id === node.id;
         })[0];
         if (node.isLeaf) {
             node.focus(true);
             this.activateLeaf.emit({
                 id: node.id,
-                leaf: leaf
+                leaf: aleaf
             });
         } else {
             node.expand();
@@ -148,16 +148,15 @@ export class SIGLATreeComponent implements OnInit, OnDestroy {
         }
     }
 
-
     toggleTreeNode = (node: TreeNode) => {
-        let leaf = this.leafz.filter(v => {
+        const aleaf = this.leafz.filter((v) => {
             return v.id === node.id;
         })[0];
         if (node.isLeaf) {
             node.focus(true);
             this.activateLeaf.emit({
                 id: node.id,
-                leaf: leaf
+                leaf: aleaf
             });
         } else {
             if (node.isCollapsed) {

@@ -6,16 +6,14 @@ import { Leaf } from './leaf.model';
 export class WorkspaceService {
 
     private resourceUrl = 'api/tree';
-
     private observable: Observable<boolean>;
     private observers: Observer<boolean>[];
-
 
     constructor(
         private http: Http
     ) {
         this.observers = [];
-        this.observable = new Observable<boolean>(observer => {
+        this.observable = new Observable<boolean>((observer) => {
             this.observers.push(observer);
         });
     }
@@ -29,7 +27,7 @@ export class WorkspaceService {
     }
 
     openMenu(nodoid: string): Observable<string> {
-        let params: URLSearchParams = new URLSearchParams();
+        const params: URLSearchParams = new URLSearchParams();
         params.set('comando', 'doSelezionaMenu(' + nodoid + ')');
         return this.http.get('/SIGLA/GestioneMenu.do', {
            search: params
@@ -50,7 +48,7 @@ export class WorkspaceService {
     }
 
     menuHidden(hide: boolean) {
-        this.observers.forEach(observer => observer.next(hide));
+        this.observers.forEach((observer) => observer.next(hide));
     }
 
 }

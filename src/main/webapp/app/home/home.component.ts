@@ -13,7 +13,6 @@ import { LocalStateStorageService } from '../shared/auth/local-storage.service';
     styleUrls: [
         'home.css'
     ],
-
 })
 export class HomeComponent implements OnInit, AfterViewInit {
     account: Account;
@@ -49,7 +48,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.registerAuthenticationSuccess();
     }
     ngAfterViewInit() {
-        let userNameElement = this.elementRef.nativeElement.querySelector('#username');
+        const userNameElement = this.elementRef.nativeElement.querySelector('#username');
         if (userNameElement) {
             this.renderer.invokeElementMethod(
                 userNameElement,
@@ -80,7 +79,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             if (account.users.length === 1) {
                 this.context.saveUserContext(
                     this.localStateStorageService.getUserContext(account.username)
-                ).subscribe(usercontext => {
+                ).subscribe((usercontext) => {
                     this.principal.authenticate(usercontext);
                     this.context.findEsercizi();
                     this.context.findPreferiti();
@@ -97,7 +96,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                     name: 'authenticationSuccess',
                     content: 'Sending Authentication Success'
                 });
-                this.principal.hasAnyAuthority(['ROLE_ADMIN', 'ROLE_SUPERUSER']).then(result => {
+                this.principal.hasAnyAuthority(['ROLE_ADMIN', 'ROLE_SUPERUSER']).then((result) => {
                     if (!result) {
                         if (this.localStateStorageService.getUserContext(this.principal.getAccount().username).cds) {
                             this.router.navigate(['workspace']);
@@ -108,7 +107,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 });
                 // // previousState was set in the authExpiredInterceptor before being redirected to login modal.
                 // // since login is succesful, go to stored previousState and clear previousState
-                let previousState = this.stateStorageService.getPreviousState();
+                const previousState = this.stateStorageService.getPreviousState();
                 if (previousState) {
                     this.stateStorageService.resetPreviousState();
                     this.router.navigate([previousState.name], { queryParams:  previousState.params });
@@ -117,7 +116,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
             } else {
                 this.modalRef = this.multipleUserModalService.open('workspace');
             }
-        }).catch(() => {
+        }).catch((error) => {
+            console.log(error);
             this.authenticationError = true;
         });
     }
