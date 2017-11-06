@@ -6,21 +6,21 @@ import { JhiMultipleUserModalComponent } from './multiple-user.component';
 @Injectable()
 export class MultipleUserModalService {
     private isOpen = false;
-    constructor (
+    constructor(
         private modalService: NgbModal,
     ) {}
 
-    open (page: string): NgbModalRef {
+    open(page: string): NgbModalRef {
         if (this.isOpen) {
             return;
         }
         this.isOpen = true;
-        let modalRef = this.modalService.open(JhiMultipleUserModalComponent, {
+        const modalRef = this.modalService.open(JhiMultipleUserModalComponent, {
             windowClass: 'fade',
             backdrop: false
         });
         modalRef.componentInstance.page = page;
-        modalRef.result.then(result => {
+        modalRef.result.then((result) => {
             this.isOpen = false;
         }, (reason) => {
             this.isOpen = false;

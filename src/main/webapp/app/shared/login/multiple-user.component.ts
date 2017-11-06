@@ -27,7 +27,7 @@ export class JhiMultipleUserModalComponent {
         });
     }
 
-    confirm () {
+    confirm() {
         this.loginService.loginMultiploWildfly(this.selectedUser, this.page);
         this.activeModal.dismiss('cancel');
     }

@@ -51,10 +51,10 @@ export class SettingsComponent implements OnInit {
         });
     }
 
-    evictCache () {
+    evictCache() {
         this.workspaceService.evictTree().subscribe(
-            message => {
-                this.alertService.success('global.messages.info.success').toast;
+            (message) => {
+                this.alertService.success('global.messages.info.success');
             }
         );
     }

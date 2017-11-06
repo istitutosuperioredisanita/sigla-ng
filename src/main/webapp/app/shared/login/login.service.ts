@@ -16,13 +16,13 @@ export class LoginService {
         private localStateStorageService: LocalStateStorageService
     ) {}
 
-    login (credentials, callback?) {
-        let cb = callback || function() {};
+    login(credentials, callback?) {
+        const cb = callback || function() {};
         return new Promise((resolve, reject) => {
-            this.authServerProvider.login(credentials).subscribe(data => {
-                this.authServerProvider.loginWildfly(credentials,
-                        this.localStateStorageService.getUserContext(credentials.username)).subscribe(dataWildfly => {
-                            this.principal.identity(true).then(account => {
+            this.authServerProvider.login(credentials).subscribe((data) => {
+                this.authServerProvider.loginWildfly((credentials),
+                        this.localStateStorageService.getUserContext(credentials.username)).subscribe((dataWildfly) => {
+                            this.principal.identity(true).then((account) => {
                                 if (account !== null) {
                                     resolve(account);
                                     this.languageService.changeLanguage(account.langKey);
@@ -30,28 +30,28 @@ export class LoginService {
                             });
                     });
                 return cb();
-            }, err => {
+            }, (err) => {
                 reject(err);
                 return cb(err);
             });
         });
     }
 
-    logoutAndRedirect (): void {
+    logoutAndRedirect(): void {
         if (this.principal.isAuthenticated()) {
             this.logout();
             this.router.navigate(['']);
         }
     }
 
-    logout () {
+    logout() {
         this.authServerProvider.logout().subscribe(() => {
             this.authServerProvider.logoutWildfly().subscribe();
         });
         this.principal.authenticate(null);
     }
 
-    loginMultiploWildfly (utenteMultiplo: string, page: string): void {
+    loginMultiploWildfly(utenteMultiplo: string, page: string): void {
         this.authServerProvider.loginMultiploWildfly(utenteMultiplo, this.localStateStorageService.getUserContext(utenteMultiplo))
             .subscribe(() => {
                 this.principal.identity(true, utenteMultiplo).then((account) => {

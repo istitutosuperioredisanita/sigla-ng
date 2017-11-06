@@ -39,20 +39,20 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         });
         this.listenerSubmitForm = renderer.listenGlobal('body', 'submitForm', (event) => {
             if (event.detail.comando) {
-                let form = event.detail.form;
+                const form = event.detail.form;
                 this.startRefreshing();
                 this.workspaceService.postForm(form)
-                    .subscribe(html => {
+                    .subscribe((html) => {
                         this.renderHtml(html);
                         this.stopRefreshing();
-                    }, error => {
+                    }, (error) => {
                         this.stopRefreshing();
                     });
             }
             return false;
         });
         workspaceService.isMenuHidden()
-          .subscribe(hidden => this.hidden = hidden);
+          .subscribe((hidden) => this.hidden = hidden);
     }
 
     ngOnInit() {
@@ -70,24 +70,24 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         this.leaf = nodo.leaf;
         this.siglaPageTitle = this.leaf.breadcrumbS;
         this.startRefreshing();
-        this.workspaceService.openMenu(nodo.id).subscribe(html => {
+        this.workspaceService.openMenu(nodo.id).subscribe((html) => {
             this.renderHtml(html);
             this.stopRefreshing();
-        }, error => {
+        }, (error) => {
             this.stopRefreshing();
         });
     }
 
     private renderHtml(html: string) {
-        let siglaScripts = this.scriptContainer.nativeElement.getElementsByTagName('script');
-        for (let siglaScript of siglaScripts){
+        const siglaScripts = this.scriptContainer.nativeElement.getElementsByTagName('script');
+        for (const siglaScript of siglaScripts){
             this.scriptContainer.nativeElement.removeChild(siglaScript);
         }
         this.desktop = this._sanitizer.bypassSecurityTrustHtml(html);
         setTimeout(() => { // wait for DOM rendering
-            let scripts = this.container.nativeElement.getElementsByTagName('script');
-            for (let script of scripts){
-                let s = document.createElement('script');
+            const scripts = this.container.nativeElement.getElementsByTagName('script');
+            for (const script of scripts){
+                const s = document.createElement('script');
                 s.type = 'text/javascript';
                 if (script.text && !(
                     script.text.indexOf('baseTag') !== -1 ||
@@ -101,13 +101,12 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
                     }
                 }
             }
-            let siglaTitle = this.container.nativeElement.querySelector('title').innerHTML;
-            let siglaPageTitle = this.container.nativeElement.querySelector('sigla-page-title');
-            let form = this.container.nativeElement.querySelector('form');
+            const siglaTitle = this.container.nativeElement.querySelector('title').innerHTML;
+            const siglaPageTitle = this.container.nativeElement.querySelector('sigla-page-title');
+            const form = this.container.nativeElement.querySelector('form');
             if (siglaPageTitle) {
                 siglaPageTitle.innerHTML = this.leaf.breadcrumbS + ' - ' + siglaTitle + siglaPageTitle.innerHTML;
             }
-            console.log(form);
             this.logoVisible = (
                 form === null ||
                 (form !== null && form.action.indexOf('GestioneUtente.do') !== -1)

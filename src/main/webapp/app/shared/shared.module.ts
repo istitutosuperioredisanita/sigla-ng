@@ -44,7 +44,7 @@ import {ContextComponent} from '../context';
         UserService,
         DatePipe
     ],
-    entryComponents: [JhiLoginModalComponent],
+    entryComponents: [JhiLoginModalComponent, JhiMultipleUserModalComponent],
     exports: [
         SiglaSharedCommonModule,
         JhiLoginModalComponent,

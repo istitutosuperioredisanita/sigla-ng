@@ -42,7 +42,7 @@ export class NavbarComponent implements OnInit {
         this.version = DEBUG_INFO_ENABLED ? 'v. ' + VERSION : '';
         this.isNavbarCollapsed = true;
         workspaceService.isMenuHidden()
-            .subscribe(hidden => this.hidden = hidden);
+            .subscribe((hidden) => this.hidden = hidden);
 
     }
 
@@ -50,7 +50,7 @@ export class NavbarComponent implements OnInit {
         this.languageHelper.getAll().then((languages) => {
             this.languages = languages;
         });
-        this.profileService.getProfileInfo().subscribe(profileInfo => {
+        this.profileService.getProfileInfo().subscribe((profileInfo) => {
             this.inProduction = profileInfo.inProduction;
             this.swaggerEnabled = profileInfo.swaggerEnabled;
             this.instituteAcronym = profileInfo.instituteAcronym;
