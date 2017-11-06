@@ -8,7 +8,7 @@ import { LocalStateStorageService } from './local-storage.service';
 
 @Injectable()
 export class Principal {
-    private userIdentity: Account;
+    private userIdentity: any;
     private authenticated = false;
     private authenticationState = new Subject<any>();
 
@@ -18,24 +18,40 @@ export class Principal {
         private localStateStorageService: LocalStateStorageService
     ) {}
 
-    authenticate (identity) {
+    authenticate(identity) {
         this.userIdentity = identity;
         this.authenticated = identity !== null;
         this.authenticationState.next(this.userIdentity);
     }
 
-    hasAnyAuthority (authorities: string[]): Promise<boolean> {
+    hasAnyAuthority(authorities: string[]): Promise<boolean> {
+        return Promise.resolve(this.hasAnyAuthorityDirect(authorities));
+    }
+
+    hasAnyAuthorityDirect(authorities: string[]): boolean {
         if (!this.authenticated || !this.userIdentity || !this.userIdentity.authorities) {
-            return Promise.resolve(false);
+            return false;
         }
 
         for (let i = 0; i < authorities.length; i++) {
             if (this.userIdentity.authorities.indexOf(authorities[i]) !== -1) {
-                return Promise.resolve(true);
+                return true;
             }
         }
 
-        return Promise.resolve(false);
+        return false;
+    }
+
+    hasAuthority(authority: string): Promise<boolean> {
+        if (!this.authenticated) {
+           return Promise.resolve(false);
+        }
+
+        return this.identity().then((id) => {
+            return Promise.resolve(id.authorities && id.authorities.indexOf(authority) !== -1);
+        }, () => {
+            return Promise.resolve(false);
+        });
     }
 
     notHaveAuthority (authorities: string[]): Promise<boolean> {
@@ -51,19 +67,8 @@ export class Principal {
         return Promise.resolve(true);
     }
 
-    hasAuthority (authority: string): Promise<boolean> {
-        if (!this.authenticated) {
-           return Promise.resolve(false);
-        }
 
-        return this.identity().then(id => {
-            return Promise.resolve(id.authorities && id.authorities.indexOf(authority) !== -1);
-        }, () => {
-            return Promise.resolve(false);
-        });
-    }
-
-    identity (force?: boolean, user?: string): Promise<any> {
+    identity(force?: boolean, user?: string): Promise<any> {
         let reloadUserIdentity = false;
         if (force === true) {
             reloadUserIdentity = true;
@@ -107,15 +112,15 @@ export class Principal {
         });
     }
 
-    isAuthenticated (): boolean {
-        return this.authenticated;
-    }
-
     getAccount (): Account {
         return this.userIdentity;
     }
 
-    isIdentityResolved (): boolean {
+    isAuthenticated(): boolean {
+        return this.authenticated;
+    }
+
+    isIdentityResolved(): boolean {
         return this.userIdentity !== undefined;
     }
 
@@ -124,6 +129,6 @@ export class Principal {
     }
 
     getImageUrl(): String {
-        return this.isIdentityResolved () ? this.userIdentity.imageUrl : null;
+        return this.isIdentityResolved() ? this.userIdentity.imageUrl : null;
     }
 }

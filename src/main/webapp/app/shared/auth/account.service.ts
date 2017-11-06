@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
+import { SERVER_API_URL } from '../../app.constants';
 
 @Injectable()
 export class AccountService  {
@@ -15,6 +16,6 @@ export class AccountService  {
     }
 
     save(account: any): Observable<Response> {
-        return this.http.post('api/account', account);
+        return this.http.post(SERVER_API_URL + 'api/account', account);
     }
 }

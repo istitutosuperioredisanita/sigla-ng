@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfileService } from './profile.service';
 import { ProfileInfo } from './profile-info.model';
-import { Principal } from '../../shared';
 
 @Component({
     selector: 'jhi-page-ribbon',
@@ -15,19 +14,12 @@ export class PageRibbonComponent implements OnInit {
     profileInfo: ProfileInfo;
     ribbonEnv: string;
 
-    constructor(private profileService: ProfileService, public principal: Principal) {}
+    constructor(private profileService: ProfileService) {}
 
     ngOnInit() {
-        if (this.isAuthenticated()) {
-            this.profileService.getProfileInfo().subscribe(profileInfo => {
-                this.profileInfo = profileInfo;
-                this.ribbonEnv = profileInfo.ribbonEnv;
-            });
-        }
+        this.profileService.getProfileInfo().subscribe((profileInfo) => {
+            this.profileInfo = profileInfo;
+            this.ribbonEnv = profileInfo.ribbonEnv;
+        });
     }
-
-    isAuthenticated() {
-        return this.principal.isAuthenticated();
-    }
-
 }

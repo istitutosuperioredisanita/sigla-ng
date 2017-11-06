@@ -21,7 +21,6 @@ export class SessionsComponent implements OnInit {
         private sessionsService: SessionsService,
         private principal: Principal
     ) {
-        this.jhiLanguageService.setLocations(['sessions']);
     }
 
     ngOnInit() {

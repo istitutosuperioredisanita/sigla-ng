@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
-import { EventManager, JhiLanguageService } from 'ng-jhipster';
+import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
 import { Router } from '@angular/router';
 import { ContextService } from './context.service';
 import { Principal, UserContext, JhiLanguageHelper} from '../shared';
@@ -28,9 +28,8 @@ export class ContextComponent {
         private languageService: JhiLanguageService,
         private languageHelper: JhiLanguageHelper,
         private workspaceService: WorkspaceService,
-        private eventManager: EventManager
+        private eventManager: JhiEventManager
     ) {
-        this.languageService.setLocations(['settings', 'home', 'login']);
     }
 
     filterPair(term: string, pairs: Pair[], type: string): Pair[] {

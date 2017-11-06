@@ -34,7 +34,6 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         private elementRef: ElementRef,
         private renderer: Renderer
     ) {
-        this.jhiLanguageService.setLocations(['workspace', 'home']);
         this.listenerSubmit = renderer.listenGlobal('body', 'submit', (event) => {
             return false;
         });
@@ -57,7 +56,6 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.jhiLanguageService.setLocations(['workspace', 'home']);
         this.principal.identity().then((account) => {
             this.account = account;
         });

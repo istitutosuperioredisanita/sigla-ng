@@ -2,593 +2,909 @@
 Bootstrap tweaks
 ===============================================================*/
 html {
-  font-size: 12px;
-}
-@media screen and (min-width: 1280px) {
-    html {
-        font-size: 13px;
-    }
-}
-@media screen and (min-width: 1440px) {
-    html {
-        font-size: 15px;
-    }
-}
-@media screen and (min-width: 1920px) {
-    html {
-        font-size: 17px;
-    }
-}
-body, h1, h2, h3, h4, button {
-    font-weight: 300;
-    font-family: 'Titillium Web', sans-serif;
-}
-/* ==========================================================================
-Browser Upgrade Prompt
-========================================================================== */
-.browserupgrade {
-    margin: 0.2em 0;
-    background: #ccc;
-    color: #000;
-    padding: 0.2em 0;
-}
-
-/* ==========================================================================
-Generic styles
-========================================================================== */
-
-/* Error highlight on input fields */
-.ng-valid[required], .ng-valid.required  {
-  border-left: 5px solid green;
-}
-
-.ng-invalid:not(form)  {
-  border-left: 5px solid red;
-}
-
-/* other generic styles */
-
-.jh-card {
-    border: none;
-}
-
-.error {
-    color: white;
-    background-color: red;
-}
-
-.pad {
-    padding: 10px;
-}
-
-.w-40 {
-    width: 40% !important;
-}
-
-.w-60 {
-    width: 60% !important;
-}
-
-.break {
-    white-space: normal;
-    word-break:break-all;
-}
-
-.readonly {
-    background-color: #eee;
-    opacity: 1;
-}
-
-/*FIXME this is to support grids in table class; */
-table td[class*=col-], table th[class*=col-] {
-    position: static;
-    display: table-cell;
-    float: none;
-}
-.padding-footer {
-    padding-bottom: 40px;
-}
-.footer {
-    position: fixed;
-    z-index: 999;
-    bottom: 0;
-    width: 100%;
-    /* Set the fixed height of the footer here */
-    height: 40px;
-    line-height: 40px; /* Vertically center the text there */
-    background-color: #f5f5f5;
-}
-/* ==========================================================================
-make sure browsers use the pointer cursor for anchors, even with no href
-========================================================================== */
-a:hover {
-  cursor: pointer;
-}
-
-.hand {
+    font-size: 12px;
+  }
+  @media screen and (min-width: 1280px) {
+      html {
+          font-size: 13px;
+      }
+  }
+  @media screen and (min-width: 1440px) {
+      html {
+          font-size: 15px;
+      }
+  }
+  @media screen and (min-width: 1920px) {
+      html {
+          font-size: 17px;
+      }
+  }
+  body, h1, h2, h3, h4, button {
+      font-weight: 300;
+      font-family: 'Titillium Web', sans-serif;
+  }
+  /* ==========================================================================
+  FIX Bootstrap beta
+  ========================================================================== */
+  .dropdown-peferiti { 
+      left: auto!important; 
+  }
+  /* ==========================================================================
+  Browser Upgrade Prompt
+  ========================================================================== */
+  .browserupgrade {
+      margin: 0.2em 0;
+      background: #ccc;
+      color: #000;
+      padding: 0.2em 0;
+  }
+  
+  /* ==========================================================================
+  Generic styles
+  ========================================================================== */
+  
+  /* Error highlight on input fields */
+  .ng-valid[required], .ng-valid.required  {
+    border-left: 5px solid green;
+  }
+  
+  .ng-invalid:not(form)  {
+    border-left: 5px solid red;
+  }
+  
+  /* other generic styles */
+  
+  .jh-card {
+      border: none;
+  }
+  
+  .error {
+      color: white;
+      background-color: red;
+  }
+  
+  .pad {
+      padding: 10px;
+  }
+  
+  .w-40 {
+      width: 40% !important;
+  }
+  
+  .w-60 {
+      width: 60% !important;
+  }
+  
+  .break {
+      white-space: normal;
+      word-break:break-all;
+  }
+  
+  .readonly {
+      background-color: #eee;
+      opacity: 1;
+  }
+  
+  /*FIXME this is to support grids in table class; */
+  table td[class*=col-], table th[class*=col-] {
+      position: static;
+      display: table-cell;
+      float: none;
+  }
+  .padding-footer {
+      padding-bottom: 40px;
+  }
+  .footer {
+      position: fixed;
+      z-index: 999;
+      bottom: 0;
+      width: 100%;
+      /* Set the fixed height of the footer here */
+      height: 40px;
+      line-height: 40px; /* Vertically center the text there */
+      background-color: #f5f5f5;
+  }
+  /* ==========================================================================
+  make sure browsers use the pointer cursor for anchors, even with no href
+  ========================================================================== */
+  a:hover {
     cursor: pointer;
-}
-
-/* ==========================================================================
-Custom alerts for notification
-========================================================================== */
-.alerts .alert{
-    text-overflow: ellipsis;
-}
-.alert pre{
-    background: none;
-    border: none;
-    font: inherit;
-    color: inherit;
-    padding: 0;
-    margin: 0;
-}
-
-.alert .popover pre {
-    font-size: 10px;
-}
-
-.alerts .toast {
-    position: fixed;
-    width: 100%;
-}
-
-.alerts .toast.left {
-    left: 5px;
-}
-
-.alerts .toast.right {
-    right: 5px;
-}
-
-.alerts .toast.top {
-    top: 55px;
-}
-
-.alerts .toast.bottom {
-    bottom: 55px;
-}
-
-@media screen and (min-width: 480px) {
-    .alerts .toast {
-        width: 50%;
-    }
-}
-
-/* ==========================================================================
-entity tables helpers
-========================================================================== */
-/* Remove Bootstrap padding from the element
-   http://stackoverflow.com/questions/19562903/remove-padding-from-columns-in-bootstrap-3 */
-.no-padding-left { padding-left: 0 !important; }
-.no-padding-right { padding-right: 0 !important; }
-.no-padding-top { padding-top: 0 !important; }
-.no-padding-bottom { padding-bottom: 0 !important; }
-.no-padding { padding: 0 !important; }
-
-/* bootstrap 3 input-group 100% width
-   http://stackoverflow.com/questions/23436430/bootstrap-3-input-group-100-width */
-.width-min { width: 1% !important; }
-
-/* Makes toolbar not wrap on smaller screens
- http://www.sketchingwithcss.com/samplechapter/cheatsheet.html#right */
-.flex-btn-group-container {
-   display: -webkit-flex;
-   display: flex;
-   -webkit-flex-direction: row;
-   flex-direction: row;
-   -webkit-justify-content: flex-end;
-   justify-content: flex-end;
-}
-
-/* ==========================================================================
-entity detail page css
-========================================================================== */
-.row.jh-entity-details > dd {
-    margin-bottom: 15px;
-}
-
-@media screen and (min-width: 768px) {
-    .row.jh-entity-details > dt {
-        margin-bottom: 15px;
-    }
-
-    .row.jh-entity-details > dd {
-        border-bottom: 1px solid #eee;
-        padding-left: 180px;
-        margin-left: 0;
-    }
-}
-
-/* ==========================================================================
-ui bootstrap tweaks
-========================================================================== */
-.nav, .carousel, .panel-title a {
-    cursor: pointer;
-}
-
-.datetime-picker-dropdown > li.date-picker-menu div > table .btn-default,
-.uib-datepicker-popup  > li > div.uib-datepicker > table .btn-default {
-    border: 0;
-}
-
-.datetime-picker-dropdown > li.date-picker-menu div > table:focus,
-.uib-datepicker-popup  > li > div.uib-datepicker > table:focus {
-    outline: none;
-}
-
-/* jhipster-needle-css-add-main JHipster will add new css style */
-.btn-toolbar {
-    padding-bottom: 10px;
-}
-div.input-group > .input-group-addon {
-    color: inherit;
-    background-color: inherit;
-}
-td > div.input-group {
-    width: inherit;
-    display: inline-flex;
-}
-td.TableColumn > div.input-group {
-    display: -webkit-box;
-    width:100%;
-}
-tr.bg-primary > td.TableColumn > div.input-group {
-    background-color: white!important;
-    width:100%;
-}
-
-fieldset > select.form-control {
-    display: inline-block;
-}
-.form-control {
-    width: inherit;
-    display: inherit;
-}
-.form-control.column {
-    width: 100%;
-    display: block;
-}
-div.form-group .form-control {
-    width: 100%;
-    display: block;
-}
-
-.input-group input {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-.input-group input:first-child {
-    width: 30%!important;
-}
-.input-group  input.form-control:nth-child(2) {
-    width: 50%!important;
-}
-
-.FormLabel.required::after {
-  content:"*";color:red;
-}
-.custom-file-control{
-    white-space: nowrap;
-    width:100%;
-    max-width:100%;
-    overflow: hidden;
-    text-overflow:ellipsis;
-}
-
-.custom-file-control::after {
-  content: attr(title);
-}
-.custom-file-control::before {
-  content: "Browse";
-}
-
-.btn-title::before {
+  }
+  
+  .hand {
+      cursor: pointer;
+  }
+  
+  /* ==========================================================================
+  Custom alerts for notification
+  ========================================================================== */
+  .alerts .alert{
+      text-overflow: ellipsis;
+  }
+  .alert pre{
+      background: none;
+      border: none;
+      font: inherit;
+      color: inherit;
+      padding: 0;
+      margin: 0;
+  }
+  
+  .alert .popover pre {
+      font-size: 10px;
+  }
+  
+  .alerts .toast {
+      position: fixed;
+      width: 100%;
+  }
+  
+  .alerts .toast.left {
+      left: 5px;
+  }
+  
+  .alerts .toast.right {
+      right: 5px;
+  }
+  
+  .alerts .toast.top {
+      top: 55px;
+  }
+  
+  .alerts .toast.bottom {
+      bottom: 55px;
+  }
+  
+  @media screen and (min-width: 480px) {
+      .alerts .toast {
+          width: 50%;
+      }
+  }
+  
+  /* ==========================================================================
+  entity tables helpers
+  ========================================================================== */
+  /* Remove Bootstrap padding from the element
+     http://stackoverflow.com/questions/19562903/remove-padding-from-columns-in-bootstrap-3 */
+  .no-padding-left { padding-left: 0 !important; }
+  .no-padding-right { padding-right: 0 !important; }
+  .no-padding-top { padding-top: 0 !important; }
+  .no-padding-bottom { padding-bottom: 0 !important; }
+  .no-padding { padding: 0 !important; }
+  
+  /* bootstrap 3 input-group 100% width
+     http://stackoverflow.com/questions/23436430/bootstrap-3-input-group-100-width */
+  .width-min { width: 1% !important; }
+  
+  /* Makes toolbar not wrap on smaller screens
+   http://www.sketchingwithcss.com/samplechapter/cheatsheet.html#right */
+  .flex-btn-group-container {
+     display: -webkit-flex;
+     display: flex;
+     -webkit-flex-direction: row;
+     flex-direction: row;
+     -webkit-justify-content: flex-end;
+     justify-content: flex-end;
+  }
+  
+  /* ==========================================================================
+  entity detail page css
+  ========================================================================== */
+  .row.jh-entity-details > dd {
+      margin-bottom: 15px;
+  }
+  
+  @media screen and (min-width: 768px) {
+      .row.jh-entity-details > dt {
+          margin-bottom: 15px;
+      }
+  
+      .row.jh-entity-details > dd {
+          border-bottom: 1px solid #eee;
+          padding-left: 180px;
+          margin-left: 0;
+      }
+  }
+  
+  /* ==========================================================================
+  ui bootstrap tweaks
+  ========================================================================== */
+  .nav, .carousel, .panel-title a {
+      cursor: pointer;
+  }
+  
+  .datetime-picker-dropdown > li.date-picker-menu div > table .btn-default,
+  .uib-datepicker-popup  > li > div.uib-datepicker > table .btn-default {
+      border: 0;
+  }
+  
+  .datetime-picker-dropdown > li.date-picker-menu div > table:focus,
+  .uib-datepicker-popup  > li > div.uib-datepicker > table:focus {
+      outline: none;
+  }
+  
+  /* jhipster-needle-css-add-main JHipster will add new css style */
+  .btn-toolbar {
+      padding-bottom: 10px;
+  }
+  div.input-group > .input-group-addon {
+      color: inherit;
+      background-color: inherit;
+  }
+  td > div.input-group {
+      width: inherit;
+      display: inline-flex;
+  }
+  td.TableColumn > div.input-group {
+      display: -webkit-box;
+      width:100%;
+  }
+  tr.bg-primary > td.TableColumn > div.input-group {
+      background-color: white!important;
+      width:100%;
+  }
+  
+  fieldset > select.form-control {
+      display: inline-block;
+  }
+  .form-control {
+      width: inherit;
+      display: inherit;
+  }
+  .form-control.column {
+      width: 100%;
+      display: block;
+  }
+  div.form-group .form-control {
+      width: 100%;
+      display: block;
+  }
+  
+  .input-group input {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+  }
+  .input-group input:first-child {
+      width: 30%!important;
+  }
+  .input-group  input.form-control:nth-child(2) {
+      width: 50%!important;
+  }
+  
+  .FormLabel.required::after {
+    content:"*";color:red;
+  }
+  .custom-file-control{
+      white-space: nowrap;
+      width:100%;
+      max-width:100%;
+      overflow: hidden;
+      text-overflow:ellipsis;
+  }
+  
+  .custom-file-control::after {
     content: attr(title);
-    padding-right: 5px;
-}
-
-legend {
-    border-width: inherit;
-    border-style: inherit;
-    border-color: inherit;
-}
-input.inputFieldReadOnly {
-	background: #F5F5DC;
-	background-color:transparent;
-	border-style : none;
-	cursor:default;
-}
-.fieldset.card, fieldset.card {
-    margin-bottom: 1.5em;
-}
-div.div-sigla-table {
-    padding-left: 0px;
-    padding-right: 0px;
-    min-height: 200px;
-    border-color: #d9edf7;
-    border-style: solid;
-    border-width: 1px;
-}
-div.Group.card {
-    padding: 5px;
-    margin-bottom: 5px;
-}
-table.Window.card.col-5 {
-    padding-left: 0px;
-    padding-right: 0px;
-}
-table.Toolbar {
-    border: 1px solid #d9edf7;
-    border-top: none;
-    border-top-style: none;
-    border-top-color: transparent;
-}
-
-.fa-spinner {
-    margin: 0 10px
-}
-
-ul.freesearch {
-    padding: 0 0 0 1px;
-    margin: 1px 0 0 15px;
-    border-left: 1px dotted #0066CC;
-    list-style-type: none;
-}
-
-ul.freesearch li  {
-    position: relative;
-}
-
-ul.freesearch > li  {
-    margin-bottom: 10px;
-}
-
-ul.freesearch li:before {
-    content: '';
-    width: 14px;
-    position: absolute;
-    border-bottom: 1px dotted #0066CC;
-    left: 0px;
-    top: 12px;
-}
-ul.freesearch > li > a  {
-    margin-left: 20px;
-}
-
-.title-bar {
-    padding: .50rem;
-    border-radius: .25rem;
-    margin-bottom: .25rem;
-}
-
-.cursor-wait {
-    cursor: wait!important;
-}
-.cursor-help {
-    cursor: help;
-}
-/* Gestione degli alert */
-.alert-message-bp.alert-danger,
-.alert-message-bp.alert-info {
-    z-index: 999;
+  }
+  .custom-file-control::before {
+    content: "Browse";
+  }
+  
+  .btn-title::before {
+      content: attr(title);
+      padding-right: 5px;
+  }
+  
+  legend {
+      border-width: inherit;
+      border-style: inherit;
+      border-color: inherit;
+  }
+  input.inputFieldReadOnly {
+      background: #F5F5DC;
+      background-color:transparent;
+      border-style : none;
+      cursor:default;
+  }
+  .fieldset.card, fieldset.card {
+      margin-bottom: 1.5em;
+  }
+  div.div-sigla-table {
+      padding-left: 0px;
+      padding-right: 0px;
+      min-height: 200px;
+      border-color: #d9edf7;
+      border-style: solid;
+      border-width: 1px;
+      overflow-x: auto;
+  }
+  div.Group.card {
+      padding: 5px;
+      margin-bottom: 5px;
+  }
+  table.Window.card.col-5 {
+      padding-left: 0px;
+      padding-right: 0px;
+  }
+  table.Toolbar {
+      border: 1px solid #d9edf7;
+      border-top: none;
+      border-top-style: none;
+      border-top-color: transparent;
+  }
+  
+  .fa-spinner {
+      margin: 0 10px
+  }
+  
+  ul.freesearch {
+      padding: 0 0 0 1px;
+      margin: 1px 0 0 15px;
+      border-left: 1px dotted #0066CC;
+      list-style-type: none;
+  }
+  
+  ul.freesearch li  {
+      position: relative;
+  }
+  
+  ul.freesearch > li  {
+      margin-bottom: 10px;
+  }
+  
+  ul.freesearch li:before {
+      content: '';
+      width: 14px;
+      position: absolute;
+      border-bottom: 1px dotted #0066CC;
+      left: 0px;
+      top: 12px;
+  }
+  ul.freesearch > li > a  {
+      margin-left: 20px;
+  }
+  
+  .title-bar {
+      padding: .50rem;
+      border-radius: .25rem;
+      margin-bottom: .25rem;
+  }
+  
+  .cursor-wait {
+      cursor: wait!important;
+  }
+  .cursor-help {
+      cursor: help;
+  }
+  /* Gestione degli alert */
+  .alert-message-bp.alert-danger,
+  .alert-message-bp.alert-info {
+      z-index: 999;
+      position: fixed;
+  }
+  .alert-message-bp.alert-danger {
+      transform: translate(-50%, 0);
+      left: 50%;
+      top: 50%;
+  }
+  
+  .alert-message-bp.alert-danger > i.fa {
+      -webkit-animation: fadeoutin 6s linear 1 forwards;
+      animation: fadeoutin 6s linear 1 forwards;
+  }
+  .alert-message-bp.alert-info {
+      bottom: 1;
+      right: 0;
+      margin-right: 1.5rem;
+      -webkit-animation: fadeinout 10s linear 1 forwards;
+      animation: fadeinout 10s linear 1 forwards;
+  }
+  @-webkit-keyframes fadeinout {
+      0% { opacity: 1; }
+      100% { opacity: 0;}
+  }
+  
+  @keyframes fadeinout {
+      0% { opacity: 1; }
+      100% { opacity: 0;}
+  }
+  @-webkit-keyframes fadeoutin {
+      0% { opacity: 1; }
+      10%{ opacity: 0; }
+      20% { opacity: 1; }
+      30%{ opacity: 0; }
+      40% {  opacity: 1; }
+      50% {  opacity: 0; }
+      60% {  opacity: 1; }
+      70% {  opacity: 0; }
+      80% {  opacity: 1; }
+      90% {  opacity: 0; }
+      100% { opacity: 1;}
+  }
+  @keyframes fadeoutin {
+      0% { opacity: 1; }
+      10%{ opacity: 0; }
+      20% { opacity: 1; }
+      30%{ opacity: 0; }
+      40% {  opacity: 1; }
+      50% {  opacity: 0; }
+      60% {  opacity: 1; }
+      70% {  opacity: 0; }
+      80% {  opacity: 1; }
+      90% {  opacity: 0; }
+      100% { opacity: 1;}
+  }
+  /* Table with fixed header and footer */
+  td.table-cell-ellipsis {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      max-width: 100px;
+  }
+  td.table-cell-ellipsis:hover{
+      cursor: help;
+  }
+  .btn-link {
+      padding-left: 0rem;
+      padding-right: 0rem;
+  }
+  /* Absolute Center Spinner */
+  .loading {
     position: fixed;
-}
-.alert-message-bp.alert-danger {
-    transform: translate(-50%, 0);
-    left: 50%;
-    top: 50%;
-}
-
-.alert-message-bp.alert-danger > i.fa {
-    -webkit-animation: fadeoutin 6s linear 1 forwards;
-    animation: fadeoutin 6s linear 1 forwards;
-}
-.alert-message-bp.alert-info {
-    bottom: 1;
+    z-index: 1000;
+    height: 2em;
+    width: 2em;
+    overflow: show;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
     right: 0;
-    margin-right: 1.5rem;
-    -webkit-animation: fadeinout 10s linear 1 forwards;
-    animation: fadeinout 10s linear 1 forwards;
-}
-@-webkit-keyframes fadeinout {
-    0% { opacity: 1; }
-    100% { opacity: 0;}
-}
-
-@keyframes fadeinout {
-    0% { opacity: 1; }
-    100% { opacity: 0;}
-}
-@-webkit-keyframes fadeoutin {
-    0% { opacity: 1; }
-    10%{ opacity: 0; }
-    20% { opacity: 1; }
-    30%{ opacity: 0; }
-    40% {  opacity: 1; }
-    50% {  opacity: 0; }
-    60% {  opacity: 1; }
-    70% {  opacity: 0; }
-    80% {  opacity: 1; }
-    90% {  opacity: 0; }
-    100% { opacity: 1;}
-}
-@keyframes fadeoutin {
-    0% { opacity: 1; }
-    10%{ opacity: 0; }
-    20% { opacity: 1; }
-    30%{ opacity: 0; }
-    40% {  opacity: 1; }
-    50% {  opacity: 0; }
-    60% {  opacity: 1; }
-    70% {  opacity: 0; }
-    80% {  opacity: 1; }
-    90% {  opacity: 0; }
-    100% { opacity: 1;}
-}
-/* Table with fixed header and footer */
-td.table-cell-ellipsis {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    max-width: 100px;
-}
-td.table-cell-ellipsis:hover{
-    cursor: help;
-}
-.btn-link {
-    padding-left: 0rem;
-    padding-right: 0rem;
-}
-/* Absolute Center Spinner */
-.loading {
-  position: fixed;
-  z-index: 1000;
-  height: 2em;
-  width: 2em;
-  overflow: show;
-  margin: auto;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
-
-/* Transparent Overlay */
-.loading:before {
-  content: '';
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: transparent;
-}
-
-/* :not(:required) hides these rules from IE9 and below */
-.loading:not(:required) {
-  /* hide "loading..." text */
-  font: 0/0 a;
-  color: transparent;
-  text-shadow: none;
-  background-color: transparent;
-  border: 0;
-}
-
-.loading:not(:required):after {
-  content: '';
-  display: block;
-  font-size: 10px;
-  width: 1em;
-  height: 1em;
-  margin-top: -0.5em;
-  -webkit-animation: spinner 1500ms infinite linear;
-  -moz-animation: spinner 1500ms infinite linear;
-  -ms-animation: spinner 1500ms infinite linear;
-  -o-animation: spinner 1500ms infinite linear;
-  animation: spinner 1500ms infinite linear;
-  border-radius: 0.5em;
-  -webkit-box-shadow: rgba(0, 102, 204, 1) 1.5em 0 0 0, rgba(0, 102, 204, 1) 1.1em 1.1em 0 0, rgba(0, 102, 204, 1) 0 1.5em 0 0, rgba(0, 102, 204, 1) -1.1em 1.1em 0 0, rgba(0, 102, 204, 0.5) -1.5em 0 0 0, rgba(0, 102, 204, 0.5) -1.1em -1.1em 0 0, rgba(0, 102, 204, 1) 0 -1.5em 0 0, rgba(0, 102, 204, 1) 1.1em -1.1em 0 0;
-  box-shadow: rgba(0, 102, 204, 1) 1.5em 0 0 0, rgba(0, 102, 204, 1) 1.1em 1.1em 0 0, rgba(0, 102, 204, 1) 0 1.5em 0 0, rgba(0, 102, 204, 1) -1.1em 1.1em 0 0, rgba(0, 102, 204, 1) -1.5em 0 0 0, rgba(0, 102, 204, 1) -1.1em -1.1em 0 0, rgba(0, 102, 204, 1) 0 -1.5em 0 0, rgba(0, 102, 204, 1) 1.1em -1.1em 0 0;
-}
-
-/* Animation */
-
-@-webkit-keyframes spinner {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
   }
-  100% {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
+  
+  /* Transparent Overlay */
+  .loading:before {
+    content: '';
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
   }
-}
-@-moz-keyframes spinner {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
+  
+  /* :not(:required) hides these rules from IE9 and below */
+  .loading:not(:required) {
+    /* hide "loading..." text */
+    font: 0/0 a;
+    color: transparent;
+    text-shadow: none;
+    background-color: transparent;
+    border: 0;
   }
-  100% {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
+  
+  .loading:not(:required):after {
+    content: '';
+    display: block;
+    font-size: 10px;
+    width: 1em;
+    height: 1em;
+    margin-top: -0.5em;
+    -webkit-animation: spinner 1500ms infinite linear;
+    -moz-animation: spinner 1500ms infinite linear;
+    -ms-animation: spinner 1500ms infinite linear;
+    -o-animation: spinner 1500ms infinite linear;
+    animation: spinner 1500ms infinite linear;
+    border-radius: 0.5em;
+    -webkit-box-shadow: rgba(0, 102, 204, 1) 1.5em 0 0 0, rgba(0, 102, 204, 1) 1.1em 1.1em 0 0, rgba(0, 102, 204, 1) 0 1.5em 0 0, rgba(0, 102, 204, 1) -1.1em 1.1em 0 0, rgba(0, 102, 204, 0.5) -1.5em 0 0 0, rgba(0, 102, 204, 0.5) -1.1em -1.1em 0 0, rgba(0, 102, 204, 1) 0 -1.5em 0 0, rgba(0, 102, 204, 1) 1.1em -1.1em 0 0;
+    box-shadow: rgba(0, 102, 204, 1) 1.5em 0 0 0, rgba(0, 102, 204, 1) 1.1em 1.1em 0 0, rgba(0, 102, 204, 1) 0 1.5em 0 0, rgba(0, 102, 204, 1) -1.1em 1.1em 0 0, rgba(0, 102, 204, 1) -1.5em 0 0 0, rgba(0, 102, 204, 1) -1.1em -1.1em 0 0, rgba(0, 102, 204, 1) 0 -1.5em 0 0, rgba(0, 102, 204, 1) 1.1em -1.1em 0 0;
   }
-}
-@-o-keyframes spinner {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
+  
+  /* Animation */
+  
+  @-webkit-keyframes spinner {
+    0% {
+      -webkit-transform: rotate(0deg);
+      -moz-transform: rotate(0deg);
+      -ms-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+      -moz-transform: rotate(360deg);
+      -ms-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
   }
-  100% {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
+  @-moz-keyframes spinner {
+    0% {
+      -webkit-transform: rotate(0deg);
+      -moz-transform: rotate(0deg);
+      -ms-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+      -moz-transform: rotate(360deg);
+      -ms-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
   }
-}
-@keyframes spinner {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
+  @-o-keyframes spinner {
+    0% {
+      -webkit-transform: rotate(0deg);
+      -moz-transform: rotate(0deg);
+      -ms-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+      -moz-transform: rotate(360deg);
+      -ms-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
   }
-  100% {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
+  @keyframes spinner {
+    0% {
+      -webkit-transform: rotate(0deg);
+      -moz-transform: rotate(0deg);
+      -ms-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+      -moz-transform: rotate(360deg);
+      -ms-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
   }
-}
-.search-typehead {
-    margin-top: 10px;
-    padding-bottom: 10px;
-    padding-right: 10px;
-    border-bottom: 1px solid rgba(0,0,0,.1);
+  .search-typehead {
+      margin-top: 10px;
+      padding-bottom: 10px;
+      padding-right: 10px;
+      border-bottom: 1px solid rgba(0,0,0,.1);
+  }
+  
+  .tree-children {
+      padding-left: 20px;
+      -webkit-animation: treefadeoutin 0.5s linear 1 forwards;
+      animation: treefadeoutin 0.5s linear 1 forwards;
+  }
+  .angular-tree-component {
+    width: 100%;
+    position:relative;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-touch-callout: none; 
+    -webkit-user-select: none;   
+    -khtml-user-select: none;    
+    -moz-user-select: none;      
+    -ms-user-select: none;       
+    user-select: none;           
+  }
+
+  @-webkit-keyframes treefadeoutin {
+      0% { opacity: 0; }
+      100% { opacity: 1;}
+  }
+  
+  @keyframes treefadeoutin {
+      0% { opacity: 0; }
+      100% { opacity: 1;}
+  }
+  ::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px #0066CC;
+      background-color: #F5F5F5;
+  }
+  
+  ::-webkit-scrollbar {
+      width: 6px;
+      background-color: #F5F5F5;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+      background-color: #0066CC;
+  }
+  @media screen and (min-width: 768px) {
+    .tree-shadow {
+        border-right: 1px solid rgba(0,0,0,.1);
+        position: sticky;
+        padding-top: 2px;
+        top: 0;
+        bottom: 0;
+        z-index: 999;
+    }
+    .angular-tree-component {
+        height: calc(100vh - 105px);
+        overflow: auto;
+    }
 }
 
-.tree-children {
-    -webkit-animation: treefadeoutin 0.5s linear 1 forwards;
-    animation: treefadeoutin 0.5s linear 1 forwards;
-}
-@-webkit-keyframes treefadeoutin {
-    0% { opacity: 0; }
-    100% { opacity: 1;}
-}
 
-@keyframes treefadeoutin {
-    0% { opacity: 0; }
-    100% { opacity: 1;}
-}
-::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px #0066CC;
-	background-color: #F5F5F5;
-}
 
-::-webkit-scrollbar {
-	width: 6px;
-	background-color: #F5F5F5;
-}
 
-::-webkit-scrollbar-thumb {
-	background-color: #0066CC;
-}
+
+
+
+
+
+/* Style when highlighting a search. */
+.ui-select-highlight {
+    font-weight: bold;
+  }
+  
+  .ui-select-offscreen {
+    clip: rect(0 0 0 0) !important;
+    width: 1px !important;
+    height: 1px !important;
+    border: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    position: absolute !important;
+    outline: 0 !important;
+    left: 0px !important;
+    top: 0px !important;
+  }
+  
+  
+  .ui-select-choices-row:hover {
+    background-color: #f5f5f5;
+  }
+  
+  /* Select2 theme */
+  
+  /* Mark invalid Select2 */
+  .ng-dirty.ng-invalid > a.select2-choice {
+      border-color: #D44950;
+  }
+  
+  .select2-result-single {
+    padding-left: 0;
+  }
+  
+  .select2-locked > .select2-search-choice-close{
+    display:none;
+  }
+  
+  .select-locked > .ui-select-match-close{
+      display:none;
+  }
+  
+  body > .select2-container.open {
+    z-index: 9999; /* The z-index Select2 applies to the select2-drop */
+  }
+  
+  /* Handle up direction Select2 */
+  .ui-select-container[theme="select2"].direction-up .ui-select-match {
+      border-radius: 4px; /* FIXME hardcoded value :-/ */
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+  }
+  .ui-select-container[theme="select2"].direction-up .ui-select-dropdown {
+      border-radius: 4px; /* FIXME hardcoded value :-/ */
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+  
+      border-top-width: 1px;  /* FIXME hardcoded value :-/ */
+      border-top-style: solid;
+  
+      box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.25);
+  
+      margin-top: -4px; /* FIXME hardcoded value :-/ */
+  }
+  .ui-select-container[theme="select2"].direction-up .ui-select-dropdown .select2-search {
+      margin-top: 4px; /* FIXME hardcoded value :-/ */
+  }
+  .ui-select-container[theme="select2"].direction-up.select2-dropdown-open .ui-select-match {
+      border-bottom-color: #5897fb;
+  }
+  
+  /* Selectize theme */
+  
+  /* Helper class to show styles when focus */
+  .selectize-input.selectize-focus{
+    border-color: #007FBB !important;
+  }
+  
+  /* Fix input width for Selectize theme */
+  .selectize-control > .selectize-input > input {
+    width: 100%;
+  }
+  
+  /* Fix dropdown width for Selectize theme */
+  .selectize-control > .selectize-dropdown {
+    width: 100%;
+  }
+  
+  /* Mark invalid Selectize */
+  .ng-dirty.ng-invalid > div.selectize-input {
+      border-color: #D44950;
+  }
+  
+  /* Handle up direction Selectize */
+  .ui-select-container[theme="selectize"].direction-up .ui-select-dropdown {
+      box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.25);
+  
+      margin-top: -2px; /* FIXME hardcoded value :-/ */
+  }
+  
+  /* Bootstrap theme */
+  
+  /* Helper class to show styles when focus */
+  .btn-default-focus {
+    color: #333;
+    background-color: #EBEBEB;
+    border-color: #ADADAD;
+    text-decoration: none;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+  }
+  
+  .ui-select-bootstrap .ui-select-toggle {
+    position: relative;
+  }
+  
+  .ui-select-bootstrap .ui-select-toggle > .caret {
+    position: absolute;
+    height: 10px;
+    top: 50%;
+    right: 10px;
+    margin-top: -2px;
+  }
+  
+  /* Fix Bootstrap dropdown position when inside a input-group */
+  .input-group > .ui-select-bootstrap.dropdown {
+    /* Instead of relative */
+    position: static;
+  }
+  
+  .input-group > .ui-select-bootstrap > input.ui-select-search.form-control {
+    border-radius: 4px; /* FIXME hardcoded value :-/ */
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .input-group > .ui-select-bootstrap > input.ui-select-search.form-control.direction-up {
+    border-radius: 4px !important; /* FIXME hardcoded value :-/ */
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+  }
+  
+  .ui-select-bootstrap > .ui-select-match > .btn{
+    /* Instead of center because of .btn */
+    text-align: left !important;
+  }
+  
+  .ui-select-bootstrap > .ui-select-match > .caret {
+    position: absolute;
+    top: 45%;
+    right: 15px;
+  }
+  
+  .ui-disabled {
+      background-color: #eceeef ;
+      border-radius: 4px;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 5;
+      opacity: 0.6;
+      top: 0;
+      left: 0;
+      cursor: not-allowed;
+  }
+  
+  /* See Scrollable Menu with Bootstrap 3 http://stackoverflow.com/questions/19227496 */
+  .ui-select-bootstrap > .ui-select-choices {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    overflow-x: hidden;
+    margin-top: -1px;
+  }
+  
+  body > .ui-select-bootstrap.open {
+    z-index: 1000; /* Standard Bootstrap dropdown z-index */
+  }
+  
+  .ui-select-multiple.ui-select-bootstrap {
+    height: auto;
+    padding: 3px 3px 0 3px;
+  }
+  
+  .ui-select-multiple.ui-select-bootstrap input.ui-select-search {
+    background-color: transparent !important; /* To prevent double background when disabled */
+    border: none;
+    outline: none;
+    height: 1.666666em;
+    margin-bottom: 3px;
+  }
+  
+  .ui-select-multiple.ui-select-bootstrap .ui-select-match .close {
+    font-size: 1.6em;
+    line-height: 0.75;
+  }
+  
+  .ui-select-multiple.ui-select-bootstrap .ui-select-match-item {
+    outline: 0;
+    margin: 0 3px 3px 0;
+  }
+  
+  .ui-select-multiple .ui-select-match-item {
+    position: relative;
+  }
+  
+  .ui-select-multiple .ui-select-match-item.dropping-before:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 100%;
+    height: 100%;
+    margin-right: 2px;
+    border-left: 1px solid #428bca;
+  }
+  
+  .ui-select-multiple .ui-select-match-item.dropping-after:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 100%;
+    height: 100%;
+    margin-left: 2px;
+    border-right: 1px solid #428bca;
+  }
+  
+  .ui-select-bootstrap .ui-select-choices-row>a {
+      display: block;
+      padding: 3px 20px;
+      clear: both;
+      font-weight: 400;
+      line-height: 1.42857143;
+      color: #333;
+      white-space: nowrap;
+  }
+  
+  .ui-select-bootstrap .ui-select-choices-row>a:hover, .ui-select-bootstrap .ui-select-choices-row>a:focus {
+      text-decoration: none;
+      color: #262626;
+      background-color: #f5f5f5;
+  }
+  
+  .ui-select-bootstrap .ui-select-choices-row.active>a {
+      color: #fff;
+      text-decoration: none;
+      outline: 0;
+      background-color: #428bca;
+  }
+  
+  .ui-select-bootstrap .ui-select-choices-row.disabled>a,
+  .ui-select-bootstrap .ui-select-choices-row.active.disabled>a {
+      color: #777;
+      cursor: not-allowed;
+      background-color: #fff;
+  }
+  
+  /* fix hide/show angular animation */
+  .ui-select-match.ng-hide-add,
+  .ui-select-search.ng-hide-add {
+      display: none !important;
+  }
+  
+  /* Mark invalid Bootstrap */
+  .ui-select-bootstrap.ng-dirty.ng-invalid > button.btn.ui-select-match {
+      border-color: #D44950;
+  }
+  
+  /* Handle up direction Bootstrap */
+  .ui-select-container[theme="bootstrap"].direction-up .ui-select-dropdown {
+      box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.25);
+  }
