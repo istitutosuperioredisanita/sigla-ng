@@ -5,12 +5,10 @@ import { SiglaSharedModule } from '../shared';
 
 import {
     Register,
-    Activate,
-    Password,
-    PasswordResetInit,
-    PasswordResetFinish,
-    SessionsService,
-    SessionsComponent,
+    ActivateService,
+    PasswordService,
+    PasswordResetInitService,
+    PasswordResetFinishService,
     PasswordStrengthBarComponent,
     RegisterComponent,
     ActivateComponent,
@@ -33,16 +31,14 @@ import {
         PasswordStrengthBarComponent,
         PasswordResetInitComponent,
         PasswordResetFinishComponent,
-        SessionsComponent,
         SettingsComponent
     ],
     providers: [
-        SessionsService,
         Register,
-        Activate,
-        Password,
-        PasswordResetInit,
-        PasswordResetFinish
+        ActivateService,
+        PasswordService,
+        PasswordResetInitService,
+        PasswordResetFinishService
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

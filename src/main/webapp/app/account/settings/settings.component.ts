@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { JhiLanguageService, AlertService } from 'ng-jhipster';
+import { JhiLanguageService, JhiAlertService } from 'ng-jhipster';
 
 import { Principal, AccountService, JhiLanguageHelper } from '../../shared';
 import { WorkspaceService } from '../../workspace/workspace.service';
@@ -20,12 +20,11 @@ export class SettingsComponent implements OnInit {
         private languageService: JhiLanguageService,
         private languageHelper: JhiLanguageHelper,
         private workspaceService: WorkspaceService,
-        private alertService: AlertService
+        private alertService: JhiAlertService
     ) {
-        this.languageService.setLocations(['settings']);
     }
 
-    ngOnInit () {
+    ngOnInit() {
         this.principal.identity().then((account) => {
             this.settingsAccount = this.copyAccount(account);
         });
@@ -34,7 +33,7 @@ export class SettingsComponent implements OnInit {
         });
     }
 
-    save () {
+    save() {
         this.account.save(this.settingsAccount).subscribe(() => {
             this.error = null;
             this.success = 'OK';
@@ -51,6 +50,7 @@ export class SettingsComponent implements OnInit {
             this.error = 'ERROR';
         });
     }
+
     evictCache () {
         this.workspaceService.evictTree().subscribe(
             message => {
@@ -58,7 +58,8 @@ export class SettingsComponent implements OnInit {
             }
         );
     }
-    copyAccount (account) {
+
+    copyAccount(account) {
         return {
             activated: account.activated,
             email: account.email,

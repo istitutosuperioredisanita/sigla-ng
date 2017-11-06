@@ -1,8 +1,8 @@
-<template #rt let-r="result" let-t="term">
+<ng-template #rt let-r="result" let-t="term">
     <div>
         <span>{{r.breadcrumbS}}</span>
     </div>
-</template>
+</ng-template>
 <div class="search-typehead">
     <div class="input-group">
         <input
@@ -11,11 +11,11 @@
             [inputFormatter]="formatter"
             [resultFormatter]="formatter"
             (selectItem)="onSelectLeaf($event.item)"
-            class="form-control"
+            class="form-control outline-secondary"
             placeholder="Cerca nel menu......"
             id="search-tree"/>
         <span class="input-group-btn">
-            <a class="btn btn-secondary"  
+            <a class="btn btn-outline-secondary"  
                 (click)="tree.treeModel.collapseAll()" 
                 placement="bottom" 
                 ngbTooltip="Comprimi tutte le voci">
@@ -26,7 +26,7 @@
 </div>
 <i *ngIf="isRequesting" class="fa fa-spinner fa-spin text-muted"></i>
 <tree-root [nodes]="nodes" class="tree-menu">
-    <template #treeNodeFullTemplate
+    <ng-template #treeNodeFullTemplate
             let-node="node"
             let-index="index"
             let-templates="templates">
@@ -51,5 +51,5 @@
             <tree-node-children [node]="node" [templates]="templates">
             </tree-node-children>
         </div>
-    </template>
-</tree-root>
+    </ng-template>
+</tree-root>            

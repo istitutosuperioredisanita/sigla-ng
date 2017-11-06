@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, ViewChild, EventEmitter, Output } from '@angular/core';
-import { EventManager, JhiLanguageService } from 'ng-jhipster';
+import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
 import { Principal } from '../shared';
 import { Leaf } from './leaf.model';
 import { WorkspaceService } from './workspace.service';
@@ -35,9 +35,8 @@ export class SIGLATreeComponent implements OnInit, OnDestroy {
         private jhiLanguageService: JhiLanguageService,
         private workspaceService: WorkspaceService,
         private principal: Principal,
-        private eventManager: EventManager
+        private eventManager: JhiEventManager
     ) {
-        this.jhiLanguageService.setLocations(['workspace']);
     }
 
     searchtree = (text$: Observable<string>) =>

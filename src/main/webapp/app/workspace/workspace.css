@@ -30,21 +30,10 @@ only screen and (                min-resolution: 2dppx) {
 .e2e-trusted-html{
     padding-top: 10px;
 }
-.tree-shadow {
-    padding-left: 10px;
-    padding-right: 0px;
-}
 .space {
     background-color: #fafafa;
+    padding-bottom: 40px;
 }
-@media screen and (min-width: 768px) {
-    .tree-shadow {
-        height: calc(100vh - 105px);
-        border-right: 1px solid rgba(0,0,0,.1);
-        padding-bottom: 40px;
-        position: sticky;
-        top: 0;
-        bottom: 0;
-        z-index: 999;
-    }
+.workspace {
+    padding-left: 0px;
 }
