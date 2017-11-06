@@ -40,26 +40,26 @@ export class ContextComponent {
                 return pairs;
             }
         } else {
-            return pairs.filter(v => new RegExp(term, 'gi').test(v.first) || new RegExp(term, 'gi').test(v.second));
+            return pairs.filter((v) => new RegExp(term, 'gi').test(v.first) || new RegExp(term, 'gi').test(v.second));
         }
     }
 
     searchcds = (text$: Observable<string>) =>
         text$
         .debounceTime(200)
-        .map(term => this.filterPair(term, this.contextService.cdsPairs, 'cds')
+        .map((term) => this.filterPair(term, this.contextService.cdsPairs, 'cds')
         .slice(0, 10));
 
     searchuo = (text$: Observable<string>) =>
         text$
         .debounceTime(200)
-        .map(term => this.filterPair(term, this.contextService.uoPairs, 'uo')
+        .map((term) => this.filterPair(term, this.contextService.uoPairs, 'uo')
         .slice(0, 10));
 
     searchcdr = (text$: Observable<string>) =>
         text$
         .debounceTime(200)
-        .map(term => this.filterPair(term, this.contextService.cdrPairs, 'cdr')
+        .map((term) => this.filterPair(term, this.contextService.cdrPairs, 'cdr')
         .slice(0, 10));
 
     formatter = (pair: Pair) => pair.first + ' - ' + pair.second;
@@ -68,7 +68,7 @@ export class ContextComponent {
     onSelectCds = (item: Pair) => {
         this.contextService
             .getUo(item ? item.first : '')
-            .subscribe(uo => {
+            .subscribe((uo) => {
                 this.contextService.uoPairs = uo;
                 if (uo.length === 1) {
                     this.contextService.uoModel = uo[0];
@@ -80,7 +80,7 @@ export class ContextComponent {
     onSelectUo = (item: Pair) => {
         this.contextService
             .getCds(item ? item.first : '')
-            .subscribe(cds =>  {
+            .subscribe((cds) =>  {
                 this.contextService.cdsPairs = cds;
                 if (cds.length === 1) {
                     this.contextService.cdsModel = cds[0];
@@ -92,7 +92,7 @@ export class ContextComponent {
     onSelectCdr = (item: Pair) => {
         this.contextService
             .getCdr(item ? item.first : '')
-            .subscribe(cdr =>  {
+            .subscribe((cdr) =>  {
                 this.contextService.cdrPairs = cdr;
                 this.contextService.cdrModel = cdr[0];
             });
@@ -101,7 +101,7 @@ export class ContextComponent {
     setEsercizio(esercizio: number): void {
         this.contextService
             .saveEsecizio(esercizio)
-            .subscribe(identity => {
+            .subscribe((identity) => {
                 this.principal.authenticate(identity);
                 this.contextService.saveWildflyEsercizio(esercizio).subscribe();
                 this.localStateStorageService.storeEsercizio(this.principal.getAccount().username, esercizio);
@@ -109,7 +109,7 @@ export class ContextComponent {
     }
 
     saveContext(): void {
-        let userContext = new UserContext(
+        const userContext = new UserContext(
                 this.principal.getAccount().esercizio,
                 Pair.getFirst(this.contextService.cdsModel),
                 Pair.getFirst(this.contextService.uoModel),
@@ -117,7 +117,7 @@ export class ContextComponent {
             );
         this.contextService
             .saveUserContext(userContext)
-            .subscribe(identity => {
+            .subscribe((identity) => {
                 this.principal.authenticate(identity);
                 this.contextService.saveWildflyUserContext(userContext).subscribe();
                 this.localStateStorageService.storeUserContext(this.principal.getAccount().username, userContext);

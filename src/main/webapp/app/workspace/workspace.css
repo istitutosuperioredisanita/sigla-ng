@@ -34,6 +34,3 @@ only screen and (                min-resolution: 2dppx) {
     background-color: #fafafa;
     padding-bottom: 40px;
 }
-.workspace {
-    padding-left: 0px;
-}

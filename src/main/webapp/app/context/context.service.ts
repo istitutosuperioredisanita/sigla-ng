@@ -23,7 +23,7 @@ export class ContextService  {
 
     findEsercizi(): void {
         this.getEsercizi()
-            .subscribe(esercizi => this.esercizi = esercizi);
+            .subscribe((esercizi) => this.esercizi = esercizi);
     }
 
     getEsercizi(): Observable<number[]> {
@@ -32,7 +32,7 @@ export class ContextService  {
 
     findPreferiti(): void {
         this.getPreferiti()
-            .subscribe(preferiti => this.preferiti = preferiti);
+            .subscribe((preferiti) => this.preferiti = preferiti);
     }
 
     getPreferiti(): Observable<Preferiti[]> {
@@ -41,7 +41,7 @@ export class ContextService  {
 
     findUo(account: Account): void {
         this.getUo(account.cds)
-            .subscribe(uo => {
+            .subscribe((uo) => {
                 this.uoPairs = uo;
                 this.uoModel = uo.filter(function(v) {
                     return v.first === account.uo;
@@ -50,7 +50,7 @@ export class ContextService  {
     }
 
     getUo(cds: string): Observable<Pair[]> {
-        let params: URLSearchParams = new URLSearchParams();
+        const params: URLSearchParams = new URLSearchParams();
         params.set('cds', cds);
         return this.http.get('/api/context/uo', {search: params}).map((res: Response) => res.json());
     }
@@ -64,14 +64,14 @@ export class ContextService  {
 
     allCds(): void {
         this.getCds('')
-            .subscribe(cds => {
+            .subscribe((cds) => {
                 this.allCdsPairs = cds;
             });
     }
 
     findCds(account: Account): void {
         this.getCds(account.uo)
-            .subscribe(cds => {
+            .subscribe((cds) => {
                 this.cdsPairs = cds;
                 this.cdsModel = cds.filter(function(v) {
                     return v.first === account.cds;
@@ -80,21 +80,20 @@ export class ContextService  {
     }
 
     getCds(uo: string): Observable<Pair[]> {
-        let params: URLSearchParams = new URLSearchParams();
+        const params: URLSearchParams = new URLSearchParams();
         params.set('uo', uo);
         return this.http.get('/api/context/cds', {search: params}).map((res: Response) => res.json());
     }
 
-
     getCdr(uo: string): Observable<Pair[]> {
-        let params: URLSearchParams = new URLSearchParams();
+        const params: URLSearchParams = new URLSearchParams();
         params.set('uo', uo);
         return this.http.get('/api/context/cdr', {search: params}).map((res: Response) => res.json());
     }
 
     findCdr(account: Account): void {
         this.getCdr(account.uo)
-            .subscribe(cdr => {
+            .subscribe((cdr) => {
                 this.cdrPairs = cdr;
                 this.cdrModel = cdr.filter(function(v) {
                     return v.first === account.cdr;
@@ -109,7 +108,7 @@ export class ContextService  {
     }
 
     saveWildflyEsercizio(esercizio: number): Observable<string> {
-        let params: URLSearchParams = new URLSearchParams();
+        const params: URLSearchParams = new URLSearchParams();
         params.set('comando', 'doSelezionaContesto(' + esercizio + ',null,null,null)');
         return this.http.get('/SIGLA/Login.do', {
            search: params
@@ -121,8 +120,8 @@ export class ContextService  {
     }
 
     saveWildflyUserContext(userContext: UserContext): Observable<string> {
-        let params: URLSearchParams = new URLSearchParams();
-        let parameter = [
+        const params: URLSearchParams = new URLSearchParams();
+        const parameter = [
             userContext.esercizio,
             String(userContext.cds),
             String(userContext.uo),

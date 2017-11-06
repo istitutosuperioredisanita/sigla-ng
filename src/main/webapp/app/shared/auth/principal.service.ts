@@ -54,7 +54,7 @@ export class Principal {
         });
     }
 
-    notHaveAuthority (authorities: string[]): Promise<boolean> {
+    notHaveAuthority(authorities: string[]): Promise<boolean> {
         if (!this.authenticated || !this.userIdentity || !this.userIdentity.authorities) {
             return Promise.resolve(false);
         }
@@ -66,7 +66,6 @@ export class Principal {
         }
         return Promise.resolve(true);
     }
-
 
     identity(force?: boolean, user?: string): Promise<any> {
         let reloadUserIdentity = false;
@@ -80,14 +79,14 @@ export class Principal {
             return Promise.resolve(this.userIdentity);
         }
         // retrieve the userIdentity data from the server, update the identity object, and then resolve.
-        return this.account.get(user).toPromise().then(account => {
+        return this.account.get(user).toPromise().then((account) => {
             if (account) {
-                let that = this;
+                const that = this;
                 this.userIdentity = account;
                 if (user || (this.userIdentity.users.length === 1 || !force)) {
                     this.context.saveUserContext(
                         this.localStateStorageService.getUserContext(this.userIdentity.username)
-                    ).toPromise().then(usercontext => {
+                    ).toPromise().then((usercontext) => {
                         that.userIdentity = usercontext;
                         this.context.findEsercizi();
                         this.context.findPreferiti();
@@ -104,7 +103,7 @@ export class Principal {
             }
             this.authenticationState.next(this.userIdentity);
             return this.userIdentity;
-        }).catch(err => {
+        }).catch((err) => {
             this.userIdentity = null;
             this.authenticated = false;
             this.authenticationState.next(this.userIdentity);
@@ -112,7 +111,7 @@ export class Principal {
         });
     }
 
-    getAccount (): Account {
+    getAccount(): Account {
         return this.userIdentity;
     }
 

@@ -18,7 +18,7 @@ export class LocalStateStorageService {
     }
 
     storeEsercizio(username: string, esercizio: number) {
-        let userContext = this.getUserContext(username);
+        const userContext = this.getUserContext(username);
         userContext.esercizio = esercizio;
         this.$localStorage.store('usercontext', userContext);
     }
