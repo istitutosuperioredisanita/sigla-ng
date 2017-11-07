@@ -20,7 +20,7 @@ export function interceptableFactory(
         backend,
         defaultOptions,
         [
-            new ErrorHandlerInterceptor(eventManager),            
+            new ErrorHandlerInterceptor(eventManager),
             new AuthExpiredInterceptor(injector, stateStorageService, router),
             // Other interceptors can be added here
             new NotificationInterceptor(injector)
