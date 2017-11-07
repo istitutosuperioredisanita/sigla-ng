@@ -316,10 +316,14 @@ html {
       padding-left: 0px;
       padding-right: 0px;
       min-height: 200px;
+      max-height: 70vh;
       border-color: #d9edf7;
       border-style: solid;
       border-width: 1px;
       overflow-x: auto;
+  }
+  nav {
+      padding-top: 5px;
   }
   div.Group.card {
       padding: 5px;
@@ -368,7 +372,7 @@ html {
   }
   
   .title-bar {
-      padding: .50rem;
+      padding: .05rem;
       border-radius: .25rem;
       margin-bottom: .25rem;
   }
@@ -611,6 +615,7 @@ html {
   
   ::-webkit-scrollbar {
       width: 6px;
+      height: 6px;
       background-color: #F5F5F5;
   }
   
@@ -627,7 +632,7 @@ html {
         z-index: 999;
     }
     .angular-tree-component {
-        height: calc(100vh - 155px);
+        height: calc(100vh - 195px);
         overflow: auto;
     }
 }
