@@ -51,14 +51,6 @@ export class SettingsComponent implements OnInit {
         });
     }
 
-    evictCache() {
-        this.workspaceService.evictTree().subscribe(
-            (message) => {
-                this.alertService.success('global.messages.info.success');
-            }
-        );
-    }
-
     copyAccount(account) {
         return {
             activated: account.activated,
