@@ -33,12 +33,6 @@ html {
       cursor: not-allowed;
       opacity: .45;
   }
-  input:read-only::-webkit-input-placeholder,
-  input:read-only::-moz-placeholder
-  input:read-only:-moz-placeholder
-  input:read-only:-ms-input-placeholder{ 
-      color:transparent; 
-  }
   /* ==========================================================================
   Browser Upgrade Prompt
   ========================================================================== */
