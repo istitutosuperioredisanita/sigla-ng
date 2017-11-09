@@ -105,6 +105,10 @@ export class ContextComponent {
                 this.principal.authenticate(identity);
                 this.contextService.saveWildflyEsercizio(esercizio).subscribe();
                 this.localStateStorageService.storeEsercizio(this.principal.getAccount().username, esercizio);
+                this.eventManager.broadcast({
+                    name: 'onRefreshTree',
+                    content: 'reopenView'
+                });
             });
     }
 
@@ -123,7 +127,8 @@ export class ContextComponent {
                 this.localStateStorageService.storeUserContext(this.principal.getAccount().username, userContext);
                 if (refreshTree) {
                     this.eventManager.broadcast({
-                        name: 'onRefreshTree'
+                        name: 'onRefreshTree',
+                        content: 'reopenView'
                     });
                 }
             });
