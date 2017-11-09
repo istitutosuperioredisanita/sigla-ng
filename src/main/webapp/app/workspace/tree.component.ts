@@ -28,6 +28,7 @@ export class SIGLATreeComponent implements OnInit, OnDestroy {
     leafz: Leaf[] = [];
     nodes = [];
     preferitiListener: Subscription;
+    refreshTreeListener: Subscription;
     @ViewChild(TreeComponent) tree: TreeComponent;
     @Output() activateLeaf = new EventEmitter();
 
@@ -73,21 +74,7 @@ export class SIGLATreeComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         const that = this;
-        this.isRequesting = true;
-        this.workspaceService.getTree().subscribe(
-            (leafs) => {
-                this.leafs = leafs;
-                const nodes = _.flatten(_.values<Leaf>(this.leafs));
-                this.leafz = nodes
-                    .filter((node: Leaf) => node.process)
-                    .map((node: Leaf) => {
-                        node.breadcrumbS = node.breadcrumb.map((segment) => _.values(segment)[0]).join(' > ');
-                        return node;
-                    });
-                this.nodes = this.getChildNodes('0');
-                this.stopRefreshing();
-            }
-        );
+        this.initTree();
         this.principal.identity().then((account) => {
             this.account = account;
         });
@@ -99,10 +86,14 @@ export class SIGLATreeComponent implements OnInit, OnDestroy {
                 that.onSelectLeaf(leaf);
             }
         });
+        this.refreshTreeListener = this.eventManager.subscribe('onRefreshTree', (message) => {
+            this.refreshTree();
+        });
     }
 
     ngOnDestroy() {
         this.eventManager.destroy(this.preferitiListener);
+        this.eventManager.destroy(this.refreshTreeListener);
     }
 
     private getChildNodes(id): SIGLATreeNode[] {
@@ -170,5 +161,33 @@ export class SIGLATreeComponent implements OnInit, OnDestroy {
                 node.toggleExpanded();
             }
         }
+    }
+
+    initTree() {
+        this.isRequesting = true;
+        this.workspaceService.getTree().subscribe(
+            (leafs) => {
+                this.leafs = leafs;
+                const nodes = _.flatten(_.values<Leaf>(this.leafs));
+                this.leafz = nodes
+                    .filter((node: Leaf) => node.process)
+                    .map((node: Leaf) => {
+                        node.breadcrumbS = node.breadcrumb.map((segment) => _.values(segment)[0]).join(' > ');
+                        return node;
+                    });
+                this.nodes = this.getChildNodes('0');
+                this.stopRefreshing();
+            }
+        );
+    }
+
+    refreshTree() {
+        this.workspaceService.evictTree().subscribe(
+            (message) => {
+                this.nodes = [];
+                this.tree.treeModel.update();
+                this.initTree();
+            }
+        );
     }
 }

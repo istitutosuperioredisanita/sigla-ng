@@ -108,7 +108,7 @@ export class ContextComponent {
             });
     }
 
-    saveContext(): void {
+    saveContext(refreshTree: boolean): void {
         const userContext = new UserContext(
                 this.principal.getAccount().esercizio,
                 Pair.getFirst(this.contextService.cdsModel),
@@ -121,6 +121,11 @@ export class ContextComponent {
                 this.principal.authenticate(identity);
                 this.contextService.saveWildflyUserContext(userContext).subscribe();
                 this.localStateStorageService.storeUserContext(this.principal.getAccount().username, userContext);
+                if (refreshTree) {
+                    this.eventManager.broadcast({
+                        name: 'onRefreshTree'
+                    });
+                }
             });
         this.router.navigate(['/workspace']);
     }

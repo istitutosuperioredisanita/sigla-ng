@@ -35,8 +35,8 @@ public class AlberoMainService {
         this.accessoService = accessoService;
     }
 
-    @CacheEvict(value="tree", key="#userId", condition="{#userId.equals(#userId)}")
-    public boolean evictCacheTree(String userId){
+    @CacheEvict(value="tree", key="{#userId, #esercizio, #unitaOrganizzativa}")
+    public boolean evictCacheTree(String userId, Integer esercizio, String unitaOrganizzativa){
         LOGGER.info("Evict cache Tree for User: {}", userId);
         return true;
     }

@@ -24,15 +24,15 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
                 '/h2-console',
                 '/auth'
             ],
-            target: 'http://as4dock.si.cnr.it',
-            headers: {host:'sigla-ng.test.si.cnr.it'},
+            target: 'http://localhost:8080',
             secure: false
         },
         {
             context: [
                 '/SIGLA'
             ],
-            target: 'http://localhost:8080',
+            target: 'http://as4dock.si.cnr.it',
+            headers: {host:'sigla-main.test.si.cnr.it'},
             secure: false
         }],
         watchOptions: {
