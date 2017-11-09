@@ -87,7 +87,7 @@ export class SIGLATreeComponent implements OnInit, OnDestroy {
             }
         });
         this.refreshTreeListener = this.eventManager.subscribe('onRefreshTree', (message) => {
-            this.refreshTree();
+            this.initTree(message);
         });
     }
 
@@ -163,8 +163,12 @@ export class SIGLATreeComponent implements OnInit, OnDestroy {
         }
     }
 
-    initTree() {
+    initTree(message?: string) {
         this.isRequesting = true;
+        let focusedNode = undefined;
+        if (this.tree.treeModel.getFocusedNode()) {
+            focusedNode = this.tree.treeModel.getFocusedNode().data.id;
+        }
         this.workspaceService.getTree().subscribe(
             (leafs) => {
                 this.leafs = leafs;
@@ -177,16 +181,26 @@ export class SIGLATreeComponent implements OnInit, OnDestroy {
                     });
                 this.nodes = this.getChildNodes('0');
                 this.stopRefreshing();
+                console.log(message);
+                if (message && focusedNode && message['content'] === 'reopenView') {
+                    console.log(focusedNode)
+                    const leaf = this.leafz.filter((v) => {
+                        return v.id === focusedNode;
+                    })[0];
+                    if (leaf) {
+                        this.onSelectLeaf(leaf);
+                    }
+                }
             }
         );
     }
 
-    refreshTree() {
+    refreshTree(message?: string) {
         this.workspaceService.evictTree().subscribe(
-            (message) => {
+            (content) => {
                 this.nodes = [];
                 this.tree.treeModel.update();
-                this.initTree();
+                this.initTree(message);
             }
         );
     }
