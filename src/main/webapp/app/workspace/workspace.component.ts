@@ -68,14 +68,19 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
 
     onNotify(nodo: any): void {
         this.leaf = nodo.leaf;
-        this.siglaPageTitle = this.leaf.breadcrumbS;
-        this.startRefreshing();
-        this.workspaceService.openMenu(nodo.id).subscribe((html) => {
-            this.renderHtml(html);
-            this.stopRefreshing();
-        }, (error) => {
-            this.stopRefreshing();
-        });
+        if (this.leaf) {
+            this.siglaPageTitle = this.leaf.breadcrumbS;
+            this.startRefreshing();
+            this.workspaceService.openMenu(nodo.id).subscribe((html) => {
+                this.renderHtml(html);
+                this.stopRefreshing();
+            }, (error) => {
+                this.stopRefreshing();
+            });
+        } else {
+            this.desktop = null;
+            this.logoVisible = true;
+        }
     }
 
     private renderHtml(html: string) {
