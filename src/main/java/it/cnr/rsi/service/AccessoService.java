@@ -38,8 +38,8 @@ public class AccessoService {
         this.ruoloAccessoRepository = ruoloAccessoRepository;
         this.utenteRepository = utenteRepository;
     }
-    @CacheEvict(value="accessi", key="#userId", condition="{#userId.equals(#userId)}")
-    public boolean evictCacheAccessi(String userId){
+    @CacheEvict(value="accessi", key="{#userId, #esercizio, #unitaOrganizzativa}")
+    public boolean evictCacheAccessi(String userId, Integer esercizio, String unitaOrganizzativa){
         LOGGER.info("Evict cache Accessi for User: {}", userId);
         return true;
     }
@@ -50,12 +50,15 @@ public class AccessoService {
     	LOGGER.info("Accessi for User: {} esercizio {} and Unita Organizzativa: {}", userId, esercizio, unitaOrganizzativa);
 		Utente utente = utenteRepository.findOne(userId);
     	List<String> findRuoliByCdUtente = utenteUnitaRuoloRepository.findRuoliByCdUtente(userId, unitaOrganizzativa).collect(Collectors.toList());
-    	if (utente.isUtenteSupervisore()) {
-    		findRuoliByCdUtente.add(utente.getCdRuoloSupervisore());
-    	}
+    	Optional.of(utente.isUtenteSupervisore())
+            .filter(isUtenteSupervisore -> isUtenteSupervisore)
+            .filter(aBoolean -> Optional.ofNullable(utente.getCdRuoloSupervisore()).isPresent())
+            .ifPresent(aBoolean -> findRuoliByCdUtente.add(utente.getCdRuoloSupervisore()));
     	return Stream.concat(
     			utenteUnitaAccessoRepository.findAccessiByCdUtente(userId, esercizio, unitaOrganizzativa),
-    	    	Optional.ofNullable(findRuoliByCdUtente).filter(x -> !x.isEmpty()).map(x -> ruoloAccessoRepository.findAccessiByRuoli(esercizio, x)).orElse(Stream.empty())
+    	    	Optional.ofNullable(findRuoliByCdUtente).filter(x -> !x.isEmpty())
+                    .map(x -> ruoloAccessoRepository.findAccessiByRuoli(esercizio, x))
+                    .orElse(Stream.empty())
     			).distinct().collect(Collectors.toList());
     }
 }
