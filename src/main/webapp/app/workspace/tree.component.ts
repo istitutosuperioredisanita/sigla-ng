@@ -181,7 +181,6 @@ export class SIGLATreeComponent implements OnInit, OnDestroy {
                     });
                 this.nodes = this.getChildNodes('0');
                 this.stopRefreshing();
-                console.log(message);
                 if (message && focusedNode && message['content'] === 'reopenView') {
                     const node = this.tree.treeModel.getNodeById(focusedNode);
                     this.tree.treeModel.setFocusedNode(node);
