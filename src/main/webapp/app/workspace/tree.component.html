@@ -16,13 +16,13 @@
             id="search-tree"/>
             <a class="input-group-addon btn"  
                 (click)="refreshTree()" 
-                placement="left" 
+                placement="left"
+                container="body" 
                 ngbTooltip="Rigenera voci di menu">
-                <i class="fa fa-refresh text-info" aria-hidden="true"></i>
+                <i class="fa fa-refresh text-info"  [ngClass]="{'faa-spin animated' : isRequesting}"></i>
             </a>
     </div>
 </div>
-<i *ngIf="isRequesting" class="fa fa-spinner fa-spin text-muted"></i>
 <tree-root [nodes]="nodes" class="tree-menu">
     <ng-template #treeNodeFullTemplate
             let-node="node"
@@ -39,7 +39,7 @@
 
             <div class="node-wrapper node-item" [style.padding-left]="node.getNodePadding()" (click)="toggleTreeNode(node)">
                 <div class="node-content-wrapper row">
-                    <span class="d-inline-block text-truncate col tree-col-label" placement="top" ngbTooltip="{{node.data.name}}">{{node.data.name}}</span>
+                    <span class="d-inline-block text-truncate col tree-col-label" placement="top" container="body" ngbTooltip="{{node.data.name}}">{{node.data.name}}</span>
                     <span *ngIf="!node.isLeaf" class="chevron float-right col col-auto">
                         <i *ngIf="!node.isExpanded" class="fa fa-chevron-right" aria-hidden="true"></i>
                         <i *ngIf="node.isExpanded"  class="fa fa-chevron-up" aria-hidden="true"></i>
