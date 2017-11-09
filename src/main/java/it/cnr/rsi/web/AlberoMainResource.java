@@ -54,7 +54,7 @@ public class AlberoMainResource {
     @DeleteMapping(value = API_ALBERO_MAIN)
     public boolean evictCacheTree() {
         UserContext userDetails = ContextResource.getUserDetails();
-        accessoService.evictCacheAccessi(userDetails.getUsername());
-        return alberoMainService.evictCacheTree(userDetails.getUsername());
+        accessoService.evictCacheAccessi(userDetails.getUsername(), userDetails.getEsercizio(), userDetails.getUo());
+        return alberoMainService.evictCacheTree(userDetails.getUsername(), userDetails.getEsercizio(), userDetails.getUo());
     }
 }
