@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, URLSearchParams } from '@angular/http';
+import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
 import { Observable } from 'rxjs/Rx';
 import { UserContext, Account} from '../shared';
 import { Pair } from './pair.model';
@@ -18,7 +19,8 @@ export class ContextService  {
     preferiti: Preferiti[];
 
     constructor(
-        private http: Http
+        private http: Http,
+        private eventManager: JhiEventManager
     ) {}
 
     findEsercizi(): void {
@@ -43,9 +45,9 @@ export class ContextService  {
         this.getUo(account.cds)
             .subscribe((uo) => {
                 this.uoPairs = uo;
-                this.uoModel = uo.filter(function(v) {
+                this.setUoModel(uo.filter(function(v) {
                     return v.first === account.uo;
-                })[0];
+                })[0]);
             });
     }
 
@@ -56,8 +58,6 @@ export class ContextService  {
     }
 
     resetCds(): Pair[] {
-        this.uoModel = undefined;
-        this.cdrModel = undefined;
         this.cdsPairs = this.allCdsPairs;
         return this.allCdsPairs;
     }
@@ -73,9 +73,9 @@ export class ContextService  {
         this.getCds(account.uo)
             .subscribe((cds) => {
                 this.cdsPairs = cds;
-                this.cdsModel = cds.filter(function(v) {
+                this.setCdsModel(cds.filter(function(v) {
                     return v.first === account.cds;
-                })[0];
+                })[0]);
             });
     }
 
@@ -133,4 +133,23 @@ export class ContextService  {
         }).map((res: Response) => res.text());
     }
 
+    setUoModel(pair: Pair) {
+        this.uoModel = pair;
+        this.eventManager.broadcast({
+            name: 'onSelectUo',
+            content: this.uoModel
+        });
+    }
+
+    setCdsModel(pair: Pair) {
+        this.cdsModel = pair;
+        this.eventManager.broadcast({
+            name: 'onSelectCds',
+            content: this.cdsModel
+        });
+    }
+
+    setCdRModel(pair: Pair) {
+        this.cdrModel = pair;
+    }
 }

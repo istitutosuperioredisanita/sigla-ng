@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Renderer, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Renderer, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
 import { Router } from '@angular/router';
@@ -8,6 +8,7 @@ import { LocalStateStorageService } from '../shared/auth/local-storage.service';
 import { Observable } from 'rxjs/Observable';
 import { Pair } from './pair.model';
 import { WorkspaceService } from '../workspace/workspace.service';
+import { Subscription } from 'rxjs/Rx';
 
 @Component({
     selector: 'jhi-context',
@@ -16,9 +17,14 @@ import { WorkspaceService } from '../workspace/workspace.service';
     styleUrls: ['../layouts/navbar/navbar.css']
 })
 
-export class ContextComponent {
+export class ContextComponent implements OnInit, OnDestroy {
     @Input() isNavbar: boolean;
     @ViewChild('contextDrop') contextDrop;
+    onSelectCdsSubscription: Subscription;
+    onSelectUoSubscription: Subscription;
+    cdsModel: Pair;
+    uoModel: Pair;
+    cdrModel: Pair;
 
     constructor(
         public contextService: ContextService,
@@ -32,9 +38,28 @@ export class ContextComponent {
     ) {
     }
 
+    ngOnInit() {
+        this.cdsModel = this.contextService.cdsModel;
+        this.uoModel = this.contextService.uoModel;
+        this.cdrModel = this.contextService.cdrModel;
+        this.onSelectCdsSubscription = this.eventManager.subscribe('onSelectCds', (message) => {
+            this.cdsModel = message.content;
+        });
+        this.onSelectUoSubscription = this.eventManager.subscribe('onSelectUo', (message) => {
+            this.uoModel = message.content;
+        });
+    }
+
+    ngOnDestroy() {
+        this.eventManager.destroy(this.onSelectCdsSubscription);
+        this.eventManager.destroy(this.onSelectUoSubscription);
+    }
+
     filterPair(term: string, pairs: Pair[], type: string): Pair[] {
         if (term === '') {
             if (type === 'cds') {
+                this.uoModel = undefined;
+                this.cdrModel = undefined;
                 return this.contextService.resetCds();
             } else {
                 return pairs;
@@ -70,10 +95,8 @@ export class ContextComponent {
             .getUo(item ? item.first : '')
             .subscribe((uo) => {
                 this.contextService.uoPairs = uo;
-                if (uo.length === 1) {
-                    this.contextService.uoModel = uo[0];
-                    this.onSelectCdr(uo[0]);
-                }
+                this.uoModel = uo[0];
+                this.onSelectCdr(uo[0]);
             });
     }
 
@@ -83,7 +106,7 @@ export class ContextComponent {
             .subscribe((cds) =>  {
                 this.contextService.cdsPairs = cds;
                 if (cds.length === 1) {
-                    this.contextService.cdsModel = cds[0];
+                    this.cdsModel = cds[0];
                 }
             });
         this.onSelectCdr(item);
@@ -94,7 +117,7 @@ export class ContextComponent {
             .getCdr(item ? item.first : '')
             .subscribe((cdr) =>  {
                 this.contextService.cdrPairs = cdr;
-                this.contextService.cdrModel = cdr[0];
+                this.cdrModel = cdr[0];
             });
     }
 
@@ -115,9 +138,9 @@ export class ContextComponent {
     saveContext(refreshTree: boolean): void {
         const userContext = new UserContext(
                 this.principal.getAccount().esercizio,
-                Pair.getFirst(this.contextService.cdsModel),
-                Pair.getFirst(this.contextService.uoModel),
-                Pair.getFirst(this.contextService.cdrModel)
+                Pair.getFirst(this.cdsModel),
+                Pair.getFirst(this.uoModel),
+                Pair.getFirst(this.cdrModel)
             );
         this.contextService
             .saveUserContext(userContext)
@@ -132,6 +155,9 @@ export class ContextComponent {
                     });
                 }
             });
+        this.contextService.setCdsModel(this.cdsModel);
+        this.contextService.setUoModel(this.uoModel);
+        this.contextService.setCdRModel(this.cdrModel);
         this.router.navigate(['/workspace']);
     }
 
