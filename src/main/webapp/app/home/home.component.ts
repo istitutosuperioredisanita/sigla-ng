@@ -34,8 +34,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         private router: Router,
         private renderer: Renderer,
         private context: ContextService,
-        private localStateStorageService: LocalStateStorageService,
-        private contextService: ContextService
+        private localStateStorageService: LocalStateStorageService
     ) {
     }
 
