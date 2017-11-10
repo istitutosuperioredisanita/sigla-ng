@@ -316,11 +316,15 @@ html {
       padding-left: 0px;
       padding-right: 0px;
       min-height: 200px;
-      max-height: 70vh;
       border-color: #d9edf7;
       border-style: solid;
       border-width: 1px;
-      overflow-x: auto;
+  }
+  @media screen and (min-width: 768px) {
+    div.div-sigla-table {
+        max-height: 70vh;
+        overflow-x: auto;
+    }      
   }
   nav {
       padding-top: 5px;
