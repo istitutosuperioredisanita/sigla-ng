@@ -121,11 +121,9 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
 
     private startRefreshing() {
         this.isRequesting = true;
-        document.body.classList.add('cursor-wait');
     }
 
     private stopRefreshing() {
         this.isRequesting = false;
-        document.body.classList.remove('cursor-wait');
     }
 }
