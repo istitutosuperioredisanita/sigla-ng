@@ -7,7 +7,7 @@
 
     <div [ngClass]="{'col-md-8 col-lg-9': !hidden, 'col-md-12': hidden}" class="workspace">
         <jhi-alert-error></jhi-alert-error>
-        <div [ngClass]="{'loading' : isRequesting}"></div>
+        <div [ngClass]="{'loading cursor-wait' : isRequesting}"></div>
         <div #htmlContainer class="e2e-trusted-html" [innerHTML]="desktop"></div>
         <div *ngIf="logoVisible">
             <h1 jhiTranslate="home.title" class="text-primary">Welcome, Java Hipster!</h1>
