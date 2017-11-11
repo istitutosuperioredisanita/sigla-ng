@@ -239,10 +239,6 @@ html {
       width: inherit;
       display: inline-flex;
   }
-  td.TableColumn > div.input-group {
-      display: -webkit-box;
-      width:100%;
-  }
   tr.bg-primary > td.TableColumn > div.input-group {
       background-color: white!important;
       width:100%;
@@ -264,17 +260,19 @@ html {
       display: block;
   }
   
-  .input-group input {
+  .input-group-searchtool input {
       text-overflow: ellipsis;
       white-space: nowrap;
   }
-  .input-group input:first-child {
+  .input-group-searchtool input:first-child {
       width: 30%!important;
   }
-  .input-group  input.form-control:nth-child(2) {
-      width: 50%!important;
+  .input-group-searchtool  input.form-control:nth-child(2) {
+      width: 80%!important;
   }
-  
+  .input-group-searchtool  input.form-control:nth-child(3) {
+    width: 80%!important;
+  }
   .FormLabel.required::after {
     content:"*";color:red;
   }
