@@ -177,3 +177,7 @@ Logo styles
         left: auto;
     }
 }
+.navbar-badge-messages {
+    font-size: 65%;
+    left: -5px;
+}
