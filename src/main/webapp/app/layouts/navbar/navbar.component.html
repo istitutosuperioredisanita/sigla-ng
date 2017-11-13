@@ -76,6 +76,11 @@
                     </ul>
                 </li>
                 <jhi-context *ngSwitchCase="true" [isNavbar]="true" class="d-md-flex">Loading context.....</jhi-context>
+                <!--
+                <li *ngSwitchCase="true" class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);" (click)="openMessaggi()"><i class="fa fa-envelope-o"></i><sup class="badge badge-pill badge-danger navbar-badge-messages">10</sup></a>
+                </li>
+                -->
                 <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer">
                     <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu">
                       <span *ngIf="!getImageUrl()">

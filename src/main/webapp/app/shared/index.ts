@@ -16,6 +16,8 @@ export * from './login/login.component';
 export * from './login/login-modal.service';
 export * from './login/multiple-user-modal.service';
 export * from './login/multiple-user.component';
+export * from './login/messaggi-modal.service';
+export * from './login/messaggi.component';
 export * from './login/login.service';
 export * from './user/account.model';
 export * from './user/user.model';

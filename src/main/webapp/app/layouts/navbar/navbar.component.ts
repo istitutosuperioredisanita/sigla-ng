@@ -6,7 +6,7 @@ import { JhiLanguageService } from 'ng-jhipster';
 import { ProfileService } from '../profiles/profile.service'; // FIXME barrel doesnt work here
 import { JhiLanguageHelper, Principal, MultipleUserModalService, LoginModalService, LoginService } from '../../shared';
 import { ContextComponent} from '../../context';
-import { Account } from '../../shared/user/account.model';
+import { Account, MessaggiModalService } from '../../shared';
 import { VERSION, DEBUG_INFO_ENABLED } from '../../app.constants';
 import { WorkspaceService } from '../../workspace/workspace.service';
 
@@ -37,7 +37,8 @@ export class NavbarComponent implements OnInit {
         private loginModalService: LoginModalService,
         private profileService: ProfileService,
         private workspaceService: WorkspaceService,
-        public router: Router
+        public router: Router,
+        private messaggiModalService: MessaggiModalService
     ) {
         this.version = DEBUG_INFO_ENABLED ? 'v. ' + VERSION : '';
         this.isNavbarCollapsed = true;
@@ -98,5 +99,13 @@ export class NavbarComponent implements OnInit {
 
     setHidden(hidden: boolean) {
         this.workspaceService.menuHidden(hidden);
+    }
+
+    openMessaggi() {
+        this.workspaceService.openMessaggi().subscribe((html) => {
+            this.modalRef = this.messaggiModalService.open('navbar', html);
+        }, (error) => {
+            console.log(error);
+        });
     }
 }
