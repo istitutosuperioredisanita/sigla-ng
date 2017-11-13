@@ -26,6 +26,15 @@ export class WorkspaceService {
         return this.http.delete(this.resourceUrl).map((res: Response) => res.json());
     }
 
+    openMessaggi(): Observable<string> {
+        const params: URLSearchParams = new URLSearchParams();
+        params.set('comando', 'doApriListaMessaggi');
+        return this.http.get('/SIGLA/GestioneMenu.do', {
+           search: params
+        })
+        .map((res: Response) => res.text());
+    }
+
     openMenu(nodoid: string): Observable<string> {
         const params: URLSearchParams = new URLSearchParams();
         params.set('comando', 'doSelezionaMenu(' + nodoid + ')');

@@ -301,6 +301,7 @@ html {
       border-style: inherit;
       border-color: inherit;
   }
+ 
   input.inputFieldReadOnly {
       background: #F5F5DC;
       background-color:transparent;
@@ -317,6 +318,9 @@ html {
       border-color: #d9edf7;
       border-style: solid;
       border-width: 1px;
+  }
+  span.form-control:empty{
+      display: none;
   }
   @media screen and (min-width: 768px) {
     div.div-sigla-table {
