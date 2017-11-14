@@ -21,8 +21,6 @@ export class MessaggiModalService {
             size: 'lg'
         });
         modalRef.componentInstance.page = page;
-        modalRef.componentInstance.messaggi = messaggi;
-
         modalRef.result.then((result) => {
             this.isOpen = false;
         }, (reason) => {

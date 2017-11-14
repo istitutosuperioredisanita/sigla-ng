@@ -5,5 +5,45 @@
     </button>
 </div>
 <div class="modal-body">
-    <div #htmlContainer class="e2e-trusted-html" [innerHTML]="html"></div>
+    <div class="div-sigla-table table-responsive col-sm-12 mh-45-vh">
+        <table class="sigla-table table table-bordered table-hover table-striped table-sm">
+            <thead class="table-info">
+                <tr>
+                    <th class="TableHeader align-middle" align="center" valign="center">
+                        <button class="btn btn-sm btn-link hand" (click)="selectAll()" placement="top" container="body"  ngbTooltip="Seleziona/Deseleziona tutti">
+                            <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                        </button>
+                    </th>
+                    <th jhiTranslate="messaggi.table.dacr">Data di creazione</th>
+                    <th jhiTranslate="messaggi.table.oggetto">Oggetto</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let messaggio of contextService.messaggi" (click)="setClickedRow(messaggio)" 
+                    [ngClass]="{'bg-primary text-white' : messaggio.pgMessaggio == currentMessaggio.pgMessaggio}">
+                    <td><input type="checkbox" [(ngModel)]="messaggio.checked"></td> 
+                    <td>{{messaggio.dacr | date:'longDate'}}</td>
+                    <td>{{messaggio.corpo}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="btn-group w-100 border border-info mt-1 rounded-left rounded-right" role="group" aria-label="toolbar">
+        <button class="btn btn-sm btn-outline-info text-danger" (click)="deleteCurrentMessaggio()" placement="top" container="body"  ngbTooltip="Elimina messaggio corrente">
+            <i class="fa fa-trash-o" aria-hidden="true"></i>
+        </button>
+        <button class="btn btn-sm btn-outline-info text-danger" (click)="deleteMessaggiSelezionati()" placement="top" container="body"  ngbTooltip="Elimina selezionati">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+        </button>
+    </div>
+    <div class="card border border-info p-2 mt-2">
+        <div class="form-group row bb-1">
+            <label class="col-sm-2 col-form-label text-info" jhiTranslate="messaggi.table.oggetto">Oggetto</label>
+            <div class="col-sm-10">{{currentMessaggio.corpo}}</div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label text-info" jhiTranslate="messaggi.table.messaggio">Messaggio</label>
+            <div class="col-sm-10">{{currentMessaggio.dsMessaggio}}</div>
+        </div>            
+    </div>
 </div>
