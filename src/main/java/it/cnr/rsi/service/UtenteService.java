@@ -1,8 +1,10 @@
 package it.cnr.rsi.service;
 
+import it.cnr.rsi.domain.Messaggio;
 import it.cnr.rsi.domain.Preferiti;
 import it.cnr.rsi.domain.Utente;
 import it.cnr.rsi.repository.AlberoMainRepository;
+import it.cnr.rsi.repository.MessaggioRepository;
 import it.cnr.rsi.repository.PreferitiRepository;
 import it.cnr.rsi.repository.UtenteRepository;
 import it.cnr.rsi.security.UserContext;
@@ -25,12 +27,17 @@ public class UtenteService implements UserDetailsService {
     private UtenteRepository utenteRepository;
     private PreferitiRepository preferitiRepository;
     private AlberoMainRepository alberoMainRepository;
+    private MessaggioRepository messaggioRepository;
 
-    public UtenteService(UtenteRepository utenteRepository, PreferitiRepository preferitiRepository, AlberoMainRepository alberoMainRepository) {
+    public UtenteService(UtenteRepository utenteRepository,
+                         PreferitiRepository preferitiRepository,
+                         AlberoMainRepository alberoMainRepository,
+                         MessaggioRepository messaggioRepository) {
 		super();
 		this.utenteRepository = utenteRepository;
 		this.preferitiRepository = preferitiRepository;
 		this.alberoMainRepository = alberoMainRepository;
+		this.messaggioRepository = messaggioRepository;
 	}
 
     @Override
@@ -71,4 +78,14 @@ public class UtenteService implements UserDetailsService {
                 preferiti.getDuva().compareTo(t1.getDuva())
             ).collect(Collectors.toList());
     }
+
+    @Transactional
+    public List<Messaggio> findMessaggi(String uid) {
+        LOGGER.info("Find messaggi by uid {}", uid);
+        return messaggioRepository.findMessaggiByUser(uid)
+            .sorted((messaggio, t1) ->
+                messaggio.getDuva().compareTo(t1.getDuva())
+            ).collect(Collectors.toList());
+    }
+
 }
