@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -103,6 +104,13 @@ public class ContextResource {
         UserContext userDetails = getUserDetails();
         LOGGER.info("GET messaggi for User: {}", userDetails.getUsername());
         return utenteService.findMessaggi(userDetails.getUsername());
+    }
+
+    @PostMapping(API_MESSAGGI)
+    public List<Messaggio> deleteMessaggi(@RequestBody ArrayList<Messaggio> messaggi){
+        UserContext userDetails = getUserDetails();
+        LOGGER.info("DELETE messaggi for User: {}", userDetails.getUsername());
+        return utenteService.deleteMessaggi(userDetails.getUsername(), messaggi);
     }
 
     @GetMapping(API_UTENTI_MULTIPLI)

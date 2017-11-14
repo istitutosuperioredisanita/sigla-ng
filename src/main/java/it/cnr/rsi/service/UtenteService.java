@@ -84,8 +84,17 @@ public class UtenteService implements UserDetailsService {
         LOGGER.info("Find messaggi by uid {}", uid);
         return messaggioRepository.findMessaggiByUser(uid)
             .sorted((messaggio, t1) ->
-                messaggio.getDuva().compareTo(t1.getDuva())
+                t1.getDacr().compareTo(messaggio.getDacr())
             ).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<Messaggio> deleteMessaggi(String uid, List<Messaggio> messaggi) {
+        LOGGER.info("Delete messaggi by uid {}", uid);
+        messaggi.stream()
+            .filter(messaggio -> messaggio.getCdUtente().equals(uid))
+            .forEach(messaggio -> messaggioRepository.delete(messaggio));
+        return findMessaggi(uid);
     }
 
 }

@@ -52,6 +52,10 @@ export class ContextService  {
         return this.http.get('/api/context/messaggi').map((res: Response) => res.json());
     }
 
+    deleteMessaggi(messaggi: any): Observable<Messaggio[]> {
+        return this.http.post('/api/context/messaggi', messaggi).map((res: Response) => res.json());
+    }
+
     findUo(account: Account): void {
         this.getUo(account.cds)
             .subscribe((uo) => {
