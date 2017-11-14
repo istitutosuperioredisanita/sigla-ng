@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, Renderer, ElementRef, ViewChild, OnDestroy } from '@angular/core';
-import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdown, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
 import { Router } from '@angular/router';
 import { ContextService } from './context.service';
-import { Principal, UserContext, JhiLanguageHelper} from '../shared';
+import { Principal, UserContext, JhiLanguageHelper, MessaggiModalService} from '../shared';
 import { LocalStateStorageService } from '../shared/auth/local-storage.service';
 import { Observable } from 'rxjs/Observable';
 import { Pair } from './pair.model';
@@ -25,6 +25,7 @@ export class ContextComponent implements OnInit, OnDestroy {
     cdsModel: Pair;
     uoModel: Pair;
     cdrModel: Pair;
+    modalRef: NgbModalRef;
 
     constructor(
         public contextService: ContextService,
@@ -34,7 +35,8 @@ export class ContextComponent implements OnInit, OnDestroy {
         private languageService: JhiLanguageService,
         private languageHelper: JhiLanguageHelper,
         private workspaceService: WorkspaceService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private messaggiModalService: MessaggiModalService
     ) {
     }
 
@@ -178,5 +180,17 @@ export class ContextComponent implements OnInit, OnDestroy {
 
     isPreferitiPresent(): boolean {
         return this.contextService.preferiti && this.contextService.preferiti.length > 0;
+    }
+
+    isMessaggiPresent(): boolean {
+        return this.contextService.messaggi && this.contextService.messaggi.length > 0;
+    }
+
+    openMessaggi() {
+        this.modalRef = this.messaggiModalService.open('navbar', this.contextService.messaggi);
+    }
+
+    getNumberOfMessagi(): number {
+        return this.contextService.messaggi.length;
     }
 }

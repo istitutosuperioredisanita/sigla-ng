@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Rx';
 import { UserContext, Account} from '../shared';
 import { Pair } from './pair.model';
 import { Preferiti } from '../context/preferiti.model';
+import { Messaggio } from '../context/messaggio.model';
 
 @Injectable()
 export class ContextService  {
@@ -17,6 +18,7 @@ export class ContextService  {
     uoModel: Pair;
     cdrModel: Pair;
     preferiti: Preferiti[];
+    messaggi: Messaggio[];
 
     constructor(
         private http: Http,
@@ -39,6 +41,15 @@ export class ContextService  {
 
     getPreferiti(): Observable<Preferiti[]> {
         return this.http.get('/api/context/preferiti').map((res: Response) => res.json());
+    }
+
+    findMessaggi(): void {
+        this.getMessaggi()
+            .subscribe((messaggi) => this.messaggi = messaggi);
+    }
+
+    getMessaggi(): Observable<Messaggio[]> {
+        return this.http.get('/api/context/messaggi').map((res: Response) => res.json());
     }
 
     findUo(account: Account): void {
