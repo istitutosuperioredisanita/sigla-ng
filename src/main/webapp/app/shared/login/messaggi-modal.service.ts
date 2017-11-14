@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { DomSanitizer } from '@angular/platform-browser';
 import { JhiMessaggiModalComponent } from './messaggi.component';
+import { Messaggio } from '../../context/messaggio.model';
 
 @Injectable()
 export class MessaggiModalService {
     private isOpen = false;
     constructor(
-        private modalService: NgbModal,
-        private _sanitizer: DomSanitizer
+        private modalService: NgbModal
     ) {}
 
-    open(page: string, html: string): NgbModalRef {
+    open(page: string, messaggi: Messaggio[]): NgbModalRef {
         if (this.isOpen) {
             return;
         }
@@ -22,7 +21,7 @@ export class MessaggiModalService {
             size: 'lg'
         });
         modalRef.componentInstance.page = page;
-        modalRef.componentInstance.html = this._sanitizer.bypassSecurityTrustHtml(html);
+        modalRef.componentInstance.messaggi = messaggi;
 
         modalRef.result.then((result) => {
             this.isOpen = false;

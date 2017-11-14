@@ -82,6 +82,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                     this.principal.authenticate(usercontext);
                     this.context.findEsercizi();
                     this.context.findPreferiti();
+                    this.context.findMessaggi();
                     this.context.allCds();
                     this.context.findCds(usercontext);
                     this.context.findUo(usercontext);

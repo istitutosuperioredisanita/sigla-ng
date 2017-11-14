@@ -1,5 +1,6 @@
 package it.cnr.rsi.web;
 
+import it.cnr.rsi.domain.Messaggio;
 import it.cnr.rsi.domain.Preferiti;
 import it.cnr.rsi.domain.Utente;
 import it.cnr.rsi.security.UserContext;
@@ -34,6 +35,7 @@ public class ContextResource {
         API_CDS = "/cds",
         API_CDR = "/cdr",
         API_PREFERITI = "/preferiti",
+        API_MESSAGGI = "/messaggi",
         API_UTENTI_MULTIPLI = "/users";
 
     private EsercizioBaseService esercizioBaseService;
@@ -94,6 +96,13 @@ public class ContextResource {
         UserContext userDetails = getUserDetails();
         LOGGER.info("GET preferiti for User: {}", userDetails.getUsername());
         return utenteService.findPreferiti(userDetails.getUsername());
+    }
+
+    @GetMapping(API_MESSAGGI)
+    public List<Messaggio> messaggi(){
+        UserContext userDetails = getUserDetails();
+        LOGGER.info("GET messaggi for User: {}", userDetails.getUsername());
+        return utenteService.findMessaggi(userDetails.getUsername());
     }
 
     @GetMapping(API_UTENTI_MULTIPLI)
