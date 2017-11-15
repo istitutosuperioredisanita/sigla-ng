@@ -154,6 +154,6 @@
         </li>    
     </ng-container>
     <li *ngIf="isNavbar && isMessaggiPresent()" class="nav-item">
-        <a class="nav-link" href="javascript:void(0);" (click)="openMessaggi()"><i class="fa fa-envelope-o"></i><sup class="badge badge-pill badge-danger navbar-badge-messages">{{getNumberOfMessagi()}}</sup></a>
+        <a class="nav-link message-count" href="javascript:void(0);" (click)="openMessaggi()"><i class="fa fa-envelope-o"></i><sup class="badge badge-pill badge-danger navbar-badge-messages">{{getNumberOfMessagi()}}</sup></a>
     </li>
 </ng-container>
