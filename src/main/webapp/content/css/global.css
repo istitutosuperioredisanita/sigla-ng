@@ -405,6 +405,10 @@ html {
       -webkit-animation: fadeoutin 6s linear 1 forwards;
       animation: fadeoutin 6s linear 1 forwards;
   }
+  .message-count > sup {
+    -webkit-animation: fadeoutin 6s linear 1 forwards;
+    animation: fadeoutin 6s linear 1 forwards;
+  }
   .alert-message-bp.alert-info {
       bottom: 1;
       right: 0;
