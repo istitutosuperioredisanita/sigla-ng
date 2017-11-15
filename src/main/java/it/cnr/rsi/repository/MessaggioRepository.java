@@ -16,6 +16,11 @@ import java.util.stream.Stream;
 
 @Repository
 public interface MessaggioRepository extends JpaRepository<Messaggio, Long> {
-	@Query("select a from Messaggio a where a.cdUtente = :username")
+	@Query(
+	    "select a from Messaggio a " +
+            "where (a.cdUtente = :username or a.cdUtente is null) " +
+            "and (a.dtInizioValidita <= SYSDATE OR a.dtInizioValidita is null) " +
+            "and (a.dtFineValidita >= SYSDATE OR a.dtFineValidita is null)"
+    )
 	Stream<Messaggio> findMessaggiByUser(@Param("username") String username);
 }

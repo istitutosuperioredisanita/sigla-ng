@@ -92,7 +92,7 @@ public class UtenteService implements UserDetailsService {
     public List<Messaggio> deleteMessaggi(String uid, List<Messaggio> messaggi) {
         LOGGER.info("Delete messaggi by uid {}", uid);
         messaggi.stream()
-            .filter(messaggio -> messaggio.getCdUtente().equals(uid))
+            .filter(messaggio -> Optional.ofNullable(messaggio.getCdUtente()).filter(s -> s.equals(uid)).isPresent())
             .forEach(messaggio -> messaggioRepository.delete(messaggio));
         return findMessaggi(uid);
     }
