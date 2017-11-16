@@ -20,6 +20,12 @@ import { Subscription } from 'rxjs/Rx';
 export class ContextComponent implements OnInit, OnDestroy {
     @Input() isNavbar: boolean;
     @ViewChild('contextDrop') contextDrop;
+
+    @ViewChild('cds') cdsInput: ElementRef;
+    @ViewChild('uo') uoInput: ElementRef;
+    @ViewChild('cdr') cdrInput: ElementRef;
+    inputEvent: Event = new Event('input');
+
     onSelectCdsSubscription: Subscription;
     onSelectUoSubscription: Subscription;
     cdsModel: Pair;
@@ -67,7 +73,7 @@ export class ContextComponent implements OnInit, OnDestroy {
                 return pairs;
             }
         } else {
-            return pairs.filter((v) => new RegExp(term, 'gi').test(v.first) || new RegExp(term, 'gi').test(v.second));
+            return pairs.filter((v) => new RegExp(term, 'gi').test(v.first + ' - ' + v.second));
         }
     }
 
@@ -75,7 +81,7 @@ export class ContextComponent implements OnInit, OnDestroy {
         text$
         .debounceTime(200)
         .map((term) => this.filterPair(term, this.contextService.cdsPairs, 'cds')
-        .slice(0, 10));
+        .slice(0, 20));
 
     searchuo = (text$: Observable<string>) =>
         text$
@@ -192,5 +198,23 @@ export class ContextComponent implements OnInit, OnDestroy {
 
     getNumberOfMessagi(): number {
         return this.contextService.messaggi.length;
+    }
+
+    openTypeaheadCds() {
+        this.cdsModel = undefined;
+        this.cdsInput.nativeElement.value = '';
+        this.cdsInput.nativeElement.dispatchEvent(this.inputEvent);
+    }
+
+    openTypeaheadUo() {
+        this.uoModel = undefined;
+        this.uoInput.nativeElement.value = '';
+        this.uoInput.nativeElement.dispatchEvent(this.inputEvent);
+    }
+
+    openTypeaheadCdr() {
+        this.cdrModel = undefined;
+        this.cdrInput.nativeElement.value = '';
+        this.cdrInput.nativeElement.dispatchEvent(this.inputEvent);
     }
 }
