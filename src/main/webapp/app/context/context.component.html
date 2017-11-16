@@ -5,7 +5,7 @@
 </ng-template>
 <ng-template #rtNavbar let-r="result" let-t="term">
     <div class="navbar-typeahead w-100">
-        <span>{{r.first}}</span><span class="text-truncate">{{r.second}}</span>
+        <span>{{r.first}}</span>&nbsp;<span class="text-truncate">{{r.second}}</span>
     </div>
 </ng-template>
 <div *ngIf="!isNavbar">
@@ -22,7 +22,7 @@
             <div class="form-group row">
                 <label for="cds" class="col-sm-2 col-form-label">Centro di Spesa</label>
                 <div class="col-sm-8">
-                    <div class="input-group">
+                    <div class="input-group input-group-context">
                         <input 
                             [(ngModel)]="cdsModel" 
                             [ngbTypeahead]="searchcds" 
@@ -47,7 +47,7 @@
             <div class="form-group row">
                 <label for="uo" class="col-sm-2 col-form-label">Unità Organizzativa</label>
                 <div class="col-sm-8">
-                    <div class="input-group">
+                    <div class="input-group input-group-context">
                         <input
                             [(ngModel)]="uoModel" 
                             [ngbTypeahead]="searchuo" 
@@ -72,7 +72,7 @@
             <div class="form-group row">
                 <label for="cdr" class="col-sm-2 col-form-label">Centro di Responsabilità</label>
                 <div class="col-sm-8">
-                    <div class="input-group">
+                    <div class="input-group input-group-context">
                         <input
                             [(ngModel)]="cdrModel" 
                             [ngbTypeahead]="searchcdr" 
@@ -114,6 +114,7 @@
                             [inputFormatter]="formatterFirst"
                             [resultFormatter]="formatter"
                             [editable]="false"
+                            [container]="typeaheadContainer"
                             (selectItem)="onSelectCds($event.item)"
                             required
                             name="cds" 
@@ -135,6 +136,7 @@
                             [inputFormatter]="formatterFirst"
                             [resultFormatter]="formatter"
                             [editable]="false"
+                            [container]="typeaheadContainer"
                             (selectItem)="onSelectUo($event.item)"
                             required
                             name="uo"
