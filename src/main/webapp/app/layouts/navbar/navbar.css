@@ -105,9 +105,11 @@ Logo styles
 .navbar-typeahead span {
     vertical-align:top; display: inline-block;
 }
-.navbar-typeahead .text-truncate {
-    padding: 0 5px; 
-    max-width: 220px
+@media screen and (min-width: 768px) {
+    .navbar-typeahead .text-truncate {
+        padding: 0 5px; 
+        max-width: 220px;
+    }    
 }
 .navbar-form {
     padding: 17px

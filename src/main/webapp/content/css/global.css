@@ -650,4 +650,17 @@ html {
         height: calc(100vh - 195px);
         overflow: auto;
     }
-}
+  }
+  @media screen and (max-width: 768px) {
+    ngb-typeahead-window {
+        min-width: 90vw!important;
+    }
+  }
+  ngb-typeahead-window {
+    max-width: 95vw;
+    overflow: auto;
+  }
+  .input-group-context > ngb-typeahead-window {
+    width: 100%;
+  }
+

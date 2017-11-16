@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs/Rx';
 @Component({
     selector: 'jhi-context',
     templateUrl: './context.component.html',
-    providers: [NgbDropdown,  {provide: NgbTypeaheadConfig, useFactory: ngbTypeaheadDefaultConfigFactory}],
+    providers: [NgbDropdown, NgbTypeaheadConfig],
     styleUrls: ['../layouts/navbar/navbar.css']
 })
 
@@ -32,6 +32,7 @@ export class ContextComponent implements OnInit, OnDestroy {
     uoModel: Pair;
     cdrModel: Pair;
     modalRef: NgbModalRef;
+    typeaheadContainer = 'body';
 
     constructor(
         public contextService: ContextService,
@@ -87,13 +88,13 @@ export class ContextComponent implements OnInit, OnDestroy {
         text$
         .debounceTime(200)
         .map((term) => this.filterPair(term, this.contextService.uoPairs, 'uo')
-        .slice(0, 10));
+        .slice(0, 20));
 
     searchcdr = (text$: Observable<string>) =>
         text$
         .debounceTime(200)
         .map((term) => this.filterPair(term, this.contextService.cdrPairs, 'cdr')
-        .slice(0, 10));
+        .slice(0, 20));
 
     formatter = (pair: Pair) => pair.first + ' - ' + pair.second;
     formatterFirst = (pair: Pair) => pair.first;
@@ -217,11 +218,4 @@ export class ContextComponent implements OnInit, OnDestroy {
         this.cdrInput.nativeElement.value = '';
         this.cdrInput.nativeElement.dispatchEvent(this.inputEvent);
     }
-}
-
-export function ngbTypeaheadDefaultConfigFactory(): NgbTypeaheadConfig {
-    const typeaheadConfig = new NgbTypeaheadConfig();
-    typeaheadConfig.placement = ['bottom-left'];
-    typeaheadConfig.container = 'body';
-    return typeaheadConfig;
 }
