@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Renderer, ElementRef, ViewChild, OnDestroy } from '@angular/core';
-import { NgbDropdown, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdown, NgbModalRef, NgbTypeaheadConfig } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
 import { Router } from '@angular/router';
 import { ContextService } from './context.service';
@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs/Rx';
 @Component({
     selector: 'jhi-context',
     templateUrl: './context.component.html',
-    providers: [NgbDropdown],
+    providers: [NgbDropdown,  {provide: NgbTypeaheadConfig, useFactory: ngbTypeaheadDefaultConfigFactory}],
     styleUrls: ['../layouts/navbar/navbar.css']
 })
 
@@ -217,4 +217,11 @@ export class ContextComponent implements OnInit, OnDestroy {
         this.cdrInput.nativeElement.value = '';
         this.cdrInput.nativeElement.dispatchEvent(this.inputEvent);
     }
+}
+
+export function ngbTypeaheadDefaultConfigFactory(): NgbTypeaheadConfig {
+    const typeaheadConfig = new NgbTypeaheadConfig();
+    typeaheadConfig.placement = ['bottom-left'];
+    typeaheadConfig.container = 'body';
+    return typeaheadConfig;
 }

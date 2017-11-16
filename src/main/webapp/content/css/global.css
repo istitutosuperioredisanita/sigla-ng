@@ -247,6 +247,10 @@ html {
   fieldset > select.form-control {
       display: inline-block;
   }
+  select.form-control:not([size]):not([multiple]) {
+    height: 100%
+  }
+
   .form-control {
       width: inherit;
       display: inherit;
