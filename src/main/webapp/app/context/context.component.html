@@ -1,10 +1,10 @@
 <ng-template #rt let-r="result" let-t="term">
-    <div>
+    <div class="w-100">
         <span>{{r.first}} - {{r.second}}</span>
     </div>
 </ng-template>
 <ng-template #rtNavbar let-r="result" let-t="term">
-    <div class="navbar-typeahead">
+    <div class="navbar-typeahead w-100">
         <span>{{r.first}}</span><span class="text-truncate">{{r.second}}</span>
     </div>
 </ng-template>
@@ -22,57 +22,75 @@
             <div class="form-group row">
                 <label for="cds" class="col-sm-2 col-form-label">Centro di Spesa</label>
                 <div class="col-sm-8">
-                    <input 
-                        [(ngModel)]="cdsModel" 
-                        [ngbTypeahead]="searchcds" 
-                        [resultTemplate]="rt" 
-                        [inputFormatter]="formatter"
-                        [resultFormatter]="formatter"
-                        [editable]="false"
-                        (selectItem)="onSelectCds($event.item)"
-                        class="form-control" 
-                        id="cds" 
-                        name="cds" 
-                        #cdsInput="ngModel"  
-                        required 
-                        type="text"> 
+                    <div class="input-group">
+                        <input 
+                            [(ngModel)]="cdsModel" 
+                            [ngbTypeahead]="searchcds" 
+                            [resultTemplate]="rt" 
+                            [inputFormatter]="formatter"
+                            [resultFormatter]="formatter"
+                            [editable]="false"
+                            (selectItem)="onSelectCds($event.item)"
+                            class="form-control" 
+                            id="cds" 
+                            name="cds" 
+                            #cdsInput="ngModel"
+                            #cds
+                            required 
+                            type="text">
+                        <a class="input-group-addon btn text-primary" (click)="openTypeaheadCds()">
+                            <i class="fa fa-caret-down" ></i>
+                        </a>    
+                    </div>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="uo" class="col-sm-2 col-form-label">Unità Organizzativa</label>
                 <div class="col-sm-8">
-                    <input
-                        [(ngModel)]="uoModel" 
-                        [ngbTypeahead]="searchuo" 
-                        [resultTemplate]="rt" 
-                        [inputFormatter]="formatter"
-                        [resultFormatter]="formatter"
-                        [editable]="false"
-                        (selectItem)="onSelectUo($event.item)"
-                        class="form-control" 
-                        id="uo" 
-                        name="uo" 
-                        #uoInput="ngModel"
-                        required 
-                        type="text">        
+                    <div class="input-group">
+                        <input
+                            [(ngModel)]="uoModel" 
+                            [ngbTypeahead]="searchuo" 
+                            [resultTemplate]="rt" 
+                            [inputFormatter]="formatter"
+                            [resultFormatter]="formatter"
+                            [editable]="false"
+                            (selectItem)="onSelectUo($event.item)"
+                            class="form-control" 
+                            id="uo" 
+                            name="uo" 
+                            #uoInput="ngModel"
+                            #uo
+                            required 
+                            type="text">
+                        <a class="input-group-addon btn text-primary" (click)="openTypeaheadUo()">
+                            <i class="fa fa-caret-down" ></i>
+                        </a>    
+                    </div>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="cdr" class="col-sm-2 col-form-label">Centro di Responsabilità</label>
                 <div class="col-sm-8">
-                    <input
-                        [(ngModel)]="cdrModel" 
-                        [ngbTypeahead]="searchcdr" 
-                        [resultTemplate]="rt" 
-                        [inputFormatter]="formatter"
-                        [resultFormatter]="formatter"
-                        [editable]="false"
-                        class="form-control" 
-                        id="cdr" 
-                        name="cdr" 
-                        #cdrInput="ngModel"
-                        required 
-                        type="text">        
+                    <div class="input-group">
+                        <input
+                            [(ngModel)]="cdrModel" 
+                            [ngbTypeahead]="searchcdr" 
+                            [resultTemplate]="rt" 
+                            [inputFormatter]="formatter"
+                            [resultFormatter]="formatter"
+                            [editable]="false"
+                            class="form-control" 
+                            id="cdr" 
+                            name="cdr" 
+                            #cdrInput="ngModel"
+                            #cdr
+                            required 
+                            type="text">
+                        <a class="input-group-addon btn text-primary" (click)="openTypeaheadCdr()">
+                            <i class="fa fa-caret-down" ></i>
+                        </a>    
+                    </div>
                 </div>
             </div>
         </ng-container>    
@@ -87,34 +105,46 @@
         <ul class="dropdown-menu dropdown-menu-right navbar-form" role="menu" ngbDropdownMenu>
             <form class="form" role="form" (ngSubmit)="saveContext(true)" #contextForm="ngForm">
                 <div class="form-group">
-                    <label class="form-control-label" for="navbar-cds">Centro di Spesa</label>  
-                    <input
-                        [(ngModel)]="cdsModel" 
-                        [ngbTypeahead]="searchcds" 
-                        [resultTemplate]="rtNavbar"
-                        [inputFormatter]="formatterFirst"
-                        [resultFormatter]="formatter"
-                        [editable]="false"
-                        (selectItem)="onSelectCds($event.item)"
-                        required
-                        name="cds" 
-                        class="form-control"                
-                        id="navbar-cds"/>
+                    <label class="form-control-label" for="navbar-cds">Centro di Spesa</label>
+                    <div class="input-group">
+                        <input
+                            [(ngModel)]="cdsModel" 
+                            [ngbTypeahead]="searchcds" 
+                            [resultTemplate]="rtNavbar"
+                            [inputFormatter]="formatterFirst"
+                            [resultFormatter]="formatter"
+                            [editable]="false"
+                            (selectItem)="onSelectCds($event.item)"
+                            required
+                            name="cds" 
+                            #cds
+                            class="form-control"                
+                            id="navbar-cds"/>
+                        <a class="input-group-addon btn text-primary" (click)="openTypeaheadCds()">
+                            <i class="fa fa-caret-down" ></i>
+                        </a>
+                    </div>   
                 </div>     
                 <div class="form-group">
                     <label class="form-control-label" for="navbar-uo">Unita Organizzativa</label>
-                    <input 
-                        [(ngModel)]="uoModel" 
-                        [ngbTypeahead]="searchuo"
-                        [resultTemplate]="rtNavbar"
-                        [inputFormatter]="formatterFirst"
-                        [resultFormatter]="formatter"
-                        [editable]="false"
-                        (selectItem)="onSelectUo($event.item)"
-                        required
-                        name="uo"
-                        class="form-control"
-                        id="navbar-uo"/>
+                    <div class="input-group">
+                        <input 
+                            [(ngModel)]="uoModel" 
+                            [ngbTypeahead]="searchuo"
+                            [resultTemplate]="rtNavbar"
+                            [inputFormatter]="formatterFirst"
+                            [resultFormatter]="formatter"
+                            [editable]="false"
+                            (selectItem)="onSelectUo($event.item)"
+                            required
+                            name="uo"
+                            #uo
+                            class="form-control"
+                            id="navbar-uo"/>
+                        <a class="input-group-addon btn text-primary" (click)="openTypeaheadUo()">
+                            <i class="fa fa-caret-down" ></i>
+                        </a>    
+                    </div>
                 </div>
                 <button type="submit" [disabled]="contextForm.form.invalid" (click)="contextDrop.close();" class="btn btn-block btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i> Conferma</button>
             </form>
