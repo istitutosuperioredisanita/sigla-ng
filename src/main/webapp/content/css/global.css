@@ -393,7 +393,8 @@ html {
   .alert-message-bp.alert-danger,
   .alert-message-bp.alert-info {
       z-index: 999;
-      position: absolute;
+      position: fixed;
+      top: 10%;
   }
   .alert-message-bp.alert-danger {
       transform: translate(-50%, 0);
