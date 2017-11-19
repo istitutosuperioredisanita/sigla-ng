@@ -36,7 +36,7 @@ export class JhiMessaggiModalComponent {
     }
 
     newMessaggio() {
-        this.currentMessaggio = new Messaggio(0, false, null, null, null, null);
+        this.currentMessaggio = new Messaggio(0, false, null, null, null, null, null);
     }
 
     setClickedRow(messaggio: Messaggio) {
