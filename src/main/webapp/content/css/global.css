@@ -22,6 +22,7 @@ html {
   body, h1, h2, h3, h4, button {
       font-weight: 300;
       font-family: 'Titillium Web', sans-serif;
+      background-color: #fafafa;
   }
   /* ==========================================================================
   FIX Bootstrap beta
@@ -60,6 +61,7 @@ html {
   
   .jh-card {
       border: none;
+      background-color: #fafafa;
   }
   
   .error {
