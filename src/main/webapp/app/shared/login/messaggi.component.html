@@ -28,7 +28,7 @@
             </tbody>
         </table>
     </div>
-    <div class="btn-group w-100 border border-primary mt-1 rounded-left rounded-right" role="group" aria-label="toolbar">
+    <div class="btn-group w-100 border mt-1 rounded-left rounded-right" role="group" aria-label="toolbar">
         <button class="btn btn-sm btn-light text-danger hand" (click)="deleteCurrentMessaggio()" placement="top" container="body"  ngbTooltip="Elimina messaggio corrente">
             <i class="fa fa-trash-o" aria-hidden="true"></i>
         </button>
@@ -36,7 +36,7 @@
             <i class="fa fa-trash" aria-hidden="true"></i>
         </button>
     </div>
-    <div class="card border border-primary p-3 mt-2">
+    <div class="card border p-3 mt-2">
         <div class="form-group row bb-1">
             <label class="col-sm-2 text-primary" jhiTranslate="messaggi.table.oggetto">Oggetto</label>
             <div class="col-sm-10">{{currentMessaggio.soggetto}}</div>
