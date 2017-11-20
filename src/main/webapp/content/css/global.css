@@ -268,13 +268,13 @@ html {
       text-overflow: ellipsis;
       white-space: nowrap;
   }
-  .input-group-searchtool input:first-child {
+  .input-group-searchtool input:first-child:not([class*="w-"]) {
       width: 30%!important;
   }
-  .input-group-searchtool  input.form-control:nth-child(2) {
+  .input-group-searchtool  input.form-control:nth-child(2):not([class*="w-"]) {
       width: 80%!important;
   }
-  .input-group-searchtool  input.form-control:nth-child(3) {
+  .input-group-searchtool  input.form-control:nth-child(3):not([class*="w-"]) {
     width: 80%!important;
   }
   .FormLabel.required::after {
@@ -395,18 +395,21 @@ html {
   }
   /* Gestione degli alert */
   .alert-message-bp.alert-danger,
-  .alert-message-bp.alert-info {
+  .alert-message-bp.alert-info,
+  .alert-message-bp.alert-warning {
       z-index: 999;
       position: fixed;
       top: 10%;
   }
-  .alert-message-bp.alert-danger {
+  .alert-message-bp.alert-danger,
+  .alert-message-bp.alert-warning {
       transform: translate(-50%, 0);
       left: 50%;
       top: 50%;
   }
   
-  .alert-message-bp.alert-danger > i.fa {
+  .alert-message-bp.alert-danger > i.fa,
+  .alert-message-bp.alert-warning > i.fa {
       -webkit-animation: fadeoutin 6s linear 1 forwards;
       animation: fadeoutin 6s linear 1 forwards;
   }
@@ -663,4 +666,9 @@ html {
   .input-group-context > ngb-typeahead-window {
     width: 100%;
   }
-
+  .w-8 {
+      width: 8%!important;
+  }
+  .w-10 {
+    width: 10%!important;
+  }
