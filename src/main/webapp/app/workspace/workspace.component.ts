@@ -5,6 +5,8 @@ import { Observable } from 'rxjs/Rx';
 import { WorkspaceService } from './workspace.service';
 import { DomSanitizer, SafeResourceUrl, SafeScript, SafeHtml} from '@angular/platform-browser';
 import { Leaf } from './leaf.model';
+import 'pikaday';
+declare var Pikaday;
 
 @Component({
     selector: 'jhi-workspace',
@@ -106,16 +108,34 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
                     }
                 }
             }
-            const siglaTitle = this.container.nativeElement.querySelector('title').innerHTML;
+            const siglaTitle = this.container.nativeElement.querySelector('title');
             const siglaPageTitle = this.container.nativeElement.querySelector('sigla-page-title');
             const form = this.container.nativeElement.querySelector('form');
             if (siglaPageTitle) {
-                siglaPageTitle.innerHTML = this.leaf.breadcrumbS + ' - ' + siglaTitle + siglaPageTitle.innerHTML;
+                siglaPageTitle.innerHTML = this.leaf.breadcrumbS + ' - ' + siglaTitle.innerHTML + siglaPageTitle.innerHTML;
             }
             this.logoVisible = (
                 form === null ||
                 (form !== null && form.action.indexOf('GestioneUtente.do') !== -1)
             );
+            const inputs = this.container.nativeElement.getElementsByTagName('input');
+            const i18nIta = {
+                previousMonth : 'Mese Precedente',
+                nextMonth : 'Mese Successivo',
+                months : ['Gennaio', 'Fabbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'],
+                weekdays : ['Domenica', 'Lunedi', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'],
+                weekdaysShort : ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab']
+            };
+            for (const input of inputs){
+                if (input.placeholder === 'dd/MM/yyyy') {
+                    const pick = new Pikaday({
+                        field: input,
+                        format: 'DD/MM/YYYY',
+                        formatStrict: true,
+                        i18n: i18nIta
+                    });
+                }
+            }
         });
     }
 
