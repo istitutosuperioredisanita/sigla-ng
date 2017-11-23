@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Rx';
 import { WorkspaceService } from './workspace.service';
 import { DomSanitizer, SafeResourceUrl, SafeScript, SafeHtml} from '@angular/platform-browser';
 import { Leaf } from './leaf.model';
+import * as moment from 'moment';
 import 'pikaday';
 declare var Pikaday;
 
@@ -127,7 +128,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
             const i18nIta = {
                 previousMonth : 'Mese Precedente',
                 nextMonth : 'Mese Successivo',
-                months : ['Gennaio', 'Fabbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'],
+                months : ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'],
                 weekdays : ['Domenica', 'Lunedi', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'],
                 weekdaysShort : ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab']
             };
@@ -137,6 +138,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
                         field: input,
                         format: 'DD/MM/YYYY',
                         formatStrict: true,
+                        defaultDate: moment.now(),
                         i18n: i18nIta
                     }));
                 }
