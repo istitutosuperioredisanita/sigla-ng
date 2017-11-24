@@ -8,4 +8,8 @@
         <router-outlet name="popup"></router-outlet>
     </div>
 </div>
+<!--Scroll to top-->
+<div class="scroll-to-top" [ngClass]="{'show-scroll': navIsFixed}">
+    <i class="fa fa-2x fa-chevron-circle-up text-primary" (click)="scrollToTop()" aria-hidden="true"></i>
+</div>
 <jhi-footer></jhi-footer>
