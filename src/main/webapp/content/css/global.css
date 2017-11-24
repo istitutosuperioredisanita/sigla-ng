@@ -669,7 +669,19 @@ html {
     .angular-tree-component {
         height: calc(100vh - 195px);
         overflow: auto;
-    }
+    }  
+  }
+  @media screen and (min-width: 768px) and (max-width: 1280px){
+    .angular-tree-component {
+        height: calc(100vh - 155px);
+        overflow: auto;
+    }   
+  }
+  @media screen and (min-width: 1281px) {
+    .angular-tree-component {
+        height: calc(100vh - 195px);
+        overflow: auto;
+    }   
   }
   @media screen and (max-width: 768px) {
     ngb-typeahead-window {
