@@ -279,6 +279,10 @@ html {
   .input-group-searchtool  input.form-control:nth-child(3):not([class*="w-"]) {
     width: 80%!important;
   }
+  .input-group-searchtool > button.btn:disabled {
+      display: none;
+  }
+
   .FormLabel.required::after {
     content:"*";color:red;
   }
