@@ -47,7 +47,18 @@ html {
   /* ==========================================================================
   Generic styles
   ========================================================================== */
-  
+  .scroll-to-top {
+    position: fixed;
+    bottom: 40px;
+    right: 15px;
+    opacity: 0;
+    transition: all .2s ease-in-out;
+    cursor: pointer;
+  }
+  .show-scroll {
+    opacity: 1;
+    transition: all .2s ease-in-out;
+  }
   /* Error highlight on input fields */
   .ng-valid[required], .ng-valid.required  {
     border-left: 5px solid green;
@@ -658,7 +669,19 @@ html {
     .angular-tree-component {
         height: calc(100vh - 195px);
         overflow: auto;
-    }
+    }  
+  }
+  @media screen and (min-width: 768px) and (max-width: 1280px){
+    .angular-tree-component {
+        height: calc(100vh - 155px);
+        overflow: auto;
+    }   
+  }
+  @media screen and (min-width: 1281px) {
+    .angular-tree-component {
+        height: calc(100vh - 195px);
+        overflow: auto;
+    }   
   }
   @media screen and (max-width: 768px) {
     ngb-typeahead-window {
