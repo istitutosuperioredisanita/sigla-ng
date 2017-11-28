@@ -54,6 +54,7 @@ html {
     opacity: 0;
     transition: all .2s ease-in-out;
     cursor: pointer;
+    z-index: 1001;
   }
   .show-scroll {
     opacity: 1;
