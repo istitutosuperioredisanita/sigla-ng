@@ -216,7 +216,7 @@ function modalInputFocused(input) {
     confirmButton.oldClassName = confirmButton.className;
     cancelButton.oldClassName = cancelButton.className;
     confirmButton.className = confirmButton.className + ' bg-primary';
-    cancelButton.className = cancelButton.className + ' bg-info'; 
+    cancelButton.className = cancelButton.className + ' bg-primary'; 
     for (i = 0;i < form.elements.length;i++) {
         var element = form.elements[i]
         if (element != input && element != confirmButton && 
