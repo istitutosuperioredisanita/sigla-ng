@@ -317,7 +317,14 @@ html {
       content: attr(title);
       padding-right: 5px;
   }
-  
+
+  .btn-save-command.bg-primary  i {
+      color: #fff!important;
+  }
+  .btn-erase-command.bg-info  i {
+      color: #fff!important;
+  }
+
   legend {
       border-width: inherit;
       border-style: inherit;

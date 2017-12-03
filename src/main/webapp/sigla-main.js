@@ -212,7 +212,11 @@ function modalInputFocused(input) {
     if (input.changed || input.modal) return;
     form.modal = true
     input.modal = true
-    input.old_value = input.value
+    input.old_value = input.value;
+    confirmButton.oldClassName = confirmButton.className;
+    cancelButton.oldClassName = cancelButton.className;
+    confirmButton.className = confirmButton.className + ' bg-primary';
+    cancelButton.className = cancelButton.className + ' bg-info'; 
     for (i = 0;i < form.elements.length;i++) {
         var element = form.elements[i]
         if (element != input && element != confirmButton && 
@@ -230,6 +234,10 @@ function modalInputChanged(input) {
 }
 function resetModalDisabled(form,input) {
     form.modal = false
+    var confirmButton = form.elements[input.name+".confirm"];
+    var cancelButton = form.elements[input.name+".cancel"];
+    confirmButton.className = confirmButton.oldClassName;
+    cancelButton.className = cancelButton.oldClassName;
     if (input != null)
         input.modal = false;
     for (i = 0;i < form.elements.length;i++) {
