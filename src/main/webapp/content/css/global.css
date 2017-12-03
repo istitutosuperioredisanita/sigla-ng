@@ -321,7 +321,7 @@ html {
   .btn-save-command.bg-primary  i {
       color: #fff!important;
   }
-  .btn-erase-command.bg-info  i {
+  .btn-erase-command.bg-primary  i {
       color: #fff!important;
   }
 
