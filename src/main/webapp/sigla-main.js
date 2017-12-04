@@ -236,8 +236,12 @@ function resetModalDisabled(form,input) {
     form.modal = false
     var confirmButton = form.elements[input.name+".confirm"];
     var cancelButton = form.elements[input.name+".cancel"];
-    confirmButton.className = confirmButton.oldClassName;
-    cancelButton.className = cancelButton.oldClassName;
+    if (confirmButton.oldClassName) {
+        confirmButton.className = confirmButton.oldClassName;        
+    }
+    if (cancelButton.oldClassName) {
+        cancelButton.className = cancelButton.oldClassName;        
+    }
     if (input != null)
         input.modal = false;
     for (i = 0;i < form.elements.length;i++) {
