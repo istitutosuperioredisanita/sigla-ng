@@ -1,3 +1,14 @@
+(function () {
+      if ( typeof window.CustomEvent === "function" ) return false;
+      function CustomEvent ( event, params ) {
+        params = params || { bubbles: false, cancelable: false, detail: undefined };
+        var evt = document.createEvent( 'CustomEvent' );
+        evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
+        return evt;
+       }    
+      CustomEvent.prototype = window.Event.prototype;
+      window.CustomEvent = CustomEvent;
+})();
 function submitForm(comando) {
     document.mainForm.comando.value = comando;
     if (document.mainForm.scrollx) {
@@ -201,7 +212,11 @@ function modalInputFocused(input) {
     if (input.changed || input.modal) return;
     form.modal = true
     input.modal = true
-    input.old_value = input.value
+    input.old_value = input.value;
+    confirmButton.oldClassName = confirmButton.className;
+    cancelButton.oldClassName = cancelButton.className;
+    confirmButton.className = confirmButton.className + ' bg-primary';
+    cancelButton.className = cancelButton.className + ' bg-primary'; 
     for (i = 0;i < form.elements.length;i++) {
         var element = form.elements[i]
         if (element != input && element != confirmButton && 
@@ -219,6 +234,10 @@ function modalInputChanged(input) {
 }
 function resetModalDisabled(form,input) {
     form.modal = false
+    var confirmButton = form.elements[input.name+".confirm"];
+    var cancelButton = form.elements[input.name+".cancel"];
+    confirmButton.className = confirmButton.oldClassName;
+    cancelButton.className = cancelButton.oldClassName;
     if (input != null)
         input.modal = false;
     for (i = 0;i < form.elements.length;i++) {

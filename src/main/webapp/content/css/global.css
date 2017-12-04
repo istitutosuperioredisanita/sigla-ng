@@ -317,7 +317,14 @@ html {
       content: attr(title);
       padding-right: 5px;
   }
-  
+
+  .btn-save-command.bg-primary  i {
+      color: #fff!important;
+  }
+  .btn-erase-command.bg-primary  i {
+      color: #fff!important;
+  }
+
   legend {
       border-width: inherit;
       border-style: inherit;
@@ -503,8 +510,16 @@ html {
     left: 0;
     bottom: 0;
     right: 0;
+    animation: loadingoutin 1s linear 1 forwards;
   }
-  
+  @-webkit-keyframes loadingoutin {
+    0% { opacity: 0; }
+    100% { opacity: 1;}
+  }
+  @keyframes loadingoutin {
+    0% { opacity: 0; }
+    100% { opacity: 1;}
+  }
   /* Transparent Overlay */
   .loading:before {
     content: '';
