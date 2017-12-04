@@ -24,7 +24,6 @@ export class ContextComponent implements OnInit, OnDestroy {
     @ViewChild('cds') cdsInput: ElementRef;
     @ViewChild('uo') uoInput: ElementRef;
     @ViewChild('cdr') cdrInput: ElementRef;
-    inputEvent: Event = new Event('input');
 
     onSelectCdsSubscription: Subscription;
     onSelectUoSubscription: Subscription;
@@ -204,18 +203,29 @@ export class ContextComponent implements OnInit, OnDestroy {
     openTypeaheadCds() {
         this.cdsModel = undefined;
         this.cdsInput.nativeElement.value = '';
-        this.cdsInput.nativeElement.dispatchEvent(this.inputEvent);
+        this.cdsInput.nativeElement.dispatchEvent(this.createNewEvent('input'));
     }
 
     openTypeaheadUo() {
         this.uoModel = undefined;
         this.uoInput.nativeElement.value = '';
-        this.uoInput.nativeElement.dispatchEvent(this.inputEvent);
+        this.uoInput.nativeElement.dispatchEvent(this.createNewEvent('input'));
     }
 
     openTypeaheadCdr() {
         this.cdrModel = undefined;
         this.cdrInput.nativeElement.value = '';
-        this.cdrInput.nativeElement.dispatchEvent(this.inputEvent);
+        this.cdrInput.nativeElement.dispatchEvent(this.createNewEvent('input'));
+    }
+
+    createNewEvent(eventName) {
+        let event;
+        if (typeof(Event) === 'function') {
+            event = new Event(eventName);
+        } else {
+            event = document.createEvent('Event');
+            event.initEvent(eventName, true, true);
+        }
+        return event;
     }
 }
