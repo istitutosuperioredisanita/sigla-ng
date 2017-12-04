@@ -37,7 +37,7 @@ export class WorkspaceService {
 
     postForm(form: any): Observable<string> {
         if (form.comando.value) {
-            return this.http.post('/SIGLA/' + form.action.replace(form.baseURI, ''), new FormData(form)).map((res: Response) => res.text());
+            return this.http.post('/SIGLA/' + form.getAttribute('action-ng'), new FormData(form)).map((res: Response) => res.text());
         } else {
             return Observable.empty();
         }

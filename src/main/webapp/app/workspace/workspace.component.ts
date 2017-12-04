@@ -18,7 +18,7 @@ declare var Pikaday;
 })
 export class WorkspaceComponent implements OnInit, OnDestroy {
     account: Account;
-    desktop: SafeHtml;
+    desktop: SafeHtml = '';
     leaf: Leaf;
     siglaPageTitle: string;
     isRequesting: boolean;
