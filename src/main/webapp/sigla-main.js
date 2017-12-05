@@ -10,6 +10,7 @@
       window.CustomEvent = CustomEvent;
 })();
 function submitForm(comando) {
+    if (document.mainForm.modal) return;
     document.mainForm.comando.value = comando;
     if (document.mainForm.scrollx) {
         if (window.pageXOffset)
