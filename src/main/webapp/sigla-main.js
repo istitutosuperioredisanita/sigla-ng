@@ -283,7 +283,7 @@ function selezionaCondizione(riga) {
     submitForm("doSelezionaCondizione");
 }
 function hideAlert(button) {
-    button.parentElement.hidden = true;
+    button.parentElement.remove();
 }
 function inputFileName(element) {
     var filename = element.value.replace(/^.*\\/, "");
