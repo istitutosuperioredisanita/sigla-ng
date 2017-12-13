@@ -10,6 +10,7 @@
       window.CustomEvent = CustomEvent;
 })();
 function submitForm(comando) {
+    if (document.mainForm.modal) return;
     document.mainForm.comando.value = comando;
     if (document.mainForm.scrollx) {
         if (window.pageXOffset)
@@ -236,8 +237,12 @@ function resetModalDisabled(form,input) {
     form.modal = false
     var confirmButton = form.elements[input.name+".confirm"];
     var cancelButton = form.elements[input.name+".cancel"];
-    confirmButton.className = confirmButton.oldClassName;
-    cancelButton.className = cancelButton.oldClassName;
+    if (confirmButton.oldClassName) {
+        confirmButton.className = confirmButton.oldClassName;        
+    }
+    if (cancelButton.oldClassName) {
+        cancelButton.className = cancelButton.oldClassName;        
+    }
     if (input != null)
         input.modal = false;
     for (i = 0;i < form.elements.length;i++) {
@@ -278,7 +283,8 @@ function selezionaCondizione(riga) {
     submitForm("doSelezionaCondizione");
 }
 function hideAlert(button) {
-    button.parentElement.hidden = true;
+    var alertDiv = button.parentElement;
+    alertDiv.parentElement.removeChild(alertDiv);
 }
 function inputFileName(element) {
     var filename = element.value.replace(/^.*\\/, "");
