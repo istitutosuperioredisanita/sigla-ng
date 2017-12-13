@@ -428,7 +428,7 @@ html {
   }
   .alert-message-bp.alert-danger,
   .alert-message-bp.alert-warning {
-      transform: translate(-50%, 0);
+      transform: translate(-30%, 0);
       left: 50%;
       top: 50%;
   }
