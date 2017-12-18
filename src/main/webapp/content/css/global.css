@@ -298,6 +298,12 @@ html {
   .FormLabel.required::after {
     content:"*";color:red;
   }
+  .custom-file{
+    width:100%;   
+  }
+  input:disabled + .custom-file-control {
+    opacity: 0.5;
+  }
   .custom-file-control{
       white-space: nowrap;
       width:100%;
@@ -305,12 +311,11 @@ html {
       overflow: hidden;
       text-overflow:ellipsis;
   }
-  
   .custom-file-control::after {
     content: attr(title);
   }
   .custom-file-control::before {
-    content: "Browse";
+    content: "Browse...";
   }
   
   .btn-title::before {
