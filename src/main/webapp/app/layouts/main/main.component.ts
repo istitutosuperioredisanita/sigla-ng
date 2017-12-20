@@ -35,8 +35,10 @@ export class JhiMainComponent implements OnInit {
     onWindowScroll() {
         if (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop > 100) {
             this.navIsFixed = true;
+            $('.angular-tree-component').addClass('angular-tree-component-sticky');
         } else if (this.navIsFixed && window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop < 10) {
             this.navIsFixed = false;
+            $('.angular-tree-component').removeClass('angular-tree-component-sticky');
         }
     }
 

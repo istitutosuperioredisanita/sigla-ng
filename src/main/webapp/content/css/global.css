@@ -688,7 +688,7 @@ html {
         z-index: 999;
     }
     .angular-tree-component {
-        height: calc(100vh - 195px);
+        height: calc(100vh - 180px);
         overflow: auto;
     }  
   }
@@ -696,12 +696,18 @@ html {
     .angular-tree-component {
         height: calc(100vh - 155px);
         overflow: auto;
+    }
+    .angular-tree-component-sticky {
+        height: calc(100vh - 155px + 60px);
     }   
   }
   @media screen and (min-width: 1281px) {
     .angular-tree-component {
-        height: calc(100vh - 195px);
+        height: calc(100vh - 180px);
         overflow: auto;
+    }
+    .angular-tree-component-sticky {
+        height: calc(100vh - 180px  + 70px);
     }   
   }
   @media screen and (max-width: 768px) {
