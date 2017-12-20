@@ -1,7 +1,8 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, NavigationEnd } from '@angular/router';
-
 import { JhiLanguageHelper } from '../../shared';
+declare var jquery: any;
+declare var $: any;
 
 @Component({
     selector: 'jhi-main',
