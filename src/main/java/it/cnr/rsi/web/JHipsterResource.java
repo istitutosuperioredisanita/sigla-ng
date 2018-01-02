@@ -2,6 +2,7 @@ package it.cnr.rsi.web;
 
 import it.cnr.rsi.security.UserContext;
 import it.cnr.rsi.service.UtenteService;
+import it.cnr.rsi.web.rest.errors.InvalidPasswordException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,5 +98,30 @@ public class JHipsterResource {
             .map(UserContext.class::cast)
             .map(userContext -> userContext.changeUsernameAndAuthority(username))
             .orElseThrow(() -> new RuntimeException("something went wrong " + authentication.toString())));
+    }
+
+    /**
+     * POST  /account/change-password : changes the current user's password
+     *
+     * @param password the new password
+     */
+    @PostMapping(path = "/account/change-password")
+    public ResponseEntity<Boolean> changePassword(@RequestBody String password) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        final String newPassword = Optional.ofNullable(password)
+            .filter(s -> s.length() > 4)
+            .filter(s -> s.length() < 50)
+            .orElseThrow(() -> new InvalidPasswordException(password));
+
+        final String userId = Optional
+            .ofNullable(authentication)
+            .map(Authentication::getPrincipal)
+            .filter(principal -> principal instanceof UserContext)
+            .map(UserContext.class::cast)
+            .map(userContext -> userContext.getLogin())
+            .orElseThrow(() -> new RuntimeException("something went wrong " + authentication.toString()));
+        LOGGER.info("change password for user: {}", userId);
+        utenteService.changePassword(userId, password);
+        return ResponseEntity.ok(true);
     }
 }
