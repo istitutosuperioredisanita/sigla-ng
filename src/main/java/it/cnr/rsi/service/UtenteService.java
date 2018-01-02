@@ -13,8 +13,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
 
 import javax.transaction.Transactional;
+import java.sql.Date;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -97,4 +101,19 @@ public class UtenteService implements UserDetailsService {
         return findMessaggi(uid);
     }
 
+    @Transactional
+    public void changePassword(String username, String newPassword) {
+        Utente utente = utenteRepository.findOne(username);
+        byte[] buser = utente.getCdUtente().getBytes();
+        byte[] bpassword = newPassword.toUpperCase().getBytes();
+        byte h = 0;
+        for (int i = 0;i < bpassword.length;i++) {
+            h = (byte)(bpassword[i] ^ h);
+            for (int j = 0;j < buser.length;j++)
+                bpassword[i] ^= buser[j] ^ h;
+        }
+        utente.setPassword( Base64Utils.encodeToString(bpassword));
+        utente.setDtUltimaVarPassword(Date.from(Instant.now()));
+        utenteRepository.save(utente);
+    }
 }
