@@ -68,7 +68,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return this.principal.isAuthenticated();
     }
 
-    login() {
+    login(redirect: string) {
+        const navigate = redirect || 'workspace';
         this.loginService.login({
             username: this.username,
             password: this.password,
@@ -99,10 +100,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 this.principal.hasAnyAuthority(['ROLE_ADMIN', 'ROLE_SUPERUSER']).then((result) => {
                     if (!result) {
                         if (this.localStateStorageService.getUserContext(this.principal.getAccount().username).cds) {
-                            this.router.navigate(['workspace']);
+                            this.router.navigate([navigate]);
                         }
                     } else {
-                        this.router.navigate(['workspace']);
+                        this.router.navigate([navigate]);
                     }
                 });
                 // // previousState was set in the authExpiredInterceptor before being redirected to login modal.
