@@ -6,6 +6,7 @@ import { UserContext, Account} from '../shared';
 import { Pair } from './pair.model';
 import { Preferiti } from '../context/preferiti.model';
 import { Messaggio } from '../context/messaggio.model';
+import { IndirizziMail } from './index';
 
 @Injectable()
 export class ContextService  {
@@ -41,6 +42,10 @@ export class ContextService  {
 
     getPreferiti(): Observable<Preferiti[]> {
         return this.http.get('/api/context/preferiti').map((res: Response) => res.json());
+    }
+
+    getIndirizziMail(): Observable<IndirizziMail[]> {
+        return this.http.get('/api/context/indirizzi-mail').map((res: Response) => res.json());
     }
 
     findMessaggi(): void {

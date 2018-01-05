@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { JhiLanguageService, JhiAlertService } from 'ng-jhipster';
-
+import { IndirizziMail, ContextService } from '../../context/index';
 import { Principal, AccountService, JhiLanguageHelper } from '../../shared';
 import { WorkspaceService } from '../../workspace/workspace.service';
 
@@ -13,6 +13,8 @@ export class SettingsComponent implements OnInit {
     success: string;
     settingsAccount: any;
     languages: any[];
+    indirizziMail: IndirizziMail[];
+    public currentIndirizzoMail: IndirizziMail;
 
     constructor(
         private account: AccountService,
@@ -20,7 +22,8 @@ export class SettingsComponent implements OnInit {
         private languageService: JhiLanguageService,
         private languageHelper: JhiLanguageHelper,
         private workspaceService: WorkspaceService,
-        private alertService: JhiAlertService
+        private alertService: JhiAlertService,
+        private contextService: ContextService
     ) {
     }
 
@@ -31,6 +34,14 @@ export class SettingsComponent implements OnInit {
         this.languageHelper.getAll().then((languages) => {
             this.languages = languages;
         });
+        this.contextService.getIndirizziMail().subscribe((indirizziMail) => {
+            this.indirizziMail = indirizziMail;
+        });
+        this.newIndirizzoMail();
+    }
+
+    newIndirizzoMail() {
+        this.currentIndirizzoMail = new IndirizziMail({cdUtente: null, indirizzoMail: null}, null, null, null, null, null, null, null, null, null);
     }
 
     save() {
@@ -48,6 +59,16 @@ export class SettingsComponent implements OnInit {
         }, () => {
             this.success = null;
             this.error = 'ERROR';
+        });
+    }
+
+    setClickedRow(currentIndirizzoMail: IndirizziMail) {
+        this.currentIndirizzoMail = currentIndirizzoMail;
+    }
+
+    selectAll() {
+        this.indirizziMail.forEach((indirizzoMail) => {
+            indirizzoMail.checked = !indirizzoMail.checked;
         });
     }
 
