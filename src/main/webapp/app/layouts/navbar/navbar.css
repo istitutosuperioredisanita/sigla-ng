@@ -16,7 +16,6 @@ Navbar
 	-webkit-box-shadow: 0 2px 15px rgba(0,0,0,0.25);
 	border-bottom: 3px solid rgba(0,0,0,0.2);    
     border-top: 1px solid rgba(0,0,0,0.2);    
-    height: 70px;
 }
 .jh-navbar .profile-image {
     margin: -10px 0px;
@@ -59,6 +58,9 @@ Navbar
 @media screen and (min-width: 768px) {
     .jh-navbar-toggler {
         display: none;
+    }
+    .jh-navbar {
+        height: 70px;
     }
 }
 
