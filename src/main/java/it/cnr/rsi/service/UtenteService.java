@@ -3,10 +3,8 @@ package it.cnr.rsi.service;
 import it.cnr.rsi.domain.Messaggio;
 import it.cnr.rsi.domain.Preferiti;
 import it.cnr.rsi.domain.Utente;
-import it.cnr.rsi.repository.AlberoMainRepository;
-import it.cnr.rsi.repository.MessaggioRepository;
-import it.cnr.rsi.repository.PreferitiRepository;
-import it.cnr.rsi.repository.UtenteRepository;
+import it.cnr.rsi.domain.UtenteIndirizziMail;
+import it.cnr.rsi.repository.*;
 import it.cnr.rsi.security.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,16 +30,19 @@ public class UtenteService implements UserDetailsService {
     private PreferitiRepository preferitiRepository;
     private AlberoMainRepository alberoMainRepository;
     private MessaggioRepository messaggioRepository;
+    private UtenteIndirizziMailRepository utenteIndirizziMailRepository;
 
     public UtenteService(UtenteRepository utenteRepository,
                          PreferitiRepository preferitiRepository,
                          AlberoMainRepository alberoMainRepository,
-                         MessaggioRepository messaggioRepository) {
+                         MessaggioRepository messaggioRepository,
+                         UtenteIndirizziMailRepository utenteIndirizziMailRepository) {
 		super();
 		this.utenteRepository = utenteRepository;
 		this.preferitiRepository = preferitiRepository;
 		this.alberoMainRepository = alberoMainRepository;
 		this.messaggioRepository = messaggioRepository;
+		this.utenteIndirizziMailRepository = utenteIndirizziMailRepository;
 	}
 
     @Override
@@ -80,6 +81,15 @@ public class UtenteService implements UserDetailsService {
                 return preferiti;
             }).sorted((preferiti, t1) ->
                 preferiti.getDuva().compareTo(t1.getDuva())
+            ).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<UtenteIndirizziMail> findIndirizziMail(String uid) {
+        LOGGER.info("Find indirizzi mail by uid {}", uid);
+        return utenteIndirizziMailRepository.findUtenteIndirizziMailByCdUtente(uid)
+            .sorted((t0, t1) ->
+                t0.getDuva().compareTo(t1.getDuva())
             ).collect(Collectors.toList());
     }
 
