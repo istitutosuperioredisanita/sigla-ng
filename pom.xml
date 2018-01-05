@@ -211,4 +211,9 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+    <scm>
+        <connection>scm:git:ssh://git@git.si.cnr.it/dev/sigla-ng.git</connection>
+        <developerConnection>scm:git:ssh://git@git.si.cnr.it/dev/sigla-ng.git</developerConnection>
+        <tag>sigla-ng-0.0.1</tag>
+    </scm>
 </project>
