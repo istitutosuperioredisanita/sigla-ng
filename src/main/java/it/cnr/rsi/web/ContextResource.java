@@ -3,6 +3,7 @@ package it.cnr.rsi.web;
 import it.cnr.rsi.domain.Messaggio;
 import it.cnr.rsi.domain.Preferiti;
 import it.cnr.rsi.domain.Utente;
+import it.cnr.rsi.domain.UtenteIndirizziMail;
 import it.cnr.rsi.security.UserContext;
 import it.cnr.rsi.service.EsercizioBaseService;
 import it.cnr.rsi.service.UnitaOrganizzativaService;
@@ -36,6 +37,7 @@ public class ContextResource {
         API_CDS = "/cds",
         API_CDR = "/cdr",
         API_PREFERITI = "/preferiti",
+        API_INDIRIZZI_MAIL = "/indirizzi-mail",
         API_MESSAGGI = "/messaggi",
         API_UTENTI_MULTIPLI = "/users";
 
@@ -130,6 +132,12 @@ public class ContextResource {
         return userDetails;
     }
 
+    @GetMapping(API_INDIRIZZI_MAIL)
+    public List<UtenteIndirizziMail> getIndirizziMail(){
+        UserContext userDetails = getUserDetails();
+        LOGGER.info("GET Indirizzi mail for User: {}", userDetails.getUsername());
+        return utenteService.findIndirizziMail(userDetails.getUsername());
+    }
 
     public static UserContext getUserDetails() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
