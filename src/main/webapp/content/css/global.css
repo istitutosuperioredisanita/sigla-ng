@@ -323,6 +323,11 @@ html {
       padding-right: 5px;
   }
 
+  .btn-title-2x::before {
+    content: attr(title);
+    vertical-align: super;
+  }
+
   .btn-save-command.bg-primary  i {
       color: #fff!important;
   }

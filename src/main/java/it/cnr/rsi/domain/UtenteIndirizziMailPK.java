@@ -12,13 +12,18 @@ public class UtenteIndirizziMailPK implements Serializable {
     //default serial version id, required for serializable classes.
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "CD_UTENTE", insertable = false, updatable = false)
+    @Column(name = "CD_UTENTE")
     private String cdUtente;
 
-    @Column(name = "INDIRIZZO_MAIL", insertable = false, updatable = false)
+    @Column(name = "INDIRIZZO_MAIL")
     private String indirizzoMail;
 
     public UtenteIndirizziMailPK() {
+    }
+
+    public UtenteIndirizziMailPK(String cdUtente, String indirizzoMail) {
+        this.cdUtente = cdUtente;
+        this.indirizzoMail = indirizzoMail;
     }
 
     public String getCdUtente() {

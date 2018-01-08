@@ -139,6 +139,22 @@ public class ContextResource {
         return utenteService.findIndirizziMail(userDetails.getUsername());
     }
 
+    @PostMapping(API_INDIRIZZI_MAIL)
+    public List<UtenteIndirizziMail> postIndirizzoMail(@RequestBody ArrayList<UtenteIndirizziMail> utenteIndirizziMail){
+        UserContext userDetails = getUserDetails();
+        LOGGER.info("POST Indirizzo mail for User: {} Indirizzo: {}", userDetails.getUsername(), utenteIndirizziMail);
+        utenteService.insertIndirizzoMail(userDetails.getUsername(), utenteIndirizziMail);
+        return utenteService.findIndirizziMail(userDetails.getUsername());
+    }
+
+    @DeleteMapping(API_INDIRIZZI_MAIL + "/{indirizzi:.+}")
+    public List<UtenteIndirizziMail> deleteIndirizziMail(@PathVariable ArrayList<String> indirizzi){
+        UserContext userDetails = getUserDetails();
+        LOGGER.info("DELETE Indirizzi mail for User: {} Indirizzi: {}", userDetails.getUsername(), indirizzi);
+        utenteService.deleteIndirizziMail(userDetails.getUsername(), indirizzi);
+        return utenteService.findIndirizziMail(userDetails.getUsername());
+    }
+
     public static UserContext getUserDetails() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return Optional
