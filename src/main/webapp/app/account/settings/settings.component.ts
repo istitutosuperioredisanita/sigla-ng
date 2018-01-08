@@ -58,6 +58,13 @@ export class SettingsComponent implements OnInit {
             this.indirizziMail = indirizzi;
             this.newIndirizzoMail();
             this.formStatus = FORM_STATUS.UNDEFINED;
+            this.alertService.info('global.messages.info.success');
+        }, (error) => {
+            if (error.status === 409) {
+                this.alertService.error('global.messages.error.duplicatekey', error.error);
+            }
+            this.success = null;
+            this.error = 'ERROR';
         });
     }
 
@@ -82,17 +89,21 @@ export class SettingsComponent implements OnInit {
     }
 
     deleteRows() {
-        if (window.confirm('Vuoi confermare la cancellazione?')) {
-            this.contextService.deleteIndirizziEmail(
-                this.indirizziMail.filter((indirizzo) => {
-                    return indirizzo.checked;
-                }).map((key) => {
-                    return key.id.indirizzoMail;
-                })
-            ).subscribe((indirizzi: IndirizziMail[]) => {
-                this.indirizziMail = indirizzi;
-                this.newIndirizzoMail();
-            });
+        const indirizzi = this.indirizziMail.filter((indirizzo) => {
+            return indirizzo.checked;
+        }).map((key) => {
+            return key.id.indirizzoMail;
+        });
+        if (indirizzi.length === 0) {
+            this.alertService.error('global.messages.error.norowsselected');
+        } else {
+            if (window.confirm('Vuoi confermare la cancellazione?')) {
+                this.contextService.deleteIndirizziEmail(indirizzi).subscribe((result: IndirizziMail[]) => {
+                    this.indirizziMail = result;
+                    this.newIndirizzoMail();
+                    this.alertService.info('global.messages.info.success');
+                });
+            }
         }
     }
 
