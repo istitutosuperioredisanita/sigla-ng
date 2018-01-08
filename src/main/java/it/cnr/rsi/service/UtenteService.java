@@ -1,9 +1,6 @@
 package it.cnr.rsi.service;
 
-import it.cnr.rsi.domain.Messaggio;
-import it.cnr.rsi.domain.Preferiti;
-import it.cnr.rsi.domain.Utente;
-import it.cnr.rsi.domain.UtenteIndirizziMail;
+import it.cnr.rsi.domain.*;
 import it.cnr.rsi.repository.*;
 import it.cnr.rsi.security.UserContext;
 import org.slf4j.Logger;
@@ -17,6 +14,7 @@ import javax.transaction.Transactional;
 import java.sql.Date;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -91,6 +89,27 @@ public class UtenteService implements UserDetailsService {
             .sorted((t0, t1) ->
                 t0.getDuva().compareTo(t1.getDuva())
             ).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void deleteIndirizziMail(String username, ArrayList<String> indirizzi) {
+        indirizzi.stream()
+            .forEach(indirizzo -> {
+                utenteIndirizziMailRepository.delete(
+                    utenteIndirizziMailRepository.findOne(new UtenteIndirizziMailPK(username, indirizzo))
+                );
+            });
+    }
+    @Transactional
+    public void insertIndirizzoMail(String username, ArrayList<UtenteIndirizziMail> utenteIndirizziMail) {
+        utenteIndirizziMailRepository.save(utenteIndirizziMail.stream()
+            .map(indirizzo -> {
+                indirizzo.setDuva(Date.from(Instant.now()));
+                indirizzo.setUtuv(username);
+                indirizzo.setDacr(Optional.ofNullable(indirizzo.getDacr()).orElse(Date.from(Instant.now())));
+                indirizzo.setUtcr(username);
+                return indirizzo;
+            }).collect(Collectors.toList()));
     }
 
     @Transactional

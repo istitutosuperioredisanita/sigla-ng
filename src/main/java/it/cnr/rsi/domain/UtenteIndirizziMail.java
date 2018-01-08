@@ -79,7 +79,8 @@ public class UtenteIndirizziMail implements Serializable {
     private Date duva;
 
     @Column(name = "PG_VER_REC")
-    private BigDecimal pgVerRec;
+    @Version
+    private Integer pgVerRec;
 
     private String utcr;
 
@@ -92,6 +93,16 @@ public class UtenteIndirizziMail implements Serializable {
     private Utente utente;
 
     public UtenteIndirizziMail() {
+        super();
+    }
+
+    public UtenteIndirizziMail(UtenteIndirizziMailPK id) {
+        super();
+        this.id = id;
+    }
+
+    public UtenteIndirizziMail(String username, String indirizzo) {
+        this(new UtenteIndirizziMailPK(username, indirizzo));
     }
 
     public UtenteIndirizziMailPK getId() {
@@ -174,11 +185,11 @@ public class UtenteIndirizziMail implements Serializable {
         this.duva = duva;
     }
 
-    public BigDecimal getPgVerRec() {
+    public Integer getPgVerRec() {
         return this.pgVerRec;
     }
 
-    public void setPgVerRec(BigDecimal pgVerRec) {
+    public void setPgVerRec(Integer pgVerRec) {
         this.pgVerRec = pgVerRec;
     }
 
