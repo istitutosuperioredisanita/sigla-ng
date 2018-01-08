@@ -8,16 +8,16 @@
             <div class="m-2">
             <div id="crudToolbar" class="btn-toolbar mb-1" role="toolbar" aria-label="Toolbar with button groups">
                     <div class="btn-group d-flex w-100" role="group">
-                        <button accesskey="N" [disabled]="isFormInserting()" (click)="newRow()" class="btn btn-outline-secondary btn-title w-100" title="Nuovo">
+                        <button accesskey="N" [disabled]="isFormInserting()" (click)="newRow()" class="btn btn-outline-dark btn-title w-100" title="Nuovo">
                             <i class="fa fa-fw  fa-plus text-info" aria-hidden="true"></i>
                         </button>
-                        <button accesskey="S" (click)="save()" class="btn btn-outline-secondary btn-title w-100" title="Salva">
+                        <button accesskey="S" (click)="save()" class="btn btn-outline-dark btn-title w-100" title="Salva">
                             <i class="fa fa-fw  fa-floppy-o text-primary" aria-hidden="true"></i>
                         </button>
-                        <button accesskey="E" [disabled]="isFormInserting()" (click)="deleteRows()" class="btn btn-outline-secondary btn-title w-100" title="Elimina">
+                        <button accesskey="E" [disabled]="isFormInserting()" (click)="deleteRows()" class="btn btn-outline-dark btn-title w-100" title="Elimina">
                             <i class="fa fa-fw fa-trash text-danger" aria-hidden="true"></i>
                         </button>
-                        <button accesskey="E" [disabled]="!isFormInserting()" (click)="undoEditing()" class="btn btn-outline-secondary btn-title w-100" title="Annulla">
+                        <button accesskey="E" [disabled]="!isFormInserting()" (click)="undoEditing()" class="btn btn-outline-dark btn-title w-100" title="Annulla">
                             <i class="fa fa-fw fa-undo text-success" aria-hidden="true"></i>
                         </button>
                     </div>
