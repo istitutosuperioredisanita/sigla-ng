@@ -59,7 +59,9 @@
                 "success": "Operazione effettuata."
             },
             "error": {
-                "dontmatch" : "La password e la sua conferma non corrispondono!"
+                "dontmatch" : "La password e la sua conferma non corrispondono!",
+                "duplicatekey" : "Errore di chiave duplicata!",
+                "norowsselected": "Nessuna riga selezionata!"
             },
             "validate": {
                 "newpassword": {

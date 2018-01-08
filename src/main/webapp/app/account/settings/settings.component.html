@@ -52,7 +52,7 @@
                 <form name="form" role="form" (ngSubmit)="save()" #settingsForm="ngForm" *ngIf="settingsAccount" novalidate>
                     <div class="form-group">
                         <label class="form-control-label" for="email" jhiTranslate="settings.form.email">E-Mail</label>
-                        <input type="email" [disabled]="isDisabled()" class="form-control" id="email" name="email" placeholder="{{'global.form.email.placeholder' | translate}}"
+                        <input type="email" [disabled]="!isFormInserting()" class="form-control" id="email" name="email" placeholder="{{'global.form.email.placeholder' | translate}}"
                                 [(ngModel)]="currentIndirizzoMail.id.indirizzoMail" minlength="5" maxlength="100" #emailInput="ngModel" email required>
                         <div *ngIf="emailInput.dirty && emailInput.invalid">
                             <small class="form-text text-danger"
