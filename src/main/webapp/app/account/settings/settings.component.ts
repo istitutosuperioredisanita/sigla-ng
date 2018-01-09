@@ -71,7 +71,7 @@ export class SettingsComponent implements OnInit {
     newRow() {
         const indirizzoMail = new IndirizziMail(
             {
-                cdUtente: this.settingsAccount.login,
+                cdUtente: this.settingsAccount.username,
                 indirizzoMail: this.settingsAccount.email
             }, false, false, false, false, false, false, false, false, null);
         this.indirizziMail.push(indirizzoMail);
@@ -130,6 +130,7 @@ export class SettingsComponent implements OnInit {
     copyAccount(account) {
         return {
             activated: account.activated,
+            username: account.username,
             email: account.email,
             firstName: account.firstName,
             langKey: account.langKey,
