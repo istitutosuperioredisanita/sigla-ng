@@ -1,5 +1,6 @@
 package it.cnr.rsi.web;
 
+import it.cnr.rsi.domain.Utente;
 import it.cnr.rsi.security.UserContext;
 import it.cnr.rsi.service.UtenteService;
 import it.cnr.rsi.web.rest.errors.InvalidPasswordException;
@@ -78,9 +79,17 @@ public class JHipsterResource {
                 .filter(principal -> principal instanceof UserContext)
                 .map(UserContext.class::cast)
                 .map(userContext -> {
-                    return userContext.users(utenteService.findUsersForUid(userContext.getLogin()).stream()
-                        .map(utente -> new UserContext(utente))
-                        .collect(Collectors.toList()));
+                    final Optional<List<Utente>> usersForUid = Optional.ofNullable(
+                        utenteService.findUsersForUid(userContext.getLogin())).filter(utentes -> !utentes.isEmpty());
+                    if (usersForUid.isPresent()) {
+                        userContext.users(usersForUid.get()
+                            .stream()
+                            .map(utente -> new UserContext(utente))
+                            .collect(Collectors.toList()));
+                    } else {
+                        userContext.users(Collections.singletonList(utenteService.loadUserByUsername(userContext.getLogin())));
+                    }
+                    return userContext;
                 })
                 .orElse(null)
         );
