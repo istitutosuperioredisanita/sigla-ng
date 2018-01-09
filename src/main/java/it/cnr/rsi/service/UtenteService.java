@@ -59,7 +59,10 @@ public class UtenteService implements UserDetailsService {
 	@Transactional
 	public UserContext loadUserByUid(String uid) throws UsernameNotFoundException {
 		LOGGER.info("Find user by uid {}", uid);
-		return new UserContext(findUsersForUid(uid).stream().findAny().get());
+		return Optional.ofNullable(findUsersForUid(uid))
+                    .filter(utentes -> !utentes.isEmpty())
+                    .map(utentes -> new UserContext(utentes.stream().findAny().get()))
+                    .orElse(null);
 	}
 
     @Transactional
