@@ -101,6 +101,7 @@
     "test:watch": "yarn test -- --watch",
     "webpack:dev": "yarn run webpack-dev-server -- --config webpack/webpack.dev.js --progress --inline --hot --profile --port=9060 --watch-content-base",
     "webpack:local": "yarn run webpack-dev-server -- --config webpack/webpack.local.js --progress --inline --hot --profile --port=9060 --watch-content-base",
+    "webpack:local-ng": "yarn run webpack-dev-server -- --config webpack/webpack.local-ng.js --progress --inline --hot --profile --port=9060 --watch-content-base",
     "webpack:iss": "yarn run webpack-dev-server -- --config webpack/webpack.iss.js --progress --inline --hot --profile --port=9060 --watch-content-base",
     "webpack:build:main": "yarn run webpack -- --config webpack/webpack.dev.js --progress --profile",
     "webpack:build": "yarn run cleanup && yarn run webpack:build:main",

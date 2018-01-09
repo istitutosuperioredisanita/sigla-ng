@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.ldap.core.DirContextAdapter;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -27,6 +28,7 @@ import org.springframework.security.ldap.userdetails.UserDetailsContextMapper;
 import org.springframework.util.Base64Utils;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -146,12 +148,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 					@Override
 					public UserDetails mapUserFromContext(DirContextOperations ctx,
 							String username, Collection<? extends GrantedAuthority> authorities) {
-                        UserContext userContext = utenteService.loadUserByUid(username);
-                        userContext.addAttribute("firstName", ctx.getStringAttribute("cnrnome"));
-                        userContext.addAttribute("lastName", ctx.getStringAttribute("cnrcognome"));
-                        userContext.addAttribute("email", ctx.getStringAttribute("mail"));
-                        userContext.addAttribute("login", username);
-                        return userContext;
+                        return Optional.ofNullable(utenteService.loadUserByUid(username))
+                                .map(userContext -> {
+                                    userContext.addAttribute("firstName", ctx.getStringAttribute("cnrnome"));
+                                    userContext.addAttribute("lastName", ctx.getStringAttribute("cnrcognome"));
+                                    userContext.addAttribute("email", ctx.getStringAttribute("mail"));
+                                    userContext.addAttribute("login", username);
+                                    return userContext;
+                                }).orElseThrow(() -> new BadCredentialsException(""));
 					}
 				})
                 .userSearchFilter(ldapConfigurationProperties.getUserSearchFilter())
