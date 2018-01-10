@@ -125,19 +125,31 @@ public class UserContext implements UserDetails {
     }
 
     public String getLogin() {
-        return Optional.ofNullable((String)attributes.get("login")).orElse(currentUser.getCdUtente());
+        return Optional.ofNullable(attributes.get("login"))
+            .filter(String.class::isInstance)
+            .map(String.class::cast)
+            .orElse(currentUser.getCdUtente());
     }
 
     public String getFirstName() {
-        return Optional.ofNullable((String)attributes.get("firstName")).orElse(currentUser.getNome());
+        return Optional.ofNullable(attributes.get("firstName"))
+            .filter(String.class::isInstance)
+            .map(String.class::cast)
+            .orElse(currentUser.getNome());
     }
 
     public String getLastName() {
-        return Optional.ofNullable((String)attributes.get("lastName")).orElse(currentUser.getCognome());
+        return Optional.ofNullable(attributes.get("lastName"))
+            .filter(String.class::isInstance)
+            .map(String.class::cast)
+            .orElse(currentUser.getCognome());
     }
 
     public String getEmail() {
-        return Optional.ofNullable((String)attributes.get("email")).orElse("");
+        return Optional.ofNullable(attributes.get("email"))
+            .filter(String.class::isInstance)
+            .map(String.class::cast)
+            .orElse("");
     }
 
     public String getLangKey() {
@@ -145,16 +157,35 @@ public class UserContext implements UserDetails {
     }
 
     public Integer getEsercizio() {
-        return Optional.ofNullable((Integer)attributes.get("esercizio")).orElse(null);
+        return Optional.ofNullable(attributes.get("esercizio"))
+            .filter(Integer.class::isInstance)
+            .map(Integer.class::cast)
+            .orElse(null);
     }
     public String getCds() {
-        return Optional.ofNullable((String)attributes.get("cds")).orElse(null);
+        return Optional.ofNullable(attributes.get("cds"))
+            .filter(String.class::isInstance)
+            .map(String.class::cast)
+            .orElse(null);
     }
     public String getUo() {
-        return Optional.ofNullable((String)attributes.get("uo")).orElse(null);
+        return Optional.ofNullable(attributes.get("uo"))
+            .filter(String.class::isInstance)
+            .map(String.class::cast)
+            .orElse(null);
     }
     public String getCdr() {
-        return Optional.ofNullable((String)attributes.get("cdr")).orElse(null);
+        return Optional.ofNullable(attributes.get("cdr"))
+            .filter(String.class::isInstance)
+            .map(String.class::cast)
+            .orElse(null);
+    }
+
+    public boolean isLdap() {
+	    return Optional.ofNullable(attributes.get("ldap"))
+            .filter(Boolean.class::isInstance)
+            .map(Boolean.class::cast)
+            .orElse(Boolean.FALSE);
     }
 
     public List<UserContext> getUsers() {

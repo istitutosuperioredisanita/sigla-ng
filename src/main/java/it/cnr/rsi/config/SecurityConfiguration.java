@@ -123,52 +123,50 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-        LOGGER.info("ldap config: {}", ldapConfigurationProperties.getUrl());
-
-        LdapAuthoritiesPopulator ldapAuthoritiesPopulator = (userData, username) -> {
-            LOGGER.info("user: {}", username);
-            LOGGER.info("user data {}", userData.toString());
-            return Stream
+        LOGGER.info("ldap config: {}", ldapConfigurationProperties);
+        if (ldapConfigurationProperties.isEnabled()) {
+            LdapAuthoritiesPopulator ldapAuthoritiesPopulator = (userData, username) -> {
+                LOGGER.info("user: {}", username);
+                LOGGER.info("user data {}", userData.toString());
+                return Stream
                     .of("employee", "ACTUATOR", "ROLE_ADMIN")
                     .map(name -> new SimpleGrantedAuthority(name))
                     .collect(Collectors.toList());
-        };
-        auth
+            };
+            auth
                 .ldapAuthentication()
                 .ldapAuthoritiesPopulator(ldapAuthoritiesPopulator)
                 .userSearchBase(ldapConfigurationProperties.getUserSearchBase())
                 .userDetailsContextMapper(new UserDetailsContextMapper() {
-					@Override
-					public void mapUserToContext(UserDetails user, DirContextAdapter ctx) {
-						throw new UnsupportedOperationException(
-								"LdapUserDetailsMapper only supports reading from a context. Please"
-										+ "use a subclass if mapUserToContext() is required.");
-					}
-					@Override
-					public UserDetails mapUserFromContext(DirContextOperations ctx,
-							String username, Collection<? extends GrantedAuthority> authorities) {
+                    @Override
+                    public void mapUserToContext(UserDetails user, DirContextAdapter ctx) {
+                        throw new UnsupportedOperationException(
+                            "LdapUserDetailsMapper only supports reading from a context. Please"
+                                + "use a subclass if mapUserToContext() is required.");
+                    }
+                    @Override
+                    public UserDetails mapUserFromContext(DirContextOperations ctx,
+                                                          String username, Collection<? extends GrantedAuthority> authorities) {
                         return Optional.ofNullable(utenteService.loadUserByUid(username))
-                                .map(userContext -> {
-                                    userContext.addAttribute("firstName", ctx.getStringAttribute("cnrnome"));
-                                    userContext.addAttribute("lastName", ctx.getStringAttribute("cnrcognome"));
-                                    userContext.addAttribute("email", ctx.getStringAttribute("mail"));
-                                    userContext.addAttribute("login", username);
-                                    return userContext;
-                                }).orElseThrow(() -> new BadCredentialsException(""));
-					}
-				})
+                            .map(userContext -> {
+                                userContext.addAttribute("firstName", ctx.getStringAttribute("cnrnome"));
+                                userContext.addAttribute("lastName", ctx.getStringAttribute("cnrcognome"));
+                                userContext.addAttribute("email", ctx.getStringAttribute("mail"));
+                                userContext.addAttribute("login", username);
+                                userContext.addAttribute("ldap", Boolean.TRUE);
+                                return userContext;
+                            }).orElseThrow(() -> new BadCredentialsException(""));
+                    }
+                })
                 .userSearchFilter(ldapConfigurationProperties.getUserSearchFilter())
                 .groupSearchBase(null)
                 .contextSource()
                 .url(ldapConfigurationProperties.getUrl())
                 .managerDn(ldapConfigurationProperties.getManagerDn())
                 .managerPassword(ldapConfigurationProperties.getManagerPassword());
-
-
+        }
         auth
         	.authenticationProvider(customAuthenticationProvider());
-
     }
 
 
