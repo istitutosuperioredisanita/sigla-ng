@@ -125,9 +125,9 @@ export class ContextService  {
         this.getCdr(account.uo)
             .subscribe((cdr) => {
                 this.cdrPairs = cdr;
-                this.cdrModel = cdr.filter(function(v) {
+                this.setCdRModel(cdr.filter(function(v) {
                     return v.first === account.cdr;
-                })[0];
+                })[0]);
             });
     }
 
@@ -181,5 +181,9 @@ export class ContextService  {
 
     setCdRModel(pair: Pair) {
         this.cdrModel = pair;
+        this.eventManager.broadcast({
+            name: 'onSelectCdr',
+            content: this.cdrModel
+        });
     }
 }

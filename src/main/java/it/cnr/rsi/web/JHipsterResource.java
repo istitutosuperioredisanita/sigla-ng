@@ -39,6 +39,7 @@ public class JHipsterResource {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("activeProfiles", profiles);
         map.put("instituteAcronym", env.getProperty("institute.acronym", "CNR"));
+        map.put("urlChangePassword", env.getProperty("security.ldap.url.change.password"));
 
         profiles
             .stream()
