@@ -51,15 +51,4 @@ export class LoginService {
         this.principal.authenticate(null);
     }
 
-    loginMultiploWildfly(utenteMultiplo: string, page: string): void {
-        this.authServerProvider.loginMultiploWildfly(utenteMultiplo, this.localStateStorageService.getUserContext(utenteMultiplo))
-            .subscribe(() => {
-                this.principal.identity(true, utenteMultiplo).then((account) => {
-                    if (this.localStateStorageService.getUserContext(account.username).cds) {
-                        this.router.navigate([page]);
-                    }
-                });
-        });
-    }
-
 }

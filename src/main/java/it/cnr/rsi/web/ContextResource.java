@@ -100,7 +100,7 @@ public class ContextResource {
         UserContext userDetails = getUserDetails();
         LOGGER.info("GET CDS for User: {}", userDetails.getUsername());
         return unitaOrganizzativaService
-            .listaCdr(userDetails.getUsername(), userDetails.getEsercizio(), uo)
+            .listaCdr(userDetails.getEsercizio(), uo)
             .stream()
             .map(x -> Pair.of(x.getCdCentroResponsabilita(), x.getDsCdr()))
             .collect(Collectors.toList());

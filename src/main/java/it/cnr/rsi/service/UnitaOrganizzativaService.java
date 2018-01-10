@@ -8,6 +8,7 @@ import it.cnr.rsi.repository.UnitaOrganizzativaRepository;
 import it.cnr.rsi.repository.UtenteRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -67,8 +68,9 @@ public class UnitaOrganizzativaService {
 	}
 
 	@Transactional
-	public List<Cdr> listaCdr(String userId, Integer esercizio, String cdUnitaOrganizzativa) {
-		LOGGER.info("CDR for User: {} ", userId);
+    @Cacheable(value="cdr", key="{#esercizio, #cdUnitaOrganizzativa}")
+	public List<Cdr> listaCdr(Integer esercizio, String cdUnitaOrganizzativa) {
+		LOGGER.info("CDR for UO: {} ", cdUnitaOrganizzativa);
 		return cdrRepository.findCdrByUnitaOrganizzativa(esercizio, cdUnitaOrganizzativa)
 				.distinct()
 				.sorted((x, y) -> x.getCdCentroResponsabilita().compareTo(y.getCdCentroResponsabilita()))
