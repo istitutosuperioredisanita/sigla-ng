@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Principal } from '../../shared';
+import { Principal, LoginService } from '../../shared';
 import { PasswordService } from './password.service';
 import { ProfileService } from '../../layouts/profiles/profile.service';
 
@@ -20,7 +20,8 @@ export class PasswordComponent implements OnInit {
         private passwordService: PasswordService,
         private principal: Principal,
         public router: Router,
-        public profileService: ProfileService
+        public profileService: ProfileService,
+        public loginService: LoginService
     ) {
     }
 
@@ -49,6 +50,15 @@ export class PasswordComponent implements OnInit {
             this.passwordService.save(this.password).subscribe(() => {
                 this.error = null;
                 this.success = 'OK';
+                if (!this.account.accountNonLocked) {
+                    this.loginService.login({
+                        username: this.account.username,
+                        password: this.password,
+                        rememberMe: true
+                    }).then((account: Account) => {
+                        this.router.navigate(['/']);
+                    });
+                }
             }, () => {
                 this.success = null;
                 this.error = 'ERROR';
