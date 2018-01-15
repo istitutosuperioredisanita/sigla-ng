@@ -98,19 +98,20 @@ public class UserContext implements UserDetails {
 
     @Override
 	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
-		return true;
+        return Optional.ofNullable(currentUser)
+            .flatMap(utente -> Optional.ofNullable(utente.getDtUltimaVarPassword()))
+            .isPresent();
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
-		return true;
+        return Optional.ofNullable(currentUser)
+            .flatMap(utente -> Optional.ofNullable(utente.getDtUltimaVarPassword()))
+            .isPresent();
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
@@ -205,6 +206,10 @@ public class UserContext implements UserDetails {
 	    return Optional.ofNullable(currentUser)
             .map(Utente::getDsUtente)
             .orElse(null);
+    }
+
+    public Utente getCurrentUser() {
+        return currentUser;
     }
 
     public Boolean getUtenteMultiplo() {

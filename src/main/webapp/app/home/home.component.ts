@@ -69,13 +69,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     login(redirect: string) {
-        const navigate = redirect || 'workspace';
+        let navigate = redirect || '';
         this.loginService.login({
             username: this.username,
             password: this.password,
             rememberMe: this.rememberMe
         }).then((account: Account) => {
             this.account = account;
+            if (!account.accountNonLocked) {
+                navigate = 'password';
+            }
             if (account.users.length === 1) {
                 this.context.saveUserContext(
                     this.localStateStorageService.getUserContext(account.username)
@@ -99,12 +102,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 });
                 this.principal.hasAnyAuthority(['ROLE_ADMIN', 'ROLE_SUPERUSER']).then((result) => {
                     if (!result) {
-                        if (this.localStateStorageService.getUserContext(this.principal.getAccount().username).cds) {
-                            this.router.navigate([navigate]);
+                        if (account.accountNonLocked && this.localStateStorageService.getUserContext(this.principal.getAccount().username).cds) {
+                            navigate = 'workspace';
                         }
                     } else {
-                        this.router.navigate([navigate]);
+                        navigate = 'workspace';
                     }
+                    this.router.navigate([navigate]);
                 });
                 // // previousState was set in the authExpiredInterceptor before being redirected to login modal.
                 // // since login is succesful, go to stored previousState and clear previousState
