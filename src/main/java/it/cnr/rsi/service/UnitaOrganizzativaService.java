@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -35,15 +36,21 @@ public class UnitaOrganizzativaService {
 	public List<UnitaOrganizzativa> listaUnitaOrganizzativeAbilitate(String userId, Integer esercizio, String cds) {
 		LOGGER.info("UnitaOrganizzativa for User: {} ", userId);
 		Utente utente = utenteRepository.findOne(userId);
-		Stream<UnitaOrganizzativa> uosByAccessi;
+		Stream<UnitaOrganizzativa> uos;
 		if (utente.isUtenteSupervisore()) {
-			uosByAccessi = unitaOrganizzativaRepository.findUnitaOrganizzativeValida(esercizio, cds);
+			uos = unitaOrganizzativaRepository.findUnitaOrganizzativeValida(esercizio, cds);
 		} else {
-			uosByAccessi = Stream.concat(
+			uos = Stream.concat(
 					unitaOrganizzativaRepository.findUnitaOrganizzativeAbilitateByAccesso(userId, esercizio, cds),
 					unitaOrganizzativaRepository.findUnitaOrganizzativeAbilitateByRuolo(userId, esercizio, cds));
+			if (Optional.ofNullable(utente.getCdUtenteTempl()).isPresent()) {
+                uos = Stream.concat(uos, Stream.concat(
+                    unitaOrganizzativaRepository.findUnitaOrganizzativeAbilitateByAccesso(utente.getCdUtenteTempl(), esercizio, cds),
+                    unitaOrganizzativaRepository.findUnitaOrganizzativeAbilitateByRuolo(utente.getCdUtenteTempl(), esercizio, cds)));
+
+            }
 		}
-		return uosByAccessi
+		return uos
 				.distinct()
 				.sorted((x, y) -> x.getCdUnitaOrganizzativa().compareTo(y.getCdUnitaOrganizzativa()))
 				.collect(Collectors.toList());
@@ -53,15 +60,21 @@ public class UnitaOrganizzativaService {
 	public List<UnitaOrganizzativa> listaCDSAbilitati(String userId, Integer esercizio, String cdUnitaOrganizzativa) {
 		LOGGER.info("CDS for User: {} ", userId);
 		Utente utente = utenteRepository.findOne(userId);
-		Stream<UnitaOrganizzativa> cdsByAccessi;
+		Stream<UnitaOrganizzativa> cds;
 		if (utente.isUtenteSupervisore()) {
-			cdsByAccessi = unitaOrganizzativaRepository.findCdsValido(esercizio, cdUnitaOrganizzativa);
+			cds = unitaOrganizzativaRepository.findCdsValido(esercizio, cdUnitaOrganizzativa);
 		} else {
-			cdsByAccessi = Stream.concat(
+			cds = Stream.concat(
 					unitaOrganizzativaRepository.findCdsAbilitatiByAccesso(userId, esercizio, cdUnitaOrganizzativa),
 					unitaOrganizzativaRepository.findCdsAbilitatiByRuolo(userId, esercizio, cdUnitaOrganizzativa));
+            if (Optional.ofNullable(utente.getCdUtenteTempl()).isPresent()) {
+                cds = Stream.concat(cds, Stream.concat(
+                    unitaOrganizzativaRepository.findCdsAbilitatiByAccesso(utente.getCdUtenteTempl(), esercizio, cdUnitaOrganizzativa),
+                    unitaOrganizzativaRepository.findCdsAbilitatiByRuolo(utente.getCdUtenteTempl(), esercizio, cdUnitaOrganizzativa)));
+
+            }
 		}
-		return cdsByAccessi
+		return cds
 				.distinct()
 				.sorted((x, y) -> x.getCdUnitaOrganizzativa().compareTo(y.getCdUnitaOrganizzativa()))
 				.collect(Collectors.toList());
