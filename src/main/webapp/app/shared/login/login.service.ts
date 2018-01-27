@@ -4,6 +4,7 @@ import { LocalStateStorageService } from '../auth/local-storage.service';
 import { Principal } from '../auth/principal.service';
 import { AuthServerProvider } from '../auth/auth-session.service';
 import { Router } from '@angular/router';
+import { ContextService } from '../../context/context.service';
 
 @Injectable()
 export class LoginService {
@@ -13,7 +14,8 @@ export class LoginService {
         private principal: Principal,
         private authServerProvider: AuthServerProvider,
         private router: Router,
-        private localStateStorageService: LocalStateStorageService
+        private localStateStorageService: LocalStateStorageService,
+        private contextService: ContextService
     ) {}
 
     login(credentials, callback?) {
@@ -24,6 +26,9 @@ export class LoginService {
                         this.localStateStorageService.getUserContext(credentials.username)).subscribe((dataWildfly) => {
                             this.principal.identity(true).then((account) => {
                                 if (account !== null) {
+                                    this.contextService.saveWildflyUserContext(
+                                        this.localStateStorageService.getUserContext(account.username)
+                                    ).subscribe();
                                     resolve(account);
                                     this.languageService.changeLanguage(account.langKey);
                                 }
