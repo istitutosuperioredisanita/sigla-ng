@@ -89,7 +89,11 @@ public class ContextResource {
         UserContext userDetails = getUserDetails();
         LOGGER.info("GET CDS for User: {}", userDetails.getUsername());
         return unitaOrganizzativaService
-            .listaCDSAbilitati(userDetails.getUsername(), userDetails.getEsercizio(), uo)
+            .listaCDSAbilitati(userDetails.getUsername(), userDetails.getEsercizio(),
+                Optional.ofNullable(uo)
+                    .filter(s -> !s.isEmpty())
+                    .orElse(null)
+            )
             .stream()
             .map(x -> Pair.of(x.getCdUnitaOrganizzativa(), x.getDsUnitaOrganizzativa()))
             .collect(Collectors.toList());
