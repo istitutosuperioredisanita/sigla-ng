@@ -222,7 +222,8 @@ function modalInputFocused(input) {
         var element = form.elements[i]
         if (element != input && element != confirmButton && 
             element != cancelButton && !element.disabled &&
-            element.className.indexOf("fieldset") == -1) {
+            element.className.indexOf("fieldset") == -1 &&
+            element.type.indexOf("fieldset") == -1) {
             element.modal_disabled = element.disabled;
             element.disabled = true;
         } else {
