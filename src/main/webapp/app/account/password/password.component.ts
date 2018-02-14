@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
-import { Principal } from '../../shared';
+import { Router } from '@angular/router';
+import { Principal, LoginService } from '../../shared';
 import { PasswordService } from './password.service';
+import { ProfileService } from '../../layouts/profiles/profile.service';
 
 @Component({
     selector: 'jhi-password',
@@ -17,13 +18,25 @@ export class PasswordComponent implements OnInit {
 
     constructor(
         private passwordService: PasswordService,
-        private principal: Principal
+        private principal: Principal,
+        public router: Router,
+        public profileService: ProfileService,
+        public loginService: LoginService
     ) {
     }
 
     ngOnInit() {
         this.principal.identity().then((account) => {
             this.account = account;
+            if (account.ldap) {
+                this.profileService.getProfileInfo().subscribe((profileInfo) => {
+                    if (window.confirm('Per cambiare la password è necessario un reindirizzamento, si desidera continuare?')) {
+                        location.href = profileInfo.urlChangePassword;
+                    } else {
+                        this.router.navigate(['/']);
+                    }
+                });
+            }
         });
     }
 
@@ -37,6 +50,15 @@ export class PasswordComponent implements OnInit {
             this.passwordService.save(this.password).subscribe(() => {
                 this.error = null;
                 this.success = 'OK';
+                if (!this.account.accountNonLocked) {
+                    this.loginService.login({
+                        username: this.account.username,
+                        password: this.password,
+                        rememberMe: true
+                    }).then((account: Account) => {
+                        this.router.navigate(['/']);
+                    });
+                }
             }, () => {
                 this.success = null;
                 this.error = 'ERROR';

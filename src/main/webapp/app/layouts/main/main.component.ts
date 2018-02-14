@@ -1,7 +1,8 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, NavigationEnd } from '@angular/router';
-
 import { JhiLanguageHelper } from '../../shared';
+declare var jquery: any;
+declare var $: any;
 
 @Component({
     selector: 'jhi-main',
@@ -35,8 +36,10 @@ export class JhiMainComponent implements OnInit {
     onWindowScroll() {
         if (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop > 100) {
             this.navIsFixed = true;
+            $('.angular-tree-component').addClass('angular-tree-component-sticky');
         } else if (this.navIsFixed && window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop < 10) {
             this.navIsFixed = false;
+            $('.angular-tree-component').removeClass('angular-tree-component-sticky');
         }
     }
 

@@ -9,5 +9,5 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-primary btn-block" data-dismiss="modal" (click)="confirm()">Conferma</button>
+    <button type="button" class="btn btn-primary btn-block" data-dismiss="modal" (click)="confirm()">Conferma <i *ngIf="isRequesting" class="fa fa-refresh"  [ngClass]="{'faa-spin animated' : isRequesting}"></i></button>
 </div>

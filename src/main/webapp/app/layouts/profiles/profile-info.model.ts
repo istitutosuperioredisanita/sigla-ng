@@ -4,4 +4,5 @@ export class ProfileInfo {
     inProduction: boolean;
     swaggerEnabled: boolean;
     instituteAcronym: string;
+    urlChangePassword: string;
 }

@@ -6,6 +6,7 @@ import { UserContext, Account} from '../shared';
 import { Pair } from './pair.model';
 import { Preferiti } from '../context/preferiti.model';
 import { Messaggio } from '../context/messaggio.model';
+import { IndirizziMail } from './index';
 
 @Injectable()
 export class ContextService  {
@@ -19,6 +20,8 @@ export class ContextService  {
     cdrModel: Pair;
     preferiti: Preferiti[];
     messaggi: Messaggio[];
+    private resourceUrlIndirizziEmail = 'api/context/indirizzi-mail/';
+    private resourceUrlMessaggi = 'api/context/messaggi/';
 
     constructor(
         private http: Http,
@@ -43,17 +46,29 @@ export class ContextService  {
         return this.http.get('/api/context/preferiti').map((res: Response) => res.json());
     }
 
+    getIndirizziMail(): Observable<IndirizziMail[]> {
+        return this.http.get(this.resourceUrlIndirizziEmail).map((res: Response) => res.json());
+    }
+
+    postIndirizziMail(indirizzi: any): Observable<IndirizziMail[]> {
+        return this.http.post(this.resourceUrlIndirizziEmail, indirizzi).map((res: Response) => res.json());
+    }
+
+    deleteIndirizziEmail(indirizzi: string[]): Observable<IndirizziMail[]> {
+        return this.http.delete(`${this.resourceUrlIndirizziEmail}${indirizzi}`).map((res: Response) => res.json());
+    }
+
     findMessaggi(): void {
         this.getMessaggi()
             .subscribe((messaggi) => this.messaggi = messaggi);
     }
 
     getMessaggi(): Observable<Messaggio[]> {
-        return this.http.get('/api/context/messaggi').map((res: Response) => res.json());
+        return this.http.get(this.resourceUrlMessaggi).map((res: Response) => res.json());
     }
 
     deleteMessaggi(messaggi: any): Observable<Messaggio[]> {
-        return this.http.post('/api/context/messaggi', messaggi).map((res: Response) => res.json());
+        return this.http.post(this.resourceUrlMessaggi, messaggi).map((res: Response) => res.json());
     }
 
     findUo(account: Account): void {
@@ -110,9 +125,9 @@ export class ContextService  {
         this.getCdr(account.uo)
             .subscribe((cdr) => {
                 this.cdrPairs = cdr;
-                this.cdrModel = cdr.filter(function(v) {
+                this.setCdRModel(cdr.filter(function(v) {
                     return v.first === account.cdr;
-                })[0];
+                })[0]);
             });
     }
 
@@ -166,5 +181,9 @@ export class ContextService  {
 
     setCdRModel(pair: Pair) {
         this.cdrModel = pair;
+        this.eventManager.broadcast({
+            name: 'onSelectCdr',
+            content: this.cdrModel
+        });
     }
 }
