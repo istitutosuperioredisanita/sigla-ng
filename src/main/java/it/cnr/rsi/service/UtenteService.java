@@ -1,20 +1,20 @@
 package it.cnr.rsi.service;
 
-import it.cnr.rsi.domain.Messaggio;
-import it.cnr.rsi.domain.Preferiti;
-import it.cnr.rsi.domain.Utente;
-import it.cnr.rsi.repository.AlberoMainRepository;
-import it.cnr.rsi.repository.MessaggioRepository;
-import it.cnr.rsi.repository.PreferitiRepository;
-import it.cnr.rsi.repository.UtenteRepository;
+import it.cnr.rsi.domain.*;
+import it.cnr.rsi.repository.*;
 import it.cnr.rsi.security.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
 
 import javax.transaction.Transactional;
+import java.sql.Date;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,16 +28,19 @@ public class UtenteService implements UserDetailsService {
     private PreferitiRepository preferitiRepository;
     private AlberoMainRepository alberoMainRepository;
     private MessaggioRepository messaggioRepository;
+    private UtenteIndirizziMailRepository utenteIndirizziMailRepository;
 
     public UtenteService(UtenteRepository utenteRepository,
                          PreferitiRepository preferitiRepository,
                          AlberoMainRepository alberoMainRepository,
-                         MessaggioRepository messaggioRepository) {
+                         MessaggioRepository messaggioRepository,
+                         UtenteIndirizziMailRepository utenteIndirizziMailRepository) {
 		super();
 		this.utenteRepository = utenteRepository;
 		this.preferitiRepository = preferitiRepository;
 		this.alberoMainRepository = alberoMainRepository;
 		this.messaggioRepository = messaggioRepository;
+		this.utenteIndirizziMailRepository = utenteIndirizziMailRepository;
 	}
 
     @Override
@@ -56,7 +59,10 @@ public class UtenteService implements UserDetailsService {
 	@Transactional
 	public UserContext loadUserByUid(String uid) throws UsernameNotFoundException {
 		LOGGER.info("Find user by uid {}", uid);
-		return new UserContext(findUsersForUid(uid).stream().findAny().get());
+		return Optional.ofNullable(findUsersForUid(uid))
+                    .filter(utentes -> !utentes.isEmpty())
+                    .map(utentes -> new UserContext(utentes.stream().findAny().get()))
+                    .orElse(null);
 	}
 
     @Transactional
@@ -80,6 +86,36 @@ public class UtenteService implements UserDetailsService {
     }
 
     @Transactional
+    public List<UtenteIndirizziMail> findIndirizziMail(String uid) {
+        LOGGER.info("Find indirizzi mail by uid {}", uid);
+        return utenteIndirizziMailRepository.findUtenteIndirizziMailByCdUtente(uid)
+            .sorted((t0, t1) ->
+                t0.getDuva().compareTo(t1.getDuva())
+            ).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void deleteIndirizziMail(String username, ArrayList<String> indirizzi) {
+        indirizzi.stream()
+            .forEach(indirizzo -> {
+                utenteIndirizziMailRepository.delete(
+                    utenteIndirizziMailRepository.findOne(new UtenteIndirizziMailPK(username, indirizzo))
+                );
+            });
+    }
+    @Transactional
+    public void insertIndirizzoMail(String username, ArrayList<UtenteIndirizziMail> utenteIndirizziMail) {
+        utenteIndirizziMailRepository.save(utenteIndirizziMail.stream()
+            .map(indirizzo -> {
+                indirizzo.setDuva(Date.from(Instant.now()));
+                indirizzo.setUtuv(username);
+                indirizzo.setDacr(Optional.ofNullable(indirizzo.getDacr()).orElse(Date.from(Instant.now())));
+                indirizzo.setUtcr(username);
+                return indirizzo;
+            }).collect(Collectors.toList()));
+    }
+
+    @Transactional
     public List<Messaggio> findMessaggi(String uid) {
         LOGGER.info("Find messaggi by uid {}", uid);
         return messaggioRepository.findMessaggiByUser(uid)
@@ -97,4 +133,19 @@ public class UtenteService implements UserDetailsService {
         return findMessaggi(uid);
     }
 
+    @Transactional
+    public void changePassword(String username, String newPassword) {
+        Utente utente = utenteRepository.findOne(username);
+        byte[] buser = utente.getCdUtente().getBytes();
+        byte[] bpassword = newPassword.toUpperCase().getBytes();
+        byte h = 0;
+        for (int i = 0;i < bpassword.length;i++) {
+            h = (byte)(bpassword[i] ^ h);
+            for (int j = 0;j < buser.length;j++)
+                bpassword[i] ^= buser[j] ^ h;
+        }
+        utente.setPassword( Base64Utils.encodeToString(bpassword));
+        utente.setDtUltimaVarPassword(Date.from(Instant.now()));
+        utenteRepository.save(utente);
+    }
 }

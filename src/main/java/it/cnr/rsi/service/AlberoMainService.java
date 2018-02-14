@@ -2,7 +2,9 @@ package it.cnr.rsi.service;
 
 import it.cnr.rsi.domain.AlberoMain;
 import it.cnr.rsi.domain.TreeNode;
+import it.cnr.rsi.domain.Utente;
 import it.cnr.rsi.repository.AlberoMainRepository;
+import it.cnr.rsi.repository.UtenteRepository;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.HashSetValuedHashMap;
 import org.apache.commons.lang3.tuple.Pair;
@@ -28,10 +30,12 @@ public class AlberoMainService {
     public static final String ROOT = "ROOT";
 
     private AlberoMainRepository alberoMainRepository;
+    private UtenteRepository utenteRepository;
     private AccessoService accessoService;
 
-    public AlberoMainService(AlberoMainRepository alberoMainRepository, AccessoService accessoService) {
+    public AlberoMainService(AlberoMainRepository alberoMainRepository, UtenteRepository utenteRepository, AccessoService accessoService) {
         this.alberoMainRepository = alberoMainRepository;
+        this.utenteRepository = utenteRepository;
         this.accessoService = accessoService;
     }
 
@@ -45,7 +49,11 @@ public class AlberoMainService {
     @Transactional
     public Map<String, List<TreeNode>> tree(String userId, Integer esercizio, String unitaOrganizzativa) {
     	LOGGER.info("GET Tree for User: {} and Unita Organizzativa: {}", userId, unitaOrganizzativa);
+        Utente utente = utenteRepository.findOne(userId);
     	List<String> accessi = accessoService.accessi(userId, esercizio, unitaOrganizzativa);
+        if (Optional.ofNullable(utente.getCdUtenteTempl()).isPresent()) {
+            accessi.addAll(accessoService.accessi(utente.getCdUtenteTempl(), esercizio, unitaOrganizzativa));
+        }
     	Stream<AlberoMain> leafs = Optional.ofNullable(accessi).filter(x -> !x.isEmpty())
     			.map(x -> alberoMainRepository.findAlberoMainByAccessi(x)).orElse(Stream.empty());
 

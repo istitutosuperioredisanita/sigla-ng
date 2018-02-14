@@ -27,6 +27,7 @@ export class ContextComponent implements OnInit, OnDestroy {
 
     onSelectCdsSubscription: Subscription;
     onSelectUoSubscription: Subscription;
+    onSelectCdrSubscription: Subscription;
     cdsModel: Pair;
     uoModel: Pair;
     cdrModel: Pair;
@@ -56,11 +57,15 @@ export class ContextComponent implements OnInit, OnDestroy {
         this.onSelectUoSubscription = this.eventManager.subscribe('onSelectUo', (message) => {
             this.uoModel = message.content;
         });
+        this.onSelectCdrSubscription = this.eventManager.subscribe('onSelectCdr', (message) => {
+            this.cdrModel = message.content;
+        });
     }
 
     ngOnDestroy() {
         this.eventManager.destroy(this.onSelectCdsSubscription);
         this.eventManager.destroy(this.onSelectUoSubscription);
+        this.eventManager.destroy(this.onSelectCdrSubscription);
     }
 
     filterPair(term: string, pairs: Pair[], type: string): Pair[] {
