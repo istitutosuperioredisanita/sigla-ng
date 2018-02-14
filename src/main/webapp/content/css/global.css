@@ -298,6 +298,12 @@ html {
   .FormLabel.required::after {
     content:"*";color:red;
   }
+  .custom-file{
+    width:100%;   
+  }
+  input:disabled + .custom-file-control {
+    opacity: 0.5;
+  }
   .custom-file-control{
       white-space: nowrap;
       width:100%;
@@ -305,17 +311,21 @@ html {
       overflow: hidden;
       text-overflow:ellipsis;
   }
-  
   .custom-file-control::after {
     content: attr(title);
   }
   .custom-file-control::before {
-    content: "Browse";
+    content: "Browse...";
   }
   
   .btn-title::before {
       content: attr(title);
       padding-right: 5px;
+  }
+
+  .btn-title-2x::before {
+    content: attr(title);
+    vertical-align: super;
   }
 
   .btn-save-command.bg-primary  i {
@@ -683,7 +693,7 @@ html {
         z-index: 999;
     }
     .angular-tree-component {
-        height: calc(100vh - 195px);
+        height: calc(100vh - 180px);
         overflow: auto;
     }  
   }
@@ -691,12 +701,18 @@ html {
     .angular-tree-component {
         height: calc(100vh - 155px);
         overflow: auto;
+    }
+    .angular-tree-component-sticky {
+        height: calc(100vh - 155px + 60px);
     }   
   }
   @media screen and (min-width: 1281px) {
     .angular-tree-component {
-        height: calc(100vh - 195px);
+        height: calc(100vh - 180px);
         overflow: auto;
+    }
+    .angular-tree-component-sticky {
+        height: calc(100vh - 180px  + 70px);
     }   
   }
   @media screen and (max-width: 768px) {

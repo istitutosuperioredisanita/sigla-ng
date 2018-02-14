@@ -15,7 +15,7 @@ Navbar
 	-moz-box-shadow: 0 2px 15px rgba(0,0,0,0.25);
 	-webkit-box-shadow: 0 2px 15px rgba(0,0,0,0.25);
 	border-bottom: 3px solid rgba(0,0,0,0.2);    
-	border-top: 1px solid rgba(0,0,0,0.2);    
+    border-top: 1px solid rgba(0,0,0,0.2);    
 }
 .jh-navbar .profile-image {
     margin: -10px 0px;
@@ -58,6 +58,9 @@ Navbar
 @media screen and (min-width: 768px) {
     .jh-navbar-toggler {
         display: none;
+    }
+    .jh-navbar {
+        height: 70px;
     }
 }
 
@@ -122,6 +125,9 @@ Logo styles
     .fa-tree-size {
         font-size: 2em;
     }
+    .jh-navbar {
+        height: 55px;
+    }    
 }
 @media screen and (max-width: 1024px) {
     .fa-tree-size {

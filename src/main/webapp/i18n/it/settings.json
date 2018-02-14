@@ -8,9 +8,7 @@
             "lastname.placeholder": "Il tuo cognome",
             "button": "Salva",
             "language": "Lingua",
-            "delete" : {
-                "cache" : "Rigenera Albero utente"
-            }
+            "email" : "E-Mail"
         },
         "messages": {
             "error": {

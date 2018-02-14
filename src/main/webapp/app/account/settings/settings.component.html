@@ -1,86 +1,131 @@
-<div>
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h2 jhiTranslate="settings.title" translateValues="{username: '{{settingsAccount.login}}'}" *ngIf="settingsAccount">User settings for [<b>{{settingsAccount.login}}</b>]</h2>
-
-            <div class="alert alert-success" *ngIf="success" jhiTranslate="settings.messages.success">
-                <strong>Settings saved!</strong>
+<div class="card m-2 mb-5">
+    <div class="card-header">
+        <span class="h2 text-primary" jhiTranslate="settings.title" 
+        translateValues="{username: '{{settingsAccount.firstName}} {{settingsAccount.lastName}}'}" *ngIf="settingsAccount">User settings for [<b>{{settingsAccount.firstName}} {{settingsAccount.lastName}}</b>]</span>
+    </div>
+    <div class="card-block row space">
+        <div class="col-md-5 col-lg-4">
+            <div class="m-2">
+            <div id="crudToolbar" class="btn-toolbar mb-1" role="toolbar" aria-label="Toolbar with button groups">
+                    <div class="btn-group d-flex w-100" role="group">
+                        <button accesskey="N" [disabled]="isFormInserting()" (click)="newRow()" class="btn btn-outline-dark btn-title w-100" title="Nuovo">
+                            <i class="fa fa-fw  fa-plus text-info" aria-hidden="true"></i>
+                        </button>
+                        <button accesskey="S" (click)="save()" class="btn btn-outline-dark btn-title w-100" title="Salva">
+                            <i class="fa fa-fw  fa-floppy-o text-primary" aria-hidden="true"></i>
+                        </button>
+                        <button accesskey="E" [disabled]="isFormInserting()" (click)="deleteRows()" class="btn btn-outline-dark btn-title w-100" title="Elimina">
+                            <i class="fa fa-fw fa-trash text-danger" aria-hidden="true"></i>
+                        </button>
+                        <button accesskey="E" [disabled]="!isFormInserting()" (click)="undoEditing()" class="btn btn-outline-dark btn-title w-100" title="Annulla">
+                            <i class="fa fa-fw fa-undo text-success" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="div-sigla-table table-responsive col-sm-12">
+                    <table class="sigla-table table table-bordered table-hover table-striped table-sm">
+                        <thead class="table-primary">
+                            <tr>
+                                <th class="TableHeader align-middle" align="center" valign="center">
+                                    <button class="btn btn-sm btn-link hand" (click)="selectAll()" placement="right" container="body"  ngbTooltip="Seleziona/Deseleziona tutti">
+                                        <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                                    </button>
+                                </th>
+                                <th jhiTranslate="settings.form.email">E-Mail</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let indirizzoMail of indirizziMail" (click)="setClickedRow(indirizzoMail)" class="hand"
+                                [ngClass]="{'bg-primary text-white' : indirizzoMail.id.indirizzoMail == currentIndirizzoMail.id.indirizzoMail}">
+                                <td><input type="checkbox" [(ngModel)]="indirizzoMail.checked"></td> 
+                                <td>{{indirizzoMail.id.indirizzoMail}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
-            <jhi-alert-error></jhi-alert-error>
-            <jhi-alert></jhi-alert>
-            <form name="form" role="form" (ngSubmit)="save()" #settingsForm="ngForm" *ngIf="settingsAccount" novalidate>
-
-                <div class="form-group">
-                    <label class="form-control-label" for="firstName" jhiTranslate="settings.form.firstname">First Name</label>
-                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="{{'settings.form.firstname.placeholder' | translate}}"
-                           [(ngModel)]="settingsAccount.firstName" minlength=1 maxlength=50 #firstNameInput="ngModel" required>
-                    <div *ngIf="firstNameInput.dirty && firstNameInput.invalid">
-                        <small class="form-text text-danger"
-                           *ngIf="firstNameInput.errors.required" jhiTranslate="settings.messages.validate.firstname.required">
-                            Your first name is required.
-                        </small>
-                        <small class="form-text text-danger"
-                           *ngIf="firstNameInput.errors.minlength" jhiTranslate="settings.messages.validate.firstname.minlength">
-                            Your first name is required to be at least 1 character.
-                        </small>
-                        <small class="form-text text-danger"
-                           *ngIf="firstNameInput.errors.maxlength" jhiTranslate="settings.messages.validate.firstname.maxlength">
-                            Your first name cannot be longer than 50 characters.
-                        </small>
+        </div>
+        <div class="col-md-7 col-lg-8">
+            <div class="m-2">
+                <jhi-alert-error></jhi-alert-error>
+                <jhi-alert></jhi-alert>
+                <form name="form" role="form" (ngSubmit)="save()" #settingsForm="ngForm" *ngIf="settingsAccount" novalidate>
+                    <div class="form-group">
+                        <label class="form-control-label" for="email" jhiTranslate="settings.form.email">E-Mail</label>
+                        <input type="email" [disabled]="!isFormInserting()" class="form-control" id="email" name="email" placeholder="{{'global.form.email.placeholder' | translate}}"
+                                [(ngModel)]="currentIndirizzoMail.id.indirizzoMail" minlength="5" maxlength="100" #emailInput="ngModel" email required>
+                        <div *ngIf="emailInput.dirty && emailInput.invalid">
+                            <small class="form-text text-danger"
+                                *ngIf="emailInput.errors.required" jhiTranslate="global.messages.validate.email.required">
+                                Your email is required.
+                            </small>
+                            <small class="form-text text-danger"
+                                *ngIf="emailInput.errors.email" jhiTranslate="global.messages.validate.email.invalid">
+                                Your email is invalid.
+                            </small>
+                            <small class="form-text text-danger"
+                                *ngIf="emailInput.errors.minlength" jhiTranslate="global.messages.validate.email.minlength">
+                                Your email is required to be at least 5 characters.
+                            </small>
+                            <small class="form-text text-danger"
+                                *ngIf="emailInput.errors.maxlength" jhiTranslate="global.messages.validate.email.maxlength">
+                                Your email cannot be longer than 100 characters.
+                            </small>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" for="lastName" jhiTranslate="settings.form.lastname">Last Name</label>
-                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="{{'settings.form.lastname.placeholder' | translate}}"
-                           [(ngModel)]="settingsAccount.lastName" minlength=1 maxlength=50 #lastNameInput="ngModel" required>
-                    <div *ngIf="lastNameInput.dirty && lastNameInput.invalid">
-                        <small class="form-text text-danger"
-                           *ngIf="lastNameInput.errors.required" jhiTranslate="settings.messages.validate.lastname.required">
-                            Your last name is required.
-                        </small>
-                        <small class="form-text text-danger"
-                           *ngIf="lastNameInput.errors.minlength" jhiTranslate="settings.messages.validate.lastname.minlength">
-                            Your last name is required to be at least 1 character.
-                        </small>
-                        <small class="form-text text-danger"
-                           *ngIf="lastNameInput.errors.maxlength" jhiTranslate="settings.messages.validate.lastname.maxlength">
-                            Your last name cannot be longer than 50 characters.
-                        </small>
+                    <h5 class="text-primary mt-2">Variazioni</h5>
+                    <div class="card p-2">
+                        <div class="form-check">
+                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.erroreMancataApprovazioneVarBilancioRes" id="erroreMancataApprovazioneVarBilancioRes" name="erroreMancataApprovazioneVarBilancioRes">
+                            <label class="form-check-label" for="erroreMancataApprovazioneVarBilancioRes">
+                                Invia errore di mancata approvazione Variazioni al Bilancio dell'Ente
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.approvazioneVarStanziamentoResiduo" id="approvazioneVarStanziamentoResiduo" name="approvazioneVarStanziamentoResiduo">
+                            <label class="form-check-label" for="approvazioneVarStanziamentoResiduo">
+                                Comunica avvenuta approvazione Variazioni allo Stanziamento Residuo
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.erroreMancataApprovazioneVarBilancioComp" id="erroreMancataApprovazioneVarBilancioComp" name="erroreMancataApprovazioneVarBilancioComp">
+                            <label class="form-check-label" for="erroreMancataApprovazioneVarBilancioComp">
+                                    Invia errore di mancata approvazione Variazioni al Bilancio dell'Ente generate da Variazioni alla Competenza
+                            </label>
+                        </div>  
+                        <div class="form-check">
+                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.approvazioneVarStanziamentoCompetenza" id="approvazioneVarStanziamentoCompetenza" name="approvazioneVarStanziamentoCompetenza">
+                            <label class="form-check-label" for="approvazioneVarStanziamentoCompetenza">
+                                Comunica avvenuta approvazione Variazioni alla Competenza
+                            </label>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" for="email" jhiTranslate="global.form.email">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="{{'global.form.email.placeholder' | translate}}"
-                           [(ngModel)]="settingsAccount.email" minlength="5" maxlength="100" #emailInput="ngModel" email required>
-                    <div *ngIf="emailInput.dirty && emailInput.invalid">
-                        <small class="form-text text-danger"
-                           *ngIf="emailInput.errors.required" jhiTranslate="global.messages.validate.email.required">
-                            Your email is required.
-                        </small>
-                        <small class="form-text text-danger"
-                           *ngIf="emailInput.errors.email" jhiTranslate="global.messages.validate.email.invalid">
-                            Your email is invalid.
-                        </small>
-                        <small class="form-text text-danger"
-                           *ngIf="emailInput.errors.minlength" jhiTranslate="global.messages.validate.email.minlength">
-                            Your email is required to be at least 5 characters.
-                        </small>
-                        <small class="form-text text-danger"
-                           *ngIf="emailInput.errors.maxlength" jhiTranslate="global.messages.validate.email.maxlength">
-                            Your email cannot be longer than 100 characters.
-                        </small>
+                    <h5 class="text-primary mt-2">Fatturazione Elettronica Attiva</h5>
+                    <div class="card p-2">
+                        <div class="form-check">
+                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.esitoPositivoFattElettronicaAttiva" id="esitoPositivoFattElettronicaAttiva" name="esitoPositivoFattElettronicaAttiva">
+                            <label class="form-check-label" for="esitoPositivoFattElettronicaAttiva">
+                                Comunicazione via Mail dell'esito positivo
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.esitoNegativoFattElettronicaAttiva" id="esitoNegativoFattElettronicaAttiva" name="esitoNegativoFattElettronicaAttiva">
+                            <label class="form-check-label" for="esitoNegativoFattElettronicaAttiva">
+                                Comunicazione via Mail dell'esito negativo
+                            </label>
+                        </div> 
                     </div>
-                </div>
-                <div class="form-group" *ngIf="languages && languages.length > 0">
-                    <label for="langKey" jhiTranslate="settings.form.language">Language</label>
-                    <select class="form-control" id="langKey" name="langKey" [(ngModel)]="settingsAccount.langKey">
-                        <option *ngFor="let language of languages" [value]="language">{{language | findLanguageFromKey}}</option>
-                    </select>
-                </div>
-                <button type="submit" [disabled]="settingsForm.form.invalid" class="btn btn-primary" jhiTranslate="settings.form.button">Save</button>
-            </form>
+                    <h5 class="text-primary mt-2">Fatturazione Elettronica Passiva</h5>
+                    <div class="card p-2">
+                        <div class="form-check">
+                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.notificaRicezioneFatturaPassiva" id="notificaRicezioneFatturaPassiva" name="notificaRicezioneFatturaPassiva">
+                            <label class="form-check-label" for="notificaRicezioneFatturaPassiva">
+                                Comunicazione via Mail ricezione nuova Fattura elettronica
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-
 </div>

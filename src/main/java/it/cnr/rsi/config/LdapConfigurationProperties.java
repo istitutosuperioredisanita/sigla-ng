@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * Created by francesco on 07/03/17.
  */
 
-@ConfigurationProperties("cnr.ldap")
+@ConfigurationProperties("security.ldap")
 public class LdapConfigurationProperties {
 
     private String userSearchBase;
@@ -14,6 +14,7 @@ public class LdapConfigurationProperties {
     private String url;
     private String managerDn;
     private String managerPassword;
+    private boolean enabled;
 
     public String getUserSearchBase() {
         return userSearchBase;
@@ -55,5 +56,23 @@ public class LdapConfigurationProperties {
         this.managerPassword = managerPassword;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
 
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    @Override
+    public String toString() {
+        return "LdapConfigurationProperties{" +
+            "userSearchBase='" + userSearchBase + '\'' +
+            ", userSearchFilter='" + userSearchFilter + '\'' +
+            ", url='" + url + '\'' +
+            ", managerDn='" + managerDn + '\'' +
+            ", managerPassword='" + managerPassword + '\'' +
+            ", enabled=" + enabled +
+            '}';
+    }
 }
