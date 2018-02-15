@@ -98,16 +98,15 @@ public class UserContext implements UserDetails {
 
     @Override
 	public boolean isAccountNonExpired() {
-        return Optional.ofNullable(currentUser)
-            .flatMap(utente -> Optional.ofNullable(utente.getDtUltimaVarPassword()))
-            .isPresent();
+        return isAccountNonLocked();
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-        return Optional.ofNullable(currentUser)
+        final Optional<Utente> user = Optional.ofNullable(currentUser);
+        return user
             .flatMap(utente -> Optional.ofNullable(utente.getDtUltimaVarPassword()))
-            .isPresent();
+            .isPresent() || user.filter(Utente::getFlAutenticazioneLdap).isPresent();
 	}
 
 	@Override
