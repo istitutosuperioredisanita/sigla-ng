@@ -669,20 +669,7 @@ html {
       0% { opacity: 0; }
       100% { opacity: 1;}
   }
-  ::-webkit-scrollbar-track {
-      -webkit-box-shadow: inset 0 0 6px #0066CC;
-      background-color: #F5F5F5;
-  }
-  
-  ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-      background-color: #F5F5F5;
-  }
-  
-  ::-webkit-scrollbar-thumb {
-      background-color: #0066CC;
-  }
+ 
   @media screen and (min-width: 768px) {
     .tree-shadow {
         border-right: 1px solid rgba(0,0,0,.1);
