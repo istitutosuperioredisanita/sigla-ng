@@ -1,5 +1,7 @@
 package it.cnr.rsi.domain;
 
+import it.cnr.rsi.domain.converter.BooleanToYNStringConverter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -74,8 +76,9 @@ public class Utente implements Serializable{
 	@Column(name="FL_ATTIVA_BLOCCO")
 	private String flAttivaBlocco;
 
+    @Convert(converter = BooleanToYNStringConverter.class)
 	@Column(name="FL_AUTENTICAZIONE_LDAP")
-	private String flAutenticazioneLdap;
+	private Boolean flAutenticazioneLdap;
 
 	@Column(name="FL_PASSWORD_CHANGE")
 	private String flPasswordChange;
@@ -265,15 +268,15 @@ public class Utente implements Serializable{
 		this.flAttivaBlocco = flAttivaBlocco;
 	}
 
-	public String getFlAutenticazioneLdap() {
-		return this.flAutenticazioneLdap;
-	}
+    public Boolean getFlAutenticazioneLdap() {
+        return flAutenticazioneLdap;
+    }
 
-	public void setFlAutenticazioneLdap(String flAutenticazioneLdap) {
-		this.flAutenticazioneLdap = flAutenticazioneLdap;
-	}
+    public void setFlAutenticazioneLdap(Boolean flAutenticazioneLdap) {
+        this.flAutenticazioneLdap = flAutenticazioneLdap;
+    }
 
-	public String getFlPasswordChange() {
+    public String getFlPasswordChange() {
 		return this.flPasswordChange;
 	}
 
