@@ -45,11 +45,11 @@ public class UtenteService implements UserDetailsService {
 
     @Override
     public UserContext loadUserByUsername(String username) {
-        return loadUserByUsername(username, "N");
+        return loadUserByUsername(username, Boolean.FALSE);
     }
 
 	@Transactional
-	public UserContext loadUserByUsername(String username, String flAutenticazioneLdap) throws UsernameNotFoundException {
+	public UserContext loadUserByUsername(String username, Boolean flAutenticazioneLdap) throws UsernameNotFoundException {
 		LOGGER.info("Find user by username {}", username);
 		return new UserContext(Optional.ofNullable(
 				utenteRepository.findUserWithAuthenticationLDAP(
