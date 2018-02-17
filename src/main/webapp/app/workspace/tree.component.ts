@@ -44,15 +44,13 @@ export class SIGLATreeComponent implements OnInit, OnDestroy {
         text$
         .debounceTime(50)
         .map((term) => {
-            const limit = 10;
+            const limit = 20;
             let i = 0;
-            const regex = new RegExp(term.replace(/\s/g, '.*'), 'gi');
-
             return this.leafz.filter((v) => {
                 if (i > limit) {
                     return false;
                 } else {
-                    const match = regex.test(v.breadcrumbS);
+                    const match = new RegExp(term.replace(/\s/g, '.*'), 'gi').test(v.breadcrumbS);
                     if (match) {
                         ++i;
                     }
