@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     rememberMe: boolean;
     username: string;
     credentials: any;
+    isRequesting = false;
 
     constructor(
         private jhiLanguageService: JhiLanguageService,
@@ -70,6 +71,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     login(redirect: string) {
         let navigate = redirect || '';
+        this.isRequesting = true;
         this.loginService.login({
             username: this.username,
             password: this.password,
@@ -122,7 +124,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 this.modalRef = this.multipleUserModalService.open('workspace');
             }
         }).catch((error) => {
-            console.log(error);
+            this.isRequesting = false;
             this.authenticationError = true;
         });
     }
