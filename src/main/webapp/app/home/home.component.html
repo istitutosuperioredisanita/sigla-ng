@@ -34,7 +34,7 @@
                                     <input type="password" class="form-control" name="password" id="password" placeholder="{{'login.form.password.placeholder' | translate}}"
                                            [(ngModel)]="password">
                                 </div>
-                                <button type="submit" [disabled]="loginForm.form.invalid" class="btn btn-lg btn-primary btn-block" jhiTranslate="login.form.button">Sign in</button>
+                                <button type="submit" [disabled]="loginForm.form.invalid" class="btn btn-lg btn-primary btn-block"><span jhiTranslate="login.form.button">Sign in</span> <i *ngIf="isRequesting" class="fa fa-refresh"  [ngClass]="{'faa-spin animated' : isRequesting}"></i></button>
                                 <button type="button" (click)="login('password')" [disabled]="loginForm.form.invalid" class="btn btn-lg btn-outline-dark btn-block" jhiTranslate="login.form.change-password">Cambia Password</button>
                             </form>
 
