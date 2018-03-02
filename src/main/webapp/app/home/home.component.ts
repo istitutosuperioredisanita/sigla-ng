@@ -78,6 +78,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             rememberMe: this.rememberMe
         }).then((account: Account) => {
             this.account = account;
+            this.isRequesting = false;
             if (!account.accountNonLocked) {
                 navigate = 'password';
             }
