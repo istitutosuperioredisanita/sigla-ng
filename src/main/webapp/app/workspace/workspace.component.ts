@@ -136,9 +136,20 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
                 if (input.placeholder === 'dd/MM/yyyy') {
                     this.picks.push(new Pikaday({
                         field: input,
+                        showTime: false,
                         format: 'DD/MM/YYYY',
                         formatStrict: true,
-                        defaultDate: moment.now(),
+                        i18n: i18nIta
+                    }));
+                } else if (input.placeholder === 'dd/MM/yyyy HH:mm') {
+                    this.picks.push(new Pikaday({
+                        field: input,
+                        showTime: true,
+                        format: 'DD/MM/YYYY HH:mm',
+                        formatStrict: true,
+                        use24hour: true,
+                        autoClose: false,
+                        timeLabel: 'Ore e Minuti:&nbsp;',
                         i18n: i18nIta
                     }));
                 }
