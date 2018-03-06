@@ -27,7 +27,7 @@
     "ng2-webstorage": "1.8.0",
     "ngx-cookie": "1.0.0",
     "ngx-infinite-scroll": "0.5.1",
-    "pikaday": "^1.6.1",
+    "pikaday-time": "^1.6.1",
     "popper.js": "^1.12.6",
     "reflect-metadata": "0.1.10",
     "rxjs": "5.4.2",

@@ -210,7 +210,7 @@ function modalInputFocused(input) {
     var form = input.form
     var confirmButton = form.elements[input.name+".confirm"]
     var cancelButton = form.elements[input.name+".cancel"]
-    if (input.changed || input.modal) return;
+    if (input.modal) return;
     form.modal = true
     input.modal = true
     input.old_value = input.value;
