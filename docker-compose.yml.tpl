@@ -19,7 +19,6 @@ services:
     read_only: true
     volumes:
     - ./conf.d/:/etc/nginx/conf.d/
-    tmpfs:
     - /var/cache/nginx/
     - /var/run/
 
