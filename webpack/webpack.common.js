@@ -95,7 +95,9 @@ module.exports = (options) => {
                 { from: './src/main/webapp/favicon.ico', to: 'favicon.ico' },
                 { from: './src/main/webapp/manifest.webapp', to: 'manifest.webapp' },
                 { from: './node_modules/moment/moment.js', to: 'moment.js' },
-                { from: './node_modules/pikaday-time/pikaday.js', to: 'pikaday.js' },
+                { from: './node_modules/flatpickr/dist/flatpickr.min.js', to: 'flatpickr.min.js' },
+                { from: './node_modules/flatpickr/dist/flatpickr.min.css', to: 'flatpickr.min.css' },
+                { from: './node_modules/flatpickr/dist/l10n/it.js', to: 'flatpickr-it.js' },
                 { from: './src/main/webapp/sigla-main.js', to: 'sigla-main.js' },
                 // { from: './src/main/webapp/sw.js', to: 'sw.js' },
                 // jhipster-needle-add-assets-to-webpack - JHipster will add/remove third-party resources in this array
