@@ -714,13 +714,8 @@ html {
   div.border:empty {
     border: none!important;
   }
-  table.pika-time {
-    padding: .5rem!important;
-    margin: .5rem!important;
-    float: right!important;
-  }
-  .pika-label, .pika-time-label {
-    color: #007bff!important;
+  .flatpickr-month {
+    height: 38px!important;
   }
   .input-group-context > ngb-typeahead-window {
     width: 100%;
