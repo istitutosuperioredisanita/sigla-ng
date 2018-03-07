@@ -26,7 +26,6 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     logoVisible = true;
     listenerSubmit: Function;
     listenerSubmitForm: Function;
-    picks = [];
     @ViewChild('htmlContainer') container: ElementRef;
     @ViewChild('scriptContainer') scriptContainer: ElementRef;
 
@@ -92,10 +91,6 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         for (const siglaScript of siglaScripts){
             this.scriptContainer.nativeElement.removeChild(siglaScript);
         }
-        for (const pick of this.picks){
-            document.body.removeChild(pick.el);
-        }
-        this.picks = [];
         this.desktop = this._sanitizer.bypassSecurityTrustHtml(html);
         setTimeout(() => { // wait for DOM rendering
             const scripts = this.container.nativeElement.getElementsByTagName('script');
@@ -133,13 +128,13 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
                 weekdaysShort : ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab']
             };
             for (const input of inputs){
-                if (input.placeholder === 'dd/MM/yyyy') {
+                if (input.placeholder === 'dd/MM/yyyy' && input.type === 'text') {
                     flatpickr(input, {
                         dateFormat: 'd/m/Y',
                         allowInput: true,
                         locale: Italian
                     });
-                } else if (input.placeholder === 'dd/MM/yyyy HH:mm') {
+                } else if (input.placeholder === 'dd/MM/yyyy HH:mm' && input.type === 'text') {
                     flatpickr(input, {
                         enableTime: true,
                         time_24hr: true,
