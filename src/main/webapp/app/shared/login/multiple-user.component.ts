@@ -12,7 +12,7 @@ import { StateStorageService } from '../auth/state-storage.service';
     selector: 'jhi-multiple-user-modal',
     templateUrl: './multiple-user.component.html'
 })
-export class JhiMultipleUserModalComponent {
+export class JhiMultipleUserModalComponent implements OnInit {
     public account: Account;
     public selectedUser: string;
     public page: string;
@@ -30,6 +30,10 @@ export class JhiMultipleUserModalComponent {
         this.principal.identity().then((account) => {
             this.account = account;
         });
+    }
+
+    ngOnInit() {
+        this.selectedUser = this.account.username;
     }
 
     confirm() {
