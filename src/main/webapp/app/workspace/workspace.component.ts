@@ -26,6 +26,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     logoVisible = true;
     listenerSubmit: Function;
     listenerSubmitForm: Function;
+
     @ViewChild('htmlContainer') container: ElementRef;
     @ViewChild('scriptContainer') scriptContainer: ElementRef;
 
@@ -120,13 +121,6 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
                 (form !== null && form.action.indexOf('GestioneUtente.do') !== -1)
             );
             const inputs = this.container.nativeElement.getElementsByTagName('input');
-            const i18nIta = {
-                previousMonth : 'Mese Precedente',
-                nextMonth : 'Mese Successivo',
-                months : ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'],
-                weekdays : ['Domenica', 'Lunedi', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'],
-                weekdaysShort : ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab']
-            };
             for (const input of inputs){
                 if (input.placeholder === 'dd/MM/yyyy' && input.type === 'text') {
                     flatpickr(input, {
