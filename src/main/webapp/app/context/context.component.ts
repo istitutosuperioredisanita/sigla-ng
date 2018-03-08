@@ -135,15 +135,22 @@ export class ContextComponent implements OnInit, OnDestroy {
     }
 
     setEsercizio(esercizio: number): void {
+        const userContext = new UserContext(
+            esercizio,
+            Pair.getFirst(this.cdsModel),
+            Pair.getFirst(this.uoModel),
+            Pair.getFirst(this.cdrModel)
+        );
         this.contextService
             .saveEsecizio(esercizio)
             .subscribe((identity) => {
                 this.principal.authenticate(identity);
-                this.contextService.saveWildflyEsercizio(esercizio).subscribe();
-                this.localStateStorageService.storeEsercizio(this.principal.getAccount().username, esercizio);
-                this.eventManager.broadcast({
-                    name: 'onRefreshTree',
-                    content: 'reopenView'
+                this.contextService.saveWildflyUserContext(userContext).subscribe(() => {
+                    this.localStateStorageService.storeEsercizio(this.principal.getAccount().username, esercizio);
+                    this.eventManager.broadcast({
+                        name: 'onRefreshTree',
+                        content: 'reopenView'
+                    });
                 });
             });
     }
@@ -159,14 +166,15 @@ export class ContextComponent implements OnInit, OnDestroy {
             .saveUserContext(userContext)
             .subscribe((identity) => {
                 this.principal.authenticate(identity);
-                this.contextService.saveWildflyUserContext(userContext).subscribe();
-                this.localStateStorageService.storeUserContext(this.principal.getAccount().username, userContext);
-                if (refreshTree) {
-                    this.eventManager.broadcast({
-                        name: 'onRefreshTree',
-                        content: 'reopenView'
-                    });
-                }
+                this.contextService.saveWildflyUserContext(userContext).subscribe(() => {
+                    this.localStateStorageService.storeUserContext(this.principal.getAccount().username, userContext);
+                    if (refreshTree) {
+                        this.eventManager.broadcast({
+                            name: 'onRefreshTree',
+                            content: 'reopenView'
+                        });
+                    }
+                });
             });
         this.contextService.setCdsModel(this.cdsModel);
         this.contextService.setUoModel(this.uoModel);
