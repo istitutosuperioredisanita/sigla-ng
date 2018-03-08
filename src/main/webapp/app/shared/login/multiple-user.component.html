@@ -4,7 +4,7 @@
 <div class="modal-body">
     <div class="form-group">
         <select class="form-control" [(ngModel)]="selectedUser">
-            <option *ngFor="let user of account.users" [value]="user.login" [selected]="user.login == account.username ? true : null">{{user.login}} - {{user.dsUtente}}</option>
+            <option *ngFor="let user of account.users" [value]="user.login">{{user.login}} - {{user.dsUtente}}</option>
         </select>
     </div>
 </div>
