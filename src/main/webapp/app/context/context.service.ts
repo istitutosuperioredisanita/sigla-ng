@@ -137,14 +137,6 @@ export class ContextService  {
         }).map((res: Response) => res.json());
     }
 
-    saveWildflyEsercizio(esercizio: number): Observable<string> {
-        const params: URLSearchParams = new URLSearchParams();
-        params.set('comando', 'doSelezionaContesto(' + esercizio + ',null,null,null)');
-        return this.http.get('/SIGLA/Login.do', {
-           search: params
-        }).map((res: Response) => res.text());
-    }
-
     saveUserContext(userContext: UserContext): Observable<any> {
         return this.http.post('api/context', userContext).map((res: Response) => res.json());
     }
