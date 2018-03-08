@@ -30,7 +30,7 @@ html {
   .dropdown-left-auto { 
       left: auto!important; 
   }
-  .btn:disabled{
+  .btn:disabled, button:disabled{
       cursor: not-allowed;
       opacity: .45;
   }
