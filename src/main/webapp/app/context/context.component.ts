@@ -197,6 +197,10 @@ export class ContextComponent implements OnInit, OnDestroy {
             });
     }
 
+    refreshPreferiti() {
+        this.contextService.findPreferiti();
+    }
+
     isPreferitiPresent(): boolean {
         return this.contextService.preferiti && this.contextService.preferiti.length > 0;
     }
