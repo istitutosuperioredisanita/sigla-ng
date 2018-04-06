@@ -148,7 +148,14 @@
                         </a>    
                     </div>
                 </div>
-                <button type="submit" [disabled]="contextForm.form.invalid" (click)="contextDrop.close();" class="btn btn-block btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i> Conferma</button>
+                <div class="btn-group w-100 border rounded" role="group">
+                    <button type="button" (click)="resetContext();contextDrop.close();" class="btn col-6 btn-outline-danger">
+                            <i class="fa fa-fw fa-undo" aria-hidden="true"></i> Annulla
+                    </button>        
+                    <button type="submit" [disabled]="contextForm.form.invalid" (click)="contextDrop.close();" class="btn col-6 btn-outline-primary">
+                        <i class="fa fa-fw fa-floppy-o" aria-hidden="true"></i> Conferma
+                    </button>
+                </div>
             </form>
         </ul>
     </li>

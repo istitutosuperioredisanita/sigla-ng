@@ -155,6 +155,12 @@ export class ContextComponent implements OnInit, OnDestroy {
             });
     }
 
+    resetContext(): void {
+        this.cdsModel = this.contextService.cdsModel;
+        this.uoModel = this.contextService.uoModel;
+        this.cdrModel = this.contextService.cdrModel;
+    }
+
     saveContext(refreshTree: boolean): void {
         const userContext = new UserContext(
                 this.principal.getAccount().esercizio,
