@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 public class UtentiMultipliServiceTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UtentiMultipliServiceTest.class);
-    private static final String USER_ID = "marco.spasiano";
+    private static final String USER_ID = "app.siper";
 
     @Autowired
     private UtenteService utenteService;
