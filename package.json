@@ -20,7 +20,7 @@
     "angular-tree-component": "^5.1.2",
     "bootstrap": "4.0.0-beta",
     "core-js": "2.4.1",
-    "flatpickr": "^4.3.2",
+    "flatpickr": "4.3.2",
     "font-awesome": "4.7.0",
     "font-awesome-animation": "0.0.10",
     "jquery": "3.2.1",
