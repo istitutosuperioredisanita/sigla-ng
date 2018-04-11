@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Response, URLSearchParams } from '@angular/http';
 import { Observable, Observer } from 'rxjs/Rx';
 import { Leaf } from './leaf.model';
+import { TODO } from './todo.model';
 @Injectable()
 export class WorkspaceService {
 
@@ -41,6 +42,10 @@ export class WorkspaceService {
         } else {
             return Observable.empty();
         }
+    }
+
+    getTODO(): Observable<TODO[]> {
+        return this.http.get('/SIGLA/restapi/todo').map((res: Response) => res.json());
     }
 
     isMenuHidden(): Observable<boolean> {
