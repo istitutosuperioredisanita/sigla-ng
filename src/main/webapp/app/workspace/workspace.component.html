@@ -9,10 +9,25 @@
         <jhi-alert-error></jhi-alert-error>
         <div [ngClass]="{'loading cursor-wait' : isRequesting}"></div>
         <div #htmlContainer class="e2e-trusted-html" [innerHTML]="desktop"></div>
-        <div *ngIf="logoVisible">
+        <div *ngIf="isLogoVisible()">
             <h1 jhiTranslate="home.title" class="text-primary">Welcome, Java Hipster!</h1>
             <p class="lead text-primary" jhiTranslate="home.subtitle">This is your homepage</p>
             <span class="hipster img-fluid img-rounded"></span>
+        </div>
+
+        <div *ngIf="logoVisible" class="row">
+            <div class="col-lg-4 col-md-6 mb-3" *ngFor="let todo of todos">
+                <div class="card">
+                    <h5 class="card-header">
+                        <i [ngClass]="todo.faClass"></i> {{todo.headerLabel}}
+                    </h5>
+                    <div class="card-body">
+                        <div>
+                            <a class="card-text text-primary" (click)="openNodo(todo.cdNodo)">{{todo.label}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div #scriptContainer></div>
     </div>
