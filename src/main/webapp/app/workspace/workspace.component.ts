@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy, Input, ElementRef, Renderer, ViewChild, Inject } from '@angular/core';
-import { JhiLanguageService } from 'ng-jhipster';
+import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
 import { Principal } from '../shared';
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subscription } from 'rxjs/Rx';
 import { WorkspaceService } from './workspace.service';
 import { DomSanitizer, SafeResourceUrl, SafeScript, SafeHtml} from '@angular/platform-browser';
 import { Leaf } from './leaf.model';
+import { TODO } from './todo.model';
 import { Italian } from 'flatpickr/dist/l10n/it.js';
 import 'flatpickr';
 declare var flatpickr;
@@ -27,6 +28,8 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     listenerSubmit: Function;
     listenerSubmitForm: Function;
     flatpickrs = [];
+    todos: TODO[];
+    refreshTodoListener: Subscription;
 
     @ViewChild('htmlContainer') container: ElementRef;
     @ViewChild('scriptContainer') scriptContainer: ElementRef;
@@ -37,7 +40,8 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         private workspaceService: WorkspaceService,
         private _sanitizer: DomSanitizer,
         private elementRef: ElementRef,
-        private renderer: Renderer
+        private renderer: Renderer,
+        private eventManager: JhiEventManager
     ) {
         this.listenerSubmit = renderer.listenGlobal('body', 'submit', (event) => {
             return false;
@@ -64,11 +68,23 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         this.principal.identity().then((account) => {
             this.account = account;
         });
+        this.refreshTodoListener = this.eventManager.subscribe('onRefreshTodo', () => {
+            this.workspaceService.getTODO().subscribe((todos) => this.todos = todos);
+        });
+        this.workspaceService.getTODO().subscribe((todos) => this.todos = todos);
     }
 
     ngOnDestroy() {
         this.listenerSubmit();
         this.listenerSubmitForm();
+        this.refreshTodoListener.unsubscribe();
+    }
+
+    openNodo(cdNodo: string) {
+        this.eventManager.broadcast({
+                name: 'onPreferitiSelected',
+                content: cdNodo
+            });
     }
 
     onNotify(nodo: any): void {
@@ -124,6 +140,9 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
                 form === null ||
                 (form !== null && form.action.indexOf('GestioneUtente.do') !== -1)
             );
+            if (this.logoVisible) {
+                this.workspaceService.getTODO().subscribe((todos) => this.todos = todos);
+            }
             const inputs = this.container.nativeElement.getElementsByTagName('input');
             for (const input of inputs){
                 if (input.placeholder === 'dd/MM/yyyy' && input.type === 'text') {
@@ -153,5 +172,9 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
 
     private stopRefreshing() {
         this.isRequesting = false;
+    }
+
+    public isLogoVisible(): boolean {
+        return this.logoVisible && this.todos && this.todos.length === 0;
     }
 }
