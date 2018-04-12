@@ -71,7 +71,6 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         this.refreshTodoListener = this.eventManager.subscribe('onRefreshTodo', () => {
             this.caricaTODO();
         });
-        this.caricaTODO();
     }
 
     caricaTODO() {
