@@ -69,9 +69,22 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
             this.account = account;
         });
         this.refreshTodoListener = this.eventManager.subscribe('onRefreshTodo', () => {
-            this.workspaceService.getTODO().subscribe((todos) => this.todos = todos);
+            this.caricaTODO();
         });
-        this.workspaceService.getTODO().subscribe((todos) => this.todos = todos);
+        this.caricaTODO();
+    }
+
+    caricaTODO() {
+        this.todos = [];
+        this.workspaceService.getAllTODO().subscribe((bps) => {
+            for (const bp of bps){
+                this.workspaceService.getTODO(bp).subscribe((todos) => {
+                    for (const todo of todos){
+                        this.todos.push(todo);
+                    }
+                });
+            }
+        });
     }
 
     ngOnDestroy() {
@@ -141,7 +154,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
                 (form !== null && form.action.indexOf('GestioneUtente.do') !== -1)
             );
             if (this.logoVisible) {
-                this.workspaceService.getTODO().subscribe((todos) => this.todos = todos);
+                this.caricaTODO();
             }
             const inputs = this.container.nativeElement.getElementsByTagName('input');
             for (const input of inputs){

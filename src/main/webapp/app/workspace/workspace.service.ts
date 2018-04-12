@@ -44,8 +44,12 @@ export class WorkspaceService {
         }
     }
 
-    getTODO(): Observable<TODO[]> {
+    getAllTODO(): Observable<string[]> {
         return this.http.get('/SIGLA/restapi/todo').map((res: Response) => res.json());
+    }
+
+    getTODO(bp: string): Observable<TODO[]> {
+        return this.http.get('/SIGLA/restapi/todo/' + bp).map((res: Response) => res.json());
     }
 
     isMenuHidden(): Observable<boolean> {
