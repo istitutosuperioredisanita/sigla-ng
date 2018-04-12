@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { JhiLanguageService } from 'ng-jhipster';
+import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
 import { LocalStateStorageService } from '../auth/local-storage.service';
 import { Principal } from '../auth/principal.service';
 import { AuthServerProvider } from '../auth/auth-session.service';
@@ -14,6 +14,7 @@ export class LoginService {
         private principal: Principal,
         private authServerProvider: AuthServerProvider,
         private router: Router,
+        private eventManager: JhiEventManager,
         private localStateStorageService: LocalStateStorageService,
         private contextService: ContextService
     ) {}
@@ -28,7 +29,9 @@ export class LoginService {
                                 if (account !== null) {
                                     this.contextService.saveWildflyUserContext(
                                         this.localStateStorageService.getUserContext(account.username)
-                                    ).subscribe();
+                                    ).subscribe(() => {
+                                        this.eventManager.broadcast({name: 'onRefreshTodo'});
+                                    });
                                     resolve(account);
                                     this.languageService.changeLanguage(account.langKey);
                                 }
