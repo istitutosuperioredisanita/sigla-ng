@@ -9,7 +9,7 @@
         <jhi-alert-error></jhi-alert-error>
         <div [ngClass]="{'loading cursor-wait' : isRequesting}"></div>
         <div #htmlContainer class="e2e-trusted-html" [innerHTML]="desktop"></div>
-        <div class="bg">
+        <div *ngIf="logoVisible" class="bg">
             <div *ngIf="logoVisible" class="row">
                 <div class="col-lg-4 col-md-6 mb-3" *ngFor="let todo of todos">
                     <div class="card">
