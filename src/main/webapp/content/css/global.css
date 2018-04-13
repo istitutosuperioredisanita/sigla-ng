@@ -452,12 +452,16 @@ html {
   
   .alert-message-bp.alert-danger > i.fa,
   .alert-message-bp.alert-warning > i.fa {
-      -webkit-animation: fadeoutin 6s linear 1 forwards;
-      animation: fadeoutin 6s linear 1 forwards;
+      -webkit-animation: pulseoutin 6s linear 1 forwards;
+      animation: pulseoutin 6s linear 1 forwards;
   }
   .message-count > sup {
-    -webkit-animation: fadeoutin 6s linear 1 forwards;
-    animation: fadeoutin 6s linear 1 forwards;
+    -webkit-animation: pulseoutin 6s linear 1 forwards;
+    animation: pulseoutin 6s linear 1 forwards;
+  }
+  .todo-label{
+    -webkit-animation: fadeoutin 1s linear 1 forwards;
+    animation: fadeoutin 1s linear 1 forwards;
   }
   .alert-message-bp.alert-info {
       bottom: 1;
@@ -475,7 +479,19 @@ html {
       0% { opacity: 1; }
       100% { opacity: 0;}
   }
+
   @-webkit-keyframes fadeoutin {
+    0% { opacity: 0; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1;}
+  }
+
+  @keyframes fadeoutin {
+    0% { opacity: 0; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1;}
+  }
+  @-webkit-keyframes pulseoutin {
       0% { opacity: 1; }
       10%{ opacity: 0; }
       20% { opacity: 1; }
@@ -488,7 +504,7 @@ html {
       90% {  opacity: 0; }
       100% { opacity: 1;}
   }
-  @keyframes fadeoutin {
+  @keyframes pulseoutin {
       0% { opacity: 1; }
       10%{ opacity: 0; }
       20% { opacity: 1; }
