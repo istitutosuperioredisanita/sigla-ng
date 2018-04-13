@@ -244,7 +244,7 @@ html {
   /* jhipster-needle-css-add-main JHipster will add new css style */
   .bg { 
     /* The image used */
-    background-image: url("../../content/images/Immagine-x-SIGLA-sfumata.png");
+    background-image: url("../../content/images/immagine-Sigla.svg");
     /* Center and scale the image nicely */
     background-position: center center;
     background-repeat: no-repeat;
