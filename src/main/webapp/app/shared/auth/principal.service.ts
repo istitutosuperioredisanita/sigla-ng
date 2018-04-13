@@ -5,6 +5,7 @@ import { AccountService } from './account.service';
 import { Account } from '../user/account.model';
 import { ContextService } from '../../context/context.service';
 import { LocalStateStorageService } from './local-storage.service';
+import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
 
 @Injectable()
 export class Principal {
@@ -15,6 +16,7 @@ export class Principal {
     constructor(
         private account: AccountService,
         private context: ContextService,
+        private eventManager: JhiEventManager,
         private localStateStorageService: LocalStateStorageService
     ) {}
 
@@ -95,6 +97,7 @@ export class Principal {
                         this.context.findCds(usercontext);
                         this.context.findUo(usercontext);
                         this.context.findCdr(usercontext);
+                        this.eventManager.broadcast({name: 'onRefreshTodo'});
                     });
                     this.authenticated = true;
                 }
