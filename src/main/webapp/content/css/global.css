@@ -244,9 +244,9 @@ html {
   /* jhipster-needle-css-add-main JHipster will add new css style */
   .bg { 
     /* The image used */
-    background-image: url("../../content/images/immagine-Sigla.svg");
+    background-image: url("../../content/images/Immagine-x-SIGLA-sfumata.png");
     /* Center and scale the image nicely */
-    background-position: center center;
+    background-position: top left;
     background-repeat: no-repeat;
   }              
   .btn-toolbar {
