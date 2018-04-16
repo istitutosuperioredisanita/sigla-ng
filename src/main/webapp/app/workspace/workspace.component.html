@@ -9,17 +9,20 @@
         <jhi-alert-error></jhi-alert-error>
         <div [ngClass]="{'loading cursor-wait' : isRequesting}"></div>
         <div #htmlContainer class="e2e-trusted-html" [innerHTML]="desktop"></div>
-        <div *ngIf="logoVisible" class="bg">
-            <div *ngIf="logoVisible" class="row">
-                <div class="col-lg-4 col-md-6 mb-3" *ngFor="let todo of todos">
-                    <div class="card">
-                        <h5 class="card-header">
-                            <i [ngClass]="todo.faClass"></i> {{todo.headerLabel}}
-                        </h5>
-                        <div class="card-body">
-                            <div>
-                                <span>{{todo.firstLabel}}</span>
-                                <a class="card-text text-primary todo-label" (click)="openNodo(todo.cdNodo)">{{todo.label}}</a>
+        <div *ngIf="logoVisible" class="row no-gutters">
+            <div class="hipster img-fluid img-rounded col-6 col-md-2"></div>
+            <div class="col-12 col-sm-6 col-md-10">
+                <div class="row ml-2">
+                    <div class="col-lg-4 col-md-6 mb-2" *ngFor="let todo of todos">
+                        <div class="card">
+                            <h5 class="card-header">
+                                <i [ngClass]="todo.faClass"></i> {{todo.headerLabel}}
+                            </h5>
+                            <div class="card-body">
+                                <div>
+                                    <span>{{todo.firstLabel}}</span>
+                                    <a class="card-text text-primary todo-label" (click)="openNodo(todo.cdNodo)">{{todo.label}}</a>
+                                </div>
                             </div>
                         </div>
                     </div>
