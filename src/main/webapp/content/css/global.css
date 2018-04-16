@@ -241,14 +241,7 @@ html {
       outline: none;
   }
   
-  /* jhipster-needle-css-add-main JHipster will add new css style */
-  .bg { 
-    /* The image used */
-    background-image: url("../../content/images/Immagine-x-SIGLA-sfumata.png");
-    /* Center and scale the image nicely */
-    background-position: top left;
-    background-repeat: no-repeat;
-  }              
+  /* jhipster-needle-css-add-main JHipster will add new css style */            
   .btn-toolbar {
       padding-bottom: 10px;
   }
@@ -706,9 +699,6 @@ html {
         height: calc(100vh - 180px);
         overflow: auto;
     }
-    .bg {
-        height: calc(100vh - 180px);
-    }  
   }
   @media screen and (min-width: 768px) and (max-width: 1280px){
     .angular-tree-component {
@@ -718,9 +708,6 @@ html {
     .angular-tree-component-sticky {
         height: calc(100vh - 155px + 60px);
     }
-    .bg {
-        height: calc(100vh - 155px);
-    }  
   }
   @media screen and (min-width: 1281px) {
     .angular-tree-component {
@@ -729,9 +716,6 @@ html {
     }
     .angular-tree-component-sticky {
         height: calc(100vh - 180px  + 70px);
-    }
-    .bg {
-        height: calc(100vh - 180px);
     }
   }
   @media screen and (max-width: 768px) {
