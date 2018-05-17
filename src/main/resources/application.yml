@@ -4,3 +4,6 @@ management:
     security:
         roles: ADMIN
     context-path: /management
+ajp:
+    port: 8009
+    timeout: 120000
