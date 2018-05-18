@@ -94,7 +94,7 @@ public class JHipsterResource {
                     }
                     return userContext;
                 })
-                .orElseThrow(() -> new RuntimeException("something went wrong " + authentication.toString()))
+                .orElse(null)
         );
     }
 
