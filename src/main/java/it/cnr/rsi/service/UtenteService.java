@@ -99,13 +99,13 @@ public class UtenteService implements UserDetailsService {
         indirizzi.stream()
             .forEach(indirizzo -> {
                 utenteIndirizziMailRepository.delete(
-                    utenteIndirizziMailRepository.findOne(new UtenteIndirizziMailPK(username, indirizzo))
+                    utenteIndirizziMailRepository.findById(new UtenteIndirizziMailPK(username, indirizzo)).get()
                 );
             });
     }
     @Transactional
     public void insertIndirizzoMail(String username, ArrayList<UtenteIndirizziMail> utenteIndirizziMail) {
-        utenteIndirizziMailRepository.save(utenteIndirizziMail.stream()
+        utenteIndirizziMailRepository.saveAll(utenteIndirizziMail.stream()
             .map(indirizzo -> {
                 indirizzo.setDuva(Date.from(Instant.now()));
                 indirizzo.setUtuv(username);
@@ -135,7 +135,7 @@ public class UtenteService implements UserDetailsService {
 
     @Transactional
     public void changePassword(String username, String newPassword) {
-        Utente utente = utenteRepository.findOne(username);
+        Utente utente = utenteRepository.findById(username).get();
         byte[] buser = utente.getCdUtente().getBytes();
         byte[] bpassword = newPassword.toUpperCase().getBytes();
         byte h = 0;
