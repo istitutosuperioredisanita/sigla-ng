@@ -1,15 +1,17 @@
 package it.cnr.rsi.config;
 
 
-
-
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.web.SessionListener;
 import com.hazelcast.web.spring.SpringAwareWebFilter;
+import org.apache.catalina.connector.Connector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.DispatcherType;
@@ -21,17 +23,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-
 /**
  * Configuration of web application with Servlet 3.0 APIs.
  */
 @Configuration
-@AutoConfigureAfter(CacheConfiguration.class)
 public class WebConfigurer implements ServletContextInitializer {
 
     private final Logger log = LoggerFactory.getLogger(WebConfigurer.class);
-
     private final HazelcastInstance hazelcastInstance;
+    @Value("${tomcatAjp.protocol}")
+    String ajpProtocol;
+    @Value("${tomcatAjp.port}")
+    String ajpPort;
+    @Value("${tomcatAjp.enabled}")
+    String ajpEnabled;
+    @Value("${tomcatAjp.scheme}")
+    String ajpScheme;
 
     public WebConfigurer(HazelcastInstance hazelcastInstance) {
         this.hazelcastInstance = hazelcastInstance;
@@ -84,5 +91,23 @@ public class WebConfigurer implements ServletContextInitializer {
         hazelcastWebFilter.setAsyncSupported(true);
     }
 
+    @Bean
+    public EmbeddedServletContainerFactory servletContainer() {
+
+        Integer ajpPortInt = Integer.parseInt(ajpPort);
+        Boolean ajpEnabledBool = Boolean.valueOf(ajpEnabled);
+
+        TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory();
+        if (ajpEnabledBool) {
+            Connector ajpConnector = new Connector(ajpProtocol);
+            ajpConnector.setPort(ajpPortInt);
+            ajpConnector.setSecure(false);
+            ajpConnector.setAllowTrace(false);
+            ajpConnector.setScheme(ajpScheme);
+            tomcat.addAdditionalTomcatConnectors(ajpConnector);
+        }
+
+        return tomcat;
+    }
 
 }
