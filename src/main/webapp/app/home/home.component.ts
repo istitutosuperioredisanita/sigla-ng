@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Account, MultipleUserModalService, LoginService, Principal, StateStorageService } from '../shared';
 import { ContextService} from '../context';
 import { LocalStateStorageService } from '../shared/auth/local-storage.service';
+import { SERVER_API_URL } from '../app.constants';
 
 @Component({
     selector: 'jhi-home',
@@ -106,10 +107,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 this.principal.hasAnyAuthority(['ROLE_ADMIN', 'ROLE_SUPERUSER']).then((result) => {
                     if (!result) {
                         if (account.accountNonLocked && this.localStateStorageService.getUserContext(this.principal.getAccount().username).cds) {
-                            navigate = 'workspace';
+                            navigate = SERVER_API_URL + 'workspace';
                         }
                     } else {
-                        navigate = 'workspace';
+                        navigate = SERVER_API_URL + 'workspace';
                     }
                     this.router.navigate([navigate]);
                 });
