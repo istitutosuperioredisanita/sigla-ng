@@ -21,8 +21,8 @@ export class ContextService  {
     cdrModel: Pair;
     preferiti: Preferiti[];
     messaggi: Messaggio[];
-    private resourceUrlIndirizziEmail = SERVER_API_URL + '/api/context/indirizzi-mail/';
-    private resourceUrlMessaggi = SERVER_API_URL + '/api/context/messaggi/';
+    private resourceUrlIndirizziEmail = SERVER_API_URL + 'api/context/indirizzi-mail/';
+    private resourceUrlMessaggi = SERVER_API_URL + 'api/context/messaggi/';
 
     constructor(
         private http: Http,
@@ -35,7 +35,7 @@ export class ContextService  {
     }
 
     getEsercizi(): Observable<number[]> {
-        return this.http.get(SERVER_API_URL + '/api/context/esercizio').map((res: Response) => res.json());
+        return this.http.get(SERVER_API_URL + 'api/context/esercizio').map((res: Response) => res.json());
     }
 
     findPreferiti(): void {
@@ -44,7 +44,7 @@ export class ContextService  {
     }
 
     getPreferiti(): Observable<Preferiti[]> {
-        return this.http.get(SERVER_API_URL + '/api/context/preferiti').map((res: Response) => res.json());
+        return this.http.get(SERVER_API_URL + 'api/context/preferiti').map((res: Response) => res.json());
     }
 
     getIndirizziMail(): Observable<IndirizziMail[]> {
@@ -85,7 +85,7 @@ export class ContextService  {
     getUo(cds: string): Observable<Pair[]> {
         const params: URLSearchParams = new URLSearchParams();
         params.set('cds', cds);
-        return this.http.get(SERVER_API_URL + '/api/context/uo', {search: params}).map((res: Response) => res.json());
+        return this.http.get(SERVER_API_URL + 'api/context/uo', {search: params}).map((res: Response) => res.json());
     }
 
     resetCds(): Pair[] {
@@ -113,13 +113,13 @@ export class ContextService  {
     getCds(uo: string): Observable<Pair[]> {
         const params: URLSearchParams = new URLSearchParams();
         params.set('uo', uo);
-        return this.http.get(SERVER_API_URL + '/api/context/cds', {search: params}).map((res: Response) => res.json());
+        return this.http.get(SERVER_API_URL + 'api/context/cds', {search: params}).map((res: Response) => res.json());
     }
 
     getCdr(uo: string): Observable<Pair[]> {
         const params: URLSearchParams = new URLSearchParams();
         params.set('uo', uo);
-        return this.http.get(SERVER_API_URL + '/api/context/cdr', {search: params}).map((res: Response) => res.json());
+        return this.http.get(SERVER_API_URL + 'api/context/cdr', {search: params}).map((res: Response) => res.json());
     }
 
     findCdr(account: Account): void {
