@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>it.cnr</groupId>
     <artifactId>sigla-ng</artifactId>
-    <version>1.0.19</version>
+    <version>1.0.20-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>sigla-ng</name>
     <description>sigla-ng</description>
@@ -224,6 +224,6 @@
     <scm>
         <connection>scm:git:ssh://git@git.si.cnr.it/dev/sigla-ng.git</connection>
         <developerConnection>scm:git:ssh://git@git.si.cnr.it/dev/sigla-ng.git</developerConnection>
-        <tag>sigla-ng-1.0.19</tag>
+        <tag>sigla-ng-0.0.1</tag>
     </scm>
 </project>
