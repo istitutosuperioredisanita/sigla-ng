@@ -2,6 +2,8 @@ package it.cnr.rsi.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.Optional;
+
 /**
  * Created by francesco on 07/03/17.
  */
@@ -12,6 +14,7 @@ public class HazelcastConfigurationProperties {
     private String instanceName;
     private int timeToLiveSeconds;
     private int backupCount;
+    private String members;
 
     public int getPort() {
         return port;
@@ -45,6 +48,15 @@ public class HazelcastConfigurationProperties {
         this.backupCount = backupCount;
     }
 
+    public String getMembers() {
+        return Optional.ofNullable(members).orElse("127.0.0.1");
+    }
+
+    public HazelcastConfigurationProperties setMembers(String members) {
+        this.members = members;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "HazelcastConfigurationProperties{" +
@@ -52,6 +64,7 @@ public class HazelcastConfigurationProperties {
             ", instanceName='" + instanceName + '\'' +
             ", timeToLiveSeconds=" + timeToLiveSeconds +
             ", backupCount=" + backupCount +
+            ", members='" + members + '\'' +
             '}';
     }
 }
