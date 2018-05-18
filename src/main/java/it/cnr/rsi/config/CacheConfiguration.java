@@ -59,7 +59,7 @@ public class CacheConfiguration {
         log.warn("LOCAL CONFIG....");
 
         // In development, remove multicast auto-configuration
-        System.setProperty("hazelcast.local.localAddress", "127.0.0.1");
+        // System.setProperty("hazelcast.local.localAddress", "127.0.0.1");
 
         config.getNetworkConfig().getJoin().getAwsConfig().setEnabled(false);
         config.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
