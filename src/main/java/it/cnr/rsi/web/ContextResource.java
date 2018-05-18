@@ -21,10 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.Serializable;
 import java.sql.Date;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -163,7 +160,7 @@ public class ContextResource {
             utenteService.insertIndirizzoMail(userDetails.getUsername(), utenteIndirizziMail);
         } catch (DataIntegrityViolationException _ex) {
             LOGGER.error("POST Indirizzo mail for User: {} Indirizzo: {} Failed", userDetails.getUsername(), utenteIndirizziMail, _ex);
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            return ResponseEntity.ok(Collections.emptyList());
         }
         return ResponseEntity.ok(utenteService.findIndirizziMail(userDetails.getUsername()));
     }
