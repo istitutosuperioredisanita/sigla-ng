@@ -74,6 +74,7 @@ public class JHipsterResource {
     public ResponseEntity<UserDetails> account() {
     	LOGGER.info("get account");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        LOGGER.info("get account with authentication {}", authentication);
         return ResponseEntity.ok(
             Optional
                 .ofNullable(authentication)
