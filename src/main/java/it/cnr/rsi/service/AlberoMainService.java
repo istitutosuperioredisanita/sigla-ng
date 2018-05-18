@@ -49,7 +49,7 @@ public class AlberoMainService {
     @Transactional
     public Map<String, List<TreeNode>> tree(String userId, Integer esercizio, String unitaOrganizzativa) {
     	LOGGER.info("GET Tree for User: {} and Unita Organizzativa: {}", userId, unitaOrganizzativa);
-        Utente utente = utenteRepository.findOne(userId);
+        Utente utente = utenteRepository.findById(userId).get();
     	List<String> accessi = accessoService.accessi(userId, esercizio, unitaOrganizzativa);
         if (Optional.ofNullable(utente.getCdUtenteTempl()).isPresent()) {
             accessi.addAll(accessoService.accessi(utente.getCdUtenteTempl(), esercizio, unitaOrganizzativa));
