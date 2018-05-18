@@ -58,6 +58,7 @@ public class JHipsterResource {
     public ResponseEntity<Boolean> login() {
         LOGGER.info("validate login");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        LOGGER.info("validate login with authentication {}", authentication);
         if (!Optional
             .ofNullable(authentication)
             .map(auth -> auth.getPrincipal())
