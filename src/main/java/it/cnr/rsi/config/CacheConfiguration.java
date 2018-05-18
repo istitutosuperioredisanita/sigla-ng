@@ -56,7 +56,7 @@ public class CacheConfiguration {
         config.getNetworkConfig().setPort(hazelcastConfigurationProperties.getPort());
         config.getNetworkConfig().setPortAutoIncrement(true);
 
-        log.warn("LOCAL CONFIG....");
+        log.info("HAZELCAST CONFIG {}", hazelcastConfigurationProperties);
 
         // In development, remove multicast auto-configuration
         // System.setProperty("hazelcast.local.localAddress", "127.0.0.1");
