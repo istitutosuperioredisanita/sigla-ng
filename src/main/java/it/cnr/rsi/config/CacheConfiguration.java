@@ -63,7 +63,7 @@ public class CacheConfiguration {
 
         config.getNetworkConfig().getJoin().getAwsConfig().setEnabled(false);
         config.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
-        config.getNetworkConfig().getJoin().getTcpIpConfig().setEnabled(false);
+        config.getNetworkConfig().getJoin().getTcpIpConfig().setEnabled(true);
 
         config.getMapConfigs().put("default", initializeDefaultMapConfig());
         config.getMapConfigs().put("it.cnr.rsi.domain.*", initializeDomainMapConfig());
