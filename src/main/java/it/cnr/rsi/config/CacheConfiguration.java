@@ -62,7 +62,7 @@ public class CacheConfiguration {
         // System.setProperty("hazelcast.local.localAddress", "127.0.0.1");
 
         config.getNetworkConfig().getJoin().getAwsConfig().setEnabled(false);
-        config.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(true);
+        config.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
         config.getNetworkConfig().getJoin().getTcpIpConfig().setEnabled(false);
 
         config.getMapConfigs().put("default", initializeDefaultMapConfig());
