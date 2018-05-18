@@ -3,10 +3,11 @@ import { Http, Response, URLSearchParams } from '@angular/http';
 import { Observable, Observer } from 'rxjs/Rx';
 import { Leaf } from './leaf.model';
 import { TODO } from './todo.model';
+import { SERVER_API_URL } from '../app.constants';
 @Injectable()
 export class WorkspaceService {
 
-    private resourceUrl = 'api/tree';
+    private resourceUrl = SERVER_API_URL + 'api/tree';
     private observable: Observable<boolean>;
     private observers: Observer<boolean>[];
 
