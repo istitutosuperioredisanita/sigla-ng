@@ -79,7 +79,7 @@ public class JHipsterResource {
             Optional
                 .ofNullable(authentication)
                 .map(Authentication::getPrincipal)
-                .filter(principal -> principal instanceof UserContext)
+                .filter(UserContext.class::isInstance)
                 .map(UserContext.class::cast)
                 .map(userContext -> {
                     final Optional<List<Utente>> usersForUid = Optional.ofNullable(
@@ -94,7 +94,7 @@ public class JHipsterResource {
                     }
                     return userContext;
                 })
-                .orElse(null)
+                .orElseThrow(() -> new RuntimeException("something went wrong " + authentication.toString()))
         );
     }
 
