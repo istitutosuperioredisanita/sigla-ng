@@ -126,6 +126,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         }
         this.desktop = this._sanitizer.bypassSecurityTrustHtml(html);
         setTimeout(() => { // wait for DOM rendering
+            this.container.nativeElement.getElementsByTagName('base')[0].remove();
             const scripts = this.container.nativeElement.getElementsByTagName('script');
             for (const script of scripts){
                 const s = document.createElement('script');
