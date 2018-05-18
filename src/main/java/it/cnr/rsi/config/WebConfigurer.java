@@ -13,6 +13,7 @@ import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
@@ -31,6 +32,8 @@ public class WebConfigurer implements ServletContextInitializer {
 
     private final Logger log = LoggerFactory.getLogger(WebConfigurer.class);
     private final HazelcastInstance hazelcastInstance;
+    private final Environment env;
+
     @Value("${tomcatAjp.protocol}")
     String ajpProtocol;
     @Value("${tomcatAjp.port}")
@@ -40,15 +43,18 @@ public class WebConfigurer implements ServletContextInitializer {
     @Value("${tomcatAjp.scheme}")
     String ajpScheme;
 
-    public WebConfigurer(HazelcastInstance hazelcastInstance) {
+    public WebConfigurer(Environment env, HazelcastInstance hazelcastInstance) {
+        this.env = env;
         this.hazelcastInstance = hazelcastInstance;
     }
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
-        log.warn("enable clustered sessions");
-        initClusteredHttpSessionFilter(servletContext, disps);
+        if (env.acceptsProfiles("prod")) {
+            log.warn("enable clustered sessions");
+            initClusteredHttpSessionFilter(servletContext, disps);
+        }
         log.info("Web application fully configured");
     }
 
@@ -56,7 +62,7 @@ public class WebConfigurer implements ServletContextInitializer {
      * Initializes the Clustered Http Session filter
      */
     private void initClusteredHttpSessionFilter(ServletContext servletContext, EnumSet<DispatcherType> disps) {
-        log.debug("Registering Clustered Http Session Filter");
+            log.debug("Registering Clustered Http Session Filter");
         servletContext.addListener(new SessionListener());
 
         FilterRegistration.Dynamic hazelcastWebFilter = servletContext.addFilter("hazelcastWebFilter", new SpringAwareWebFilter());
