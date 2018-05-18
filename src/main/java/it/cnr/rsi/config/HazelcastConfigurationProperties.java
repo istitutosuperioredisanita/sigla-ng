@@ -45,6 +45,13 @@ public class HazelcastConfigurationProperties {
         this.backupCount = backupCount;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "HazelcastConfigurationProperties{" +
+            "port=" + port +
+            ", instanceName='" + instanceName + '\'' +
+            ", timeToLiveSeconds=" + timeToLiveSeconds +
+            ", backupCount=" + backupCount +
+            '}';
+    }
 }
