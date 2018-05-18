@@ -35,7 +35,7 @@ public class UnitaOrganizzativaService {
 	@Transactional
 	public List<UnitaOrganizzativa> listaUnitaOrganizzativeAbilitate(String userId, Integer esercizio, String cds) {
 		LOGGER.info("UnitaOrganizzativa for User: {} ", userId);
-		Utente utente = utenteRepository.findOne(userId);
+		Utente utente = utenteRepository.findById(userId).get();
 		Stream<UnitaOrganizzativa> uos;
 		if (utente.isUtenteSupervisore()) {
 			uos = unitaOrganizzativaRepository.findUnitaOrganizzativeValida(esercizio, cds);
@@ -59,7 +59,7 @@ public class UnitaOrganizzativaService {
 	@Transactional
 	public List<UnitaOrganizzativa> listaCDSAbilitati(String userId, Integer esercizio, String cdUnitaOrganizzativa) {
 		LOGGER.info("CDS for User: {} ", userId);
-		Utente utente = utenteRepository.findOne(userId);
+		Utente utente = utenteRepository.findById(userId).get();
 		Stream<UnitaOrganizzativa> cds;
 		if (utente.isUtenteSupervisore()) {
 			cds = unitaOrganizzativaRepository.findCdsValido(esercizio, cdUnitaOrganizzativa);

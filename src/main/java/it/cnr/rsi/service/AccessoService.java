@@ -48,7 +48,7 @@ public class AccessoService {
     @Transactional
     public List<String> accessi(String userId, Integer esercizio, String unitaOrganizzativa) {
     	LOGGER.info("Accessi for User: {} esercizio {} and Unita Organizzativa: {}", userId, esercizio, unitaOrganizzativa);
-		Utente utente = utenteRepository.findOne(userId);
+		Utente utente = utenteRepository.findById(userId).get();
     	List<String> findRuoliByCdUtente = utenteUnitaRuoloRepository.findRuoliByCdUtente(userId, unitaOrganizzativa).collect(Collectors.toList());
     	Optional.of(utente.isUtenteSupervisore())
             .filter(isUtenteSupervisore -> isUtenteSupervisore)
