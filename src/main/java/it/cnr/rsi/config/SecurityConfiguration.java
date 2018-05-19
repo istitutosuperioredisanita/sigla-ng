@@ -1,5 +1,6 @@
 package it.cnr.rsi.config;
 
+import com.hazelcast.web.spring.SpringAwareWebFilter;
 import it.cnr.rsi.security.*;
 import it.cnr.rsi.service.UtenteService;
 import org.slf4j.Logger;
@@ -20,10 +21,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator;
 import org.springframework.security.ldap.userdetails.UserDetailsContextMapper;
 
+import javax.servlet.FilterRegistration;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -46,6 +49,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private UtenteService utenteService;
 
+    private final SessionRegistry sessionRegistry;
+
+    public SecurityConfiguration(SessionRegistry sessionRegistry) {
+        this.sessionRegistry = sessionRegistry;
+    }
     @Override
     public void configure(WebSecurity web) throws Exception {
         web
@@ -56,6 +64,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .sessionManagement()
+                .maximumSessions(32) // maximum number of concurrent sessions for one user
+                .sessionRegistry(sessionRegistry)
+                .and().and()
                 .httpBasic()
                 .and()
                 .authorizeRequests()
@@ -76,6 +88,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutUrl("/api/logout")
                 .logoutSuccessHandler(ajaxLogoutSuccessHandler())
+                .deleteCookies("hazelcast.sessionId")
                 .permitAll()
                 .and()
                 .csrf()
