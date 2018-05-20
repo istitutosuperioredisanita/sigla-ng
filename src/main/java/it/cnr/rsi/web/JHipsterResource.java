@@ -1,6 +1,7 @@
 package it.cnr.rsi.web;
 
 import it.cnr.rsi.domain.Utente;
+import it.cnr.rsi.security.ContextAuthentication;
 import it.cnr.rsi.security.UserContext;
 import it.cnr.rsi.service.UtenteService;
 import it.cnr.rsi.web.rest.errors.InvalidPasswordException;
@@ -11,6 +12,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -92,6 +94,7 @@ public class JHipsterResource {
                     } else {
                         userContext.users(Collections.singletonList(utenteService.loadUserByUsername(userContext.getLogin())));
                     }
+                    SecurityContextHolder.getContext().setAuthentication(new ContextAuthentication(userContext));
                     return userContext;
                 })
                 .orElse(null)

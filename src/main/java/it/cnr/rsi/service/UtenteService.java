@@ -159,19 +159,6 @@ public class UtenteService implements UserDetailsService {
             .map(Authentication::getPrincipal)
             .filter(principal -> principal instanceof UserContext)
             .map(UserContext.class::cast)
-            .map(userContext -> {
-                final Optional<List<Utente>> usersForUid = Optional.ofNullable(
-                    findUsersForUid(userContext.getLogin())).filter(utentes -> !utentes.isEmpty());
-                if (usersForUid.isPresent()) {
-                    userContext.users(usersForUid.get()
-                        .stream()
-                        .map(utente -> new UserContext(utente))
-                        .collect(Collectors.toList()));
-                } else {
-                    userContext.users(Collections.singletonList(loadUserByUsername(userContext.getLogin())));
-                }
-                return userContext;
-            })
             .orElseThrow(() -> new RuntimeException("something went wrong " + authentication.toString()));
     }
 }

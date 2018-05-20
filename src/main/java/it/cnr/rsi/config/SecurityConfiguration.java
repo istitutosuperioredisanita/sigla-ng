@@ -131,11 +131,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                                                           String username, Collection<? extends GrantedAuthority> authorities) {
                         return Optional.ofNullable(utenteService.loadUserByUid(username))
                             .map(userContext -> {
-                                userContext.addAttribute("firstName", ctx.getStringAttribute("cnrnome"));
-                                userContext.addAttribute("lastName", ctx.getStringAttribute("cnrcognome"));
-                                userContext.addAttribute("email", ctx.getStringAttribute("mail"));
-                                userContext.addAttribute("login", username);
-                                userContext.addAttribute("ldap", Boolean.TRUE);
+                                userContext.setFirstName(ctx.getStringAttribute("cnrnome"));
+                                userContext.setLastName(ctx.getStringAttribute("cnrcognome"));
+                                userContext.setEmail(ctx.getStringAttribute("mail"));
+                                userContext.setLogin(username);
+                                userContext.setLdap(Boolean.TRUE);
                                 return userContext;
                             }).orElseThrow(() -> new BadCredentialsException(""));
                     }

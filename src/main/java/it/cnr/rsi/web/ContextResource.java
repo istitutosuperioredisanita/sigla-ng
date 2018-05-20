@@ -4,6 +4,7 @@ import it.cnr.rsi.domain.Messaggio;
 import it.cnr.rsi.domain.Preferiti;
 import it.cnr.rsi.domain.Utente;
 import it.cnr.rsi.domain.UtenteIndirizziMail;
+import it.cnr.rsi.security.ContextAuthentication;
 import it.cnr.rsi.security.UserContext;
 import it.cnr.rsi.service.EsercizioBaseService;
 import it.cnr.rsi.service.UnitaOrganizzativaService;
@@ -133,7 +134,31 @@ public class ContextResource {
     public UserContext save(@RequestBody Map<String, ?> params) {
         UserContext userDetails = utenteService.getUserDetails();
         LOGGER.info("POST params: {} for User: {}", params, userDetails.getUsername());
-        params.forEach((k, v) -> userDetails.addAttribute(k, (Serializable) v));
+        userDetails.setEsercizio(
+            Optional.ofNullable(params.get("esercizio"))
+                .filter(Integer.class::isInstance)
+                .map(Integer.class::cast)
+                .orElse(null)
+        );
+        userDetails.setCds(
+            Optional.ofNullable(params.get("cds"))
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
+                .orElse(null)
+        );
+        userDetails.setUo(
+            Optional.ofNullable(params.get("uo"))
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
+                .orElse(null)
+        );
+        userDetails.setCdr(
+            Optional.ofNullable(params.get("cdr"))
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
+                .orElse(null)
+        );
+        SecurityContextHolder.getContext().setAuthentication(new ContextAuthentication(userDetails));
         return userDetails;
     }
 
