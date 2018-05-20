@@ -6,6 +6,7 @@ import it.cnr.rsi.repository.AlberoMainRepository;
 import it.cnr.rsi.security.UserContext;
 import it.cnr.rsi.service.AccessoService;
 import it.cnr.rsi.service.AlberoMainService;
+import it.cnr.rsi.service.UtenteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -25,22 +26,22 @@ public class AlberoMainResource {
 
     public static final String API_ALBERO_MAIN = "/api/tree";
 
-    private AlberoMainRepository alberoMainRepository;
+    private final AlberoMainRepository alberoMainRepository;
+    private final AccessoService accessoService;
+    private final AlberoMainService alberoMainService;
+    private final UtenteService utenteService;
 
-    private AccessoService accessoService;
-
-    private AlberoMainService alberoMainService;
-
-    public AlberoMainResource(AlberoMainRepository alberoMainRepository, AlberoMainService alberoMainService, AccessoService accessoService) {
+    public AlberoMainResource(AlberoMainRepository alberoMainRepository, AlberoMainService alberoMainService, AccessoService accessoService, UtenteService utenteService) {
         this.alberoMainRepository = alberoMainRepository;
         this.alberoMainService = alberoMainService;
         this.accessoService = accessoService;
+        this.utenteService = utenteService;
     }
 
 
     @GetMapping(API_ALBERO_MAIN)
     public Map<String, List<TreeNode>> tree(){
-    	UserContext userDetails = ContextResource.getUserDetails();
+    	UserContext userDetails = utenteService.getUserDetails();
 
         LOGGER.info("GET Tree for User: {} esercizio {} and Unita Organizzativa: {}", userDetails.getUsername(), userDetails.getEsercizio(), userDetails.getUo());
         return alberoMainService.tree(userDetails.getUsername(), userDetails.getEsercizio(), userDetails.getUo());
@@ -53,7 +54,7 @@ public class AlberoMainResource {
 
     @DeleteMapping(value = API_ALBERO_MAIN)
     public boolean evictCacheTree() {
-        UserContext userDetails = ContextResource.getUserDetails();
+        UserContext userDetails = utenteService.getUserDetails();
         accessoService.evictCacheAccessi(userDetails.getUsername(), userDetails.getEsercizio(), userDetails.getUo());
         return alberoMainService.evictCacheTree(userDetails.getUsername(), userDetails.getEsercizio(), userDetails.getUo());
     }
