@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @ConfigurationProperties("cnr.hazelcast")
 public class HazelcastConfigurationProperties {
-    private int port;
+    private int port = 5701;
     private String instanceName;
     private int timeToLiveSeconds;
     private int backupCount;
