@@ -1,7 +1,9 @@
 package it.cnr.rsi.config;
 
-import com.hazelcast.web.spring.SpringAwareWebFilter;
-import it.cnr.rsi.security.*;
+import it.cnr.rsi.security.AjaxAuthenticationFailureHandler;
+import it.cnr.rsi.security.AjaxAuthenticationSuccessHandler;
+import it.cnr.rsi.security.AjaxLogoutSuccessHandler;
+import it.cnr.rsi.security.Http401UnauthorizedEntryPoint;
 import it.cnr.rsi.service.UtenteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +28,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator;
 import org.springframework.security.ldap.userdetails.UserDetailsContextMapper;
 
-import javax.servlet.FilterRegistration;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,63 +44,62 @@ import java.util.stream.Stream;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfiguration.class);
-
+    private final SessionRegistry sessionRegistry;
     @Autowired
     private LdapConfigurationProperties ldapConfigurationProperties;
     @Autowired
     private UtenteService utenteService;
 
-    private final SessionRegistry sessionRegistry;
-
     public SecurityConfiguration(SessionRegistry sessionRegistry) {
         this.sessionRegistry = sessionRegistry;
     }
+
     @Override
     public void configure(WebSecurity web) throws Exception {
         web
-                .ignoring()
-                .antMatchers("/app/**/*.{js,html}");
+            .ignoring()
+            .antMatchers("/app/**/*.{js,html}");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .sessionManagement()
-                .maximumSessions(32) // maximum number of concurrent sessions for one user
-                .sessionRegistry(sessionRegistry)
-                .and().and()
-                .httpBasic()
-                .and()
-                .authorizeRequests()
-                .antMatchers("/api/profile-info").permitAll()
-                .antMatchers("/api/account").permitAll()
-                .antMatchers("/api/validate-authentication").permitAll()
-                .antMatchers("/api/**").fullyAuthenticated()
-                .and()
-                .formLogin()
-                .loginPage("/api/validate-authentication")
-                .loginProcessingUrl("/api/authentication")
-                .successHandler(ajaxAuthenticationSuccessHandler())
-                .failureHandler(ajaxAuthenticationFailureHandler())
-                .usernameParameter("j_username")
-                .passwordParameter("j_password")
-                .permitAll()
-                .and()
-                .logout()
-                .logoutUrl("/api/logout")
-                .logoutSuccessHandler(ajaxLogoutSuccessHandler())
-                .deleteCookies("hazelcast.sessionId")
-                .permitAll()
-                .and()
-                .csrf()
-                .disable();
+            .sessionManagement()
+            .maximumSessions(32) // maximum number of concurrent sessions for one user
+            .sessionRegistry(sessionRegistry)
+            .and().and()
+            .httpBasic()
+            .and()
+            .authorizeRequests()
+            .antMatchers("/api/profile-info").permitAll()
+            .antMatchers("/api/account").permitAll()
+            .antMatchers("/api/validate-authentication").permitAll()
+            .antMatchers("/api/**").fullyAuthenticated()
+            .and()
+            .formLogin()
+            .loginPage("/api/validate-authentication")
+            .loginProcessingUrl("/api/authentication")
+            .successHandler(ajaxAuthenticationSuccessHandler())
+            .failureHandler(ajaxAuthenticationFailureHandler())
+            .usernameParameter("j_username")
+            .passwordParameter("j_password")
+            .permitAll()
+            .and()
+            .logout()
+            .logoutUrl("/api/logout")
+            .logoutSuccessHandler(ajaxLogoutSuccessHandler())
+            .deleteCookies("hazelcast.sessionId")
+            .permitAll()
+            .and()
+            .csrf()
+            .disable();
     }
 
     @Bean
-    public AuthenticationProvider customAuthenticationProvider(){
-    	DaoAuthenticationProvider customAuthenticationProvider = new DaoAuthenticationProvider();
-    	customAuthenticationProvider.setUserDetailsService(utenteService);
-    	return customAuthenticationProvider;
+    public AuthenticationProvider customAuthenticationProvider() {
+        DaoAuthenticationProvider customAuthenticationProvider = new DaoAuthenticationProvider();
+        customAuthenticationProvider.setUserDetailsService(utenteService);
+        return customAuthenticationProvider;
     }
 
     @Override
@@ -125,6 +125,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                             "LdapUserDetailsMapper only supports reading from a context. Please"
                                 + "use a subclass if mapUserToContext() is required.");
                     }
+
                     @Override
                     public UserDetails mapUserFromContext(DirContextOperations ctx,
                                                           String username, Collection<? extends GrantedAuthority> authorities) {
@@ -147,7 +148,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .managerPassword(ldapConfigurationProperties.getManagerPassword());
         }
         auth
-        	.authenticationProvider(customAuthenticationProvider());
+            .authenticationProvider(customAuthenticationProvider());
     }
 
 
