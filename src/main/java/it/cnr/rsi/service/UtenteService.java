@@ -5,6 +5,8 @@ import it.cnr.rsi.repository.*;
 import it.cnr.rsi.security.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.sql.Date;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -147,5 +150,28 @@ public class UtenteService implements UserDetailsService {
         utente.setPassword( Base64Utils.encodeToString(bpassword));
         utente.setDtUltimaVarPassword(Date.from(Instant.now()));
         utenteRepository.save(utente);
+    }
+
+    public UserContext getUserDetails() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return Optional
+            .ofNullable(authentication)
+            .map(Authentication::getPrincipal)
+            .filter(principal -> principal instanceof UserContext)
+            .map(UserContext.class::cast)
+            .map(userContext -> {
+                final Optional<List<Utente>> usersForUid = Optional.ofNullable(
+                    findUsersForUid(userContext.getLogin())).filter(utentes -> !utentes.isEmpty());
+                if (usersForUid.isPresent()) {
+                    userContext.users(usersForUid.get()
+                        .stream()
+                        .map(utente -> new UserContext(utente))
+                        .collect(Collectors.toList()));
+                } else {
+                    userContext.users(Collections.singletonList(loadUserByUsername(userContext.getLogin())));
+                }
+                return userContext;
+            })
+            .orElseThrow(() -> new RuntimeException("something went wrong " + authentication.toString()));
     }
 }
