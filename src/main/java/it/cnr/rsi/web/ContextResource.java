@@ -2,6 +2,7 @@ package it.cnr.rsi.web;
 
 import it.cnr.rsi.domain.Messaggio;
 import it.cnr.rsi.domain.Preferiti;
+import it.cnr.rsi.domain.Utente;
 import it.cnr.rsi.domain.UtenteIndirizziMail;
 import it.cnr.rsi.security.UserContext;
 import it.cnr.rsi.service.EsercizioBaseService;
@@ -9,6 +10,7 @@ import it.cnr.rsi.service.UnitaOrganizzativaService;
 import it.cnr.rsi.service.UtenteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpHeaders;
@@ -41,9 +43,9 @@ public class ContextResource {
         API_MESSAGGI = "/messaggi",
         API_UTENTI_MULTIPLI = "/users";
     private static final Logger LOGGER = LoggerFactory.getLogger(ContextResource.class);
-    private EsercizioBaseService esercizioBaseService;
-    private UnitaOrganizzativaService unitaOrganizzativaService;
-    private UtenteService utenteService;
+    private final EsercizioBaseService esercizioBaseService;
+    private final UnitaOrganizzativaService unitaOrganizzativaService;
+    private final UtenteService utenteService;
 
     public ContextResource(EsercizioBaseService esercizioBaseService,
                            UnitaOrganizzativaService unitaOrganizzativaService,
@@ -53,26 +55,16 @@ public class ContextResource {
         this.utenteService = utenteService;
     }
 
-    public static UserContext getUserDetails() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return Optional
-            .ofNullable(authentication)
-            .map(Authentication::getPrincipal)
-            .filter(principal -> principal instanceof UserContext)
-            .map(UserContext.class::cast)
-            .orElseThrow(() -> new RuntimeException("something went wrong " + authentication.toString()));
-    }
-
     @GetMapping(API_ESERCIZIO)
     public List<Integer> esercizi() {
-        UserContext userDetails = getUserDetails();
+        UserContext userDetails = utenteService.getUserDetails();
         LOGGER.info("GET esercizi for User: {}", userDetails.getUsername());
         return esercizioBaseService.findEsercizi();
     }
 
     @GetMapping(API_UO)
     public List<Pair<String, String>> findUnitaOrganizzativeAbilitate(String cds) {
-        UserContext userDetails = getUserDetails();
+        UserContext userDetails = utenteService.getUserDetails();
         LOGGER.info("GET UO for User: {}", userDetails.getUsername());
         return unitaOrganizzativaService
             .listaUnitaOrganizzativeAbilitate(userDetails.getUsername(), userDetails.getEsercizio(), cds)
@@ -83,7 +75,7 @@ public class ContextResource {
 
     @GetMapping(API_CDS)
     public List<Pair<String, String>> findCdsAbilitati(String uo) {
-        UserContext userDetails = getUserDetails();
+        UserContext userDetails = utenteService.getUserDetails();
         LOGGER.info("GET CDS for User: {}", userDetails.getUsername());
         return unitaOrganizzativaService
             .listaCDSAbilitati(userDetails.getUsername(), userDetails.getEsercizio(),
@@ -98,7 +90,7 @@ public class ContextResource {
 
     @GetMapping(API_CDR)
     public List<Pair<String, String>> findCdr(String uo) {
-        UserContext userDetails = getUserDetails();
+        UserContext userDetails = utenteService.getUserDetails();
         LOGGER.info("GET CDS for User: {}", userDetails.getUsername());
         return unitaOrganizzativaService
             .listaCdr(userDetails.getEsercizio(), uo)
@@ -109,28 +101,28 @@ public class ContextResource {
 
     @GetMapping(API_PREFERITI)
     public List<Preferiti> preferiti() {
-        UserContext userDetails = getUserDetails();
+        UserContext userDetails = utenteService.getUserDetails();
         LOGGER.info("GET preferiti for User: {}", userDetails.getUsername());
         return utenteService.findPreferiti(userDetails.getUsername());
     }
 
     @GetMapping(API_MESSAGGI)
     public List<Messaggio> messaggi() {
-        UserContext userDetails = getUserDetails();
+        UserContext userDetails = utenteService.getUserDetails();
         LOGGER.info("GET messaggi for User: {}", userDetails.getUsername());
         return utenteService.findMessaggi(userDetails.getUsername());
     }
 
     @PostMapping(API_MESSAGGI)
     public List<Messaggio> deleteMessaggi(@RequestBody ArrayList<Messaggio> messaggi) {
-        UserContext userDetails = getUserDetails();
+        UserContext userDetails = utenteService.getUserDetails();
         LOGGER.info("DELETE messaggi for User: {}", userDetails.getUsername());
         return utenteService.deleteMessaggi(userDetails.getUsername(), messaggi);
     }
 
     @GetMapping(API_UTENTI_MULTIPLI)
     public List<UserContext> users() {
-        UserContext userDetails = getUserDetails();
+        UserContext userDetails = utenteService.getUserDetails();
         LOGGER.info("GET all users for User: {}", userDetails.getUsername());
         return utenteService.findUsersForUid(userDetails.getLogin()).stream()
             .map(utente -> new UserContext(utente))
@@ -139,7 +131,7 @@ public class ContextResource {
 
     @PostMapping
     public UserContext save(@RequestBody Map<String, ?> params) {
-        UserContext userDetails = getUserDetails();
+        UserContext userDetails = utenteService.getUserDetails();
         LOGGER.info("POST params: {} for User: {}", params, userDetails.getUsername());
         params.forEach((k, v) -> userDetails.addAttribute(k, (Serializable) v));
         return userDetails;
@@ -147,14 +139,14 @@ public class ContextResource {
 
     @GetMapping(API_INDIRIZZI_MAIL)
     public List<UtenteIndirizziMail> getIndirizziMail() {
-        UserContext userDetails = getUserDetails();
+        UserContext userDetails = utenteService.getUserDetails();
         LOGGER.info("GET Indirizzi mail for User: {}", userDetails.getUsername());
         return utenteService.findIndirizziMail(userDetails.getUsername());
     }
 
     @PostMapping(API_INDIRIZZI_MAIL)
     public ResponseEntity<List<UtenteIndirizziMail>> postIndirizzoMail(@RequestBody ArrayList<UtenteIndirizziMail> utenteIndirizziMail) {
-        UserContext userDetails = getUserDetails();
+        UserContext userDetails = utenteService.getUserDetails();
         LOGGER.info("POST Indirizzo mail for User: {} Indirizzo: {}", userDetails.getUsername(), utenteIndirizziMail);
         try {
             utenteService.insertIndirizzoMail(userDetails.getUsername(), utenteIndirizziMail);
@@ -167,7 +159,7 @@ public class ContextResource {
 
     @DeleteMapping(API_INDIRIZZI_MAIL + "/{indirizzi:.+}")
     public List<UtenteIndirizziMail> deleteIndirizziMail(@PathVariable ArrayList<String> indirizzi) {
-        UserContext userDetails = getUserDetails();
+        UserContext userDetails = utenteService.getUserDetails();
         LOGGER.info("DELETE Indirizzi mail for User: {} Indirizzi: {}", userDetails.getUsername(), indirizzi);
         utenteService.deleteIndirizziMail(userDetails.getUsername(), indirizzi);
         return utenteService.findIndirizziMail(userDetails.getUsername());
