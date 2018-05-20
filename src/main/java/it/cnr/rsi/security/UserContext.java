@@ -12,76 +12,76 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class UserContext implements UserDetails {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     public static final GrantedAuthority ROLE_USER = new SimpleGrantedAuthority("ROLE_USER");
     public static final GrantedAuthority ROLE_SUPERUSER = new SimpleGrantedAuthority("ROLE_SUPERUSER");
     public static final GrantedAuthority ROLE_ADMIN = new SimpleGrantedAuthority("ROLE_ADMIN");
 
-	@JsonIgnore
-	private Utente currentUser;
+    @JsonIgnore
+    private Utente currentUser;
 
-	private String username;
+    private String username;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private Boolean ldap;
+
     private Collection<? extends GrantedAuthority> authorities;
+    private String login;
+    private Integer esercizio;
+    private String cds;
+    private String uo;
+    private String cdr;
 
-	private Map<String, Serializable> attributes;
     private Map<String, List<GrantedAuthority>> roles;
     private List<UserContext> users;
     private Boolean utenteMultiplo;
 
-	public UserContext(Utente currentUser) {
-		super();
+    public UserContext(Utente currentUser) {
+        super();
         this.roles = new HashMap<String, List<GrantedAuthority>>();
         this.roles.put("U", Arrays.asList(ROLE_USER));
         this.roles.put("A", Arrays.asList(ROLE_USER, ROLE_SUPERUSER));
         this.roles.put("S", Arrays.asList(ROLE_USER, ROLE_ADMIN));
 
-		this.currentUser = currentUser;
-		this.username = currentUser.getCdUtente();
-		this.utenteMultiplo = Boolean.FALSE;
+        this.currentUser = currentUser;
+        this.username = currentUser.getCdUtente();
+        this.utenteMultiplo = Boolean.FALSE;
         this.authorities = Optional.ofNullable(currentUser)
             .map(Utente::getTiUtente)
             .map(s -> roles.get(s))
             .orElse(Arrays.asList(ROLE_USER));
-		this.attributes = new HashMap<String, Serializable>();
+    }
 
-	}
-
-	public Serializable addAttribute(String key, Serializable value) {
-		return attributes.put(key, value);
-	}
-
-	public Serializable getAttribute(String key) {
-		return attributes.get(key);
-	}
 
     public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
         this.authorities = authorities;
     }
 
     @Override
-	@JsonIgnore
-	public Collection<? extends GrantedAuthority> getAuthorities() {
+    @JsonIgnore
+    public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
-	}
+    }
 
-	@JsonProperty("authorities")
-	public Collection<String> getAuthoritiesHipster() {
-		return getAuthorities()
-				.stream()
-				.map(x -> x.getAuthority())
-				.collect(Collectors.toList());
-	}
+    @JsonProperty("authorities")
+    public Collection<String> getAuthoritiesHipster() {
+        return getAuthorities()
+            .stream()
+            .map(x -> x.getAuthority())
+            .collect(Collectors.toList());
+    }
 
-	@Override
-	@JsonIgnore
-	public String getPassword() {
-		return currentUser.getPassword();
-	}
+    @Override
+    @JsonIgnore
+    public String getPassword() {
+        return currentUser.getPassword();
+    }
 
-	@Override
-	public String getUsername() {
-		return username;
-	}
+    @Override
+    public String getUsername() {
+        return username;
+    }
 
     public UserContext changeUsernameAndAuthority(String username) {
         this.username = username;
@@ -97,95 +97,127 @@ public class UserContext implements UserDetails {
     }
 
     @Override
-	public boolean isAccountNonExpired() {
+    public boolean isAccountNonExpired() {
         return isAccountNonLocked();
-	}
+    }
 
-	@Override
-	public boolean isAccountNonLocked() {
+    @Override
+    public boolean isAccountNonLocked() {
         final Optional<Utente> user = Optional.ofNullable(currentUser);
         return user
             .flatMap(utente -> Optional.ofNullable(utente.getDtUltimaVarPassword()))
             .isPresent() || user.filter(Utente::getFlAutenticazioneLdap).isPresent();
-	}
+    }
 
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return true;
-	}
+    @Override
+    public boolean isEnabled() {
+        // TODO Auto-generated method stub
+        return true;
+    }
 
     public Long getId() {
         return 0L;
     }
 
     public String getLogin() {
-        return Optional.ofNullable(attributes.get("login"))
-            .filter(String.class::isInstance)
-            .map(String.class::cast)
-            .orElse(currentUser.getCdUtente());
+        return Optional.ofNullable(login)
+            .orElseGet(() -> currentUser.getCdUtente());
     }
 
     public String getFirstName() {
-        return Optional.ofNullable(attributes.get("firstName"))
-            .filter(String.class::isInstance)
-            .map(String.class::cast)
-            .orElse(currentUser.getNome());
+        return Optional.ofNullable(firstName)
+            .orElseGet(() -> currentUser.getNome());
     }
 
     public String getLastName() {
-        return Optional.ofNullable(attributes.get("lastName"))
-            .filter(String.class::isInstance)
-            .map(String.class::cast)
-            .orElse(currentUser.getCognome());
+        return Optional.ofNullable(lastName)
+            .orElseGet(() -> currentUser.getCognome());
     }
 
     public String getEmail() {
-        return Optional.ofNullable(attributes.get("email"))
-            .filter(String.class::isInstance)
-            .map(String.class::cast)
+        return Optional.ofNullable(email)
             .orElse("");
     }
 
     public String getLangKey() {
-    	return Locale.ITALIAN.getLanguage();
+        return Locale.ITALIAN.getLanguage();
     }
 
     public Integer getEsercizio() {
-        return Optional.ofNullable(attributes.get("esercizio"))
-            .filter(Integer.class::isInstance)
-            .map(Integer.class::cast)
+        return Optional.ofNullable(esercizio)
             .orElse(null);
     }
     public String getCds() {
-        return Optional.ofNullable(attributes.get("cds"))
-            .filter(String.class::isInstance)
-            .map(String.class::cast)
+        return Optional.ofNullable(cds)
             .orElse(null);
     }
     public String getUo() {
-        return Optional.ofNullable(attributes.get("uo"))
-            .filter(String.class::isInstance)
-            .map(String.class::cast)
+        return Optional.ofNullable(uo)
             .orElse(null);
     }
     public String getCdr() {
-        return Optional.ofNullable(attributes.get("cdr"))
-            .filter(String.class::isInstance)
-            .map(String.class::cast)
+        return Optional.ofNullable(cdr)
             .orElse(null);
     }
 
     public boolean isLdap() {
-	    return Optional.ofNullable(attributes.get("ldap"))
-            .filter(Boolean.class::isInstance)
-            .map(Boolean.class::cast)
+        return Optional.ofNullable(ldap)
             .orElse(Boolean.FALSE);
+    }
+
+    public UserContext setUsername(String username) {
+        this.username = username;
+        return this;
+    }
+
+    public UserContext setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public UserContext setLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
+    public UserContext setEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
+    public UserContext setLdap(Boolean ldap) {
+        this.ldap = ldap;
+        return this;
+    }
+
+    public UserContext setLogin(String login) {
+        this.login = login;
+        return this;
+    }
+
+    public UserContext setEsercizio(Integer esercizio) {
+        this.esercizio = esercizio;
+        return this;
+    }
+
+    public UserContext setCds(String cds) {
+        this.cds = cds;
+        return this;
+    }
+
+    public UserContext setUo(String uo) {
+        this.uo = uo;
+        return this;
+    }
+
+    public UserContext setCdr(String cdr) {
+        this.cdr = cdr;
+        return this;
     }
 
     public List<UserContext> getUsers() {
@@ -202,7 +234,7 @@ public class UserContext implements UserDetails {
     }
 
     public String getDsUtente() {
-	    return Optional.ofNullable(currentUser)
+        return Optional.ofNullable(currentUser)
             .map(Utente::getDsUtente)
             .orElse(null);
     }
