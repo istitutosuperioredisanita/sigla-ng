@@ -18,11 +18,7 @@ package it.cnr.rsi.session.hazelcast;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
@@ -451,19 +447,21 @@ public class HazelcastSessionRepository implements
 
 		@Override
 		public Object process(Map.Entry<String, MapSession> entry) {
-			MapSession value = entry.getValue();
-			value.setLastAccessedTime(this.lastAccessedTime);
-			value.setMaxInactiveInterval(this.maxInactiveInterval);
-			for (final Map.Entry<String, Object> attribute : this.delta.entrySet()) {
-				if (attribute.getValue() != null) {
-					value.setAttribute(attribute.getKey(), attribute.getValue());
-				}
-				else {
-					value.removeAttribute(attribute.getKey());
-				}
-			}
-			entry.setValue(value);
-			return value;
+			return Optional.ofNullable(entry.getValue())
+                    .map(value -> {
+                        value.setLastAccessedTime(this.lastAccessedTime);
+                        value.setMaxInactiveInterval(this.maxInactiveInterval);
+                        for (final Map.Entry<String, Object> attribute : this.delta.entrySet()) {
+                            if (attribute.getValue() != null) {
+                                value.setAttribute(attribute.getKey(), attribute.getValue());
+                            }
+                            else {
+                                value.removeAttribute(attribute.getKey());
+                            }
+                        }
+                        entry.setValue(value);
+                        return value;
+                    }).orElse(null);
 		}
 
 	}
