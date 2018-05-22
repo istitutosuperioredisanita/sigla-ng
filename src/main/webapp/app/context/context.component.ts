@@ -86,7 +86,7 @@ export class ContextComponent implements OnInit, OnDestroy {
         text$
         .debounceTime(200)
         .map((term) => this.filterPair(term, this.contextService.cdsPairs, 'cds')
-        .slice(0, 20));
+        .slice(0, 200));
 
     searchuo = (text$: Observable<string>) =>
         text$

@@ -736,6 +736,10 @@ html {
   .input-group-context > ngb-typeahead-window {
     width: 100%;
   }
+  .dropdown-menu { 
+    max-height: 50vh; 
+    overflow-y: auto; 
+  }
   .w-8 {
     width: 8%!important;
   }

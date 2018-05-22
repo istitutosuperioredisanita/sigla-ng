@@ -24,7 +24,7 @@
             <div class="form-group row">
                 <label for="cds" class="col-sm-2 col-form-label">Centro di Spesa</label>
                 <div class="col-sm-8">
-                    <div class="input-group input-group-context">
+                    <div class="input-group input-group-context input-group-cds">
                         <input 
                             [(ngModel)]="cdsModel" 
                             [ngbTypeahead]="searchcds" 
@@ -108,7 +108,7 @@
             <form class="form" role="form" (ngSubmit)="saveContext(true)" #contextForm="ngForm">
                 <div class="form-group">
                     <label class="form-control-label" for="navbar-cds">Centro di Spesa</label>
-                    <div class="input-group">
+                    <div class="input-group input-group-cds">
                         <input
                             [(ngModel)]="cdsModel" 
                             [ngbTypeahead]="searchcds" 
