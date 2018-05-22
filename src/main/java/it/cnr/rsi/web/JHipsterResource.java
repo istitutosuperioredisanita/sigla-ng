@@ -111,7 +111,11 @@ public class JHipsterResource {
             .map(Authentication::getPrincipal)
             .filter(principal -> principal instanceof UserContext)
             .map(UserContext.class::cast)
-            .map(userContext -> userContext.changeUsernameAndAuthority(username))
+            .map(userContext -> {
+                final UserContext newUserContext = userContext.changeUsernameAndAuthority(username);
+                SecurityContextHolder.getContext().setAuthentication(new ContextAuthentication(newUserContext));
+                return newUserContext;
+            })
             .orElseThrow(() -> new RuntimeException("something went wrong " + authentication.toString())));
     }
 
