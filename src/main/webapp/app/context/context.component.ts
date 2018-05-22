@@ -92,13 +92,13 @@ export class ContextComponent implements OnInit, OnDestroy {
         text$
         .debounceTime(200)
         .map((term) => this.filterPair(term, this.contextService.uoPairs, 'uo')
-        .slice(0, 20));
+        .slice(0, 200));
 
     searchcdr = (text$: Observable<string>) =>
         text$
         .debounceTime(200)
         .map((term) => this.filterPair(term, this.contextService.cdrPairs, 'cdr')
-        .slice(0, 20));
+        .slice(0, 200));
 
     formatter = (pair: Pair) => pair.first + ' - ' + pair.second;
     formatterFirst = (pair: Pair) => pair.first;
