@@ -43,7 +43,8 @@
             "confirmpassword": "Conferma nuova password",
             "confirmpassword.placeholder": "Conferma nuova password",
             "email": "Email",
-            "email.placeholder": "Il tuo indirizzo email"
+            "email.placeholder": "Il tuo indirizzo email",
+            "autocomplete.placeholder": "Digita per cercare..."
         },
         "messages": {
             "info": {
