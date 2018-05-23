@@ -15,6 +15,10 @@ import java.util.stream.Stream;
 
 @Repository
 public interface UtenteUnitaRuoloRepository extends JpaRepository<UtenteUnitaRuolo, UtenteUnitaRuoloPK> {
-	@Query("select id.cdRuolo from UtenteUnitaRuolo a where id.cdUtente = :cdUtente AND id.cdUnitaOrganizzativa = :cdUnitaOrganizzativa")
+	@Query(
+	    "select id.cdRuolo from UtenteUnitaRuolo  " +
+        " where id.cdUtente = :cdUtente " +
+        " and id.cdUnitaOrganizzativa = :cdUnitaOrganizzativa"
+    )
 	Stream<String> findRuoliByCdUtente(@Param("cdUtente")String cdUtente, @Param("cdUnitaOrganizzativa")String cdUnitaOrganizzativa);
 }

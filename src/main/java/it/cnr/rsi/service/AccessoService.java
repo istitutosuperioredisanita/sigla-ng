@@ -1,10 +1,7 @@
 package it.cnr.rsi.service;
 
 import it.cnr.rsi.domain.Utente;
-import it.cnr.rsi.repository.RuoloAccessoRepository;
-import it.cnr.rsi.repository.UtenteRepository;
-import it.cnr.rsi.repository.UtenteUnitaAccessoRepository;
-import it.cnr.rsi.repository.UtenteUnitaRuoloRepository;
+import it.cnr.rsi.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
@@ -18,9 +15,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- *
  * @author mspasiano
- *
  */
 @Service
 public class AccessoService {
@@ -29,36 +24,56 @@ public class AccessoService {
     private UtenteUnitaAccessoRepository utenteUnitaAccessoRepository;
     private UtenteUnitaRuoloRepository utenteUnitaRuoloRepository;
     private RuoloAccessoRepository ruoloAccessoRepository;
-	private UtenteRepository utenteRepository;
+    private UtenteRepository utenteRepository;
+    private UnitaOrganizzativaRepository unitaOrganizzativaRepository;
 
     public AccessoService(UtenteUnitaAccessoRepository utenteUnitaAccessoRepository,
-    		UtenteUnitaRuoloRepository utenteUnitaRuoloRepository, RuoloAccessoRepository ruoloAccessoRepository, UtenteRepository utenteRepository) {
+                          UtenteUnitaRuoloRepository utenteUnitaRuoloRepository,
+                          RuoloAccessoRepository ruoloAccessoRepository,
+                          UtenteRepository utenteRepository,
+                          UnitaOrganizzativaRepository unitaOrganizzativaRepository) {
         this.utenteUnitaAccessoRepository = utenteUnitaAccessoRepository;
         this.utenteUnitaRuoloRepository = utenteUnitaRuoloRepository;
         this.ruoloAccessoRepository = ruoloAccessoRepository;
         this.utenteRepository = utenteRepository;
+        this.unitaOrganizzativaRepository = unitaOrganizzativaRepository;
     }
-    @CacheEvict(value="accessi", key="{#userId, #esercizio, #unitaOrganizzativa}")
-    public boolean evictCacheAccessi(String userId, Integer esercizio, String unitaOrganizzativa){
+
+    @CacheEvict(value = "accessi", key = "{#userId, #esercizio, #unitaOrganizzativa}")
+    public boolean evictCacheAccessi(String userId, Integer esercizio, String unitaOrganizzativa) {
         LOGGER.info("Evict cache Accessi for User: {}", userId);
         return true;
     }
 
-    @Cacheable(value="accessi", key="{#userId, #esercizio, #unitaOrganizzativa}")
+    @Cacheable(value = "accessi", key = "{#userId, #esercizio, #unitaOrganizzativa}")
     @Transactional
     public List<String> accessi(String userId, Integer esercizio, String unitaOrganizzativa) {
-    	LOGGER.info("Accessi for User: {} esercizio {} and Unita Organizzativa: {}", userId, esercizio, unitaOrganizzativa);
-		Utente utente = utenteRepository.findById(userId).get();
-    	List<String> findRuoliByCdUtente = utenteUnitaRuoloRepository.findRuoliByCdUtente(userId, unitaOrganizzativa).collect(Collectors.toList());
-    	Optional.of(utente.isUtenteSupervisore())
+        LOGGER.info("Accessi for User: {} esercizio {} and Unita Organizzativa: {}", userId, esercizio, unitaOrganizzativa);
+        Utente utente = utenteRepository.findById(userId).get();
+        List<String> findRuoliByCdUtente = utenteUnitaRuoloRepository
+            .findRuoliByCdUtente(userId, unitaOrganizzativa).collect(Collectors.toList());
+        List<String> findAccessiByCdUtente = utenteUnitaAccessoRepository
+            .findAccessiByCdUtente(userId, esercizio, unitaOrganizzativa).collect(Collectors.toList());
+        unitaOrganizzativaRepository.findCodiceUoParents(esercizio, unitaOrganizzativa)
+            .forEach(codiceUo -> {
+                findRuoliByCdUtente.addAll(
+                    utenteUnitaRuoloRepository.findRuoliByCdUtente(userId, codiceUo).collect(Collectors.toList())
+                );
+                findAccessiByCdUtente.addAll(
+                    utenteUnitaAccessoRepository.findAccessiByCdUtente(userId, esercizio, codiceUo).collect(Collectors.toList())
+                );
+            });
+
+
+        Optional.of(utente.isUtenteSupervisore())
             .filter(isUtenteSupervisore -> isUtenteSupervisore)
             .filter(aBoolean -> Optional.ofNullable(utente.getCdRuoloSupervisore()).isPresent())
             .ifPresent(aBoolean -> findRuoliByCdUtente.add(utente.getCdRuoloSupervisore()));
-    	return Stream.concat(
-    			utenteUnitaAccessoRepository.findAccessiByCdUtente(userId, esercizio, unitaOrganizzativa),
-    	    	Optional.ofNullable(findRuoliByCdUtente).filter(x -> !x.isEmpty())
-                    .map(x -> ruoloAccessoRepository.findAccessiByRuoli(esercizio, x))
-                    .orElse(Stream.empty())
-    			).distinct().collect(Collectors.toList());
+        return Stream.concat(
+            findAccessiByCdUtente.stream(),
+            Optional.ofNullable(findRuoliByCdUtente).filter(x -> !x.isEmpty())
+                .map(x -> ruoloAccessoRepository.findAccessiByRuoli(esercizio, x))
+                .orElse(Stream.empty())
+        ).distinct().collect(Collectors.toList());
     }
 }
