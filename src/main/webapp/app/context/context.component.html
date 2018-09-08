@@ -4,10 +4,8 @@
     </div>
 </ng-template>
 <ng-template #rtNavbar let-r="result" let-t="term">
-    <div class="navbar-typeahead w-100">
-        <span>{{r.first}}</span>&nbsp;<span placement="right"
-        container="body" 
-        ngbTooltip="{{r.second}}" class="text-truncate">{{r.second}}</span>
+    <div class="navbar-typeahead w-100" placement="right" container="body" ngbTooltip="{{r.second}}">
+        <span>{{r.first}}</span><span class="text-truncate">{{r.second}}</span>
     </div>
 </ng-template>
 <div *ngIf="!isNavbar">

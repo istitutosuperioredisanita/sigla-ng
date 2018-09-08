@@ -72,6 +72,27 @@ export class ContextService  {
         return this.http.post(this.resourceUrlMessaggi, messaggi).map((res: Response) => res.json());
     }
 
+    resetCds(): Pair[] {
+        this.cdsPairs = this.allCdsPairs;
+        return this.allCdsPairs;
+    }
+
+    findCds(account: Account): void {
+        this.getCds()
+            .subscribe((cds) => {
+                this.cdsPairs = cds;
+                this.setCdsModel(cds.filter(function(v) {
+                    return v.first === account.cds;
+                })[0]);
+            });
+    }
+
+    getCds(uo?: string): Observable<Pair[]> {
+        const params: URLSearchParams = new URLSearchParams();
+        params.set('uo', uo);
+        return this.http.get(SERVER_API_URL + 'api/context/cds', {search: params}).map((res: Response) => res.json());
+    }
+
     findUo(account: Account): void {
         this.getUo(account.cds)
             .subscribe((uo) => {
@@ -86,34 +107,6 @@ export class ContextService  {
         const params: URLSearchParams = new URLSearchParams();
         params.set('cds', cds);
         return this.http.get(SERVER_API_URL + 'api/context/uo', {search: params}).map((res: Response) => res.json());
-    }
-
-    resetCds(): Pair[] {
-        this.cdsPairs = this.allCdsPairs;
-        return this.allCdsPairs;
-    }
-
-    allCds(): void {
-        this.getCds('')
-            .subscribe((cds) => {
-                this.allCdsPairs = cds;
-            });
-    }
-
-    findCds(account: Account): void {
-        this.getCds(account.uo)
-            .subscribe((cds) => {
-                this.cdsPairs = cds;
-                this.setCdsModel(cds.filter(function(v) {
-                    return v.first === account.cds;
-                })[0]);
-            });
-    }
-
-    getCds(uo: string): Observable<Pair[]> {
-        const params: URLSearchParams = new URLSearchParams();
-        params.set('uo', uo);
-        return this.http.get(SERVER_API_URL + 'api/context/cds', {search: params}).map((res: Response) => res.json());
     }
 
     getCdr(uo: string): Observable<Pair[]> {

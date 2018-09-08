@@ -73,10 +73,8 @@ export class ContextComponent implements OnInit, OnDestroy {
             if (type === 'cds') {
                 this.uoModel = undefined;
                 this.cdrModel = undefined;
-                return this.contextService.resetCds();
-            } else {
-                return pairs;
             }
+            return pairs;
         } else {
             return pairs.filter((v) => new RegExp(term, 'gi').test(v.first + ' - ' + v.second));
         }

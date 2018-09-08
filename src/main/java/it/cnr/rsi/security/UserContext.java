@@ -7,7 +7,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.io.Serializable;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -16,6 +19,7 @@ public class UserContext implements UserDetails {
     public static final GrantedAuthority ROLE_USER = new SimpleGrantedAuthority("ROLE_USER");
     public static final GrantedAuthority ROLE_SUPERUSER = new SimpleGrantedAuthority("ROLE_SUPERUSER");
     public static final GrantedAuthority ROLE_ADMIN = new SimpleGrantedAuthority("ROLE_ADMIN");
+    public static final int MONTH_EXPIRED = 6;
 
     @JsonIgnore
     private Utente currentUser;
@@ -98,7 +102,14 @@ public class UserContext implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return isAccountNonLocked();
+        return Optional.ofNullable(this.currentUser)
+            .flatMap(utente -> Optional.ofNullable(utente.getDtUltimaVarPassword()))
+            .filter(java.sql.Date.class::isInstance)
+            .map(java.sql.Date.class::cast)
+            .map(Date::toLocalDate)
+            .map(localDate -> localDate.plusMonths(MONTH_EXPIRED))
+            .map(localDate -> localDate.isAfter(LocalDate.now(ZoneId.systemDefault())))
+            .orElse(Boolean.TRUE);
     }
 
     @Override
