@@ -91,9 +91,11 @@ export class ContextService  {
         this.getUo(account ? account.cds : '')
             .subscribe((uo) => {
                 this.uoPairs = uo;
-                this.setUoModel(uo.filter(function(v) {
-                    return v.first === account.uo;
-                })[0]);
+                if (account) {
+                    this.setUoModel(uo.filter(function(v) {
+                        return v.first === account.uo;
+                    })[0]);
+                }
             });
     }
 
