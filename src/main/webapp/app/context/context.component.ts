@@ -73,6 +73,7 @@ export class ContextComponent implements OnInit, OnDestroy {
             if (type === 'cds') {
                 this.uoModel = undefined;
                 this.cdrModel = undefined;
+                this.contextService.findUo();
             }
             return pairs;
         } else {
@@ -115,7 +116,6 @@ export class ContextComponent implements OnInit, OnDestroy {
         this.contextService
             .getCds(item ? item.first : '')
             .subscribe((cds) =>  {
-                this.contextService.cdsPairs = cds;
                 if (cds.length === 1) {
                     this.cdsModel = cds[0];
                 }

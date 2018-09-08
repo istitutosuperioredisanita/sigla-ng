@@ -12,7 +12,6 @@ import { SERVER_API_URL } from '../app.constants';
 @Injectable()
 export class ContextService  {
     esercizi: number[];
-    allCdsPairs: Pair[];
     cdsPairs: Pair[];
     uoPairs: Pair[];
     cdrPairs: Pair[];
@@ -72,11 +71,6 @@ export class ContextService  {
         return this.http.post(this.resourceUrlMessaggi, messaggi).map((res: Response) => res.json());
     }
 
-    resetCds(): Pair[] {
-        this.cdsPairs = this.allCdsPairs;
-        return this.allCdsPairs;
-    }
-
     findCds(account: Account): void {
         this.getCds()
             .subscribe((cds) => {
@@ -93,8 +87,8 @@ export class ContextService  {
         return this.http.get(SERVER_API_URL + 'api/context/cds', {search: params}).map((res: Response) => res.json());
     }
 
-    findUo(account: Account): void {
-        this.getUo(account.cds)
+    findUo(account?: Account): void {
+        this.getUo(account ? account.cds : '')
             .subscribe((uo) => {
                 this.uoPairs = uo;
                 this.setUoModel(uo.filter(function(v) {
