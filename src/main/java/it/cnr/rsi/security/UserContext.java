@@ -103,6 +103,7 @@ public class UserContext implements UserDetails {
     @Override
     public boolean isAccountNonExpired() {
         return Optional.ofNullable(this.currentUser)
+            .filter(utente -> !utente.getFlAutenticazioneLdap())
             .flatMap(utente -> Optional.ofNullable(utente.getDtUltimaVarPassword()))
             .filter(java.sql.Date.class::isInstance)
             .map(java.sql.Date.class::cast)
