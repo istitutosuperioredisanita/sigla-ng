@@ -74,7 +74,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         let navigate = redirect || '';
         this.isRequesting = true;
         this.loginService.login({
-            username: this.username,
+            username: this.username.toLowerCase(),
             password: this.password,
             rememberMe: this.rememberMe
         }).then((account: Account) => {
