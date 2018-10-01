@@ -140,24 +140,21 @@ public class ContextResource {
                 .map(Integer.class::cast)
                 .orElse(null)
         );
-        userDetails.setCds(
-            Optional.ofNullable(params.get("cds"))
-                .filter(String.class::isInstance)
-                .map(String.class::cast)
-                .orElse(null)
-        );
-        userDetails.setUo(
-            Optional.ofNullable(params.get("uo"))
-                .filter(String.class::isInstance)
-                .map(String.class::cast)
-                .orElse(null)
-        );
-        userDetails.setCdr(
-            Optional.ofNullable(params.get("cdr"))
-                .filter(String.class::isInstance)
-                .map(String.class::cast)
-                .orElse(null)
-        );
+        Optional.ofNullable(params.get("cds"))
+            .filter(String.class::isInstance)
+            .map(String.class::cast)
+            .ifPresent(s -> userDetails.setCds(s));
+
+        Optional.ofNullable(params.get("uo"))
+            .filter(String.class::isInstance)
+            .map(String.class::cast)
+            .ifPresent(s -> userDetails.setUo(s));
+
+        Optional.ofNullable(params.get("cdr"))
+            .filter(String.class::isInstance)
+            .map(String.class::cast)
+            .ifPresent(s -> userDetails.setCdr(s));
+
         SecurityContextHolder.getContext().setAuthentication(new ContextAuthentication(userDetails));
         return userDetails;
     }
