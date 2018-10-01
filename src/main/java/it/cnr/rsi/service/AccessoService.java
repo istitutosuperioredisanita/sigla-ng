@@ -54,6 +54,7 @@ public class AccessoService {
             .findRuoliByCdUtente(userId, unitaOrganizzativa).collect(Collectors.toList());
         List<String> findAccessiByCdUtente = utenteUnitaAccessoRepository
             .findAccessiByCdUtente(userId, esercizio, unitaOrganizzativa).collect(Collectors.toList());
+
         unitaOrganizzativaRepository.findCodiceUoParents(esercizio, unitaOrganizzativa)
             .forEach(codiceUo -> {
                 findRuoliByCdUtente.addAll(
