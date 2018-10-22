@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, Renderer, ElementRef } from '@angular
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
 import { Router, NavigationExtras } from '@angular/router';
-
+import { ProfileService } from '../layouts/profiles/profile.service'; // FIXME barrel doesnt work here
 import { Account, MultipleUserModalService, LoginService, Principal, StateStorageService } from '../shared';
 import { ContextService} from '../context';
 import { LocalStateStorageService } from '../shared/auth/local-storage.service';
@@ -19,6 +19,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     account: Account;
     modalRef: NgbModalRef;
     authenticationError: boolean;
+    instituteAcronym: string;
     password: string;
     rememberMe: boolean;
     username: string;
@@ -32,12 +33,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
         private multipleUserModalService: MultipleUserModalService,
         private stateStorageService: StateStorageService,
         private eventManager: JhiEventManager,
+        private profileService: ProfileService,
         private elementRef: ElementRef,
         private router: Router,
         private renderer: Renderer,
         private context: ContextService,
         private localStateStorageService: LocalStateStorageService
     ) {
+        this.profileService.getProfileInfo().subscribe((profileInfo) => {
+            this.instituteAcronym = profileInfo.instituteAcronym;
+        });
     }
 
     ngOnInit() {
@@ -129,5 +134,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.isRequesting = false;
             this.authenticationError = true;
         });
+    }
+
+    getLogo() {
+        return 'login-img-' + this.instituteAcronym;
     }
 }
