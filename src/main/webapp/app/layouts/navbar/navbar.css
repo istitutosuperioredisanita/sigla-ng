@@ -101,6 +101,9 @@ Logo styles
 .logo-img-CNR {
     background-image: url("../../../content/images/CNR-SIGLA-logo.png");    
 }
+.logo-img-ISIN {
+    background-image: url("../../../content/images/ISIN-SIGLA-logo.png");
+}
 
 .nav-link, .navbar-text {
     color: #FFF !important

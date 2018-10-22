@@ -24,3 +24,17 @@ only screen and (                min-resolution: 2dppx) {
         background-size: contain;
     }
 }
+.login-img {
+   width: 60px; 
+   height: 60px;
+}
+.login-img-ISS {
+    content: url("../../content/images/ISS.png");
+}
+.login-img-CNR {
+    content: url("../../content/images/CNR.png");
+    background-color:#0066CC;
+}
+.login-img-ISIN {
+    content: url("../../content/images/ISIN.png");
+}
