@@ -25,16 +25,17 @@ only screen and (                min-resolution: 2dppx) {
     }
 }
 .login-img {
-   width: 60px; 
-   height: 60px;
+   width: 70px; 
+   height: 70px;
+   display: inline-block;
 }
-.login-img-ISS {
-    content: url("../../content/images/ISS.png");
+.login-img-ISS, .login-img-ISS::before {
+    background: url("../../content/images/ISS.png") no-repeat center center;
 }
-.login-img-CNR {
-    content: url("../../content/images/CNR.png");
+.login-img-CNR, .login-img-CNR::before {
+    background: url("../../content/images/CNR.png") no-repeat center center;
     background-color:#0066CC;
 }
-.login-img-ISIN {
-    content: url("../../content/images/ISIN.png");
+.login-img-ISIN, .login-img-ISIN::before {
+    background: url("../../content/images/ISIN.png") no-repeat center center;
 }
