@@ -24,8 +24,17 @@ only screen and (                min-resolution: 2dppx) {
         background-size: contain;
     }
 }
+@media screen and (max-width: 425px) {
+    .login-img {
+        width: 140px;
+     }
+}
+@media screen and (min-width: 768px) {
+    .login-img {
+        width: 70px;
+     }
+}
 .login-img {
-   width: 70px; 
    height: 70px;
    display: inline-block;
 }
