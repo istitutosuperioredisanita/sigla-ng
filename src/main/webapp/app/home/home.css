@@ -29,7 +29,7 @@ only screen and (                min-resolution: 2dppx) {
         width: 140px;
      }
 }
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 426px) {
     .login-img {
         width: 70px;
      }
