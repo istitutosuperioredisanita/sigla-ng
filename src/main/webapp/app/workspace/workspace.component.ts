@@ -1,11 +1,13 @@
 import { Component, OnInit, OnDestroy, Input, ElementRef, Renderer, ViewChild, Inject } from '@angular/core';
 import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
 import { Principal } from '../shared';
-import { Observable, Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Rx';
 import { WorkspaceService } from './workspace.service';
-import { DomSanitizer, SafeResourceUrl, SafeScript, SafeHtml} from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import { Leaf } from './leaf.model';
 import { TODO } from './todo.model';
+import { Pair } from '../context/pair.model';
+import { ContextService } from '../context/context.service';
 import { Italian } from 'flatpickr/dist/l10n/it.js';
 import 'flatpickr';
 declare var flatpickr;
@@ -30,11 +32,18 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     flatpickrs = [];
     todos: TODO[];
     refreshTodoListener: Subscription;
+    onSelectCdsSubscription: Subscription;
+    onSelectUoSubscription: Subscription;
+    onSelectCdrSubscription: Subscription;
+    cdsModel: Pair;
+    uoModel: Pair;
+    cdrModel: Pair;
 
     @ViewChild('htmlContainer') container: ElementRef;
     @ViewChild('scriptContainer') scriptContainer: ElementRef;
 
     constructor(
+        private contextService: ContextService,
         private jhiLanguageService: JhiLanguageService,
         private principal: Principal,
         private workspaceService: WorkspaceService,
@@ -71,6 +80,18 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         this.refreshTodoListener = this.eventManager.subscribe('onRefreshTodo', () => {
             this.caricaTODO();
         });
+        this.cdsModel = this.contextService.cdsModel;
+        this.uoModel = this.contextService.uoModel;
+        this.cdrModel = this.contextService.cdrModel;
+        this.onSelectCdsSubscription = this.eventManager.subscribe('onSelectCds', (message) => {
+            this.cdsModel = message.content;
+        });
+        this.onSelectUoSubscription = this.eventManager.subscribe('onSelectUo', (message) => {
+            this.uoModel = message.content;
+        });
+        this.onSelectCdrSubscription = this.eventManager.subscribe('onSelectCdr', (message) => {
+            this.cdrModel = message.content;
+        });
     }
 
     caricaTODO() {
@@ -90,6 +111,9 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         this.listenerSubmit();
         this.listenerSubmitForm();
         this.refreshTodoListener.unsubscribe();
+        this.eventManager.destroy(this.onSelectCdsSubscription);
+        this.eventManager.destroy(this.onSelectUoSubscription);
+        this.eventManager.destroy(this.onSelectCdrSubscription);
     }
 
     openNodo(cdNodo: string) {

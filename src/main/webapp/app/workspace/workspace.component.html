@@ -13,6 +13,14 @@
             <div class="hipster img-fluid img-rounded col-12 col-sm-6 col-md-2"></div>
             <div class="mt-2 col-12 col-sm-6 col-md-10">
                 <div class="row ml-2">
+
+                    <div class="col-12 mb-5">
+                        <ul class="list-group ">
+                            <li class="list-group-item font-weight-bold font-italic text-primary">CdS: {{cdsModel.first}} - {{cdsModel.second}}</li>
+                            <li class="list-group-item font-weight-bold font-italic text-primary">UO: {{uoModel.first}} - {{uoModel.second}}</li>
+                            <li class="list-group-item font-weight-bold font-italic text-primary">CdR: {{cdrModel.first}} - {{cdrModel.second}}</li>
+                        </ul>
+                    </div>
                     <div class="col-lg-4 col-md-6 mb-2" *ngFor="let todo of todos">
                         <div class="card h-100">
                             <h5 class="card-header">
