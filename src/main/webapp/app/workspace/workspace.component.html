@@ -16,9 +16,9 @@
 
                     <div class="col-12 mb-5">
                         <ul class="list-group ">
-                            <li class="list-group-item font-weight-bold font-italic text-primary">CdS: {{cdsModel.first}} - {{cdsModel.second}}</li>
-                            <li class="list-group-item font-weight-bold font-italic text-primary">UO: {{uoModel.first}} - {{uoModel.second}}</li>
-                            <li class="list-group-item font-weight-bold font-italic text-primary">CdR: {{cdrModel.first}} - {{cdrModel.second}}</li>
+                            <li *ngIf="cdsModel" class="list-group-item font-weight-bold font-italic text-primary">CdS: {{cdsModel.first}} - {{cdsModel.second}}</li>
+                            <li *ngIf="uoModel" class="list-group-item font-weight-bold font-italic text-primary">UO: {{uoModel.first}} - {{uoModel.second}}</li>
+                            <li *ngIf="cdrModel" class="list-group-item font-weight-bold font-italic text-primary">CdR: {{cdrModel.first}} - {{cdrModel.second}}</li>
                         </ul>
                     </div>
                     <div class="col-lg-4 col-md-6 mb-2" *ngFor="let todo of todos">
