@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, ViewChild, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild, EventEmitter, Output, QueryList, ViewChildren, AfterViewInit } from '@angular/core';
 import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
 import { Principal } from '../shared';
 import { Leaf } from './leaf.model';
@@ -6,6 +6,7 @@ import { WorkspaceService } from './workspace.service';
 import { Observable } from 'rxjs/Observable';
 import { TreeComponent, TreeNode } from 'angular-tree-component';
 import { Subscription } from 'rxjs/Rx';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 
 export class SIGLATreeNode {
@@ -21,7 +22,7 @@ export class SIGLATreeNode {
         'tree.css'
     ]
 })
-export class SIGLATreeComponent implements OnInit, OnDestroy {
+export class SIGLATreeComponent implements OnInit, OnDestroy, AfterViewInit {
     isRequesting: boolean;
     account: Account;
     leafs: any;
@@ -29,8 +30,10 @@ export class SIGLATreeComponent implements OnInit, OnDestroy {
     nodes = [];
     preferitiListener: Subscription;
     refreshTreeListener: Subscription;
+    workspaceListener: Subscription;
     @ViewChild(TreeComponent) tree: TreeComponent;
     @Output() activateLeaf = new EventEmitter();
+    @ViewChildren(NgbPopover) popovers: QueryList<NgbPopover>;
 
     constructor(
         private jhiLanguageService: JhiLanguageService,
@@ -87,11 +90,29 @@ export class SIGLATreeComponent implements OnInit, OnDestroy {
         this.refreshTreeListener = this.eventManager.subscribe('onRefreshTree', (message) => {
             this.initTree(message);
         });
+        this.workspaceListener = this.eventManager.subscribe('onWorkspaceHover', (message) => {
+            this.popovers.forEach((p) => p.close());
+        });
+    }
+
+    ngAfterViewInit() {
+        this.popovers.changes
+            .subscribe((queryChanges) => {
+                this.popovers.forEach((popover: NgbPopover) => {
+                    popover.shown.subscribe(() => {
+                        this.popovers
+                        .filter((p) => p !== popover)
+                        .forEach((p) => p.close());
+                    });
+                });
+            });
+
     }
 
     ngOnDestroy() {
         this.eventManager.destroy(this.preferitiListener);
         this.eventManager.destroy(this.refreshTreeListener);
+        this.eventManager.destroy(this.workspaceListener);
     }
 
     private getChildNodes(id): SIGLATreeNode[] {
@@ -121,6 +142,7 @@ export class SIGLATreeComponent implements OnInit, OnDestroy {
     }
 
     activateTreeNode = (node: TreeNode) => {
+        this.popovers.forEach((p) => p.close());
         const aleaf = this.leafz.filter((v) => {
             return v.id === node.id;
         })[0];
