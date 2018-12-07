@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, ElementRef, Renderer, ViewChild, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ElementRef, Renderer, ViewChild, Inject, HostListener } from '@angular/core';
 import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
 import { Principal } from '../shared';
 import { Subscription } from 'rxjs/Rx';
@@ -71,6 +71,11 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         });
         workspaceService.isMenuHidden()
           .subscribe((hidden) => this.hidden = hidden);
+    }
+
+    @HostListener('mouseover')
+    onMouseOver() {
+        this.eventManager.broadcast({name: 'onWorkspaceHover'});
     }
 
     ngOnInit() {
