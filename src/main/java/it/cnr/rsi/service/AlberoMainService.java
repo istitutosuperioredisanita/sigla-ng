@@ -1,5 +1,6 @@
 package it.cnr.rsi.service;
 
+import it.cnr.rsi.domain.Accesso;
 import it.cnr.rsi.domain.AlberoMain;
 import it.cnr.rsi.domain.TreeNode;
 import it.cnr.rsi.domain.Utente;
@@ -74,7 +75,18 @@ public class AlberoMainService {
         return values
                 .stream()
                 .sorted(Comparator.comparingInt(node -> node.getPgOrdinamento().intValue()))
-                .map(node -> new TreeNode(node.getCdNodo(), node.getDsNodo(), node.getBusinessProcess(), node.getBreadcrumb()))
+                .map(node -> new TreeNode(
+                    node.getCdNodo(),
+                    node.getDsNodo(),
+                    node.getBusinessProcess(),
+                    Optional.ofNullable(node.getAccesso())
+                        .map(Accesso::getCdAccesso)
+                        .orElse(null),
+                    Optional.ofNullable(node.getAccesso())
+                        .map(Accesso::getDsAccesso)
+                        .orElse(null),
+                    node.getBreadcrumb())
+                )
                 .map(TreeNode.class::cast)
                 .collect(Collectors.toList());
     }
