@@ -38,8 +38,18 @@
             [class.tree-node-focused]="node.isFocused">
 
             <div class="node-wrapper node-item" [style.padding-left]="node.getNodePadding()" (click)="toggleTreeNode(node)">
-                <div class="node-content-wrapper row">
-                    <span class="d-inline-block text-truncate col tree-col-label" placement="top" container="body" ngbTooltip="{{node.data.name}}">{{node.data.name}}</span>
+                <div class="node-content-wrapper row" 
+                    container="body"  
+                    placement="right" 
+                    triggers="hover"
+                    popoverTitle="Info - {{node.id}}" 
+                    [ngbPopover]="popoverContent">
+                    <ng-template #popoverContent>
+                        <span *ngIf="!node.data.cdaccesso" class="text-primary">{{node.data.name}}</span>
+                        <p *ngIf="node.data.cdaccesso">Codice Accesso: <span class="text-primary">{{node.data.cdaccesso}}</span></p>
+                        <p *ngIf="node.data.dsaccesso">Descrizione: <span class="text-primary">{{node.data.dsaccesso}}<span></p>
+                    </ng-template>
+                    <span class="d-inline-block text-truncate col tree-col-label">{{node.data.name}}</span>
                     <span *ngIf="!node.isLeaf" class="chevron float-right col col-auto">
                         <i *ngIf="!node.isExpanded" class="fa fa-chevron-right" aria-hidden="true"></i>
                         <i *ngIf="node.isExpanded"  class="fa fa-chevron-up" aria-hidden="true"></i>
