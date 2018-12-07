@@ -100,6 +100,9 @@ export class SIGLATreeComponent implements OnInit, OnDestroy {
                 id: node.id,
                 hasChildren: this.leafs[node.id],
                 name: node.description,
+                process: node.process,
+                cdaccesso: node.cdaccesso,
+                dsaccesso: node.dsaccesso,
                 children: this.getChildNodes(node.id)
             };
         });
