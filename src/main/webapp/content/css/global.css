@@ -740,6 +740,11 @@ html {
     max-height: 50vh; 
     overflow-y: auto; 
   }
+  @media screen and (max-width: 768px){
+    .popover {
+        display: none!important;
+    }
+  }
   .w-8 {
     width: 8%!important;
   }
