@@ -13,6 +13,8 @@ services:
   nginx:
     image: nginx:1.13-alpine
     network_mode: bridge
+    environment:
+    - 'FASTCGI_READ_TIMEOUT=300s'
     links:
     - siglang:siglang
     labels:
