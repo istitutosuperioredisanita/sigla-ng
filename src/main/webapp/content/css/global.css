@@ -740,6 +740,12 @@ html {
     max-height: 50vh; 
     overflow-y: auto; 
   }
+  .TableHeader {
+      max-width: 50px;
+  }
+  .Panel {
+      width: 100%!important;
+  }
   @media screen and (max-width: 768px){
     .popover {
         display: none!important;
