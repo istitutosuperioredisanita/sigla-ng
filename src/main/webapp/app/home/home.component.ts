@@ -102,7 +102,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                     });
                     if (this.router.url === '/register' || (/activate/.test(this.router.url)) ||
                         this.router.url === '/finishReset' || this.router.url === '/requestReset') {
-                        this.router.navigate(['/']);
+                        this.router.navigate(['']);
                     }
                     this.eventManager.broadcast({
                         name: 'authenticationSuccess',
