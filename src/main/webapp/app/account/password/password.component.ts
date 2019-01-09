@@ -33,7 +33,7 @@ export class PasswordComponent implements OnInit {
                     if (window.confirm('Per cambiare la password è necessario un reindirizzamento, si desidera continuare?')) {
                         location.href = profileInfo.urlChangePassword;
                     } else {
-                        this.router.navigate(['/']);
+                        this.router.navigate(['']);
                     }
                 });
             }
@@ -56,7 +56,7 @@ export class PasswordComponent implements OnInit {
                         password: this.password,
                         rememberMe: true
                     }).then((account: Account) => {
-                        this.router.navigate(['/']);
+                        this.router.navigate(['']);
                     });
                 }
             }, () => {
