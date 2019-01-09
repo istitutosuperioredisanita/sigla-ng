@@ -26,7 +26,7 @@ export class AuthService {
 
             // an authenticated user can't access to login and register pages
             if (isAuthenticated && (toStateInfo.name === 'register')) {
-                this.router.navigate(['/']);
+                this.router.navigate(['']);
                 return false;
             }
 
@@ -51,7 +51,7 @@ export class AuthService {
                             let toStateParamsInfo = this.stateStorageService.getDestinationState().params;
                             this.stateStorageService.storePreviousState(toStateInfo.name, toStateParamsInfo);
                             // now, send them to the signin state so they can log in
-                            this.router.navigate(['/']);
+                            this.router.navigate(['']);
                         }
                     }
                     return hasAnyAuthority;
