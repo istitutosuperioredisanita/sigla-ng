@@ -140,6 +140,7 @@ export class ContextService  {
             String(userContext.cdr)
         ].join(',');
         params.set('comando', 'doSelezionaContesto(' + parameter + ')');
+        params.set('datetime', String(Date.now()));
         return this.http.get('/SIGLA/Login.do', {
            search: params
         }).map((res: Response) => res.text());
