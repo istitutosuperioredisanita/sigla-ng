@@ -4,12 +4,14 @@ import { Observable, Observer } from 'rxjs/Rx';
 import { Leaf } from './leaf.model';
 import { TODO } from './todo.model';
 import { SERVER_API_URL } from '../app.constants';
+import { DatePipe } from '@angular/common';
 @Injectable()
 export class WorkspaceService {
 
     private resourceUrl = SERVER_API_URL + 'api/tree';
     private observable: Observable<boolean>;
     private observers: Observer<boolean>[];
+    private datePipe: DatePipe;
 
     constructor(
         private http: Http
@@ -18,6 +20,7 @@ export class WorkspaceService {
         this.observable = new Observable<boolean>((observer) => {
             this.observers.push(observer);
         });
+        this.datePipe = new DatePipe('it');
     }
 
     getTree(): Observable<Map<String, Leaf[]>> {
@@ -31,6 +34,7 @@ export class WorkspaceService {
     openMenu(nodoid: string): Observable<string> {
         const params: URLSearchParams = new URLSearchParams();
         params.set('comando', 'doSelezionaMenu(' + nodoid + ')');
+        params.set('datetime', String(Date.now()));
         return this.http.get('/SIGLA/GestioneMenu.do', {
            search: params
         })
@@ -39,18 +43,19 @@ export class WorkspaceService {
 
     postForm(form: any): Observable<string> {
         if (form.comando.value) {
-            return this.http.post('/SIGLA/' + form.getAttribute('action-ng'), new FormData(form)).map((res: Response) => res.text());
+            return this.http.post('/SIGLA/' + form.getAttribute('action-ng') + '?datetime=' + Date.now(),
+                new FormData(form)).map((res: Response) => res.text());
         } else {
             return Observable.empty();
         }
     }
 
     getAllTODO(): Observable<string[]> {
-        return this.http.get('/SIGLA/restapi/todo').map((res: Response) => res.json());
+        return this.http.get('/SIGLA/restapi/todo?datetime=' + Date.now()).map((res: Response) => res.json());
     }
 
     getTODO(bp: string): Observable<TODO[]> {
-        return this.http.get('/SIGLA/restapi/todo/' + bp).map((res: Response) => res.json());
+        return this.http.get('/SIGLA/restapi/todo/' + bp + '?datetime=' + Date.now()).map((res: Response) => res.json());
     }
 
     isMenuHidden(): Observable<boolean> {
