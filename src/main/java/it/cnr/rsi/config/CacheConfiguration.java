@@ -19,6 +19,7 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 
 import javax.annotation.PreDestroy;
 import java.util.Arrays;
+import java.util.Optional;
 
 /**
  * Created by francesco on 07/03/17.
@@ -64,11 +65,23 @@ public class CacheConfiguration {
 
         config.getNetworkConfig().getJoin().getAwsConfig().setEnabled(false);
         config.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
-        config.getNetworkConfig().getJoin().getTcpIpConfig().setEnabled(true);
+        config.getNetworkConfig().getJoin().getTcpIpConfig().setEnabled(false);
 
-        config.getNetworkConfig().getJoin().getTcpIpConfig().setMembers(
-            Arrays.asList(hazelcastConfigurationProperties.getMembers().split(","))
-        );
+        Optional.ofNullable(hazelcastConfigurationProperties.getMembers())
+                .map(s -> s.split(","))
+                .map(strings -> Arrays.asList(strings))
+                .ifPresent(strings -> {
+                    config.getNetworkConfig().getJoin().getTcpIpConfig().setEnabled(true);
+                    config.getNetworkConfig().getJoin().getTcpIpConfig().setMembers(strings);
+                });
+
+        Optional.ofNullable(hazelcastConfigurationProperties.getMulticastPort())
+            .ifPresent(port -> {
+                config.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(true);
+                config.getNetworkConfig().getJoin().getMulticastConfig().setMulticastPort(port);
+                config.getNetworkConfig().getJoin().getTcpIpConfig().setEnabled(false);
+            });
+
 
         config.getMapConfigs().put("default", initializeDefaultMapConfig());
         config.getMapConfigs().put("it.cnr.rsi.domain.*", initializeDomainMapConfig());
