@@ -58,6 +58,9 @@ public class CacheConfiguration {
         config.getNetworkConfig().setPort(hazelcastConfigurationProperties.getPort());
         config.getNetworkConfig().setPortAutoIncrement(true);
 
+        Optional.ofNullable(hazelcastConfigurationProperties.getPublicadress())
+            .ifPresent(s ->  config.getNetworkConfig().setPublicAddress(s));
+
         log.info("HAZELCAST CONFIG {}", hazelcastConfigurationProperties);
 
         // In development, remove multicast auto-configuration
@@ -75,7 +78,7 @@ public class CacheConfiguration {
                     config.getNetworkConfig().getJoin().getTcpIpConfig().setMembers(strings);
                 });
 
-        Optional.ofNullable(hazelcastConfigurationProperties.getMulticastPort())
+        Optional.ofNullable(hazelcastConfigurationProperties.getMulticastport())
             .ifPresent(port -> {
                 config.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(true);
                 config.getNetworkConfig().getJoin().getMulticastConfig().setMulticastPort(port);
