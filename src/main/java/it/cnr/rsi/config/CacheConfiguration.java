@@ -68,7 +68,7 @@ public class CacheConfiguration {
 
         config.getNetworkConfig().getJoin().getAwsConfig().setEnabled(false);
         config.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
-        config.getNetworkConfig().getJoin().getTcpIpConfig().setEnabled(false);
+        config.getNetworkConfig().getJoin().getTcpIpConfig().setEnabled(true);
 
         Optional.ofNullable(hazelcastConfigurationProperties.getMembers())
                 .map(s -> s.split(","))
