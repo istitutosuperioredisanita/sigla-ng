@@ -13,7 +13,8 @@ public class HazelcastConfigurationProperties {
     private int timeToLiveSeconds;
     private int backupCount;
     private String members;
-    private Integer multicastPort;
+    private Integer multicastport;
+    private String publicadress;
 
     public int getPort() {
         return port;
@@ -51,12 +52,20 @@ public class HazelcastConfigurationProperties {
         return members;
     }
 
-    public Integer getMulticastPort() {
-        return multicastPort;
+    public Integer getMulticastport() {
+        return multicastport;
     }
 
-    public void setMulticastPort(Integer multicastPort) {
-        this.multicastPort = multicastPort;
+    public void setMulticastport(Integer multicastport) {
+        this.multicastport = multicastport;
+    }
+
+    public String getPublicadress() {
+        return publicadress;
+    }
+
+    public void setPublicadress(String publicadress) {
+        this.publicadress = publicadress;
     }
 
     public HazelcastConfigurationProperties setMembers(String members) {
@@ -72,6 +81,8 @@ public class HazelcastConfigurationProperties {
             ", timeToLiveSeconds=" + timeToLiveSeconds +
             ", backupCount=" + backupCount +
             ", members='" + members + '\'' +
+            ", multicastport=" + multicastport +
+            ", publicadress='" + publicadress + '\'' +
             '}';
     }
 }
