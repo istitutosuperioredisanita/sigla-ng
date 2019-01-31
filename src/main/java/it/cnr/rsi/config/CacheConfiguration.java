@@ -69,6 +69,7 @@ public class CacheConfiguration {
         config.getNetworkConfig().getJoin().getAwsConfig().setEnabled(false);
         config.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
         config.getNetworkConfig().getJoin().getTcpIpConfig().setEnabled(true);
+        config.getNetworkConfig().getJoin().getTcpIpConfig().setRequiredMember(null);
 
         Optional.ofNullable(hazelcastConfigurationProperties.getMembers())
                 .map(s -> s.split(","))
@@ -77,6 +78,7 @@ public class CacheConfiguration {
                     config.getNetworkConfig().getJoin().getTcpIpConfig().setEnabled(true);
                     config.getNetworkConfig().getJoin().getTcpIpConfig().setMembers(strings);
                 });
+
 
         Optional.ofNullable(hazelcastConfigurationProperties.getMulticastport())
             .ifPresent(port -> {
@@ -89,6 +91,9 @@ public class CacheConfiguration {
         config.getMapConfigs().put("default", initializeDefaultMapConfig());
         config.getMapConfigs().put("it.cnr.rsi.domain.*", initializeDomainMapConfig());
         config.getMapConfigs().put("clustered-http-sessions", initializeClusteredSession());
+
+        log.info("HAZELCAST JOIN CONFIG {}", config.getNetworkConfig().getJoin());
+
         return Hazelcast.newHazelcastInstance(config);
     }
 
