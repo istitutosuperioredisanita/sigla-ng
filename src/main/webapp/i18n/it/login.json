@@ -10,7 +10,11 @@
         },
         "messages": {
             "error": {
-                "authentication": "<strong>Accesso non riuscito!</strong> Si prega di controllare le credenziali e riprovare."
+                "authentication": {
+                    "401": "<strong>Accesso non riuscito!</strong> Si prega di controllare le credenziali e riprovare.",
+                    "504": "<strong>Accesso non riuscito!</strong> Richiesta scaduta, riprovare.",
+                    "503": "<strong>Accesso non riuscito!</strong> Errore di collegamento, riprovare."
+                }
             }
         },
         "password" : {
