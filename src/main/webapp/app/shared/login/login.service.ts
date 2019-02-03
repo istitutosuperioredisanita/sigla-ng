@@ -36,7 +36,10 @@ export class LoginService {
                                     this.languageService.changeLanguage(account.langKey);
                                 }
                             });
-                    });
+                }, (err) => {
+                    reject(err);
+                    return cb(err);
+                });
                 return cb();
             }, (err) => {
                 reject(err);
