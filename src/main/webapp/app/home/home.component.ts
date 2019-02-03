@@ -132,7 +132,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
                  }
             }
         }).catch((error) => {
-            this.authenticationErrorStatus = error.status;
+            if (error.status) {
+                this.authenticationErrorStatus = error.status;
+            }
             this.isRequesting = false;
             this.authenticationError = true;
         });
