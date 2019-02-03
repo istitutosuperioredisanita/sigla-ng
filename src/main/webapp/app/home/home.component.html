@@ -21,7 +21,7 @@
                             <jhi-alert-error></jhi-alert-error>
                             <div>
                                 <div class="alert alert-danger" *ngIf="authenticationError">
-                                    <div jhiTranslate="login.messages.error.authentication">
+                                    <div jhiTranslate="login.messages.error.authentication.{{authenticationErrorStatus}}">
                                         <strong>Failed to sign in!</strong> Please check your credentials and try again.
                                     </div>
                                 </div>

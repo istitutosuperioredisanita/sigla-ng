@@ -19,6 +19,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     account: Account;
     modalRef: NgbModalRef;
     authenticationError: boolean;
+    authenticationErrorStatus = 401;
     instituteAcronym: string;
     password: string;
     rememberMe: boolean;
@@ -131,6 +132,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                  }
             }
         }).catch((error) => {
+            this.authenticationErrorStatus = error.status;
             this.isRequesting = false;
             this.authenticationError = true;
         });
