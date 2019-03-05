@@ -20,6 +20,7 @@ import java.util.Map;
 
 import com.hazelcast.core.HazelcastInstance;
 
+import it.cnr.rsi.config.HazelcastConfigurationProperties;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -50,8 +51,6 @@ import org.springframework.util.StringUtils;
 public class HazelcastHttpSessionConfiguration extends SpringHttpSessionConfiguration
 		implements ImportAware {
 
-	private Integer maxInactiveIntervalInSeconds = MapSession.DEFAULT_MAX_INACTIVE_INTERVAL_SECONDS;
-
 	private String sessionMapName = HazelcastSessionRepository.DEFAULT_SESSION_MAP_NAME;
 
 	private HazelcastFlushMode hazelcastFlushMode = HazelcastFlushMode.ON_SAVE;
@@ -59,6 +58,9 @@ public class HazelcastHttpSessionConfiguration extends SpringHttpSessionConfigur
 	private HazelcastInstance hazelcastInstance;
 
 	private ApplicationEventPublisher applicationEventPublisher;
+
+    @Autowired
+    private HazelcastConfigurationProperties hazelcastConfigurationProperties;
 
 	@Bean
 	public HazelcastSessionRepository sessionRepository() {
@@ -69,14 +71,11 @@ public class HazelcastHttpSessionConfiguration extends SpringHttpSessionConfigur
 			sessionRepository.setSessionMapName(this.sessionMapName);
 		}
 		sessionRepository
-				.setDefaultMaxInactiveInterval(this.maxInactiveIntervalInSeconds);
+				.setDefaultMaxInactiveInterval(hazelcastConfigurationProperties.getTimeToLiveSeconds());
 		sessionRepository.setHazelcastFlushMode(this.hazelcastFlushMode);
 		return sessionRepository;
 	}
 
-	public void setMaxInactiveIntervalInSeconds(int maxInactiveIntervalInSeconds) {
-		this.maxInactiveIntervalInSeconds = maxInactiveIntervalInSeconds;
-	}
 
 	public void setSessionMapName(String sessionMapName) {
 		this.sessionMapName = sessionMapName;
@@ -109,8 +108,6 @@ public class HazelcastHttpSessionConfiguration extends SpringHttpSessionConfigur
 		Map<String, Object> attributeMap = importMetadata
 				.getAnnotationAttributes(EnableHazelcastHttpSession.class.getName());
 		AnnotationAttributes attributes = AnnotationAttributes.fromMap(attributeMap);
-		this.maxInactiveIntervalInSeconds =
-				attributes.getNumber("maxInactiveIntervalInSeconds");
 		String sessionMapNameValue = attributes.getString("sessionMapName");
 		if (StringUtils.hasText(sessionMapNameValue)) {
 			this.sessionMapName = sessionMapNameValue;
