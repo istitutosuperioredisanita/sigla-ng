@@ -115,7 +115,13 @@ Logo styles
     .navbar-typeahead .text-truncate {
         padding: 0 5px; 
         max-width: 220px;
-    }    
+    }
+    /* FIX firefox tooltip not show for button */
+    @-moz-document url-prefix() {
+        .navbar-typeahead .text-truncate {
+            max-width: inherit!important;
+        }
+    }
 }
 .navbar-form {
     padding: 17px
