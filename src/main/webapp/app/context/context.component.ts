@@ -103,6 +103,7 @@ export class ContextComponent implements OnInit, OnDestroy {
     formatterFirst = (pair: Pair) => pair.first;
 
     onSelectCds = (item: Pair) => {
+        this.uoModel = undefined;
         this.contextService
             .getUo(item ? item.first : '')
             .subscribe((uo) => {
