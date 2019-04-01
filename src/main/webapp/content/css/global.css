@@ -22,7 +22,7 @@ html {
   body, h1, h2, h3, h4, button {
       font-weight: 300;
       font-family: 'Titillium Web', sans-serif;
-      background-color: #fafafa;
+      background-color: #F0EFEF;
   }
   /* ==========================================================================
   FIX Bootstrap beta
@@ -73,9 +73,16 @@ html {
   
   .jh-card {
       border: none;
-      background-color: #fafafa;
+      background-color: #F0EFEF;
   }
-  
+
+  table.table-tab {
+    margin-bottom: -5px;
+  } 
+
+  td.TabLabel.border-primary {
+    background-color: #fff;
+  }
   .error {
       color: white;
       background-color: red;
