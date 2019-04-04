@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.Map;
 
@@ -57,5 +58,11 @@ public class AlberoMainResource {
         UserContext userDetails = utenteService.getUserDetails();
         accessoService.evictCacheAccessi(userDetails.getUsername(), userDetails.getEsercizio(), userDetails.getUo());
         return alberoMainService.evictCacheTree(userDetails.getUsername(), userDetails.getEsercizio(), userDetails.getUo());
+    }
+
+    @DeleteMapping(value = API_ALBERO_MAIN + "/{username}/{esercizio}/{uo}")
+    public boolean evictCacheTree(@PathVariable String username, @PathVariable Integer esercizio, @PathVariable String uo) {
+        accessoService.evictCacheAccessi(username, esercizio, uo);
+        return alberoMainService.evictCacheTree(username, esercizio, uo);
     }
 }
