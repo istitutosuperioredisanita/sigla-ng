@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -55,8 +56,18 @@ public class AlberoMainService {
         if (Optional.ofNullable(utente.getCdUtenteTempl()).isPresent()) {
             accessi.addAll(accessoService.accessi(utente.getCdUtenteTempl(), esercizio, unitaOrganizzativa));
         }
-    	Stream<AlberoMain> leafs = Optional.ofNullable(accessi).filter(x -> !x.isEmpty())
-    			.map(x -> alberoMainRepository.findAlberoMainByAccessi(x)).orElse(Stream.empty());
+
+        List<AlberoMain> listLeafs = new ArrayList<>();
+        final AtomicInteger counter = new AtomicInteger(0);
+        final Collection<List<String>> values = accessi
+            .stream()
+            .collect(Collectors.groupingBy(s -> counter.getAndIncrement() / 1000))
+            .values();
+        for (List<String> result : values) {
+            listLeafs.addAll(Optional.ofNullable(result).filter(x -> !x.isEmpty())
+                .map(x -> alberoMainRepository.findAlberoMainByAccessi(x)).orElse(Stream.empty()).collect(Collectors.toList()));
+        }
+        Stream<AlberoMain> leafs = listLeafs.stream();
 
         MultiValuedMap<String, AlberoMain> rawMap = new HashSetValuedHashMap<>();
     	leafs.forEach(leaf -> visit(leaf, rawMap));
