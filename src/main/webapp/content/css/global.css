@@ -758,6 +758,9 @@ html {
         display: none!important;
     }
   }
+  .form-control:disabled, .form-control[readonly] {
+    cursor: not-allowed;
+  }
   .w-8 {
     width: 8%!important;
   }
