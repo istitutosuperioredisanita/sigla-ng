@@ -12,6 +12,6 @@ import java.util.stream.Stream;
 public interface CdrRepository extends JpaRepository<Cdr, String> {
 	@Query("select a from Cdr a left outer join a.unitaOrganizzativa uo " +
 			"where (uo.cdUnitaOrganizzativa = :uo or :uo is null)" +
-			" and uo.esercizioInizio <= :esercizio and uo.esercizioFine >= :esercizio")
+			" and a.esercizioInizio <= :esercizio and a.esercizioFine >= :esercizio")
 	Stream<Cdr> findCdrByUnitaOrganizzativa(@Param("esercizio")Integer esercizio, @Param("uo")String uo);
 }
