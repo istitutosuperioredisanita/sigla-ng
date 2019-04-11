@@ -9,7 +9,6 @@ declare var $: any;
     templateUrl: './main.component.html'
 })
 export class JhiMainComponent implements OnInit {
-    navIsFixed: boolean;
 
     constructor(
         private jhiLanguageHelper: JhiLanguageHelper,
@@ -30,26 +29,5 @@ export class JhiMainComponent implements OnInit {
                 this.jhiLanguageHelper.updateTitle(this.getPageTitle(this.router.routerState.snapshot.root));
             }
         });
-    }
-
-    @HostListener('window:scroll', [])
-    onWindowScroll() {
-        if (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop > 100) {
-            this.navIsFixed = true;
-            $('.angular-tree-component').addClass('angular-tree-component-sticky');
-        } else if (this.navIsFixed && window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop < 10) {
-            this.navIsFixed = false;
-            $('.angular-tree-component').removeClass('angular-tree-component-sticky');
-        }
-    }
-
-    scrollToTop() {
-        (function smoothscroll() {
-            const currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
-            if (currentScroll > 0) {
-                window.requestAnimationFrame(smoothscroll);
-                window.scrollTo(0, currentScroll - (currentScroll / 5));
-            }
-        })();
     }
 }
