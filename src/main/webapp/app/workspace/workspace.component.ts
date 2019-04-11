@@ -9,6 +9,7 @@ import { TODO } from './todo.model';
 import { Pair } from '../context/pair.model';
 import { ContextService } from '../context/context.service';
 import { Italian } from 'flatpickr/dist/l10n/it.js';
+import { SplitComponent } from 'angular-split';
 import 'flatpickr';
 declare var flatpickr;
 
@@ -38,17 +39,21 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     cdsModel: Pair;
     uoModel: Pair;
     cdrModel: Pair;
+    sizeTree = 25;
+    sizeWorkspace = 75;
+    direction = 'horizontal';
+    navIsFixed: boolean;
 
     @ViewChild('htmlContainer') container: ElementRef;
     @ViewChild('scriptContainer') scriptContainer: ElementRef;
+    @ViewChild('mySplit') mySplitEl: SplitComponent;
+    @ViewChild('areaWorkspace') areaWorkspace: ElementRef;
 
     constructor(
         private contextService: ContextService,
-        private jhiLanguageService: JhiLanguageService,
         private principal: Principal,
         private workspaceService: WorkspaceService,
         private _sanitizer: DomSanitizer,
-        private elementRef: ElementRef,
         private renderer: Renderer,
         private eventManager: JhiEventManager
     ) {
@@ -69,13 +74,23 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
             }
             return false;
         });
-        workspaceService.isMenuHidden()
-          .subscribe((hidden) => this.hidden = hidden);
+        this.getScreenSize();
     }
 
     @HostListener('mouseover')
     onMouseOver() {
         this.eventManager.broadcast({name: 'onWorkspaceHover'});
+    }
+
+    @HostListener('window:resize', ['$event'])
+    getScreenSize(event?) {
+        if (window.innerWidth > 425) {
+            this.direction = 'horizontal';
+        } else {
+            this.direction = 'vertical';
+            this.sizeTree = 50;
+            this.sizeWorkspace = 50;
+        }
     }
 
     ngOnInit() {
@@ -97,6 +112,38 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         this.onSelectCdrSubscription = this.eventManager.subscribe('onSelectCdr', (message) => {
             this.cdrModel = message.content;
         });
+    }
+
+    gutterClick(e: {gutterNum: number, sizes: Array<number>}) {
+        console.log(e.gutterNum);
+        if (e.gutterNum === 1) {
+            if (this.sizeTree > 0) {
+                this.sizeTree = 0;
+                this.sizeWorkspace = 100;
+            } else {
+                this.sizeTree = 25;
+                this.sizeWorkspace = 75;
+            }
+        }
+    }
+
+    @HostListener('scroll', ['$event'])
+    doSomethingOnScroll($event: Event) {
+        if (window.pageYOffset || $event.srcElement.scrollTop || $event.srcElement.scrollTop > 100) {
+            this.navIsFixed = true;
+        } else if (this.navIsFixed && window.pageYOffset || $event.srcElement.scrollTop || $event.srcElement.scrollTop < 10) {
+            this.navIsFixed = false;
+        }
+    }
+
+    scrollToTop() {
+        const element = this.areaWorkspace.nativeElement;
+        (function smoothscroll() {
+            if (element.scrollTop > 0) {
+                window.requestAnimationFrame(smoothscroll);
+                element.scrollTop = 0;
+            }
+        })();
     }
 
     caricaTODO() {

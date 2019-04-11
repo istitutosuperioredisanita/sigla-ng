@@ -5,12 +5,14 @@ import { SiglaSharedModule, UserRouteAccessService } from '../shared';
 import { WORKSPACE_ROUTE, WorkspaceComponent, WorkspaceService, SIGLATreeComponent } from './';
 
 import { TreeModule } from 'angular-tree-component';
+import { AngularSplitModule } from 'angular-split';
 
 @NgModule({
     imports: [
         SiglaSharedModule,
         RouterModule.forRoot([ WORKSPACE_ROUTE ], { useHash: true } ),
-        TreeModule
+        TreeModule,
+        AngularSplitModule.forRoot()
     ],
     declarations: [
         WorkspaceComponent,

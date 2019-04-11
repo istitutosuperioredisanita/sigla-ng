@@ -1,42 +1,46 @@
-<div class="row space">
-    <div class="col-md-4 col-lg-3 pr-0" [hidden]="hidden">
-        <div class="tree-shadow">
-            <jhi-tree id="tree" (activateLeaf)='onNotify($event)'></jhi-tree>
-        </div>
-    </div>
-
-    <div [ngClass]="{'col-md-8 col-lg-9': !hidden, 'col-md-12': hidden}" class="workspace">
-        <jhi-alert-error></jhi-alert-error>
-        <div [ngClass]="{'loading cursor-wait' : isRequesting}"></div>
-        <div #htmlContainer class="e2e-trusted-html" [innerHTML]="desktop"></div>
-        <div *ngIf="logoVisible" class="row no-gutters">
-            <div class="hipster img-fluid img-rounded col-12 col-sm-6 col-md-2"></div>
-            <div class="mt-2 col-12 col-sm-6 col-md-10">
-                <div class="row ml-2">
-
-                    <div class="col-12 mb-5">
-                        <ul class="list-group ">
-                            <li *ngIf="cdsModel" class="list-group-item font-weight-bold font-italic text-primary">CdS: {{cdsModel.first}} - {{cdsModel.second}}</li>
-                            <li *ngIf="uoModel" class="list-group-item font-weight-bold font-italic text-primary">UO: {{uoModel.first}} - {{uoModel.second}}</li>
-                            <li *ngIf="cdrModel" class="list-group-item font-weight-bold font-italic text-primary">CdR: {{cdrModel.first}} - {{cdrModel.second}}</li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-4 col-md-6 mb-2" *ngFor="let todo of todos">
-                        <div class="card h-100">
-                            <h5 class="card-header">
-                                <i [ngClass]="todo.faClass"></i> {{todo.headerLabel}}
-                            </h5>
-                            <div class="card-body">
-                                <div>
-                                    <span>{{todo.firstLabel}}</span>
-                                    <a class="card-text text-primary todo-label" (click)="openNodo(todo.cdNodo)">{{todo.label}}</a>
+<div class="row space pl-1 pr-1" style="width: 100vw; height: 93.4vh;">
+    <as-split #mySplit [direction]="direction"  [useTransition]="true" (gutterClick)="gutterClick($event)">
+        <as-split-area [size]="sizeTree">
+            <div class="tree-shadow">
+                <jhi-tree id="tree" (activateLeaf)='onNotify($event)'></jhi-tree>
+            </div>
+        </as-split-area>
+        <as-split-area #areaWorkspace [size]="sizeWorkspace" class="workspace" (scroll)="doSomethingOnScroll($event)">
+            <jhi-alert-error></jhi-alert-error>
+            <div [ngClass]="{'loading cursor-wait' : isRequesting}"></div>
+            <div #htmlContainer class="e2e-trusted-html" [innerHTML]="desktop"></div>
+            <div *ngIf="logoVisible" class="row no-gutters">
+                <div class="hipster img-fluid img-rounded col-12 col-sm-6 col-md-2"></div>
+                <div class="mt-2 col-12 col-sm-6 col-md-10">
+                    <div class="row ml-2">
+                        <div class="col-12 mb-5">
+                            <ul class="list-group ">
+                                <li *ngIf="cdsModel" class="list-group-item font-weight-bold font-italic text-primary">CdS: {{cdsModel.first}} - {{cdsModel.second}}</li>
+                                <li *ngIf="uoModel" class="list-group-item font-weight-bold font-italic text-primary">UO: {{uoModel.first}} - {{uoModel.second}}</li>
+                                <li *ngIf="cdrModel" class="list-group-item font-weight-bold font-italic text-primary">CdR: {{cdrModel.first}} - {{cdrModel.second}}</li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-4 col-md-6 mb-2" *ngFor="let todo of todos">
+                            <div class="card h-100">
+                                <h5 class="card-header">
+                                    <i [ngClass]="todo.faClass"></i> {{todo.headerLabel}}
+                                </h5>
+                                <div class="card-body">
+                                    <div>
+                                        <span>{{todo.firstLabel}}</span>
+                                        <a class="card-text text-primary todo-label" (click)="openNodo(todo.cdNodo)">{{todo.label}}</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div #scriptContainer></div>
-    </div>
+            <div #scriptContainer></div>
+            <!--Scroll to top-->
+            <div class="scroll-to-top" [ngClass]="{'show-scroll': navIsFixed}">
+                <i class="fa fa-3x fa-chevron-circle-up text-primary" (click)="scrollToTop()" aria-hidden="true"></i>
+            </div>
+        </as-split-area>
+    </as-split>
 </div>
