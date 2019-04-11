@@ -57,13 +57,4 @@ export class WorkspaceService {
     getTODO(bp: string): Observable<TODO[]> {
         return this.http.get('/SIGLA/restapi/todo/' + bp + '?datetime=' + Date.now()).map((res: Response) => res.json());
     }
-
-    isMenuHidden(): Observable<boolean> {
-        return this.observable;
-    }
-
-    menuHidden(hide: boolean) {
-        this.observers.forEach((observer) => observer.next(hide));
-    }
-
 }
