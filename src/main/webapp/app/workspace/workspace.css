@@ -33,14 +33,15 @@ only screen and (                min-resolution: 2dppx) {
 .space {
     padding-bottom: 40px;
 }
-.dimension {
-    width: 100vw; 
-    height: 93.4vh;
-}
-/* FIX explorer dimension */
-@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+@media screen and (min-width: 425px) {
     .dimension {
-        width: 99vw!important; 
-        height: 92.5vh!important;
+        width: 100vw; 
+        height: calc(100vh - 70px);
+    }
+    /* FIX explorer dimension */
+    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+        .dimension {
+            width: 99vw!important;
+        }
     }
 }
