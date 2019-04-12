@@ -87,7 +87,6 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
 
     @HostListener('window:resize', ['$event'])
     getScreenSize(event?) {
-        console.log(window.innerWidth);
         if (window.innerWidth > 425) {
             this.direction = 'horizontal';
             this.responsive = false;
