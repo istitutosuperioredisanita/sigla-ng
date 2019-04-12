@@ -12,7 +12,7 @@ import { AngularSplitModule } from 'angular-split';
         SiglaSharedModule,
         RouterModule.forRoot([ WORKSPACE_ROUTE ], { useHash: true } ),
         TreeModule,
-        AngularSplitModule.forRoot()
+        AngularSplitModule
     ],
     declarations: [
         WorkspaceComponent,
