@@ -5,6 +5,7 @@ import { JhiLanguageService } from 'ng-jhipster';
 import { ProfileService } from '../profiles/profile.service'; // FIXME barrel doesnt work here
 import { JhiLanguageHelper, Principal, MultipleUserModalService, LoginModalService, LoginService } from '../../shared';
 import { VERSION, DEBUG_INFO_ENABLED } from '../../app.constants';
+import { WorkspaceService } from '../../workspace/workspace.service';
 
 @Component({
     selector: 'jhi-navbar',
@@ -22,6 +23,7 @@ export class NavbarComponent implements OnInit {
     swaggerEnabled: boolean;
     modalRef: NgbModalRef;
     version: string;
+    hidden: boolean;
 
     constructor(
         private loginService: LoginService,
@@ -30,10 +32,12 @@ export class NavbarComponent implements OnInit {
         private multipleUserModalService: MultipleUserModalService,
         public principal: Principal,
         private profileService: ProfileService,
+        private workspaceService: WorkspaceService,
         public router: Router
     ) {
         this.version = DEBUG_INFO_ENABLED ? 'v. ' + VERSION : '';
         this.isNavbarCollapsed = true;
+        workspaceService.isMenuHidden().subscribe((hidden) => this.hidden = hidden);
     }
 
     ngOnInit() {
@@ -84,5 +88,9 @@ export class NavbarComponent implements OnInit {
 
     getImageUrl() {
         return this.isAuthenticated() ? this.principal.getImageUrl() : null;
+    }
+
+    setHidden(hidden: boolean) {
+        this.workspaceService.menuHidden(hidden);
     }
 }

@@ -43,11 +43,13 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     sizeWorkspace = 75;
     direction = 'horizontal';
     navIsFixed: boolean;
+    responsive = false;
 
     @ViewChild('htmlContainer') container: ElementRef;
     @ViewChild('scriptContainer') scriptContainer: ElementRef;
     @ViewChild('mySplit') mySplitEl: SplitComponent;
     @ViewChild('areaWorkspace') areaWorkspace: ElementRef;
+    @ViewChild('areaTree') areaTree: ElementRef;
 
     constructor(
         private contextService: ContextService,
@@ -74,6 +76,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
             }
             return false;
         });
+        workspaceService.isMenuHidden().subscribe((hidden) => this.hidden = hidden);
         this.getScreenSize();
     }
 
@@ -84,12 +87,15 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
 
     @HostListener('window:resize', ['$event'])
     getScreenSize(event?) {
+        console.log(window.innerWidth);
         if (window.innerWidth > 425) {
             this.direction = 'horizontal';
+            this.responsive = false;
         } else {
-            this.direction = 'vertical';
-            this.sizeTree = 50;
-            this.sizeWorkspace = 50;
+            this.direction = 'disabled';
+            this.responsive = true;
+            this.sizeTree = 0;
+            this.sizeWorkspace = 0;
         }
     }
 
