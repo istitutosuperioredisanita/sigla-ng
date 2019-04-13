@@ -33,6 +33,9 @@ only screen and (                min-resolution: 2dppx) {
 .space {
     padding-bottom: 40px;
 }
+.workspace {
+    overflow-x: auto!important;
+} 
 @media screen and (min-width: 425px) {
     .dimension {
         width: 100vw; 
