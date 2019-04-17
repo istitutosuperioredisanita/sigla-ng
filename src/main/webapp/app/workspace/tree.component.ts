@@ -219,6 +219,7 @@ export class SIGLATreeComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.nodes = [];
                 this.tree.treeModel.update();
                 this.initTree(message);
+                this.tree.treeModel.collapseAll();
             }
         );
     }

@@ -705,6 +705,15 @@ html {
     .angular-tree-component {
         height: calc(100vh - 180px);
         overflow: auto;
+        position: -webkit-sticky; /* Safari */
+        position: sticky;
+        top: 0;
+    }
+    split-gutter {
+      height: calc(100vh - 180px)!important;
+      position: -webkit-sticky; /* Safari */
+      position: sticky;
+      top: 0;
     }
   }
   @media screen and (min-width: 768px) and (max-width: 1280px){
@@ -715,6 +724,9 @@ html {
     .angular-tree-component-sticky {
         height: calc(100vh - 155px + 60px);
     }
+    split-gutter {
+      height: calc(100vh - 170px)!important;
+    }
   }
   @media screen and (min-width: 1281px) {
     .angular-tree-component {
@@ -723,6 +735,9 @@ html {
     }
     .angular-tree-component-sticky {
         height: calc(100vh - 180px  + 70px);
+    }
+    split-gutter {
+      height: calc(100vh - 180px)!important;
     }
   }
   @media screen and (max-width: 768px) {
