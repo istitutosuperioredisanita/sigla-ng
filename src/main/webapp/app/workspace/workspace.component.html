@@ -1,6 +1,6 @@
-<div class="row space pl-1 pr-1 dimension">
+<div class="row space pl-1 pr-1">
     <split #mySplit [disabled]="responsive" [direction]="direction" [visibleTransition]="true">
-        <split-area [ngClass]="{'col-md-4 col-lg-3 pr-0': responsive, '': !responsive}" #areaTree [size]="sizeTree" [visible]="!hidden">
+        <split-area class="angular-tree-component" [ngClass]="{'col-md-4 col-lg-3 pr-0': responsive, '': !responsive}" #areaTree [size]="sizeTree" [visible]="!hidden">
             <div class="tree-shadow">
                 <jhi-tree id="tree" (activateLeaf)='onNotify($event)'></jhi-tree>
             </div>
@@ -37,10 +37,6 @@
                 </div>
             </div>
             <div #scriptContainer></div>
-            <!--Scroll to top-->
-            <div class="scroll-to-top" [ngClass]="{'show-scroll': navIsFixed}">
-                <i class="fa fa-3x fa-chevron-circle-up text-primary" (click)="scrollToTop()" aria-hidden="true"></i>
-            </div>
         </split-area>
     </split>
 </div>
