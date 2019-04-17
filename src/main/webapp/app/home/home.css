@@ -47,4 +47,5 @@ only screen and (                min-resolution: 2dppx) {
 }
 .login-img-ISIN, .login-img-ISIN::before {
     background: url("../../content/images/ISIN.png") no-repeat center center;
+    background-color:#0066CC;
 }
