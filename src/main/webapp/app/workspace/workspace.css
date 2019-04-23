@@ -36,15 +36,3 @@ only screen and (                min-resolution: 2dppx) {
 .workspace {
     overflow-x: auto!important;
 } 
-@media screen and (min-width: 425px) {
-    .dimension {
-        width: 100vw; 
-        height: calc(100vh - 70px);
-    }
-    /* FIX explorer dimension */
-    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-        .dimension {
-            width: 99vw!important;
-        }
-    }
-}
