@@ -64,7 +64,7 @@ Navbar
     }
 }
 
-@media screen and (max-width: 992px) {
+@media screen and (max-width: 768px) {
     .jh-logo-container {
         width: 100%;
     }
