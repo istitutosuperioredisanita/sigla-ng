@@ -47,6 +47,11 @@ html {
   /* ==========================================================================
   Generic styles
   ========================================================================== */
+  @media print {
+    .navbar, .footer, .tree-shadow, #crudToolbar {
+        display: none;
+     }
+  }
   .scroll-to-top {
     position: fixed;
     bottom: 40px;
