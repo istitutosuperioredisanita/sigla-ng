@@ -1,3 +1,20 @@
+<!--
+  ~ Copyright (C) 2019  Consiglio Nazionale delle Ricerche
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as
+  ~     published by the Free Software Foundation, either version 3 of the
+  ~     License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <div class="modal-header">
     <h4 class="modal-title text-primary"><i aria-hidden="true" class="fa fa-envelope-open-o"></i> Messaggi</h4>
     <button type="button" class="close hand" data-dismiss="modal" aria-label="Close" (click)="confirm()">
@@ -21,7 +38,7 @@
             <tbody>
                 <tr *ngFor="let messaggio of contextService.messaggi" (click)="setClickedRow(messaggio)" class="hand"
                     [ngClass]="{'bg-primary text-white' : messaggio.pgMessaggio == currentMessaggio.pgMessaggio}">
-                    <td><input type="checkbox" [(ngModel)]="messaggio.checked"></td> 
+                    <td><input type="checkbox" [(ngModel)]="messaggio.checked"></td>
                     <td>{{messaggio.dacr | date:'longDate'}}</td>
                     <td>{{messaggio.soggetto}}</td>
                 </tr>
@@ -44,6 +61,6 @@
         <div class="form-group row">
             <label class="col-sm-2 text-primary" jhiTranslate="messaggi.table.messaggio">Messaggio</label>
             <div class="col-sm-10">{{currentMessaggio.corpo}}</div>
-        </div>            
+        </div>
     </div>
 </div>
