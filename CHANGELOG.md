@@ -1,5 +1,17 @@
 # sigla-ng Changelog
 
+## Release 2.0.3  -- _November 30, 2019_ 
+### No issue
+
+>**Change dependency of com.oracle**
+>
+>[ea35878a6ae61cb](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/ea35878a6ae61cb) marco.spasiano *November 30, 2019*
+
+>**Generate CHANGELOG.md [ci skip]**
+>
+>[0f2419b09780ca6](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/0f2419b09780ca6) marco.spasiano *November 30, 2019*
+
+
 ## Release 2.0.2  -- _November 30, 2019_ 
 ### Jira angular-4 
 
