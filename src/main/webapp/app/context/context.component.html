@@ -1,3 +1,20 @@
+<!--
+  ~ Copyright (C) 2019  Consiglio Nazionale delle Ricerche
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as
+  ~     published by the Free Software Foundation, either version 3 of the
+  ~     License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <ng-template #rt let-r="result" let-t="term">
     <div class="w-100">
         <span>{{r.first}} - {{r.second}}</span>
@@ -15,7 +32,7 @@
             <div class="col-sm-2">
                 <select class="form-control" id="esercizio" name="esercizio" required (ngModelChange)="setEsercizio($event)" [(ngModel)]="principal.userIdentity.esercizio">
                     <option *ngFor="let esercizio of contextService.esercizi" [ngValue]="esercizio">{{esercizio}}</option>
-                </select>            
+                </select>
             </div>
         </div>
         <ng-container *jhiNotHaveAuthority="['ROLE_SUPERUSER', 'ROLE_ADMIN']">
@@ -23,25 +40,25 @@
                 <label for="cds" class="col-sm-2 col-form-label">Centro di Spesa</label>
                 <div class="col-sm-8">
                     <div class="input-group input-group-context input-group-cds">
-                        <input 
-                            [(ngModel)]="cdsModel" 
-                            [ngbTypeahead]="searchcds" 
-                            [resultTemplate]="rt" 
+                        <input
+                            [(ngModel)]="cdsModel"
+                            [ngbTypeahead]="searchcds"
+                            [resultTemplate]="rt"
                             [inputFormatter]="formatter"
                             [resultFormatter]="formatter"
                             [editable]="false"
                             (selectItem)="onSelectCds($event.item)"
-                            class="form-control" 
-                            id="cds" 
-                            name="cds" 
+                            class="form-control"
+                            id="cds"
+                            name="cds"
                             #cdsInput="ngModel"
                             #cds
-                            required 
+                            required
                             type="text"
                             placeholder="{{'global.form.autocomplete.placeholder' | translate}}">
                         <a class="input-group-addon btn text-primary" (click)="openTypeaheadCds()">
                             <i class="fa fa-caret-down" ></i>
-                        </a>    
+                        </a>
                     </div>
                 </div>
             </div>
@@ -50,24 +67,24 @@
                 <div class="col-sm-8">
                     <div class="input-group input-group-context">
                         <input
-                            [(ngModel)]="uoModel" 
-                            [ngbTypeahead]="searchuo" 
-                            [resultTemplate]="rt" 
+                            [(ngModel)]="uoModel"
+                            [ngbTypeahead]="searchuo"
+                            [resultTemplate]="rt"
                             [inputFormatter]="formatter"
                             [resultFormatter]="formatter"
                             [editable]="false"
                             (selectItem)="onSelectUo($event.item)"
-                            class="form-control" 
-                            id="uo" 
-                            name="uo" 
+                            class="form-control"
+                            id="uo"
+                            name="uo"
                             #uoInput="ngModel"
                             #uo
-                            required 
+                            required
                             type="text"
                             placeholder="{{'global.form.autocomplete.placeholder' | translate}}">
                         <a class="input-group-addon btn text-primary" (click)="openTypeaheadUo()">
                             <i class="fa fa-caret-down" ></i>
-                        </a>    
+                        </a>
                     </div>
                 </div>
             </div>
@@ -76,31 +93,31 @@
                 <div class="col-sm-8">
                     <div class="input-group input-group-context">
                         <input
-                            [(ngModel)]="cdrModel" 
-                            [ngbTypeahead]="searchcdr" 
-                            [resultTemplate]="rt" 
+                            [(ngModel)]="cdrModel"
+                            [ngbTypeahead]="searchcdr"
+                            [resultTemplate]="rt"
                             [inputFormatter]="formatter"
                             [resultFormatter]="formatter"
                             [editable]="false"
-                            class="form-control" 
-                            id="cdr" 
-                            name="cdr" 
+                            class="form-control"
+                            id="cdr"
+                            name="cdr"
                             #cdrInput="ngModel"
                             #cdr
-                            required 
+                            required
                             type="text"
                             placeholder="{{'global.form.autocomplete.placeholder' | translate}}">
                         <a class="input-group-addon btn text-primary" (click)="openTypeaheadCdr()">
                             <i class="fa fa-caret-down" ></i>
-                        </a>    
+                        </a>
                     </div>
                 </div>
             </div>
-        </ng-container>    
+        </ng-container>
         <div class="text-right col-sm-10">
             <button type="submit" [disabled]="contextForm.form.invalid" class="btn btn-primary col-md-5"><i class="fa fa-floppy-o" aria-hidden="true"></i> Conferma</button>
         </div>
-    </form>        
+    </form>
 </div>
 <ng-container *jhiNotHaveAuthority="['ROLE_SUPERUSER', 'ROLE_ADMIN']">
     <li *ngIf="isNavbar"  #contextDrop="ngbDropdown" ngbDropdown [autoClose]="false" class="nav-item dropdown pointer" id="context-menu" (click)="$event.stopPropagation()">
@@ -111,8 +128,8 @@
                     <label class="form-control-label" for="navbar-cds">Centro di Spesa</label>
                     <div class="input-group input-group-cds">
                         <input
-                            [(ngModel)]="cdsModel" 
-                            [ngbTypeahead]="searchcds" 
+                            [(ngModel)]="cdsModel"
+                            [ngbTypeahead]="searchcds"
                             [resultTemplate]="rtNavbar"
                             [inputFormatter]="formatterFirst"
                             [resultFormatter]="formatter"
@@ -120,21 +137,21 @@
                             [container]="typeaheadContainer"
                             (selectItem)="onSelectCds($event.item)"
                             required
-                            name="cds" 
+                            name="cds"
                             #cds
                             class="form-control"
-                            placeholder="{{'global.form.autocomplete.placeholder' | translate}}"                
+                            placeholder="{{'global.form.autocomplete.placeholder' | translate}}"
                             id="navbar-cds"/>
                         <a class="input-group-addon btn text-primary" (click)="openTypeaheadCds()">
                             <i class="fa fa-caret-down" ></i>
                         </a>
-                    </div>   
-                </div>     
+                    </div>
+                </div>
                 <div class="form-group">
                     <label class="form-control-label" for="navbar-uo">Unita Organizzativa</label>
                     <div class="input-group">
-                        <input 
-                            [(ngModel)]="uoModel" 
+                        <input
+                            [(ngModel)]="uoModel"
                             [ngbTypeahead]="searchuo"
                             [resultTemplate]="rtNavbar"
                             [inputFormatter]="formatterFirst"
@@ -150,13 +167,13 @@
                             id="navbar-uo"/>
                         <a class="input-group-addon btn text-primary" (click)="openTypeaheadUo()">
                             <i class="fa fa-caret-down" ></i>
-                        </a>    
+                        </a>
                     </div>
                 </div>
                 <div class="btn-group w-100 border rounded" role="group">
                     <button type="button" (click)="resetContext();contextDrop.close();" class="btn col-6 btn-outline-danger">
                             <i class="fa fa-fw fa-undo" aria-hidden="true"></i> Annulla
-                    </button>        
+                    </button>
                     <button type="submit" [disabled]="contextForm.form.invalid" (click)="contextDrop.close();" class="btn col-6 btn-outline-primary">
                         <i class="fa fa-fw fa-floppy-o" aria-hidden="true"></i> Conferma
                     </button>
@@ -171,7 +188,7 @@
                 <b class="caret"></b>
             </span>
         </a>
-        <ul class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>        
+        <ul class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
             <li *ngFor="let esercizio of contextService.esercizi">
                 <a class="dropdown-item"  (click)="setEsercizio(esercizio)">
                     <span>{{esercizio}}</span>
@@ -204,9 +221,9 @@
                     <a class="dropdown-item" (click)="openPreferiti('0.SERV.PREFERITI')">
                         <i class="fa fa-fw fa-edit" aria-hidden="true"></i><span> Gestione</span>
                     </a>
-                </li>    
+                </li>
             </ul>
-        </li>    
+        </li>
     </ng-container>
     <li *ngIf="isNavbar && isMessaggiPresent()" class="nav-item">
         <a class="nav-link message-count" href="javascript:void(0);" (click)="openMessaggi()"><i class="fa fa-envelope-o"></i><sup class="badge badge-pill badge-danger navbar-badge-messages">{{getNumberOfMessagi()}}</sup></a>
