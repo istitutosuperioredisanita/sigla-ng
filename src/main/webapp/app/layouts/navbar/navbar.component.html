@@ -1,10 +1,27 @@
+<!--
+  ~ Copyright (C) 2019  Consiglio Nazionale delle Ricerche
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as
+  ~     published by the Free Software Foundation, either version 3 of the
+  ~     License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <nav class="navbar navbar-expand-md jh-navbar">
         <div class="jh-logo-container float-left">
             <a *ngIf="router.url === '/workspace'" (click)="setHidden(!hidden)" class="text-white text-center" data-action="toggle-sidebar" href="javascript:void(0);">
                 <i [ngClass]="{'d-none': hidden}" class="fa fa-fw fa-close fa-tree-size" aria-hidden="true"></i>
                 <i [ngClass]="{'d-none': !hidden}" class="fa fa-fw  fa-bars fa-tree-size" aria-hidden="true"></i>
                 <span class="d-block">MENU</span>
-            </a>    
+            </a>
             <a class="navbar-brand logo float-left" routerLink="/" (click)="collapseNavbar()">
                 <span class="logo-img" [ngClass]="getLogo()"></span>
                 <span class="navbar-version">{{version}}</span>
@@ -87,7 +104,7 @@
                           <img [src]="getImageUrl()" class="profile-image img-circle" alt="Avatar">
                       </span>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-right dropdown-left-auto" ngbDropdownMenu>                 
+                    <ul class="dropdown-menu dropdown-menu-right dropdown-left-auto" ngbDropdownMenu>
                         <li>
                             <a class="dropdown-item" routerLink="settings" routerLinkActive="active" (click)="collapseNavbar()">
                                 <i class="fa fa-fw fa-wrench" aria-hidden="true"></i>
@@ -106,7 +123,7 @@
                                 <i class="fa fa-fw fa-user" aria-hidden="true"></i>
                                 <span jhiTranslate="global.menu.account.changeuser" translateValues="{username: '{{principal.userIdentity.username}}'}">Change User</span>
                             </a>
-                        </li>                    
+                        </li>
                         <li>
                             <a class="dropdown-item" (click)="logout()" id="logout">
                                 <i class="fa fa-fw fa-sign-out" aria-hidden="true"></i>
@@ -118,4 +135,3 @@
             </ul>
         </div>
     </nav>
-    

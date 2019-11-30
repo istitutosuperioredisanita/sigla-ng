@@ -1,6 +1,23 @@
+<!--
+  ~ Copyright (C) 2019  Consiglio Nazionale delle Ricerche
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as
+  ~     published by the Free Software Foundation, either version 3 of the
+  ~     License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <div class="card m-2 mb-5">
     <div class="card-header">
-        <span class="h2 text-primary" jhiTranslate="settings.title" 
+        <span class="h2 text-primary" jhiTranslate="settings.title"
         translateValues="{username: '{{settingsAccount.firstName}} {{settingsAccount.lastName}}'}" *ngIf="settingsAccount">User settings for [<b>{{settingsAccount.firstName}} {{settingsAccount.lastName}}</b>]</span>
     </div>
     <div class="card-block row space">
@@ -37,7 +54,7 @@
                         <tbody>
                             <tr *ngFor="let indirizzoMail of indirizziMail" (click)="setClickedRow(indirizzoMail)" class="hand"
                                 [ngClass]="{'bg-primary text-white' : indirizzoMail.id.indirizzoMail == currentIndirizzoMail.id.indirizzoMail}">
-                                <td><input type="checkbox" [(ngModel)]="indirizzoMail.checked"></td> 
+                                <td><input type="checkbox" [(ngModel)]="indirizzoMail.checked"></td>
                                 <td>{{indirizzoMail.id.indirizzoMail}}</td>
                             </tr>
                         </tbody>
@@ -92,7 +109,7 @@
                             <label class="form-check-label" for="erroreMancataApprovazioneVarBilancioComp">
                                     Invia errore di mancata approvazione Variazioni al Bilancio dell'Ente generate da Variazioni alla Competenza
                             </label>
-                        </div>  
+                        </div>
                         <div class="form-check">
                             <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.approvazioneVarStanziamentoCompetenza" id="approvazioneVarStanziamentoCompetenza" name="approvazioneVarStanziamentoCompetenza">
                             <label class="form-check-label" for="approvazioneVarStanziamentoCompetenza">
@@ -113,7 +130,7 @@
                             <label class="form-check-label" for="esitoNegativoFattElettronicaAttiva">
                                 Comunicazione via Mail dell'esito negativo
                             </label>
-                        </div> 
+                        </div>
                     </div>
                     <h5 class="text-primary mt-2">Fatturazione Elettronica Passiva</h5>
                     <div class="card p-2">
