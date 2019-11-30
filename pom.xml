@@ -18,12 +18,12 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>it.cnr</groupId>
+    <groupId>it.cnr.si.sigla</groupId>
     <artifactId>sigla-ng</artifactId>
     <version>2.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>sigla-ng</name>
-    <description>sigla-ng</description>
+    <description>Nuova Interfaccia - Sistema Informativo per la Gestione delle Linee di Attività</description>
     <parent>
         <groupId>it.cnr.si</groupId>
         <artifactId>archetype</artifactId>
