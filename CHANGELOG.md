@@ -1,7 +1,15 @@
 # sigla-ng Changelog
 
-## Release 2.0.3  -- _November 30, 2019_ 
+## Release 2.0.4  -- _January 16, 2020_ 
 ### No issue
+
+>**add version of artifact on navbar**
+>
+>[0ce1883a5071d7f](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/0ce1883a5071d7f) marco.spasiano *January 16, 2020*
+
+>**Generate CHANGELOG.md [ci skip]**
+>
+>[d0080b5fbe607d9](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/d0080b5fbe607d9) marco.spasiano *November 30, 2019*
 
 >**Change dependency of com.oracle**
 >
