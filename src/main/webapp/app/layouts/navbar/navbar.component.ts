@@ -3,8 +3,7 @@ import { Router } from '@angular/router';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiLanguageService } from 'ng-jhipster';
 import { ProfileService } from '../profiles/profile.service'; // FIXME barrel doesnt work here
-import { JhiLanguageHelper, Principal, MultipleUserModalService, LoginModalService, LoginService } from '../../shared';
-import { VERSION, DEBUG_INFO_ENABLED } from '../../app.constants';
+import { JhiLanguageHelper, Principal, MultipleUserModalService, LoginService } from '../../shared';
 import { WorkspaceService } from '../../workspace/workspace.service';
 
 @Component({
@@ -35,7 +34,6 @@ export class NavbarComponent implements OnInit {
         private workspaceService: WorkspaceService,
         public router: Router
     ) {
-        this.version = DEBUG_INFO_ENABLED ? 'v. ' + VERSION : '';
         this.isNavbarCollapsed = true;
         workspaceService.isMenuHidden().subscribe((hidden) => this.hidden = hidden);
     }
@@ -48,6 +46,9 @@ export class NavbarComponent implements OnInit {
             this.inProduction = profileInfo.inProduction;
             this.swaggerEnabled = profileInfo.swaggerEnabled;
             this.instituteAcronym = profileInfo.instituteAcronym;
+        });
+        this.workspaceService.version().subscribe((version) => {
+            this.version = version;
         });
     }
 

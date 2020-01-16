@@ -46,7 +46,7 @@
                             <form class="form" role="form" (ngSubmit)="login()" #loginForm="ngForm">
                                 <div class="form-group input-group input-group-lg">
                                     <input type="text" class="form-control" name="username" id="username"  placeholder="{{'global.form.username.placeholder' | translate}}"
-                                    [(ngModel)]="username">
+                                    [(ngModel)]="username" #usernameinput>
                                 </div>
                                 <div class="form-group input-group input-group-lg">
                                     <input type="password" class="form-control" name="password" id="password" placeholder="{{'login.form.password.placeholder' | translate}}"

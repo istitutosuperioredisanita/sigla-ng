@@ -41,6 +41,12 @@ export class WorkspaceService {
         .map((res: Response) => res.text());
     }
 
+    version(): Observable<string> {
+        return this.http.get('/SIGLA/restapi/version').map((res: Response) => {
+            return res.json()['Specification-Version'];
+        });
+    }
+
     postForm(form: any): Observable<string> {
         if (form.comando.value) {
             return this.http.post('/SIGLA/' + form.getAttribute('action-ng') + '?datetime=' + Date.now(),

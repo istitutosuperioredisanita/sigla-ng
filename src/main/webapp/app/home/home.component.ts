@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Renderer, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, Renderer, ElementRef } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
 import { Router, NavigationExtras } from '@angular/router';
@@ -26,18 +26,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
     username: string;
     credentials: any;
     isRequesting = false;
+    @ViewChild('usernameinput') userNameElement: ElementRef;
 
     constructor(
-        private jhiLanguageService: JhiLanguageService,
         private principal: Principal,
         private loginService: LoginService,
         private multipleUserModalService: MultipleUserModalService,
         private stateStorageService: StateStorageService,
         private eventManager: JhiEventManager,
         private profileService: ProfileService,
-        private elementRef: ElementRef,
         private router: Router,
-        private renderer: Renderer,
         private context: ContextService,
         private localStateStorageService: LocalStateStorageService
     ) {
@@ -55,13 +53,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.registerAuthenticationSuccess();
     }
     ngAfterViewInit() {
-        const userNameElement = this.elementRef.nativeElement.querySelector('#username');
-        if (userNameElement) {
-            this.renderer.invokeElementMethod(
-                userNameElement,
-                'focus', ['']
-            );
-        }
+        setTimeout(() => this.userNameElement.nativeElement.focus());
     }
 
     registerAuthenticationSuccess() {
