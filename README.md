@@ -6,7 +6,7 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/consiglionazionalericerche/sigla-ng.svg)](https://hub.docker.com/r/consiglionazionalericerche/sigla-ng/)
 [![docs](https://img.shields.io/travis/consiglionazionaledellericerche/sigla-main.svg?label=docs)](https://consiglionazionaledellericerche.github.io/sigla-main)
 
-#Premessa
+# Premessa
 
 La modifica delle caratteristiche di presentazione delle funzionalità di [SIGLA](https://github.com/consiglionazionaledellericerche/sigla-main) 
 non cambia in alcun modo i processi amministrativi previsti, né influenza dati e utilizzo degli stessi.
