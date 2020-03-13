@@ -16,16 +16,10 @@
 #
 security:
     ldap:
-        enabled: false
-
-management:
-    security:
-        roles: ADMIN
-    context-path: /management
-
-tomcatAjp:
-    protocol: AJP/1.3
-    port: 8009
-    enabled: false
-    scheme: http
-
+        enabled: true
+        userSearchBase: o=cnr, c=it
+        userSearchFilter: uid={0}
+        url: ldap://virtest1.si.cnr.it:389
+        managerDn: change_it
+        managerPassword: change_it
+        change.password.url: https://utenti.cnr.it/utenti/app/page/pub/pass/passwhat
