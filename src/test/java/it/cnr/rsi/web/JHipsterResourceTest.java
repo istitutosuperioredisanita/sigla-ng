@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -82,11 +83,11 @@ public class JHipsterResourceTest {
     public void login() throws Exception {
         LOGGER.info("user"+user);
         LOGGER.info("psw"+psw);
-        mvc.perform(MockMvcRequestBuilders.post("/api/authentication")
-            .param("j_username", user)
-            .param("j_password", psw)
-        ).andExpect(status().isOk());
-
+       mvc.perform(SecurityMockMvcRequestBuilders.formLogin("/api/authentication")
+           .userParameter("j_username").passwordParam("j_password")
+           .user(this.getUser())
+           .password(this.getPsw()))
+           .andExpect(status().isOk());
     }
 
 

@@ -25,8 +25,8 @@ spring:
         show-sql: false
     datasource:
         url: jdbc:oracle:thin:@ORACLE_T:1521:xe
-        username: PCIR009
-        password: PSW
+        username: change_it
+        password: change_it
         driverClassName: oracle.jdbc.OracleDriver
         maxActive: 50
 cnr:
