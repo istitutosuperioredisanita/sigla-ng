@@ -23,3 +23,6 @@ security:
         managerDn: change_it
         managerPassword: change_it
         change.password.url: https://utenti.cnr.it/utenti/app/page/pub/pass/passwhat
+        attrName: cnrnome
+        attrSurname: cnrcognome
+        attrMail: mail
