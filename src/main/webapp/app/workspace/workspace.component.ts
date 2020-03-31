@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, ElementRef, Renderer, ViewChild, Inject, HostListener } from '@angular/core';
 import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
-import { Principal } from '../shared';
+import { Principal, LoginService } from '../shared';
 import { Subscription } from 'rxjs/Rx';
 import { WorkspaceService } from './workspace.service';
 import { DomSanitizer, SafeHtml} from '@angular/platform-browser';
@@ -57,7 +57,8 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         private workspaceService: WorkspaceService,
         private _sanitizer: DomSanitizer,
         private renderer: Renderer,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private loginService: LoginService
     ) {
         this.listenerSubmit = renderer.listenGlobal('body', 'submit', (event) => {
             return false;
@@ -198,6 +199,9 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     }
 
     private renderHtml(html: string) {
+        if (html.indexOf('utenze00/form_login.jsp') !== -1) {
+            this.loginService.logoutAndRedirect();
+        }
         const siglaScripts = this.scriptContainer.nativeElement.getElementsByTagName('script');
         for (const siglaScript of siglaScripts){
             this.scriptContainer.nativeElement.removeChild(siglaScript);
