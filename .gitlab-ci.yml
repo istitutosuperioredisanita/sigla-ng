@@ -24,6 +24,8 @@ cache:
 maven-deploy:
   stage: deploy
   image: maven:alpine
+  before_script:
+      - 'which nodejs || (apk add --update nodejs nodejs-npm && rm -rf /var/cache/apk/*)'
   script: "mvn clean deploy $MAVEN_CLI_OPTS"
   artifacts:
     paths:
