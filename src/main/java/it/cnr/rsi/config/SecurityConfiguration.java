@@ -148,9 +148,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                                                           String username, Collection<? extends GrantedAuthority> authorities) {
                         return Optional.ofNullable(utenteService.loadUserByUid(username))
                             .map(userContext -> {
-                                userContext.setFirstName(ctx.getStringAttribute("cnrnome"));
-                                userContext.setLastName(ctx.getStringAttribute("cnrcognome"));
-                                userContext.setEmail(ctx.getStringAttribute("mail"));
+                                    Optional.ofNullable(ldapConfigurationProperties.getAttrName()).ifPresent(
+                                        attrName -> userContext.setFirstName(ctx.getStringAttribute(attrName)));
+                                Optional.ofNullable(ldapConfigurationProperties.getAttrSurname()).ifPresent(
+                                    attrName -> userContext.setLastName(ctx.getStringAttribute(attrName)));
+                                Optional.ofNullable(ldapConfigurationProperties.getAttrMail()).ifPresent(
+                                    attrName -> userContext.setEmail(ctx.getStringAttribute(attrName)));
                                 userContext.setLogin(username);
                                 userContext.setLdap(Boolean.TRUE);
                                 return userContext;

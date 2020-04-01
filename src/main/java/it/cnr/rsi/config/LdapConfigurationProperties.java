@@ -33,6 +33,22 @@ public class LdapConfigurationProperties {
     private String managerPassword;
     private boolean enabled;
 
+    private String attrName;
+    private String attrSurname;
+    private String attrMail;
+
+    public String getAttrName() {return attrName;}
+
+    public void setAttrName(String attrName) {this.attrName = attrName;}
+
+    public String getAttrSurname() {return attrSurname;}
+
+    public void setAttrSurname(String attrSurname) {this.attrSurname = attrSurname;}
+
+    public String getAttrMail() {return attrMail;}
+
+    public void setAttrMail(String attrMail) {this.attrMail = attrMail;}
+
     public String getUserSearchBase() {
         return userSearchBase;
     }
