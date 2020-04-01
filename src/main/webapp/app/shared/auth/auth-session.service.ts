@@ -22,14 +22,15 @@ export class AuthServerProvider {
     }
 
     loginWildfly(credentials, userContext: UserContext): Observable<any> {
-        const data = 'main.userid=' + encodeURIComponent(credentials.username) +
-            '&main.password=' + encodeURIComponent(credentials.password) +
-            '&context.esercizio=' + userContext.esercizio +
-            '&context.cds=' + userContext.cds +
-            '&context.uo=' + userContext.uo +
-            '&context.cdr=' + userContext.cdr +
-            '&comando=doEntra';
-        return this.http.post('/SIGLA/Login.do', data, {
+        const data = 'j_username=' + encodeURIComponent(credentials.username) +
+            '&j_password=' + encodeURIComponent(credentials.password);
+        return this.http.post('/SIGLA/restapi/login', data, {
+            headers: this.headers
+        });
+    }
+
+    initializeWildfly(): Observable<any> {
+        return this.http.post('/SIGLA/Login.do', 'comando=doDefault', {
             headers: this.headers
         });
     }

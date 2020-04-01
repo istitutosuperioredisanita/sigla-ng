@@ -25,16 +25,18 @@ export class LoginService {
             this.authServerProvider.login(credentials).subscribe((data) => {
                 this.authServerProvider.loginWildfly((credentials),
                         this.localStateStorageService.getUserContext(credentials.username)).subscribe((dataWildfly) => {
-                            this.principal.identity(true).then((account) => {
-                                if (account !== null) {
-                                    this.contextService.saveWildflyUserContext(
-                                        this.localStateStorageService.getUserContext(account.username)
-                                    ).subscribe(() => {
-                                        this.eventManager.broadcast({name: 'onRefreshTodo'});
-                                    });
-                                    resolve(account);
-                                    this.languageService.changeLanguage(account.langKey);
-                                }
+                            this.authServerProvider.initializeWildfly().subscribe(() => {
+                                this.principal.identity(true).then((account) => {
+                                    if (account !== null) {
+                                        this.contextService.saveWildflyUserContext(
+                                            this.localStateStorageService.getUserContext(account.username)
+                                        ).subscribe(() => {
+                                            this.eventManager.broadcast({name: 'onRefreshTodo'});
+                                        });
+                                        resolve(account);
+                                        this.languageService.changeLanguage(account.langKey);
+                                    }
+                                });
                             });
                 }, (err) => {
                     reject(err);
