@@ -23,12 +23,14 @@ spring:
                 dialect: org.hibernate.dialect.Oracle10gDialect
                 format_sql: true
         show-sql: false
+
     datasource:
-        url: jdbc:oracle:thin:@ORACLE_T:1521:xe
-        username: change_it
-        password: change_it
+        url: jdbc:oracle:thin:@dbtest.cedrc.cnr.it:1521:SIGLAF
+        username: PCIR009
+        password: dbform
         driverClassName: oracle.jdbc.OracleDriver
         maxActive: 50
+
 cnr:
     hazelcast:
         timeToLiveSeconds: 3600

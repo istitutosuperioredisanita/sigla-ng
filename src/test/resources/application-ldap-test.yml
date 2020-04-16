@@ -16,17 +16,7 @@
 #
 security:
     ldap:
-        enabled: true
-        userSearchBase: Dc=iss,dc=it
-        userSearchFilter: (&(objectCategory=Person)(userPrincipalName={0}))
-        url: ldap://iss.it:389
-        managerDn: change_it
-        managerPassword: change_it
-        change.password.url: https://utenti.cnr.it/utenti/app/page/pub/pass/passwhat
-        attrName: name
-        attrSurname: surname
-        attrMail: mail
-        credenziali-test:
-            user: ciro.salvio@iss.it
-            psw: change_it
+        test:
+            user: change_it
+            password: change_it
 
