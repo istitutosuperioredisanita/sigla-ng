@@ -63,7 +63,7 @@ public class AlberoMainServiceTest {
             LOGGER.error("error creating tree {} {}", USER_ID, UNITA_ORGANIZZATIVA, e);
         }
 
-        assertEquals(9, fullMap.get("0").size());
+        assertEquals(10, fullMap.get("0").size());
 
     }
 
