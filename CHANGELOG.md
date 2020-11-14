@@ -1,5 +1,65 @@
 # sigla-ng Changelog
 
+## Release 2.0.7  -- _November 14, 2020_ 
+### No issue
+
+>**FIX test**
+>
+>[89e3c2c15b820a1](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/89e3c2c15b820a1) marco.spasiano *November 13, 2020*
+
+>**Add class for shadow card**
+>
+>[2d3453fad2f32b1](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/2d3453fad2f32b1) marco.spasiano *November 13, 2020*
+
+>**FIX test**
+>
+>[70e89dab9cb106f](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/70e89dab9cb106f) mspasiano *October 05, 2020*
+
+>**Change node version on package.json**
+>
+>[872a75b3c87e682](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/872a75b3c87e682) mspasiano *October 05, 2020*
+
+>**Change node version on package.json**
+>
+>[36c30f8021098d9](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/36c30f8021098d9) mspasiano *October 05, 2020*
+
+>**Change node version on package.json**
+>
+>[d9ed39cb1f01718](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/d9ed39cb1f01718) mspasiano *October 03, 2020*
+
+>**Change typescript version on package.json**
+>
+>[69f952a00a32fbc](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/69f952a00a32fbc) mspasiano *October 03, 2020*
+
+>**Change node version on package.json**
+>
+>[7a66fc572a2a46e](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/7a66fc572a2a46e) mspasiano *October 03, 2020*
+
+>**Update sigla-main.js**
+>
+>[8d80d84547790c9](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/8d80d84547790c9) SPASIANO MARCO *October 03, 2020*
+
+>**FIX dev dependencies on package.json**
+>
+>[43edab4c7c1a79b](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/43edab4c7c1a79b) mspasiano *July 21, 2020*
+
+>**Update webpack.common.js**
+>
+>[7f5d47319b468cb](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/7f5d47319b468cb) SPASIANO MARCO *July 21, 2020*
+
+>**Update package.json**
+>
+>[963195ca2b74473](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/963195ca2b74473) SPASIANO MARCO *July 21, 2020*
+
+>**change node version**
+>
+>[8cd60341c5fc66f](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/8cd60341c5fc66f) mspasiano *July 20, 2020*
+
+>**Generate CHANGELOG.md [ci skip]**
+>
+>[fbac9df0d3f2762](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/fbac9df0d3f2762) marco.spasiano *April 01, 2020*
+
+
 ## Release 2.0.6  -- _April 01, 2020_ 
 ### No issue
 
