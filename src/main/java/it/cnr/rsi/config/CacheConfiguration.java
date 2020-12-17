@@ -174,7 +174,7 @@ public class CacheConfiguration {
 
 
     // A cron expression to define every day at midnight
-    @Scheduled(cron ="0 0 * * *")
+    @Scheduled(cron ="0 0 * * * *")
     public void cacheEvictionScheduler(){
         clearCache();
     }
