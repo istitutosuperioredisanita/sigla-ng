@@ -1,5 +1,21 @@
 # sigla-ng Changelog
 
+## Release 2.0.8  -- _December 17, 2020_ 
+### No issue
+
+>**Enable cache evict of 'cdr' at every day at midnight**
+>
+>[92e0ff1493e9915](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/92e0ff1493e9915) marco.spasiano *December 17, 2020*
+
+>**Enable cache evict of 'cdr' at every day at midnight**
+>
+>[15cce489b9d7045](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/15cce489b9d7045) marco.spasiano *December 17, 2020*
+
+>**Generate CHANGELOG.md [ci skip]**
+>
+>[a36fda0e257646e](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/a36fda0e257646e) marco.spasiano *November 14, 2020*
+
+
 ## Release 2.0.7  -- _November 14, 2020_ 
 ### No issue
 
