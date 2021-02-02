@@ -288,8 +288,11 @@ function hideAlert(button) {
     alertDiv.parentElement.removeChild(alertDiv);
 }
 function inputFileName(element) {
-    var filename = element.value.replace(/^.*\\/, "");
-    document.getElementById('span-' + element.name).title = filename;
+    var title = '';
+    for (i = 0;i < element.files.length;i++) {
+        title += '[' + element.files[i].name.replace(/^.*\\/, "") + '] ';
+    }
+    document.getElementById('span-' + element.name).title = title;
 }
 
 function restoreWorkspace() {            
