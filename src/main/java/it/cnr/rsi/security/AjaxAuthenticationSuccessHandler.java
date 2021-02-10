@@ -24,6 +24,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Optional;
 
 /**
  * Created by francesco on 13/03/17.
@@ -34,7 +38,22 @@ public class AjaxAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication)
             throws IOException, ServletException {
-
-        response.setStatus(HttpServletResponse.SC_OK);
+        final Boolean isExpired = Optional.ofNullable(authentication)
+            .map(Authentication::getCredentials)
+            .filter(UserContext.class::isInstance)
+            .map(UserContext.class::cast)
+            .map(UserContext::getCurrentUser)
+            .flatMap(utente -> Optional.ofNullable(utente.getDtUltimoAccesso()))
+            .filter(Date.class::isInstance)
+            .map(Date.class::cast)
+            .map(Date::toLocalDate)
+            .map(localDate -> localDate.plusMonths(UserContext.MONTH_EXPIRED))
+            .map(localDate -> localDate.isAfter(LocalDate.now(ZoneId.systemDefault())))
+            .orElse(Boolean.TRUE);
+        if (isExpired) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        } else {
+            response.setStatus(HttpServletResponse.SC_OK);
+        }
     }
 }
