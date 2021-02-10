@@ -38,8 +38,9 @@ public class AjaxAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication)
             throws IOException, ServletException {
+
         final Boolean isExpired = Optional.ofNullable(authentication)
-            .map(Authentication::getCredentials)
+            .map(Authentication::getPrincipal)
             .filter(UserContext.class::isInstance)
             .map(UserContext.class::cast)
             .map(UserContext::getCurrentUser)
@@ -48,8 +49,8 @@ public class AjaxAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
             .map(Date.class::cast)
             .map(Date::toLocalDate)
             .map(localDate -> localDate.plusMonths(UserContext.MONTH_EXPIRED))
-            .map(localDate -> localDate.isAfter(LocalDate.now(ZoneId.systemDefault())))
-            .orElse(Boolean.TRUE);
+            .map(localDate -> localDate.isBefore(LocalDate.now(ZoneId.systemDefault())))
+            .orElse(Boolean.FALSE);
         if (isExpired) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         } else {
