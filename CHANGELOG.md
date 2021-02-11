@@ -1,7 +1,23 @@
 # sigla-ng Changelog
 
-## Release 2.0.8  -- _December 17, 2020_ 
+## Release 2.0.10  -- _February 10, 2021_ 
 ### No issue
+
+>**FIX utente non utlizzato da più di sei mesi**
+>
+>[05a57b1afc53d17](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/05a57b1afc53d17) marco.spasiano *February 10, 2021*
+
+>**FIX utente non utlizzato da più di sei mesi**
+>
+>[de86146cd9cfbab](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/de86146cd9cfbab) marco.spasiano *February 10, 2021*
+
+>**FIx label for upload file**
+>
+>[0181defd13bd947](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/0181defd13bd947) marco.spasiano *February 02, 2021*
+
+>**Generate CHANGELOG.md [ci skip]**
+>
+>[fdcbffe6a61ffec](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/fdcbffe6a61ffec) marco.spasiano *December 17, 2020*
 
 >**Enable cache evict of 'cdr' at every day at midnight**
 >
