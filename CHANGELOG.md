@@ -1,7 +1,15 @@
 # sigla-ng Changelog
 
-## Release 2.0.10  -- _February 10, 2021_ 
+## Release 2.0.11  -- _February 11, 2021_ 
 ### No issue
+
+>**FIX utente non utlizzato da più di sei mesi**
+>
+>[418a8d7f6c02a90](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/418a8d7f6c02a90) marco.spasiano *February 11, 2021*
+
+>**Generate CHANGELOG.md [ci skip]**
+>
+>[88e93ce4c24f5d2](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/88e93ce4c24f5d2) marco.spasiano *February 10, 2021*
 
 >**FIX utente non utlizzato da più di sei mesi**
 >
