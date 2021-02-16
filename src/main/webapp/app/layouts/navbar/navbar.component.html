@@ -22,11 +22,11 @@
                 <i [ngClass]="{'d-none': !hidden}" class="fa fa-fw  fa-bars fa-tree-size" aria-hidden="true"></i>
                 <span class="d-block">MENU</span>
             </a>
-            <a class="navbar-brand logo float-left" routerLink="/" (click)="collapseNavbar()">
+            <a class="navbar-brand logo float-left mr-0" routerLink="/" (click)="collapseNavbar()">
                 <span class="logo-img" [ngClass]="getLogo()"></span>
                 <span class="navbar-version">v. {{version}}</span>
             </a>
-            <a href="https://consiglionazionaledellericerche.github.io/sigla-main/CHANGELOG.html" target="_help" title="Info di versione" class="d-flex align-items-end">
+            <a href="https://consiglionazionaledellericerche.github.io/sigla-main/CHANGELOG.html" target="_help" placement="bottom" ngbTooltip="Info di versione" class="d-flex align-items-end">
                 <i class="fa fa-fw fa-info-circle text-white pb-1" aria-hidden="true"></i>
             </a>
             <a class="jh-navbar-toggler float-right" href="javascript:void(0);" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()">
