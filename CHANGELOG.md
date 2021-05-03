@@ -1,5 +1,53 @@
 # sigla-ng Changelog
 
+## Release 2.0.6  -- _April 01, 2020_ 
+### No issue
+
+>**FIx test width variable on gitlabci**
+>
+>[15bfd3613c87265](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/15bfd3613c87265) marco.spasiano *April 01, 2020*
+
+>**FIX version on package.json**
+>
+>[80ab1092f3331d0](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/80ab1092f3331d0) marco.spasiano *April 01, 2020*
+
+>**FIX version on package.json**
+>
+>[9f26e406239e9b3](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/9f26e406239e9b3) marco.spasiano *April 01, 2020*
+
+>**Modify login for security-domain sigla-auth**
+>
+>[24118a097315d5d](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/24118a097315d5d) marco.spasiano *March 31, 2020*
+
+>**Modify login for security-domain sigla-auth**
+>
+>[439649024c83bac](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/439649024c83bac) marco.spasiano *March 31, 2020*
+
+>**Modify login for security-domain sigla-auth**
+>
+>[d0bb3fe8d9996dd](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/d0bb3fe8d9996dd) marco.spasiano *March 31, 2020*
+
+>**External property name,surname e mail in application-ldap.yml**
+>
+>[4544087db20f331](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/4544087db20f331) cirosalvio *March 23, 2020*
+
+>**Test Login**
+>
+>[9b92cc3c5385b15](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/9b92cc3c5385b15) cirosalvio *March 18, 2020*
+
+>**Test Login**
+>
+>[88e3044df4341af](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/88e3044df4341af) cirosalvio *March 18, 2020*
+
+>**Test Login**
+>
+>[3f5b6bd6e30ec15](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/3f5b6bd6e30ec15) cirosalvio *March 18, 2020*
+
+>**Generate CHANGELOG.md [ci skip]**
+>
+>[d2c1b9271768317](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/d2c1b9271768317) marco.spasiano *March 13, 2020*
+
+
 ## Release 2.0.5  -- _March 13, 2020_ 
 ### Jira angular-4 
 

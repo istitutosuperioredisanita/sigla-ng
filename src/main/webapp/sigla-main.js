@@ -155,7 +155,7 @@ function doStampa() {
     submitForm('doPrint');
 }
 function doHelp(url) {
-    window.open(url, "Aiuto", 'toolbar=no,resizable,scrollbars,width=800,height=600').focus()
+    window.open(url, "Aiuto", 'toolbar=no,resizable,scrollbars,width=767,height=600').focus()
 }
 function doExcel() {
     submitForm('doExcel');
