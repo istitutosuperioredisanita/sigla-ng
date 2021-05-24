@@ -20,6 +20,7 @@ package it.cnr.rsi.security;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.cnr.rsi.domain.Utente;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -140,7 +141,14 @@ public class UserContext implements UserDetails {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return !Optional.ofNullable(currentUser)
+            .flatMap(utente -> Optional.ofNullable(utente.getDtUltimoAccesso()))
+            .filter(Date.class::isInstance)
+            .map(Date.class::cast)
+            .map(Date::toLocalDate)
+            .map(localDate -> localDate.plusMonths(UserContext.MONTH_EXPIRED))
+            .map(localDate -> localDate.isBefore(LocalDate.now(ZoneId.systemDefault())))
+            .orElse(Boolean.FALSE);
     }
 
     @Override

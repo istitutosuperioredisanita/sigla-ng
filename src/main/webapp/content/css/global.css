@@ -783,6 +783,11 @@ html {
   .form-control:disabled, .form-control[readonly] {
     cursor: not-allowed;
   }
+  
+  .card-shadow {
+    box-shadow: 0 0 10px 0 rgba(100, 100, 100, 0.26);
+  }
+
   .w-8 {
     width: 8%!important;
   }

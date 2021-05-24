@@ -3,6 +3,7 @@ export class Account {
         public activated: boolean,
         public accountNonLocked: boolean,
         public accountNonExpired: boolean,
+        public credentialsNonExpired: boolean,
         public authorities: string[],
         public email: string,
         public firstName: string,
