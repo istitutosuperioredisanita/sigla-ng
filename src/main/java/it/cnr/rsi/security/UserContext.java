@@ -153,8 +153,13 @@ public class UserContext implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        // TODO Auto-generated method stub
-        return true;
+        return !Optional.ofNullable(currentUser)
+            .flatMap(utente -> Optional.ofNullable(utente.getDtFineValidita()))
+            .filter(Date.class::isInstance)
+            .map(Date.class::cast)
+            .map(Date::toLocalDate)
+            .map(localDate -> localDate.isBefore(LocalDate.now(ZoneId.systemDefault())))
+            .orElse(Boolean.FALSE);
     }
 
     public Long getId() {
