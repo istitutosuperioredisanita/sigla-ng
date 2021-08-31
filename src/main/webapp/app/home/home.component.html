@@ -41,6 +41,7 @@
                                     <div jhiTranslate="login.messages.error.authentication.{{authenticationErrorStatus}}">
                                         <strong>Failed to sign in!</strong> Please check your credentials and try again.
                                     </div>
+                                    <small jhiTranslate="login.messages.error.authentication.{{authenticationErrorMessage}}" *ngIf="authenticationErrorMessage">{{authenticationErrorMessage}}</small>
                                 </div>
                             </div>
                             <form class="form" role="form" (ngSubmit)="login()" #loginForm="ngForm">

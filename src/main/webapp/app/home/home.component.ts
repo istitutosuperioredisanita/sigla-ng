@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     modalRef: NgbModalRef;
     authenticationError: boolean;
     authenticationErrorStatus = 401;
+    authenticationErrorMessage: string;
     instituteAcronym: string;
     password: string;
     rememberMe: boolean;
@@ -129,8 +130,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
                  }
             }
         }).catch((error) => {
+            console.log(error);
             if (error.status) {
                 this.authenticationErrorStatus = error.status;
+            }
+            if (error._body) {
+                this.authenticationErrorMessage = JSON.parse(error._body).message;
             }
             this.isRequesting = false;
             this.authenticationError = true;
