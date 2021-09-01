@@ -18,7 +18,8 @@
                     "503": "<strong>Accesso non riuscito!</strong> Errore di collegamento, riprovare.",
                     "555": "<strong>Utente non più valido o con data di validità scaduta.</strong> Contattare l'amministratore utenti di SIGLA.",
                     "User credentials have expired": "Utente non utilizzato da più di sei mesi.",
-                    "Bad credentials": "Credenziali errate"
+                    "Bad credentials": "Credenziali errate",
+                    "No message available": ""
                 }
             }
         },
