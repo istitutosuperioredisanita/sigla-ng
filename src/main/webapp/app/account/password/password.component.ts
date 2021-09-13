@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute} from '@angular/router';
-import { Principal, LoginService } from '../../shared';
+import { Principal, LoginService, Account } from '../../shared';
 import { PasswordService } from './password.service';
 import { ProfileService } from '../../layouts/profiles/profile.service';
 
@@ -51,13 +51,7 @@ export class PasswordComponent implements OnInit {
                 this.error = null;
                 this.success = 'OK';
                 if (!this.account.accountNonLocked || !this.account.accountNonExpired) {
-                    this.loginService.login({
-                        username: this.account.username,
-                        password: this.password,
-                        rememberMe: true
-                    }).then((account: Account) => {
-                        this.router.navigate(['']);
-                    });
+                    this.loginService.logoutAndRedirect();
                 }
             }, () => {
                 this.success = null;

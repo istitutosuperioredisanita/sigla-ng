@@ -116,6 +116,10 @@ export class Principal {
         });
     }
 
+    setAuthenticated(authenticated: boolean) {
+        this.authenticated = authenticated;
+    }
+
     getAccount(): Account {
         return this.userIdentity;
     }

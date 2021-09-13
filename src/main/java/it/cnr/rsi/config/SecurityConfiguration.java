@@ -157,7 +157,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                                 userContext.setLogin(username);
                                 userContext.setLdap(Boolean.TRUE);
                                 return userContext;
-                            }).orElseThrow(() -> new BadCredentialsException(""));
+                            }).orElseThrow(() -> new BadCredentialsException("555"));
                     }
                 })
                 .userSearchFilter(ldapConfigurationProperties.getUserSearchFilter())

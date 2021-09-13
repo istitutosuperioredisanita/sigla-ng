@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, ViewChild, Renderer, ElementRef } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 import { Router, NavigationExtras } from '@angular/router';
 import { ProfileService } from '../layouts/profiles/profile.service'; // FIXME barrel doesnt work here
 import { Account, MultipleUserModalService, LoginService, Principal, StateStorageService } from '../shared';
@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     modalRef: NgbModalRef;
     authenticationError: boolean;
     authenticationErrorStatus = 401;
+    authenticationErrorMessage: string;
     instituteAcronym: string;
     password: string;
     rememberMe: boolean;
@@ -86,6 +87,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
                     }
                 };
                 this.router.navigate(['password'], navigationExtras);
+            } else if (!account.enabled) {
+                this.authenticationErrorStatus = 555;
+                this.principal.setAuthenticated(false);
+                this.isRequesting = false;
+                this.authenticationError = true;
             } else {
                  if (account.users.length === 1) {
                     this.context.saveUserContext(
@@ -124,8 +130,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
                  }
             }
         }).catch((error) => {
+            console.log(error);
             if (error.status) {
                 this.authenticationErrorStatus = error.status;
+            }
+            if (error._body) {
+                this.authenticationErrorMessage = JSON.parse(error._body).message;
             }
             this.isRequesting = false;
             this.authenticationError = true;

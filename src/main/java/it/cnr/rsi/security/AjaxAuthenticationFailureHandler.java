@@ -24,6 +24,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Created by francesco on 13/03/17.
@@ -33,7 +34,9 @@ public class AjaxAuthenticationFailureHandler extends SimpleUrlAuthenticationFai
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
-
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication failed");
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
+            Optional.ofNullable(exception)
+                .flatMap(e -> Optional.ofNullable(e.getMessage()))
+                .orElse("Authentication failed"));
     }
 }

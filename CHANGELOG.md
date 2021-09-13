@@ -1,5 +1,25 @@
 # sigla-ng Changelog
 
+## Release 2.0.13  -- _August 31, 2021_ 
+### No issue
+
+>**FIX user with end of validity date lower than today**
+>
+>[e1b1f699f93c7c0](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/e1b1f699f93c7c0) marco.spasiano *August 31, 2021*
+
+>**FIX user with end of validity date lower than today**
+>
+>[c17d054290bc296](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/c17d054290bc296) marco.spasiano *August 31, 2021*
+
+>**Add shadow class**
+>
+>[f006cc484b5cc4c](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/f006cc484b5cc4c) marco.spasiano *June 07, 2021*
+
+>**Generate CHANGELOG.md [ci skip]**
+>
+>[d26729f243b297f](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/d26729f243b297f) marco.spasiano *February 16, 2021*
+
+
 ## Release 2.0.12  -- _February 16, 2021_ 
 ### No issue
 
