@@ -1,5 +1,74 @@
 # sigla-ng Changelog
 
+## Release 2.0.14  -- _September 21, 2021_ 
+### No issue
+
+>**Upgrade frontend-maven-plugin.version to version 1.12.0**
+>
+>[ccbb6936f359fbf](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/ccbb6936f359fbf) marco.spasiano *September 21, 2021*
+
+>**Revert "Upgrade node to v12.21.0"**
+> * This reverts commit 0a56f145508a9c16bf3754f8c866d6f2ecd06916.
+>
+>[ebaf89d231eded8](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/ebaf89d231eded8) marco.spasiano *September 21, 2021*
+
+>**Revert "Upgrade node to v12.21.0"**
+> * This reverts commit 4c603282ac1620235eb719c01ad24456933eac04.
+>
+>[85bf4b995d3c4d1](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/85bf4b995d3c4d1) marco.spasiano *September 21, 2021*
+
+>**Revert "Upgrade node to v14.17.6-r0"**
+> * This reverts commit 4f330eefecd27be19e474d625929a3e266cbcc01.
+>
+>[f11280597c56f61](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/f11280597c56f61) marco.spasiano *September 21, 2021*
+
+>**Revert "Upgrade node to v12.22.6-r0"**
+> * This reverts commit 3aeb01370fd942ba7eac33d0544c700b1088348a.
+>
+>[fbce659216747b5](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/fbce659216747b5) marco.spasiano *September 21, 2021*
+
+>**Revert "Upgrade yarn to v0.28.4"**
+> * This reverts commit 56c3895e2ade6c7aa7cb75e42b8b53d8e884359c.
+>
+>[80db96d51016154](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/80db96d51016154) marco.spasiano *September 21, 2021*
+
+>**Upgrade yarn to v0.28.4**
+>
+>[56c3895e2ade6c7](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/56c3895e2ade6c7) marco.spasiano *September 21, 2021*
+
+>**Upgrade node to v12.22.6-r0**
+>
+>[3aeb01370fd942b](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/3aeb01370fd942b) marco.spasiano *September 21, 2021*
+
+>**Upgrade node to v14.17.6-r0**
+>
+>[4f330eefecd27be](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/4f330eefecd27be) marco.spasiano *September 21, 2021*
+
+>**Upgrade node to v12.21.0**
+>
+>[4c603282ac16202](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/4c603282ac16202) marco.spasiano *September 21, 2021*
+
+>**Upgrade node to v12.21.0**
+>
+>[0a56f145508a9c1](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/0a56f145508a9c1) marco.spasiano *September 21, 2021*
+
+>**FIX message on 404**
+>
+>[05dbd383af41eaf](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/05dbd383af41eaf) marco.spasiano *September 21, 2021*
+
+>**FIX user with end of validity date lower than today**
+>
+>[fceabf9dc1ad5f6](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/fceabf9dc1ad5f6) marco.spasiano *September 01, 2021*
+
+>**FIX message**
+>
+>[6b3a2e6f734a4bf](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/6b3a2e6f734a4bf) marco.spasiano *September 01, 2021*
+
+>**Generate CHANGELOG.md [ci skip]**
+>
+>[b60244028506fe9](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/b60244028506fe9) marco.spasiano *August 31, 2021*
+
+
 ## Release 2.0.13  -- _August 31, 2021_ 
 ### No issue
 
