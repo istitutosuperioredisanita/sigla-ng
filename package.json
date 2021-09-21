@@ -29,7 +29,7 @@
     "ng2-webstorage": "1.8.0",
     "ngx-cookie": "1.0.0",
     "ngx-infinite-scroll": "0.5.1",
-    "popper.js": "^1.12.6",
+    "popper.js": "1.16.1",
     "reflect-metadata": "0.1.10",
     "rxjs": "5.4.2",
     "tether": "1.4.0",
