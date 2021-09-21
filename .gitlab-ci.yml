@@ -25,7 +25,7 @@ maven-deploy:
   stage: deploy
   image: maven:alpine
   before_script:
-      - 'which nodejs || (apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.14/main/ nodejs=14.17.6-r0 && rm -rf /var/cache/apk/*)'
+      - 'which nodejs || (apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.11/main/ nodejs=12.22.6-r0 && rm -rf /var/cache/apk/*)'
   script: "mvn clean deploy $MAVEN_CLI_OPTS"
   artifacts:
     paths:
@@ -51,7 +51,7 @@ maven-deploy-tag:
   stage: deploy
   image: maven:alpine
   before_script:
-      - 'which nodejs || (apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.14/main/ nodejs=14.17.6-r0 && rm -rf /var/cache/apk/*)'
+      - 'which nodejs || (apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.11/main/ nodejs=12.22.6-r0 && rm -rf /var/cache/apk/*)'
   script: "mvn clean deploy $MAVEN_CLI_OPTS -Pprod -DskipTests"
   artifacts:
     paths:
@@ -124,7 +124,7 @@ perform-maven-release-maven-central:
     # Install ssh-agent if not already installed, it is required by Docker.
     # (change apt-get to yum if you use a CentOS-based image)
     - 'which ssh-agent || ( apk add --update openssh-client && rm -rf /var/cache/apk/*)'
-    - 'which nodejs || (apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.14/main/ nodejs=14.17.6-r0 && rm -rf /var/cache/apk/*)'
+    - 'which nodejs || (apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.11/main/ nodejs=12.22.6-r0 && rm -rf /var/cache/apk/*)'
     # Run ssh-agent (inside the build environment)
     - eval $(ssh-agent -s)
 
