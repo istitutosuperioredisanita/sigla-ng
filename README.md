@@ -17,7 +17,7 @@ Il progetto è nato con l’obiettivo della revisione dell’intero layout della
 ed è esclusivamente quello di rendere più ‘usabile’ le funzionalità. In alcuni casi la revisione ha riguardato l’aggiunta di utilità importanti sempre al fine di migliorare la navigazione e la gestione delle mappe.
 Per ulteriori informazioni consultare il [Manuale di utilizzo di SIGLA](https://consiglionazionaledellericerche.github.io/sigla-main/nuovo_layout.html).             
 
-# Startup with Docker
+# Startup with Docker on H2
 ```shell script
 git clone git@github.com:consiglionazionaledellericerche/sigla-ng.git
 cd sigla-ng
@@ -28,6 +28,16 @@ docker run -d --name sigla-nginx -p 80:80 --link sigla-thorntail:sigla-thorntail
 ```
 _Collegarsi a http://localhost/ username: ENTE password da impostare al primo login._
 
+# Startup with Docker on Postgresql
+```shell script
+git clone git@github.com:consiglionazionaledellericerche/sigla-ng.git
+cd sigla-ng
+docker run --name sigla-postgres -v $PWD/init-user-postgres-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh -e POSTGRES_PASSWORD=mysecretpassword -d postgres:9.6
+docker run -d --name sigla-thorntail --link sigla-postgres:db -e THORNTAIL_PROJECT_STAGE="demo-postgres" -e THORNTAIL_DATASOURCES_DATA-SOURCES_SIGLA_CONNECTION-URL="jdbc:postgresql://db:5432/sigladb?schema=public" -ti consiglionazionalericerche/sigla-main:release
+docker run -d --name sigla-ng --link sigla-postgres:db -e SPRING_PROFILES_ACTIVE=demopostgresql -e SPRING_DATASOURCE_URL="jdbc:postgresql://db:5432/sigladb?schema=public" -ti consiglionazionalericerche/sigla-ng:latest
+docker run -d --name sigla-nginx -p 80:80 --link sigla-thorntail:sigla-thorntail --link sigla-ng:sigla-ng -v $(pwd)/conf.d/:/etc/nginx/conf.d/:ro -ti nginx
+```
+_Collegarsi a http://localhost/ username: ENTE password da impostare al primo login._
  
 # Compile & Startup with Docker
 ```shell script
