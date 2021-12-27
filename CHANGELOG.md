@@ -1,7 +1,23 @@
 # sigla-ng Changelog
 
-## Release 2.0.14  -- _September 21, 2021_ 
+## Release 2.0.15  -- _December 27, 2021_ 
 ### No issue
+
+>**Add demo postegresql**
+>
+>[df18604b784bc5b](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/df18604b784bc5b) marco.spasiano *December 27, 2021*
+
+>**Update README.md**
+>
+>[47f0f7c72ab572e](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/47f0f7c72ab572e) Marco Spasiano *December 17, 2021*
+
+>**FIX sigla main container image**
+>
+>[802fdb678559b85](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/802fdb678559b85) Marco Spasiano *December 17, 2021*
+
+>**Generate CHANGELOG.md [ci skip]**
+>
+>[c5dfb03972c719b](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/c5dfb03972c719b) marco.spasiano *September 21, 2021*
 
 >**Upgrade frontend-maven-plugin.version to version 1.12.0**
 >
