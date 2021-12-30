@@ -5,6 +5,7 @@ import { Leaf } from './leaf.model';
 import { TODO } from './todo.model';
 import { SERVER_API_URL } from '../app.constants';
 import { DatePipe } from '@angular/common';
+import { ProfileService } from '../layouts/profiles/profile.service';
 @Injectable()
 export class WorkspaceService {
 
@@ -14,7 +15,8 @@ export class WorkspaceService {
     private datePipe: DatePipe;
 
     constructor(
-        private http: Http
+        private http: Http,
+        private profileService: ProfileService
     ) {
         this.observers = [];
         this.observable = new Observable<boolean>((observer) => {
@@ -35,33 +37,43 @@ export class WorkspaceService {
         const params: URLSearchParams = new URLSearchParams();
         params.set('comando', 'doSelezionaMenu(' + nodoid + ')');
         params.set('datetime', String(Date.now()));
-        return this.http.get('/SIGLA/GestioneMenu.do', {
-           search: params
-        })
-        .map((res: Response) => res.text());
+        return this.profileService.getProfileInfo().switchMap((profileInfo) => {
+            return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/GestioneMenu.do', {
+            search: params
+            })
+            .map((res: Response) => res.text());
+        });
     }
 
     version(): Observable<string> {
-        return this.http.get('/SIGLA/restapi/version').map((res: Response) => {
-            return res.json()['Specification-Version'];
+        return this.profileService.getProfileInfo().switchMap((profileInfo) => {
+            return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/restapi/version').map((res: Response) => {
+                return res.json()['Specification-Version'];
+            });
         });
     }
 
     postForm(form: any): Observable<string> {
         if (form.comando.value) {
-            return this.http.post('/SIGLA/' + form.getAttribute('action-ng') + '?datetime=' + Date.now(),
-                new FormData(form)).map((res: Response) => res.text());
+            return this.profileService.getProfileInfo().switchMap((profileInfo) => {
+                return this.http.post(profileInfo.siglaWildflyURL + '/SIGLA/' + form.getAttribute('action-ng') + '?datetime=' + Date.now(),
+                    new FormData(form)).map((res: Response) => res.text());
+            });
         } else {
             return Observable.empty();
         }
     }
 
     getAllTODO(): Observable<string[]> {
-        return this.http.get('/SIGLA/restapi/todo?datetime=' + Date.now()).map((res: Response) => res.json());
+        return this.profileService.getProfileInfo().switchMap((profileInfo) => {
+            return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/restapi/todo?datetime=' + Date.now()).map((res: Response) => res.json());
+        });
     }
 
     getTODO(bp: string): Observable<TODO[]> {
-        return this.http.get('/SIGLA/restapi/todo/' + bp + '?datetime=' + Date.now()).map((res: Response) => res.json());
+        return this.profileService.getProfileInfo().switchMap((profileInfo) => {
+            return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/restapi/todo/' + bp + '?datetime=' + Date.now()).map((res: Response) => res.json());
+        })
     }
 
     isMenuHidden(): Observable<boolean> {

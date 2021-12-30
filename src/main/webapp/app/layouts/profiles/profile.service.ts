@@ -21,6 +21,7 @@ export class ProfileService {
                 pi.ribbonEnv = data.ribbonEnv;
                 pi.instituteAcronym = data.instituteAcronym;
                 pi.urlChangePassword = data.urlChangePassword;
+                pi.siglaWildflyURL = data.siglaWildflyURL;
                 pi.inProduction = data.activeProfiles.indexOf('prod') !== -1;
                 pi.swaggerEnabled = data.activeProfiles.indexOf('swagger') !== -1;
                 return pi;

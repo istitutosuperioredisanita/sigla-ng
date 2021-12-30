@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
+import { ProfileService } from '../../layouts/profiles/profile.service';
 import { UserContext } from '../../shared';
 
 @Injectable()
@@ -9,8 +10,10 @@ export class AuthServerProvider {
         'Content-Type': 'application/x-www-form-urlencoded'
     });
     constructor(
-        private http: Http
-    ) {}
+        private http: Http,
+        private profileService: ProfileService
+    ) {
+    }
 
     login(credentials): Observable<any> {
         const data = 'j_username=' + encodeURIComponent(credentials.username) +
@@ -24,14 +27,18 @@ export class AuthServerProvider {
     loginWildfly(credentials, userContext: UserContext): Observable<any> {
         const data = 'j_username=' + encodeURIComponent(credentials.username) +
             '&j_password=' + encodeURIComponent(credentials.password);
-        return this.http.post('/SIGLA/restapi/login', data, {
-            headers: this.headers
+        return this.profileService.getProfileInfo().switchMap((profileInfo) => {
+            return this.http.post(profileInfo.siglaWildflyURL + '/SIGLA/restapi/login', data, {
+                headers: this.headers
+            });
         });
     }
 
     initializeWildfly(): Observable<any> {
-        return this.http.post('/SIGLA/Login.do', 'comando=doDefault', {
-            headers: this.headers
+        return this.profileService.getProfileInfo().switchMap((profileInfo) => {
+            return this.http.post(profileInfo.siglaWildflyURL + '/SIGLA/Login.do', 'comando=doDefault', {
+                headers: this.headers
+            });
         });
     }
 
@@ -42,14 +49,18 @@ export class AuthServerProvider {
             '&context.uo=' + userContext.uo +
             '&context.cdr=' + userContext.cdr +
             '&comando=doEntraUtenteMultiplo';
-        return this.http.post('/SIGLA/Login.do', data, {
-            headers: this.headers
+        return this.profileService.getProfileInfo().switchMap((profileInfo) => {
+            return this.http.post(profileInfo.siglaWildflyURL + '/SIGLA/Login.do', data, {
+                headers: this.headers
+            });
         });
     }
 
     logoutWildfly(): Observable<any> {
-        return this.http.post('/SIGLA/GestioneMenu.do', 'comando=doLogout', {
-            headers: this.headers
+        return this.profileService.getProfileInfo().switchMap((profileInfo) => {
+            return this.http.post(profileInfo.siglaWildflyURL + '/SIGLA/GestioneMenu.do', 'comando=doLogout', {
+                headers: this.headers
+            });
         });
     }
 

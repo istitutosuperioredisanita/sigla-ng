@@ -8,6 +8,7 @@ import { Preferiti } from '../context/preferiti.model';
 import { Messaggio } from '../context/messaggio.model';
 import { IndirizziMail } from './index';
 import { SERVER_API_URL } from '../app.constants';
+import { ProfileService } from '../layouts/profiles/profile.service';
 
 @Injectable()
 export class ContextService  {
@@ -25,8 +26,10 @@ export class ContextService  {
 
     constructor(
         private http: Http,
-        private eventManager: JhiEventManager
-    ) {}
+        private eventManager: JhiEventManager,
+        private profileService: ProfileService
+    ) {
+    }
 
     findEsercizi(): void {
         this.getEsercizi()
@@ -141,9 +144,11 @@ export class ContextService  {
         ].join(',');
         params.set('comando', 'doSelezionaContesto(' + parameter + ')');
         params.set('datetime', String(Date.now()));
-        return this.http.get('/SIGLA/Login.do', {
-           search: params
-        }).map((res: Response) => res.text());
+        return this.profileService.getProfileInfo().switchMap((profileInfo) => {
+            return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/Login.do', {
+                search: params
+            }).map((res: Response) => res.text());
+        });
     }
 
     setUoModel(pair: Pair) {

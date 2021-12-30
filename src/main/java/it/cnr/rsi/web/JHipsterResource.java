@@ -59,6 +59,7 @@ public class JHipsterResource {
         map.put("activeProfiles", profiles);
         map.put("instituteAcronym", env.getProperty("institute.acronym", "CNR"));
         map.put("urlChangePassword", env.getProperty("security.ldap.change.password.url"));
+        map.put("siglaWildflyURL", env.getProperty("sigla.wildfly.url", ""));
 
         profiles
             .stream()

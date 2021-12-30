@@ -5,4 +5,5 @@ export class ProfileInfo {
     swaggerEnabled: boolean;
     instituteAcronym: string;
     urlChangePassword: string;
+    siglaWildflyURL: string;
 }
