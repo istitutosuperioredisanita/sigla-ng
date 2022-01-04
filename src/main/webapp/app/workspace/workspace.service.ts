@@ -6,6 +6,8 @@ import { TODO } from './todo.model';
 import { SERVER_API_URL } from '../app.constants';
 import { DatePipe } from '@angular/common';
 import { ProfileService } from '../layouts/profiles/profile.service';
+import { Headers } from '@angular/http';
+
 @Injectable()
 export class WorkspaceService {
 
@@ -13,6 +15,9 @@ export class WorkspaceService {
     private observable: Observable<boolean>;
     private observers: Observer<boolean>[];
     private datePipe: DatePipe;
+    headers = new Headers ({
+        'Content-Type': 'application/json',
+    });
 
     constructor(
         private http: Http,
@@ -39,7 +44,7 @@ export class WorkspaceService {
         params.set('datetime', String(Date.now()));
         return this.profileService.getProfileInfo().switchMap((profileInfo) => {
             return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/GestioneMenu.do', {
-            search: params
+                search: params, withCredentials: true
             })
             .map((res: Response) => res.text());
         });
@@ -47,7 +52,7 @@ export class WorkspaceService {
 
     version(): Observable<string> {
         return this.profileService.getProfileInfo().switchMap((profileInfo) => {
-            return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/restapi/version').map((res: Response) => {
+            return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/restapi/version', {headers: this.headers}).map((res: Response) => {
                 return res.json()['Specification-Version'];
             });
         });
@@ -57,7 +62,10 @@ export class WorkspaceService {
         if (form.comando.value) {
             return this.profileService.getProfileInfo().switchMap((profileInfo) => {
                 return this.http.post(profileInfo.siglaWildflyURL + '/SIGLA/' + form.getAttribute('action-ng') + '?datetime=' + Date.now(),
-                    new FormData(form)).map((res: Response) => res.text());
+                    new FormData(form)).map((res: Response) => res.text(), {
+                        headers: this.headers,
+                        withCredentials: true
+                    });
             });
         } else {
             return Observable.empty();
@@ -66,13 +74,19 @@ export class WorkspaceService {
 
     getAllTODO(): Observable<string[]> {
         return this.profileService.getProfileInfo().switchMap((profileInfo) => {
-            return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/restapi/todo?datetime=' + Date.now()).map((res: Response) => res.json());
+            return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/restapi/todo?datetime=' + Date.now(), {
+                headers: this.headers,
+                withCredentials: true
+            }).map((res: Response) => res.json());
         });
     }
 
     getTODO(bp: string): Observable<TODO[]> {
         return this.profileService.getProfileInfo().switchMap((profileInfo) => {
-            return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/restapi/todo/' + bp + '?datetime=' + Date.now()).map((res: Response) => res.json());
+            return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/restapi/todo/' + bp + '?datetime=' + Date.now(), {
+                headers: this.headers,
+                withCredentials: true
+            }).map((res: Response) => res.json());
         })
     }
 

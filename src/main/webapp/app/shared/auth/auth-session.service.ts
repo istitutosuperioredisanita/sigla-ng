@@ -29,7 +29,7 @@ export class AuthServerProvider {
             '&j_password=' + encodeURIComponent(credentials.password);
         return this.profileService.getProfileInfo().switchMap((profileInfo) => {
             return this.http.post(profileInfo.siglaWildflyURL + '/SIGLA/restapi/login', data, {
-                headers: this.headers
+                headers: this.headers, withCredentials: true
             });
         });
     }
@@ -37,7 +37,7 @@ export class AuthServerProvider {
     initializeWildfly(): Observable<any> {
         return this.profileService.getProfileInfo().switchMap((profileInfo) => {
             return this.http.post(profileInfo.siglaWildflyURL + '/SIGLA/Login.do', 'comando=doDefault', {
-                headers: this.headers
+                headers: this.headers, withCredentials: true
             });
         });
     }
@@ -51,7 +51,7 @@ export class AuthServerProvider {
             '&comando=doEntraUtenteMultiplo';
         return this.profileService.getProfileInfo().switchMap((profileInfo) => {
             return this.http.post(profileInfo.siglaWildflyURL + '/SIGLA/Login.do', data, {
-                headers: this.headers
+                headers: this.headers, withCredentials: true
             });
         });
     }
@@ -59,7 +59,7 @@ export class AuthServerProvider {
     logoutWildfly(): Observable<any> {
         return this.profileService.getProfileInfo().switchMap((profileInfo) => {
             return this.http.post(profileInfo.siglaWildflyURL + '/SIGLA/GestioneMenu.do', 'comando=doLogout', {
-                headers: this.headers
+                headers: this.headers, withCredentials: true
             });
         });
     }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, URLSearchParams } from '@angular/http';
-import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
+import { Http, Response, URLSearchParams, Headers } from '@angular/http';
+import { JhiEventManager } from 'ng-jhipster';
 import { Observable } from 'rxjs/Rx';
 import { UserContext, Account} from '../shared';
 import { Pair } from './pair.model';
@@ -21,6 +21,9 @@ export class ContextService  {
     cdrModel: Pair;
     preferiti: Preferiti[];
     messaggi: Messaggio[];
+    headers = new Headers ({
+        'Content-Type': 'application/x-www-form-urlencoded'
+    });
     private resourceUrlIndirizziEmail = SERVER_API_URL + 'api/context/indirizzi-mail/';
     private resourceUrlMessaggi = SERVER_API_URL + 'api/context/messaggi/';
 
@@ -146,7 +149,7 @@ export class ContextService  {
         params.set('datetime', String(Date.now()));
         return this.profileService.getProfileInfo().switchMap((profileInfo) => {
             return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/Login.do', {
-                search: params
+                search: params, headers: this.headers, withCredentials: true
             }).map((res: Response) => res.text());
         });
     }

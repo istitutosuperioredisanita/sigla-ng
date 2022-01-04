@@ -10,21 +10,28 @@ export class ProfileService {
 
     private profileInfoUrl = SERVER_API_URL + 'api/profile-info';
 
+    private profileInfo: ProfileInfo;
+
     constructor(private http: Http) { }
 
     getProfileInfo(): Observable<ProfileInfo> {
-        return this.http.get(this.profileInfoUrl)
-            .map((res: Response) => {
-                const data = res.json();
-                const pi = new ProfileInfo();
-                pi.activeProfiles = data.activeProfiles;
-                pi.ribbonEnv = data.ribbonEnv;
-                pi.instituteAcronym = data.instituteAcronym;
-                pi.urlChangePassword = data.urlChangePassword;
-                pi.siglaWildflyURL = data.siglaWildflyURL;
-                pi.inProduction = data.activeProfiles.indexOf('prod') !== -1;
-                pi.swaggerEnabled = data.activeProfiles.indexOf('swagger') !== -1;
-                return pi;
+        if (this.profileInfo) {
+            return Observable.of(this.profileInfo);
+        } else {
+            return this.http.get(this.profileInfoUrl)
+                .map((res: Response) => {
+                    const data = res.json();
+                    const pi = new ProfileInfo();
+                    pi.activeProfiles = data.activeProfiles;
+                    pi.ribbonEnv = data.ribbonEnv;
+                    pi.instituteAcronym = data.instituteAcronym;
+                    pi.urlChangePassword = data.urlChangePassword;
+                    pi.siglaWildflyURL = data.siglaWildflyURL;
+                    pi.inProduction = data.activeProfiles.indexOf('prod') !== -1;
+                    pi.swaggerEnabled = data.activeProfiles.indexOf('swagger') !== -1;
+                    this.profileInfo = pi;
+                    return pi;
             });
+        }
     }
 }
