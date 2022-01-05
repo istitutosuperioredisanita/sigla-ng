@@ -15,9 +15,6 @@ export class WorkspaceService {
     private observable: Observable<boolean>;
     private observers: Observer<boolean>[];
     private datePipe: DatePipe;
-    headers = new Headers ({
-        'Content-Type': 'application/json',
-    });
 
     constructor(
         private http: Http,
@@ -52,7 +49,7 @@ export class WorkspaceService {
 
     version(): Observable<string> {
         return this.profileService.getProfileInfo().switchMap((profileInfo) => {
-            return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/restapi/version', {headers: this.headers}).map((res: Response) => {
+            return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/restapi/version').map((res: Response) => {
                 return res.json()['Specification-Version'];
             });
         });
@@ -62,10 +59,9 @@ export class WorkspaceService {
         if (form.comando.value) {
             return this.profileService.getProfileInfo().switchMap((profileInfo) => {
                 return this.http.post(profileInfo.siglaWildflyURL + '/SIGLA/' + form.getAttribute('action-ng') + '?datetime=' + Date.now(),
-                    new FormData(form)).map((res: Response) => res.text(), {
-                        headers: this.headers,
+                    new FormData(form), {
                         withCredentials: true
-                    });
+                    }).map((res: Response) => res.text());
             });
         } else {
             return Observable.empty();
@@ -75,7 +71,6 @@ export class WorkspaceService {
     getAllTODO(): Observable<string[]> {
         return this.profileService.getProfileInfo().switchMap((profileInfo) => {
             return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/restapi/todo?datetime=' + Date.now(), {
-                headers: this.headers,
                 withCredentials: true
             }).map((res: Response) => res.json());
         });
@@ -84,7 +79,6 @@ export class WorkspaceService {
     getTODO(bp: string): Observable<TODO[]> {
         return this.profileService.getProfileInfo().switchMap((profileInfo) => {
             return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/restapi/todo/' + bp + '?datetime=' + Date.now(), {
-                headers: this.headers,
                 withCredentials: true
             }).map((res: Response) => res.json());
         })
