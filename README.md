@@ -17,6 +17,23 @@ Il progetto è nato con l’obiettivo della revisione dell’intero layout della
 ed è esclusivamente quello di rendere più ‘usabile’ le funzionalità. In alcuni casi la revisione ha riguardato l’aggiunta di utilità importanti sempre al fine di migliorare la navigazione e la gestione delle mappe.
 Per ulteriori informazioni consultare il [Manuale di utilizzo di SIGLA](https://consiglionazionaledellericerche.github.io/sigla-main/nuovo_layout.html).             
 
+# Startup with Docker on H2 without nginx
+```shell script
+docker run -d --name sigla-h2 -e H2_OPTIONS='-ifNotExists' -ti oscarfonts/h2
+docker run -d --name sigla-thorntail -p 8081:8080 --link sigla-h2:db \
+  -e THORNTAIL_PROJECT_STAGE="demo-h2" \
+  -e THORNTAIL_DATASOURCES_DATA-SOURCES_SIGLA_CONNECTION-URL="jdbc:h2:tcp://db:1521/db-sigla" \
+  -e THORNTAIL_UNDERTOW_SERVLET-CONTAINERS_DEFAULT_SESSION-COOKIE-SETTING_COMMENT=";" \
+  -e THORNTAIL_UNDERTOW_FILTER-CONFIGURATION_RESPONSE-HEADERS_ACCESS-CONTROL-ALLOW-ORIGIN_HEADER-VALUE="http://localhost:8080" \
+  -ti consiglionazionalericerche/sigla-main:release
+docker run -d --name sigla-ng -p 8080:8080 --link sigla-h2:db \
+  -e SIGLA_WILDFLY_URL=http://localhost:8081 \
+  -e SPRING_PROFILES_ACTIVE=demo \
+  -e SPRING_DATASOURCE_URL="jdbc:h2:tcp://db:1521/db-sigla" \
+  -ti consiglionazionalericerche/sigla-ng:latest
+```
+_Collegarsi a http://localhost:8080/ username: ENTE password da impostare al primo login._
+
 # Startup with Docker on H2
 ```shell script
 git clone git@github.com:consiglionazionaledellericerche/sigla-ng.git
