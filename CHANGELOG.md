@@ -1,5 +1,17 @@
 # sigla-ng Changelog
 
+## Release 2.0.17  -- _January 05, 2022_ 
+### No issue
+
+>**Add env variable sigla.wildfly.url**
+>
+>[6947fdca9b8e50c](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/6947fdca9b8e50c) marco.spasiano *January 05, 2022*
+
+>**Generate CHANGELOG.md [ci skip]**
+>
+>[81f7a677aabc222](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/81f7a677aabc222) marco.spasiano *January 04, 2022*
+
+
 ## Release 2.0.16  -- _January 04, 2022_ 
 ### No issue
 
