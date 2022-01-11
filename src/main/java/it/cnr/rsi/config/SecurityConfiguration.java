@@ -25,6 +25,7 @@ import it.cnr.rsi.service.UtenteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -58,6 +59,7 @@ import java.util.stream.Stream;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @EnableConfigurationProperties(LdapConfigurationProperties.class)
+@ConditionalOnProperty(value = "keycloak.enabled", matchIfMissing = true, havingValue = "false")
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfiguration.class);

@@ -24,6 +24,7 @@ import com.hazelcast.core.HazelcastInstance;
 import it.cnr.rsi.config.HazelcastConfigurationProperties;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,6 +50,7 @@ import org.springframework.util.StringUtils;
  * @see EnableHazelcastHttpSession
  */
 @Configuration
+@ConditionalOnProperty(value = "keycloak.enabled", matchIfMissing = true, havingValue = "false")
 public class HazelcastHttpSessionConfiguration extends SpringHttpSessionConfiguration
 		implements ImportAware {
 

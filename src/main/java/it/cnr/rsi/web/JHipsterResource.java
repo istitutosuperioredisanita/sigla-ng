@@ -22,6 +22,10 @@ import it.cnr.rsi.security.ContextAuthentication;
 import it.cnr.rsi.security.UserContext;
 import it.cnr.rsi.service.UtenteService;
 import it.cnr.rsi.web.rest.errors.InvalidPasswordException;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.adapters.OidcKeycloakAccount;
+import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+import org.keycloak.representations.IDToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +33,13 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -45,7 +51,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class JHipsterResource {
 
-    private static final Logger LOGGER  = LoggerFactory.getLogger(JHipsterResource.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JHipsterResource.class);
 
     @Autowired
     private Environment env;
@@ -53,13 +59,14 @@ public class JHipsterResource {
     private UtenteService utenteService;
 
     @GetMapping("/profile-info")
-    public ResponseEntity<Map<String, Object>> profileInfo() {
+    public ResponseEntity<Map<String, Object>> profileInfo(HttpServletRequest request) {
         List<String> profiles = Arrays.asList(env.getActiveProfiles());
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("activeProfiles", profiles);
         map.put("instituteAcronym", env.getProperty("institute.acronym", "CNR"));
         map.put("urlChangePassword", env.getProperty("security.ldap.change.password.url"));
         map.put("siglaWildflyURL", env.getProperty("sigla.wildfly.url", ""));
+        map.put("keycloakEnabled", env.getProperty("keycloak.enabled", "false"));
 
         profiles
             .stream()
@@ -91,29 +98,50 @@ public class JHipsterResource {
     }
 
     @GetMapping("/account")
-    public ResponseEntity<UserDetails> account() {
-    	LOGGER.info("get account");
+    public ResponseEntity<?> account() {
+        LOGGER.info("get account");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         LOGGER.info("get account with authentication {}", authentication);
-        return ResponseEntity.ok(
-            Optional
+        final Optional<KeycloakAuthenticationToken> keycloakAuthenticationToken = Optional.ofNullable(authentication)
+            .filter(KeycloakAuthenticationToken.class::isInstance)
+            .map(KeycloakAuthenticationToken.class::cast);
+        Optional<UserContext> userContext = Optional.empty();
+        if (keycloakAuthenticationToken.isPresent()) {
+            final OidcKeycloakAccount account = keycloakAuthenticationToken.get().getAccount();
+            LOGGER.info("get account with authentication {}", account);
+            final Principal principal = account.getPrincipal();
+            if (principal instanceof KeycloakPrincipal) {
+                KeycloakPrincipal kPrincipal = (KeycloakPrincipal) principal;
+                IDToken token = kPrincipal.getKeycloakSecurityContext().getIdToken();
+                final Optional<Utente> optionalUtente = utenteService.findUsersForUid(token.getPreferredUsername()).stream().findAny();
+                if (optionalUtente.isPresent()) {
+                    userContext = Optional.of(new UserContext(optionalUtente.get()));
+                } else {
+                    return ResponseEntity.unprocessableEntity().body(token);
+                }
+            }
+        } else {
+            userContext = Optional
                 .ofNullable(authentication)
                 .map(Authentication::getPrincipal)
                 .filter(UserContext.class::isInstance)
-                .map(UserContext.class::cast)
-                .map(userContext -> {
+                .map(UserContext.class::cast);
+        }
+        return ResponseEntity.ok(
+            userContext
+                .map(s -> {
                     final Optional<List<Utente>> usersForUid = Optional.ofNullable(
-                        utenteService.findUsersForUid(userContext.getLogin())).filter(utentes -> !utentes.isEmpty());
+                        utenteService.findUsersForUid(s.getLogin())).filter(utentes -> !utentes.isEmpty());
                     if (usersForUid.isPresent()) {
-                        userContext.users(usersForUid.get()
+                        s.users(usersForUid.get()
                             .stream()
                             .map(utente -> new UserContext(utente))
                             .collect(Collectors.toList()));
                     } else {
-                        userContext.users(Collections.singletonList(utenteService.loadUserByUsername(userContext.getLogin())));
+                        s.users(Collections.singletonList(utenteService.loadUserByUsername(s.getLogin())));
                     }
-                    SecurityContextHolder.getContext().setAuthentication(new ContextAuthentication(userContext));
-                    return userContext;
+                    SecurityContextHolder.getContext().setAuthentication(new ContextAuthentication(s, keycloakAuthenticationToken.orElse(null)));
+                    return s;
                 })
                 .orElse(null)
         );
@@ -125,16 +153,26 @@ public class JHipsterResource {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return ResponseEntity.ok(
             Optional
-            .ofNullable(authentication)
-            .map(Authentication::getPrincipal)
-            .filter(principal -> principal instanceof UserContext)
-            .map(UserContext.class::cast)
-            .map(userContext -> {
-                final UserContext newUserContext = userContext.changeUsernameAndAuthority(username);
-                SecurityContextHolder.getContext().setAuthentication(new ContextAuthentication(newUserContext));
-                return newUserContext;
-            })
-            .orElseThrow(() -> new RuntimeException("something went wrong " + authentication.toString())));
+                .ofNullable(authentication)
+                .map(Authentication::getPrincipal)
+                .filter(principal -> principal instanceof UserContext)
+                .map(UserContext.class::cast)
+                .map(userContext -> {
+                    final UserContext newUserContext = userContext.changeUsernameAndAuthority(username);
+                    SecurityContextHolder.getContext().setAuthentication(
+                        new ContextAuthentication(
+                            newUserContext,
+                            Optional.ofNullable(SecurityContextHolder.getContext())
+                                .map(SecurityContext::getAuthentication)
+                                .filter(ContextAuthentication.class::isInstance)
+                                .map(ContextAuthentication.class::cast)
+                                .map(ContextAuthentication::getKeycloakAuthenticationToken)
+                                .orElse(null)
+                        )
+                    );
+                    return newUserContext;
+                })
+                .orElseThrow(() -> new RuntimeException("something went wrong " + authentication.toString())));
     }
 
     /**

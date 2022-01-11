@@ -48,7 +48,7 @@ public class UserContext implements UserDetails {
     private String email;
     private Boolean ldap;
 
-    private Collection<? extends GrantedAuthority> authorities;
+    private Collection<GrantedAuthority> authorities;
     private String login;
     private Integer esercizio;
     private String cds;
@@ -76,13 +76,13 @@ public class UserContext implements UserDetails {
     }
 
 
-    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+    public void setAuthorities(Collection<GrantedAuthority> authorities) {
         this.authorities = authorities;
     }
 
     @Override
     @JsonIgnore
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<GrantedAuthority> getAuthorities() {
         return authorities;
     }
 

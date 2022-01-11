@@ -5,7 +5,7 @@ import { AccountService } from './account.service';
 import { Account } from '../user/account.model';
 import { ContextService } from '../../context/context.service';
 import { LocalStateStorageService } from './local-storage.service';
-import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 @Injectable()
 export class Principal {

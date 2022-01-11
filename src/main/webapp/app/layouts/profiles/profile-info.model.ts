@@ -6,4 +6,5 @@ export class ProfileInfo {
     instituteAcronym: string;
     urlChangePassword: string;
     siglaWildflyURL: string;
+    keycloakEnabled: boolean;
 }

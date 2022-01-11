@@ -40,9 +40,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
         private context: ContextService,
         private localStateStorageService: LocalStateStorageService
     ) {
-        this.profileService.getProfileInfo().subscribe((profileInfo) => {
-            this.instituteAcronym = profileInfo.instituteAcronym;
-        });
     }
 
     ngOnInit() {
@@ -51,8 +48,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 this.account = account;
             });
         }
+        this.profileService.getProfileInfo().subscribe((profileInfo) => {
+            this.instituteAcronym = profileInfo.instituteAcronym;
+            if (profileInfo.keycloakEnabled) {
+                this.principal.identity(true).then((account) => {
+                    this.account = account;
+                });
+            }
+        });
         this.registerAuthenticationSuccess();
     }
+
     ngAfterViewInit() {
         setTimeout(() => this.userNameElement.nativeElement.focus());
     }

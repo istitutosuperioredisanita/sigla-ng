@@ -16,13 +16,28 @@
   -->
 
 <div>
-    <div class="row">
+    <div  class="container" [hidden]="!accessdenied">
+        <h1>Sistema non disponibile per l'utente {{preferred_username}}</h1>
+        <p>Ciao {{given_name}}, siamo spiacenti ma la tua utenza <span  class="badge badge-pill badge-dark">{{preferred_username}}</span> non ha acceso a questo sistema.</p>
+        <div class="row">
+            <div class="col text-monospace">
+                <div>login: <strong class="font-weight-bold">{{preferred_username}}</strong></div>
+                <div>nome: <strong class="font-weight-bold">{{given_name}}</strong></div>
+                <div>cognome: <strong class="font-weight-bold">{{family_name}}</strong></div>
+                <div>email: <strong class="font-weight-bold">{{email}}</strong></div>
+                <a class="btn btn-link" (click)="logout()">
+                    <i class="fa fa-fw fa-sign-out" aria-hidden="true"></i>
+                    <span jhiTranslate="global.menu.account.logout">Sign out</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="row" [hidden]="accessdenied">
         <div class="col-md-4">
             <span class="hipster img-fluid rounded"></span>
         </div>
         <div class="col-md-8">
             <h1 jhiTranslate="error.title">Error Page!</h1>
-
             <div [hidden]="!errorMessage">
                 <div class="alert alert-danger">{{errorMessage}}
                 </div>

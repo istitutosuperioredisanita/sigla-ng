@@ -38,7 +38,8 @@
         <frontend-maven-plugin.version>1.12.0</frontend-maven-plugin.version>
         <node.version>v12.22.6</node.version>
         <yarn.version>v1.12.3</yarn.version>
-        <spring-boot.version>2.0.2.RELEASE</spring-boot.version>
+        <spring-boot.version>2.0.3.RELEASE</spring-boot.version>
+        <keycloak.version>16.1.0</keycloak.version>
         <maven.javadoc.skip>true</maven.javadoc.skip>
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <git.changelog.maven.plugin.version>1.60</git.changelog.maven.plugin.version>
@@ -125,6 +126,11 @@
         <dependency>
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-hazelcast</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-spring-boot-starter</artifactId>
+            <version>${keycloak.version}</version>
         </dependency>
     </dependencies>
     <profiles>
@@ -333,6 +339,13 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.keycloak.bom</groupId>
+                <artifactId>keycloak-adapter-bom</artifactId>
+                <version>${keycloak.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

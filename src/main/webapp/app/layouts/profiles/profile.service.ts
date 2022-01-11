@@ -27,6 +27,7 @@ export class ProfileService {
                     pi.instituteAcronym = data.instituteAcronym;
                     pi.urlChangePassword = data.urlChangePassword;
                     pi.siglaWildflyURL = data.siglaWildflyURL;
+                    pi.keycloakEnabled = data.keycloakEnabled;
                     pi.inProduction = data.activeProfiles.indexOf('prod') !== -1;
                     pi.swaggerEnabled = data.activeProfiles.indexOf('swagger') !== -1;
                     this.profileInfo = pi;
