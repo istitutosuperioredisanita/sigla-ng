@@ -4,6 +4,7 @@ keycloak:
     auth-server-url: http://dockerwebtest02.si.cnr.it:8110/auth
     ssl-required: NONE
     resource: sigla
+    public-client: true
     use-resource-role-mappings: true
 
 spring:
