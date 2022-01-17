@@ -2,8 +2,10 @@ keycloak:
     enabled: true
     realm: cnr
     auth-server-url: http://dockerwebtest02.si.cnr.it:8110/auth
-    credentials:
-        secret: secret
     ssl-required: NONE
     resource: sigla
     use-resource-role-mappings: true
+
+spring:
+    autoconfigure:
+        exclude: org.springframework.boot.autoconfigure.session.SessionAutoConfiguration

@@ -18,7 +18,9 @@
 package it.cnr.rsi.security;
 
 import org.keycloak.adapters.OidcKeycloakAccount;
+import org.keycloak.adapters.springsecurity.account.SimpleKeycloakAccount;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+import org.keycloak.adapters.tomcat.SimplePrincipal;
 import org.springframework.data.annotation.Transient;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -34,10 +36,10 @@ public class ContextAuthentication extends KeycloakAuthenticationToken implement
         super(
             Optional.ofNullable(keycloakAuthenticationToken)
                 .flatMap(k -> Optional.ofNullable(k.getAccount()))
-                .orElse(null),
+                .orElseGet(() -> new SimpleKeycloakAccount(new SimplePrincipal(""), null, null)),
             Optional.ofNullable(keycloakAuthenticationToken)
                 .flatMap(k -> Optional.ofNullable(k.isInteractive()))
-                .orElse(null)
+                .orElse(Boolean.FALSE)
         );
         this.userContext = userContext;
         this.keycloakAuthenticationToken = keycloakAuthenticationToken;

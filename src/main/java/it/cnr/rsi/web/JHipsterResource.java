@@ -106,7 +106,7 @@ public class JHipsterResource {
             .filter(KeycloakAuthenticationToken.class::isInstance)
             .map(KeycloakAuthenticationToken.class::cast);
         Optional<UserContext> userContext = Optional.empty();
-        if (keycloakAuthenticationToken.isPresent()) {
+        if (keycloakAuthenticationToken.isPresent() && keycloakAuthenticationToken.get().isAuthenticated()) {
             final OidcKeycloakAccount account = keycloakAuthenticationToken.get().getAccount();
             LOGGER.info("get account with authentication {}", account);
             final Principal principal = account.getPrincipal();
