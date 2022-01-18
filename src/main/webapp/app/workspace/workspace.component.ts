@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, ElementRef, Renderer, ViewChild, Inject, HostListener } from '@angular/core';
 import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
-import { Principal, LoginService } from '../shared';
+import { Principal, LoginService, Account } from '../shared';
 import { Subscription } from 'rxjs/Rx';
 import { WorkspaceService } from './workspace.service';
 import { DomSanitizer, SafeHtml} from '@angular/platform-browser';
@@ -154,9 +154,9 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
 
     caricaTODO() {
         this.todos = [];
-        this.workspaceService.getAllTODO().subscribe((bps) => {
+        this.workspaceService.getAllTODO(this.account).subscribe((bps) => {
             for (const bp of bps){
-                this.workspaceService.getTODO(bp).subscribe((todos) => {
+                this.workspaceService.getTODO(bp, this.account).subscribe((todos) => {
                     for (const todo of todos){
                         this.todos.push(todo);
                     }
@@ -186,7 +186,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         if (this.leaf) {
             this.siglaPageTitle = this.leaf.breadcrumbS;
             this.startRefreshing();
-            this.workspaceService.openMenu(nodo.id).subscribe((html) => {
+            this.workspaceService.openMenu(nodo.id, this.account).subscribe((html) => {
                 this.renderHtml(html);
                 this.stopRefreshing();
             }, (error) => {

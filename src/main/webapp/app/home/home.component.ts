@@ -7,6 +7,7 @@ import { Account, MultipleUserModalService, LoginService, Principal, StateStorag
 import { ContextService} from '../context';
 import { LocalStateStorageService } from '../shared/auth/local-storage.service';
 import { SERVER_API_URL } from '../app.constants';
+import { AuthServerProvider } from '../shared/auth/auth-session.service';
 
 @Component({
     selector: 'jhi-home',
@@ -33,6 +34,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         private principal: Principal,
         private loginService: LoginService,
         private multipleUserModalService: MultipleUserModalService,
+        private authServerProvider: AuthServerProvider,
         private stateStorageService: StateStorageService,
         private eventManager: JhiEventManager,
         private profileService: ProfileService,
@@ -52,7 +54,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.instituteAcronym = profileInfo.instituteAcronym;
             if (profileInfo.keycloakEnabled) {
                 this.principal.identity(true).then((account) => {
-                    this.account = account;
+                    this.authServerProvider.initializeWildfly(account).subscribe(() => {
+                        this.account = account;
+                    });
                 });
             }
         });

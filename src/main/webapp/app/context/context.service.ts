@@ -137,7 +137,7 @@ export class ContextService  {
         return this.http.post(SERVER_API_URL + 'api/context', userContext).map((res: Response) => res.json());
     }
 
-    saveWildflyUserContext(userContext: UserContext): Observable<string> {
+    saveWildflyUserContext(userContext: UserContext, account: Account): Observable<string> {
         const params: URLSearchParams = new URLSearchParams();
         const parameter = [
             userContext.esercizio,
@@ -147,6 +147,9 @@ export class ContextService  {
         ].join(',');
         params.set('comando', 'doSelezionaContesto(' + parameter + ')');
         params.set('datetime', String(Date.now()));
+        if (account.access_token) {
+            params.set('access_token', account.access_token);
+        }
         return this.profileService.getProfileInfo().switchMap((profileInfo) => {
             return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/Login.do', {
                 search: params, headers: this.headers, withCredentials: true

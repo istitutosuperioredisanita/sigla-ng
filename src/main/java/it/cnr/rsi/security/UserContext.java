@@ -54,6 +54,7 @@ public class UserContext implements UserDetails {
     private String cds;
     private String uo;
     private String cdr;
+    private String access_token;
 
     private Map<String, List<GrantedAuthority>> roles;
     private List<UserContext> users;
@@ -291,5 +292,13 @@ public class UserContext implements UserDetails {
 
     public void setUtenteMultiplo(Boolean utenteMultiplo) {
         this.utenteMultiplo = utenteMultiplo;
+    }
+
+    public String getAccess_token() {
+        return access_token;
+    }
+
+    public void setAccess_token(String access_token) {
+        this.access_token = access_token;
     }
 }

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers } from '@angular/http';
+import { Http, Response, Headers, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { ProfileService } from '../../layouts/profiles/profile.service';
-import { UserContext } from '../../shared';
+import { Account, UserContext } from '../../shared';
 
 @Injectable()
 export class AuthServerProvider {
@@ -34,10 +34,16 @@ export class AuthServerProvider {
         });
     }
 
-    initializeWildfly(): Observable<any> {
+    initializeWildfly(account: Account): Observable<any> {
+        const params: URLSearchParams = new URLSearchParams();
+        params.set('comando', 'doDefault');
+        params.set('datetime', String(Date.now()));
+        if (account && account.access_token) {
+            params.set('access_token', account.access_token);
+        }
         return this.profileService.getProfileInfo().switchMap((profileInfo) => {
-            return this.http.post(profileInfo.siglaWildflyURL + '/SIGLA/Login.do', 'comando=doDefault', {
-                headers: this.headers, withCredentials: true
+            return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/Login.do', {
+                search: params, headers: this.headers, withCredentials: true
             });
         });
     }

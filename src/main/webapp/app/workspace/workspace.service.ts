@@ -7,6 +7,7 @@ import { SERVER_API_URL } from '../app.constants';
 import { DatePipe } from '@angular/common';
 import { ProfileService } from '../layouts/profiles/profile.service';
 import { Headers } from '@angular/http';
+import { Account } from '../shared/user/account.model';
 
 @Injectable()
 export class WorkspaceService {
@@ -35,10 +36,13 @@ export class WorkspaceService {
         return this.http.delete(this.resourceUrl).map((res: Response) => res.json());
     }
 
-    openMenu(nodoid: string): Observable<string> {
+    openMenu(nodoid: string, account: Account): Observable<string> {
         const params: URLSearchParams = new URLSearchParams();
         params.set('comando', 'doSelezionaMenu(' + nodoid + ')');
         params.set('datetime', String(Date.now()));
+        if (account && account.access_token) {
+            params.set('access_token', account.access_token);
+        }
         return this.profileService.getProfileInfo().switchMap((profileInfo) => {
             return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/GestioneMenu.do', {
                 search: params, withCredentials: true
@@ -68,18 +72,28 @@ export class WorkspaceService {
         }
     }
 
-    getAllTODO(): Observable<string[]> {
+    getAllTODO(account: Account): Observable<string[]> {
+        const params: URLSearchParams = new URLSearchParams();
+        params.set('datetime', String(Date.now()));
+        if (account && account.access_token) {
+            params.set('access_token', account.access_token);
+        }
         return this.profileService.getProfileInfo().switchMap((profileInfo) => {
-            return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/restapi/todo?datetime=' + Date.now(), {
-                withCredentials: true
+            return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/restapi/todo', {
+                search: params, withCredentials: true
             }).map((res: Response) => res.json());
         });
     }
 
-    getTODO(bp: string): Observable<TODO[]> {
+    getTODO(bp: string, account: Account): Observable<TODO[]> {
+        const params: URLSearchParams = new URLSearchParams();
+        params.set('datetime', String(Date.now()));
+        if (account && account.access_token) {
+            params.set('access_token', account.access_token);
+        }
         return this.profileService.getProfileInfo().switchMap((profileInfo) => {
-            return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/restapi/todo/' + bp + '?datetime=' + Date.now(), {
-                withCredentials: true
+            return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/restapi/todo/' + bp, {
+                search: params, withCredentials: true
             }).map((res: Response) => res.json());
         })
     }

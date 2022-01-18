@@ -144,7 +144,7 @@ export class ContextComponent implements OnInit, OnDestroy {
             .saveEsecizio(esercizio)
             .subscribe((identity) => {
                 this.principal.authenticate(identity);
-                this.contextService.saveWildflyUserContext(userContext).subscribe(() => {
+                this.contextService.saveWildflyUserContext(userContext, this.principal.getAccount()).subscribe(() => {
                     this.localStateStorageService.storeEsercizio(this.principal.getAccount().username, esercizio);
                     this.eventManager.broadcast({
                         name: 'onRefreshTree',
@@ -172,7 +172,7 @@ export class ContextComponent implements OnInit, OnDestroy {
             .saveUserContext(userContext)
             .subscribe((identity) => {
                 this.principal.authenticate(identity);
-                this.contextService.saveWildflyUserContext(userContext).subscribe(() => {
+                this.contextService.saveWildflyUserContext(userContext, this.principal.getAccount()).subscribe(() => {
                     this.localStateStorageService.storeUserContext(this.principal.getAccount().username, userContext);
                     if (refreshTree) {
                         this.eventManager.broadcast({
