@@ -59,11 +59,17 @@ export class WorkspaceService {
         });
     }
 
-    postForm(form: any): Observable<string> {
+    postForm(form: any, account: Account): Observable<string> {
+        const params: URLSearchParams = new URLSearchParams();
+        params.set('datetime', String(Date.now()));
+        if (account && account.access_token) {
+            params.set('access_token', account.access_token);
+        }
         if (form.comando.value) {
             return this.profileService.getProfileInfo().switchMap((profileInfo) => {
-                return this.http.post(profileInfo.siglaWildflyURL + '/SIGLA/' + form.getAttribute('action-ng') + '?datetime=' + Date.now(),
+                return this.http.post(profileInfo.siglaWildflyURL + '/SIGLA/' + form.getAttribute('action-ng'),
                     new FormData(form), {
+                        search: params,
                         withCredentials: true
                     }).map((res: Response) => res.text());
             });

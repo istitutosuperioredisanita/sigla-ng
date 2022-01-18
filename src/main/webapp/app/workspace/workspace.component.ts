@@ -67,7 +67,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
             if (event.detail.comando) {
                 const form = event.detail.form;
                 this.startRefreshing();
-                this.workspaceService.postForm(form)
+                this.workspaceService.postForm(form, this.account)
                     .subscribe((html) => {
                         this.renderHtml(html);
                         this.stopRefreshing();
