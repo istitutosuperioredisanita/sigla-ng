@@ -8,7 +8,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 @Injectable()
 export class Principal {
-    private userIdentity: any;
+    public userIdentity: any;
     private authenticated = false;
     private authenticationState = new Subject<any>();
 

@@ -83,7 +83,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return this.principal.isAuthenticated();
     }
 
-    login(redirect: string) {
+    login(redirect?: string) {
         let navigate = redirect || '';
         this.isRequesting = true;
         this.loginService.login({

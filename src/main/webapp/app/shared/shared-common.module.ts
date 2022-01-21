@@ -5,16 +5,18 @@ import {
     SiglaSharedLibsModule,
     JhiLanguageHelper,
     FindLanguageFromKeyPipe,
+    FindLanguagePipe,
     JhiAlertComponent,
     JhiAlertErrorComponent
 } from './';
 
 @NgModule({
     imports: [
-        SiglaSharedLibsModule
+        SiglaSharedLibsModule,
     ],
     declarations: [
         FindLanguageFromKeyPipe,
+        FindLanguagePipe,
         JhiAlertComponent,
         JhiAlertErrorComponent
     ],
@@ -29,6 +31,7 @@ import {
     exports: [
         SiglaSharedLibsModule,
         FindLanguageFromKeyPipe,
+        FindLanguagePipe,
         JhiAlertComponent,
         JhiAlertErrorComponent
     ]

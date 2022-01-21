@@ -23,7 +23,17 @@ export class AuthExpiredInterceptor implements HttpInterceptor {
                 (event: HttpEvent<any>) => {},
                 (error: any) => {
                     if (error instanceof HttpErrorResponse) {
+                        console.log('keycloak');
+                        console.log(error);                        
                         if (error.status === 401 && error.message !== '') {
+                            console.log('1');
+                            if (error.url.indexOf(this.API_ACCOUNT) !== -1) {
+                                console.log('2');
+                                location.href = '/sso/login';
+                                console.log('3');
+
+                                return EMPTY;
+                            }
                             const loginService: LoginService = self.injector.get(LoginService);
                             const destination = this.stateStorageService.getDestinationState();
                             if (destination) {
@@ -32,10 +42,6 @@ export class AuthExpiredInterceptor implements HttpInterceptor {
                                 if (to.name === 'accessdenied') {
                                     self.stateStorageService.storePreviousState(to.name, toParams);
                                 }
-                            }
-                            if (error.url.indexOf(this.API_ACCOUNT) !== -1) {
-                                location.href = '/sso/login';
-                                return EMPTY;
                             }
                             if (error.url.indexOf('/api/authentication') === -1) {
                                 loginService.logoutAndRedirect();
