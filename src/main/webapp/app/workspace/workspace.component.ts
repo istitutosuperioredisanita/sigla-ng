@@ -143,7 +143,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     }
 
     @HostListener('scroll', ['$event'])
-    doSomethingOnScroll($event: Event) {
+    doSomethingOnScroll($event: any) {
         if (window.pageYOffset || $event.srcElement.scrollTop || $event.srcElement.scrollTop > 100) {
             this.navIsFixed = true;
         } else if (this.navIsFixed && window.pageYOffset || $event.srcElement.scrollTop || $event.srcElement.scrollTop < 10) {
