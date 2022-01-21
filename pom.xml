@@ -36,8 +36,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <frontend-maven-plugin.version>1.12.0</frontend-maven-plugin.version>
-        <node.version>v12.22.6</node.version>
-        <yarn.version>v1.22.0</yarn.version>
+        <node.version>v8.12.0</node.version>
+        <npm.version>6.4.1</npm.version>
         <spring-boot.version>2.0.3.RELEASE</spring-boot.version>
         <keycloak.version>16.1.0</keycloak.version>
         <maven.javadoc.skip>true</maven.javadoc.skip>
@@ -143,7 +143,7 @@
                         <configuration>
                             <filesets>
                                 <fileset>
-                                    <directory>build/www/</directory>
+                                    <directory>target/www/</directory>
                                 </fileset>
                             </filesets>
                         </configuration>
@@ -153,7 +153,7 @@
                         <artifactId>maven-war-plugin</artifactId>
                         <configuration>
                             <failOnMissingWebXml>false</failOnMissingWebXml>
-                            <warSourceDirectory>build/www/</warSourceDirectory>
+                            <warSourceDirectory>target/www/</warSourceDirectory>
                         </configuration>
                     </plugin>
                     <plugin>
@@ -209,7 +209,7 @@
                         <configuration>
                             <filesets>
                                 <fileset>
-                                    <directory>build/www/</directory>
+                                    <directory>target/www/</directory>
                                 </fileset>
                             </filesets>
                         </configuration>
@@ -219,7 +219,7 @@
                         <artifactId>maven-war-plugin</artifactId>
                         <configuration>
                             <failOnMissingWebXml>false</failOnMissingWebXml>
-                            <warSourceDirectory>build/www/</warSourceDirectory>
+                            <warSourceDirectory>target/www/</warSourceDirectory>
                         </configuration>
                     </plugin>
                     <plugin>
@@ -243,32 +243,30 @@
                         <version>${frontend-maven-plugin.version}</version>
                         <executions>
                             <execution>
-                                <id>install node and yarn</id>
+                                <id>install node and npm</id>
                                 <goals>
-                                    <goal>install-node-and-yarn</goal>
+                                    <goal>install-node-and-npm</goal>
                                 </goals>
                                 <configuration>
                                     <nodeVersion>${node.version}</nodeVersion>
-                                    <yarnVersion>${yarn.version}</yarnVersion>
+                                    <npmVersion>${npm.version}</npmVersion>
                                 </configuration>
                             </execution>
                             <execution>
-                                <id>yarn install</id>
+                                <id>npm install</id>
                                 <goals>
-                                    <goal>yarn</goal>
+                                    <goal>npm</goal>
                                 </goals>
-                                <configuration>
-                                    <arguments>install</arguments>
-                                </configuration>
                             </execution>
                             <execution>
-                                <id>webpack build prod</id>
+                                <id>webpack build dev</id>
                                 <goals>
-                                    <goal>yarn</goal>
+                                    <goal>npm</goal>
                                 </goals>
                                 <phase>generate-resources</phase>
                                 <configuration>
-                                    <arguments>run webpack:prod</arguments>
+                                    <arguments>run webpack:build</arguments>
+                                    <npmInheritsProxyConfigFromMaven>false</npmInheritsProxyConfigFromMaven>
                                 </configuration>
                             </execution>
                         </executions>
