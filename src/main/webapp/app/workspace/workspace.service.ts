@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, URLSearchParams } from '@angular/http';
-import { Observable, Observer } from 'rxjs/Rx';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable, Observer, EMPTY } from 'rxjs';
 import { Leaf } from './leaf.model';
 import { TODO } from './todo.model';
 import { SERVER_API_URL } from '../app.constants';
 import { DatePipe } from '@angular/common';
 import { ProfileService } from '../layouts/profiles/profile.service';
-import { Headers } from '@angular/http';
 import { Account } from '../shared/user/account.model';
+import { map, switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class WorkspaceService {
@@ -18,7 +18,7 @@ export class WorkspaceService {
     private datePipe: DatePipe;
 
     constructor(
-        private http: Http,
+        private http: HttpClient,
         private profileService: ProfileService
     ) {
         this.observers = [];
@@ -29,79 +29,79 @@ export class WorkspaceService {
     }
 
     getTree(): Observable<Map<String, Leaf[]>> {
-        return this.http.get(this.resourceUrl).map((res: Response) => res.json());
+        return this.http.get(this.resourceUrl).pipe(map((res: Map<String, Leaf[]>) => res));
     }
 
     evictTree(): Observable<boolean> {
-        return this.http.delete(this.resourceUrl).map((res: Response) => res.json());
+        return this.http.delete(this.resourceUrl).pipe(map((res: boolean) => res));
     }
 
     openMenu(nodoid: string, account: Account): Observable<string> {
-        const params: URLSearchParams = new URLSearchParams();
-        params.set('comando', 'doSelezionaMenu(' + nodoid + ')');
-        params.set('datetime', String(Date.now()));
+        let httpParams: HttpParams = new HttpParams();
+        httpParams = httpParams.set('comando', 'doSelezionaMenu(' + nodoid + ')');
+        httpParams = httpParams.set('datetime', String(Date.now()));
         if (account && account.access_token) {
-            params.set('access_token', account.access_token);
+            httpParams = httpParams.set('access_token', account.access_token);
         }
-        return this.profileService.getProfileInfo().switchMap((profileInfo) => {
+        return this.profileService.getProfileInfo().pipe(switchMap((profileInfo) => {
             return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/GestioneMenu.do', {
-                search: params, withCredentials: true
-            })
-            .map((res: Response) => res.text());
-        });
+                params: httpParams, withCredentials: true, responseType: 'text'
+            }).pipe(map((res: any) => res));
+        }));
     }
 
     version(): Observable<string> {
-        return this.profileService.getProfileInfo().switchMap((profileInfo) => {
-            return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/restapi/version').map((res: Response) => {
-                return res.json()['Specification-Version'];
-            });
-        });
+        return this.profileService.getProfileInfo().pipe(switchMap((profileInfo) => {
+            return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/restapi/version').pipe(map((res: any) => {
+                return res['Specification-Version'];
+            }));
+        }));
     }
 
     postForm(form: any, account: Account): Observable<string> {
-        const params: URLSearchParams = new URLSearchParams();
-        params.set('datetime', String(Date.now()));
+        let httpParams: HttpParams = new HttpParams();
+        httpParams = httpParams.set('datetime', String(Date.now()));
         if (account && account.access_token) {
-            params.set('access_token', account.access_token);
+            httpParams = httpParams.set('access_token', account.access_token);
         }
         if (form.comando.value) {
-            return this.profileService.getProfileInfo().switchMap((profileInfo) => {
+            return this.profileService.getProfileInfo().pipe(switchMap((profileInfo) => {
                 return this.http.post(profileInfo.siglaWildflyURL + '/SIGLA/' + form.getAttribute('action-ng'),
                     new FormData(form), {
-                        search: params,
-                        withCredentials: true
-                    }).map((res: Response) => res.text());
-            });
+                        params: httpParams,
+                        withCredentials: true,
+                        responseType: 'text'
+                    }).pipe(map((res: any) => res));
+            }));
         } else {
-            return Observable.empty();
+            return EMPTY;
         }
     }
 
     getAllTODO(account: Account): Observable<string[]> {
-        const params: URLSearchParams = new URLSearchParams();
-        params.set('datetime', String(Date.now()));
+        let httpParams: HttpParams = new HttpParams();
+        httpParams = httpParams.set('datetime', String(Date.now()));
         if (account && account.access_token) {
-            params.set('access_token', account.access_token);
+            httpParams = httpParams.set('access_token', account.access_token);
         }
-        return this.profileService.getProfileInfo().switchMap((profileInfo) => {
+        return this.profileService.getProfileInfo().pipe(switchMap((profileInfo) => {
             return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/restapi/todo', {
-                search: params, withCredentials: true
-            }).map((res: Response) => res.json());
-        });
+                params: httpParams, withCredentials: true
+            }).pipe(map((res: any) => res));
+        }));
     }
 
     getTODO(bp: string, account: Account): Observable<TODO[]> {
-        const params: URLSearchParams = new URLSearchParams();
-        params.set('datetime', String(Date.now()));
+        let httpParams: HttpParams = new HttpParams();
+        httpParams = httpParams.set('datetime', String(Date.now()));
         if (account && account.access_token) {
-            params.set('access_token', account.access_token);
+            httpParams = httpParams.set('access_token', account.access_token);
         }
-        return this.profileService.getProfileInfo().switchMap((profileInfo) => {
+        return this.profileService.getProfileInfo().pipe(switchMap((profileInfo) => {
             return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/restapi/todo/' + bp, {
-                search: params, withCredentials: true
-            }).map((res: Response) => res.json());
-        })
+                params: httpParams, withCredentials: true
+            }).pipe(map(((res: any) => res)));
+        }))
     }
 
     isMenuHidden(): Observable<boolean> {

@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, URLSearchParams } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { ProfileService } from '../../layouts/profiles/profile.service';
 import { Account, UserContext } from '../../shared';
+import { map, switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthServerProvider {
-    headers = new Headers ({
+    headers = new HttpHeaders ({
         'Content-Type': 'application/x-www-form-urlencoded'
     });
     constructor(
-        private http: Http,
+        private http: HttpClient,
         private profileService: ProfileService
     ) {
     }
@@ -27,25 +28,25 @@ export class AuthServerProvider {
     loginWildfly(credentials, userContext: UserContext): Observable<any> {
         const data = 'j_username=' + encodeURIComponent(credentials.username) +
             '&j_password=' + encodeURIComponent(credentials.password);
-        return this.profileService.getProfileInfo().switchMap((profileInfo) => {
+        return this.profileService.getProfileInfo().pipe(switchMap((profileInfo) => {
             return this.http.post(profileInfo.siglaWildflyURL + '/SIGLA/restapi/login', data, {
-                headers: this.headers, withCredentials: true
+                headers: this.headers, withCredentials: true, responseType: 'text'
             });
-        });
+        }));
     }
 
     initializeWildfly(account: Account): Observable<any> {
-        const params: URLSearchParams = new URLSearchParams();
-        params.set('comando', 'doDefault');
-        params.set('datetime', String(Date.now()));
+        let httpParams: HttpParams = new HttpParams();
+        httpParams = httpParams.set('comando', 'doDefault');
+        httpParams = httpParams.set('datetime', String(Date.now()));
         if (account && account.access_token) {
-            params.set('access_token', account.access_token);
+            httpParams = httpParams.set('access_token', account.access_token);
         }
-        return this.profileService.getProfileInfo().switchMap((profileInfo) => {
+        return this.profileService.getProfileInfo().pipe(switchMap((profileInfo) => {
             return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/Login.do', {
-                search: params, headers: this.headers, withCredentials: true
+                params: httpParams, headers: this.headers, withCredentials: true, responseType: 'text'
             });
-        });
+        }));
     }
 
     loginMultiploWildfly(utenteMultiplo: string, userContext: UserContext): Observable<any> {
@@ -55,27 +56,27 @@ export class AuthServerProvider {
             '&context.uo=' + userContext.uo +
             '&context.cdr=' + userContext.cdr +
             '&comando=doEntraUtenteMultiplo';
-        return this.profileService.getProfileInfo().switchMap((profileInfo) => {
+        return this.profileService.getProfileInfo().pipe(switchMap((profileInfo) => {
             return this.http.post(profileInfo.siglaWildflyURL + '/SIGLA/Login.do', data, {
-                headers: this.headers, withCredentials: true
+                headers: this.headers, withCredentials: true, responseType: 'text'
             });
-        });
+        }));
     }
 
     logoutWildfly(): Observable<any> {
-        return this.profileService.getProfileInfo().switchMap((profileInfo) => {
+        return this.profileService.getProfileInfo().pipe(switchMap((profileInfo) => {
             return this.http.post(profileInfo.siglaWildflyURL + '/SIGLA/GestioneMenu.do', 'comando=doLogout', {
-                headers: this.headers, withCredentials: true
+                headers: this.headers, withCredentials: true, responseType: 'text'
             });
-        });
+        }));
     }
 
     logout(): Observable<any> {
         // logout from the server
-        return this.http.post('api/logout', {}).map((response: Response) => {
+        return this.http.post('api/logout', {}).pipe(map((response: Response) => {
             // to get a new csrf token call the api
             this.http.get('api/account').subscribe(() => {}, () => {});
             return response;
-        });
+        }));
     }
 }

@@ -5,10 +5,10 @@ import { Router } from '@angular/router';
 import { ContextService } from './context.service';
 import { Principal, UserContext, JhiLanguageHelper, MessaggiModalService} from '../shared';
 import { LocalStateStorageService } from '../shared/auth/local-storage.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  Subscription } from 'rxjs';
 import { Pair } from './pair.model';
 import { WorkspaceService } from '../workspace/workspace.service';
-import { Subscription } from 'rxjs/Rx';
+import { map, debounceTime } from 'rxjs/operators';
 
 @Component({
     selector: 'jhi-context',
@@ -83,21 +83,21 @@ export class ContextComponent implements OnInit, OnDestroy {
 
     searchcds = (text$: Observable<string>) =>
         text$
-        .debounceTime(200)
-        .map((term) => this.filterPair(term, this.contextService.cdsPairs, 'cds')
-        .slice(0, 200));
+        .pipe(debounceTime(200))
+        .pipe(map((term: string) => this.filterPair(term, this.contextService.cdsPairs, 'cds')
+        .slice(0, 200)));
 
     searchuo = (text$: Observable<string>) =>
         text$
-        .debounceTime(200)
-        .map((term) => this.filterPair(term, this.contextService.uoPairs, 'uo')
-        .slice(0, 200));
+        .pipe(debounceTime(200))
+        .pipe(map((term: string) => this.filterPair(term, this.contextService.uoPairs, 'uo')
+        .slice(0, 200)));
 
     searchcdr = (text$: Observable<string>) =>
         text$
-        .debounceTime(200)
-        .map((term) => this.filterPair(term, this.contextService.cdrPairs, 'cdr')
-        .slice(0, 200));
+        .pipe(debounceTime(200))
+        .pipe(map((term: string) => this.filterPair(term, this.contextService.cdrPairs, 'cdr')
+        .slice(0, 200)));
 
     formatter = (pair: Pair) => pair.first + ' - ' + pair.second;
     formatterFirst = (pair: Pair) => pair.first;

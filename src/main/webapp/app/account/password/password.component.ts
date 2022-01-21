@@ -12,7 +12,7 @@ export class PasswordComponent implements OnInit {
     doNotMatch: string;
     error: string;
     success: string;
-    account: any;
+    account: any = {};
     password: string;
     confirmPassword: string;
 

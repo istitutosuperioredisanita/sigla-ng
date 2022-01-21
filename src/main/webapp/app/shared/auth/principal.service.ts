@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable ,  Subject } from 'rxjs';
 import { AccountService } from './account.service';
 import { Account } from '../user/account.model';
 import { ContextService } from '../../context/context.service';

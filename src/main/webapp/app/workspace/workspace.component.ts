@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Input, ElementRef, Renderer, ViewChild, Inject, HostListener } from '@angular/core';
 import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
 import { Principal, LoginService, Account } from '../shared';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs';
 import { WorkspaceService } from './workspace.service';
 import { DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import { Leaf } from './leaf.model';
@@ -77,7 +77,16 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
             }
             return false;
         });
-        workspaceService.isMenuHidden().subscribe((hidden) => this.hidden = hidden);
+        workspaceService.isMenuHidden().subscribe((hidden: boolean) => {
+            this.hidden = hidden;
+            if (hidden) {
+                this.sizeTree = 0;
+                this.sizeWorkspace = 100;
+            } else {
+                this.sizeTree = 25;
+                this.sizeWorkspace = 75;
+            }
+        });
         this.getScreenSize();
     }
 
@@ -155,9 +164,9 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     caricaTODO() {
         this.todos = [];
         this.workspaceService.getAllTODO(this.account).subscribe((bps) => {
-            for (const bp of bps){
+            for (const bp of bps) {
                 this.workspaceService.getTODO(bp, this.account).subscribe((todos) => {
-                    for (const todo of todos){
+                    for (const todo of todos) {
                         this.todos.push(todo);
                     }
                 });
@@ -203,20 +212,20 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
             this.loginService.logoutAndRedirect();
         }
         const siglaScripts = this.scriptContainer.nativeElement.getElementsByTagName('script');
-        for (const siglaScript of siglaScripts){
+        for (const siglaScript of siglaScripts) {
             this.scriptContainer.nativeElement.removeChild(siglaScript);
         }
-        for (const pickr of this.flatpickrs){
+        for (const pickr of this.flatpickrs) {
             pickr.destroy();
         }
         this.desktop = this._sanitizer.bypassSecurityTrustHtml(html);
         setTimeout(() => { // wait for DOM rendering
             const bases = this.container.nativeElement.getElementsByTagName('base');
-            for (const base of bases){
+            for (const base of bases) {
                 base.parentElement.removeChild(base);
             }
             const scripts = this.container.nativeElement.getElementsByTagName('script');
-            for (const script of scripts){
+            for (const script of scripts) {
                 const s = document.createElement('script');
                 s.type = 'text/javascript';
                 if (script.text && !(
@@ -245,7 +254,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
                 this.caricaTODO();
             }
             const inputs = this.container.nativeElement.getElementsByTagName('input');
-            for (const input of inputs){
+            for (const input of inputs) {
                 if (input.placeholder === 'dd/MM/yyyy' && input.type === 'text') {
                     this.flatpickrs.push(
                         flatpickr(input, {

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import { HttpClient } from '@angular/common/http';
+import { Observable, of as observableOf} from 'rxjs';
 
 import { SERVER_API_URL } from '../../app.constants';
 import { ProfileInfo } from './profile-info.model';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ProfileService {
@@ -12,27 +13,16 @@ export class ProfileService {
 
     private profileInfo: ProfileInfo;
 
-    constructor(private http: Http) { }
+    constructor(private http: HttpClient) { }
 
     getProfileInfo(): Observable<ProfileInfo> {
         if (this.profileInfo) {
-            return Observable.of(this.profileInfo);
+            return observableOf(this.profileInfo);
         } else {
-            return this.http.get(this.profileInfoUrl)
-                .map((res: Response) => {
-                    const data = res.json();
-                    const pi = new ProfileInfo();
-                    pi.activeProfiles = data.activeProfiles;
-                    pi.ribbonEnv = data.ribbonEnv;
-                    pi.instituteAcronym = data.instituteAcronym;
-                    pi.urlChangePassword = data.urlChangePassword;
-                    pi.siglaWildflyURL = data.siglaWildflyURL;
-                    pi.keycloakEnabled = data.keycloakEnabled === 'true' ? true : false;
-                    pi.inProduction = data.activeProfiles.indexOf('prod') !== -1;
-                    pi.swaggerEnabled = data.activeProfiles.indexOf('swagger') !== -1;
-                    this.profileInfo = pi;
-                    return pi;
-            });
+            return this.http.get(this.profileInfoUrl).pipe(map((pi: ProfileInfo) => {
+                this.profileInfo = pi;
+                return pi;
+            }));
         }
     }
 }
