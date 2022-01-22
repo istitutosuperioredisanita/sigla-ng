@@ -37,7 +37,7 @@ export class AuthServerProvider {
 
     initializeWildfly(account: Account): Observable<any> {
         let httpParams: HttpParams = new HttpParams();
-        httpParams = httpParams.set('comando', 'doDefault');
+        httpParams = httpParams.set('comando', 'doDefaultNG');
         httpParams = httpParams.set('datetime', String(Date.now()));
         if (account && account.access_token) {
             httpParams = httpParams.set('access_token', account.access_token);
