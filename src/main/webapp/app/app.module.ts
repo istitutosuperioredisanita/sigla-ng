@@ -5,7 +5,7 @@ import { Injector, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 
-import { SiglaSharedModule, StateStorageService, UserRouteAccessService } from './shared';
+import { LoginService, SiglaSharedModule, StateStorageService, UserRouteAccessService } from './shared';
 import { SiglaHomeModule } from './home/home.module';
 import { SiglaAdminModule } from './admin/admin.module';
 import { SiglaAccountModule } from './account/account.module';
@@ -20,6 +20,7 @@ import { LocalStateStorageService } from './shared/auth/local-storage.service';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 import {
     JhiMainComponent,
@@ -68,7 +69,7 @@ import { NotificationInterceptor } from './blocks/interceptor/notification.inter
             provide: HTTP_INTERCEPTORS,
             useClass: AuthExpiredInterceptor,
             multi: true,
-            deps: [StateStorageService, Injector]
+            deps: [StateStorageService, Router, LoginService]
         },
         {
             provide: HTTP_INTERCEPTORS,

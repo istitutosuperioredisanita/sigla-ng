@@ -16,21 +16,25 @@
   -->
 
 <div>
-    <div  class="container" [hidden]="!accessdenied">
-        <h1>Sistema non disponibile per l'utente {{preferred_username}}</h1>
-        <p>Ciao {{given_name}}, siamo spiacenti ma la tua utenza <span  class="badge badge-pill badge-dark">{{preferred_username}}</span> non ha acceso a questo sistema.</p>
-        <div class="row">
-            <div class="col text-monospace">
-                <div>login: <strong class="font-weight-bold">{{preferred_username}}</strong></div>
-                <div>nome: <strong class="font-weight-bold">{{given_name}}</strong></div>
-                <div>cognome: <strong class="font-weight-bold">{{family_name}}</strong></div>
-                <div>email: <strong class="font-weight-bold">{{email}}</strong></div>
-                <a class="btn btn-link" (click)="logout()">
+    <div class="col-md-7 offset-md-3 m-auto pt-3" [hidden]="!accessdenied">
+        <div class="card card-shadow" >
+            <h2 class="card-header"><i class="fa fa-exclamation-triangle fa-fw fa-2x text-danger" aria-hidden="true"></i> Sistema non disponibile per l'utente {{preferred_username}}</h2>
+            <div class="card-body">
+                <div class="col text-monospace">
+                    <p class="h3">Ciao {{given_name}}, siamo spiacenti ma la tua utenza <span  class="badge badge-pill badge-dark">{{preferred_username}}</span> non ha acceso a questo sistema.</p>
+                    <div>login: <strong class="font-weight-bold">{{preferred_username}}</strong></div>
+                    <div>nome: <strong class="font-weight-bold">{{given_name}}</strong></div>
+                    <div>cognome: <strong class="font-weight-bold">{{family_name}}</strong></div>
+                    <div>email: <strong class="font-weight-bold">{{email}}</strong></div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-outline-primary btn-block" (click)="logout()">
                     <i class="fa fa-fw fa-sign-out" aria-hidden="true"></i>
                     <span jhiTranslate="global.menu.account.logout">Sign out</span>
-                </a>
+                </button>
             </div>
-        </div>
+        </div>    
     </div>
     <div class="row" [hidden]="accessdenied">
         <div class="col-md-4">

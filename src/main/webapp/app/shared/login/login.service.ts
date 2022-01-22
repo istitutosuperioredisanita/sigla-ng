@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 import { LocalStateStorageService } from '../auth/local-storage.service';
 import { Principal } from '../auth/principal.service';
 import { AuthServerProvider } from '../auth/auth-session.service';
@@ -10,7 +10,6 @@ import { ContextService } from '../../context/context.service';
 export class LoginService {
 
     constructor(
-        private languageService: JhiLanguageService,
         private principal: Principal,
         private authServerProvider: AuthServerProvider,
         private router: Router,
@@ -34,7 +33,6 @@ export class LoginService {
                                             this.eventManager.broadcast({name: 'onRefreshTodo'});
                                         });
                                         resolve(account);
-                                        this.languageService.changeLanguage(account.langKey);
                                     }
                                 });
                             });
