@@ -43,6 +43,7 @@
         <maven.javadoc.skip>true</maven.javadoc.skip>
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <git.changelog.maven.plugin.version>1.60</git.changelog.maven.plugin.version>
+        <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
     </properties>
     <dependencies>
         <dependency>
@@ -304,6 +305,59 @@
                         <goals>
                             <goal>repackage</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>default-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/classes</outputDirectory>
+                            <useDefaultDelimiters>false</useDefaultDelimiters>
+                            <delimiters>
+                                <delimiter>#</delimiter>
+                            </delimiters>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources/</directory>
+                                    <filtering>true</filtering>
+                                    <includes>
+                                        <include>config/*.yml</include>
+                                    </includes>
+                                </resource>
+                                <resource>
+                                    <directory>src/main/resources/</directory>
+                                    <filtering>false</filtering>
+                                    <excludes>
+                                        <exclude>config/*.yml</exclude>
+                                    </excludes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>docker-resources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/classes/static/</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>target/www</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
