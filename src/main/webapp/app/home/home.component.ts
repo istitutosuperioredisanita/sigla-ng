@@ -53,9 +53,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.profileService.getProfileInfo().subscribe((profileInfo) => {
             this.instituteAcronym = profileInfo.instituteAcronym;
             if (profileInfo.keycloakEnabled) {
-                this.principal.identity(true).then((account) => {
+                this.principal.identity(true).then((account: Account) => {
                     this.authServerProvider.initializeWildfly(account).subscribe(() => {
-                        this.account = account;
+                        if (account.users.length === 1) {
+                            this.account = account;
+                        } else {
+                            this.authServerProvider.loginMultiploWildfly(
+                                account.username,
+                                this.localStateStorageService.getUserContext(account.username)
+                            ).subscribe(() => {
+                                this.account = account;
+                            });
+                        }
                     });
                 });
             }
