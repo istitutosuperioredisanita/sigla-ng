@@ -60,7 +60,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
                         } else {
                             this.authServerProvider.loginMultiploWildfly(
                                 account.username,
-                                this.localStateStorageService.getUserContext(account.username)
+                                this.localStateStorageService.getUserContext(account.username),
+                                account.access_token
                             ).subscribe(() => {
                                 this.account = account;
                             });
