@@ -113,7 +113,10 @@ public class JHipsterResource {
             if (principal instanceof KeycloakPrincipal) {
                 KeycloakPrincipal kPrincipal = (KeycloakPrincipal) principal;
                 IDToken token = kPrincipal.getKeycloakSecurityContext().getIdToken();
-                final Optional<Utente> optionalUtente = utenteService.findUsersForUid(token.getPreferredUsername()).stream().findAny();
+                final Optional<Utente> optionalUtente = utenteService.findUsersForUid(token.getPreferredUsername())
+                    .stream()
+                    .sorted((o1, o2) -> o1.getDtUltimoAccesso().compareTo(o2.getDtUltimoAccesso()))
+                    .findFirst();
                 if (optionalUtente.isPresent()) {
                     userContext = Optional.of(new UserContext(optionalUtente.get()));
                     userContext.get().setLogin(token.getPreferredUsername());

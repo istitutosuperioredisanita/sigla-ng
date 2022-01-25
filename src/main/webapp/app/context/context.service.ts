@@ -141,7 +141,6 @@ export class ContextService  {
     }
 
     saveUserContext(userContext: UserContext): Observable<any> {
-        console.log(userContext);
         return this.http.post(SERVER_API_URL + 'api/context', userContext).pipe(map((res: any) => res));
     }
 
