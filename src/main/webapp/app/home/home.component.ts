@@ -55,21 +55,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
             if (profileInfo.keycloakEnabled) {
                 this.principal.identity(true).then((account: Account) => {
                     this.authServerProvider.initializeWildfly(account).subscribe(() => {
-                        if (account.users.length === 1) {
-                            this.eventManager.broadcast({
-                                name: 'authenticationSuccess',
-                                content: 'Sending Authentication Success'
-                            });
-                        } else {
+                        this.account = account;
+                        if (account.users.length > 1) {
                             this.authServerProvider.loginMultiploWildfly(
                                 account.username,
                                 this.localStateStorageService.getUserContext(account.username),
                                 account.access_token
                             ).subscribe(() => {
-                                this.eventManager.broadcast({
-                                    name: 'authenticationSuccess',
-                                    content: 'Sending Authentication Success'
-                                });
+                                this.principal.setAuthenticated(true);
                             });
                         }
                     });
