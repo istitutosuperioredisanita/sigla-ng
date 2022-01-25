@@ -116,6 +116,7 @@ public class JHipsterResource {
                 final Optional<Utente> optionalUtente = utenteService.findUsersForUid(token.getPreferredUsername()).stream().findAny();
                 if (optionalUtente.isPresent()) {
                     userContext = Optional.of(new UserContext(optionalUtente.get()));
+                    userContext.get().setLogin(token.getPreferredUsername());
                     userContext.get().setAccess_token(kPrincipal.getKeycloakSecurityContext().getTokenString());
                 } else {
                     return ResponseEntity.unprocessableEntity().body(token);
