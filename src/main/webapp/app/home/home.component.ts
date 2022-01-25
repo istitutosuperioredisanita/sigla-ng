@@ -57,6 +57,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
                     this.authServerProvider.initializeWildfly(account).subscribe(() => {
                         this.account = account;
                         if (account.users.length > 1) {
+                            this.context.saveUserContext(
+                                this.localStateStorageService.getUserContext(account.username)
+                            ).toPromise().then((usercontext) => {
+                                this.context.findEsercizi();
+                                this.context.findPreferiti();
+                                this.context.findMessaggi();
+                                this.context.findCds(usercontext);
+                                this.context.findUo(usercontext);
+                                this.context.findCdr(usercontext);
+                            });
                             this.authServerProvider.loginMultiploWildfly(
                                 account.username,
                                 this.localStateStorageService.getUserContext(account.username),
