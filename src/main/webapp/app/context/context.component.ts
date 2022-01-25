@@ -1,13 +1,12 @@
-import { Component, OnInit, Input, Renderer, ElementRef, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { NgbDropdown, NgbModalRef, NgbTypeaheadConfig } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 import { Router } from '@angular/router';
 import { ContextService } from './context.service';
-import { Principal, UserContext, JhiLanguageHelper, MessaggiModalService} from '../shared';
+import { Principal, UserContext, MessaggiModalService, Account} from '../shared';
 import { LocalStateStorageService } from '../shared/auth/local-storage.service';
 import { Observable ,  Subscription } from 'rxjs';
 import { Pair } from './pair.model';
-import { WorkspaceService } from '../workspace/workspace.service';
 import { map, debounceTime } from 'rxjs/operators';
 
 @Component({
@@ -39,9 +38,6 @@ export class ContextComponent implements OnInit, OnDestroy {
         public router: Router,
         public principal: Principal,
         private localStateStorageService: LocalStateStorageService,
-        private languageService: JhiLanguageService,
-        private languageHelper: JhiLanguageHelper,
-        private workspaceService: WorkspaceService,
         private eventManager: JhiEventManager,
         private messaggiModalService: MessaggiModalService
     ) {
@@ -142,7 +138,7 @@ export class ContextComponent implements OnInit, OnDestroy {
         );
         this.contextService
             .saveEsecizio(esercizio)
-            .subscribe((identity) => {
+            .subscribe((identity: Account) => {
                 this.principal.authenticate(identity);
                 this.contextService.saveWildflyUserContext(userContext, this.principal.getAccount()).subscribe(() => {
                     this.localStateStorageService.storeEsercizio(this.principal.getAccount().username, esercizio);

@@ -8,7 +8,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 @Injectable()
 export class Principal {
-    public userIdentity: any;
+    public userIdentity: Account;
     private authenticated = false;
     private authenticationState = new Subject<any>();
 
@@ -19,7 +19,7 @@ export class Principal {
         private localStateStorageService: LocalStateStorageService
     ) {}
 
-    authenticate(identity) {
+    authenticate(identity: Account) {
         this.userIdentity = identity;
         this.authenticated = identity !== null;
         this.authenticationState.next(this.userIdentity);

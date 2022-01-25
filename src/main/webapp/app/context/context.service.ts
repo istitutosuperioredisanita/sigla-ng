@@ -134,13 +134,14 @@ export class ContextService  {
             });
     }
 
-    saveEsecizio(esercizio: number): Observable<Response> {
+    saveEsecizio(esercizio: number): Observable<Account> {
         return this.http.post(SERVER_API_URL + 'api/context', {
             'esercizio' : esercizio
         }).pipe(map((res: any) => res));
     }
 
     saveUserContext(userContext: UserContext): Observable<any> {
+        console.log(userContext);
         return this.http.post(SERVER_API_URL + 'api/context', userContext).pipe(map((res: any) => res));
     }
 
