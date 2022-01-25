@@ -56,21 +56,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 this.principal.identity(true).then((account: Account) => {
                     this.authServerProvider.initializeWildfly(account).subscribe(() => {
                         if (account.users.length === 1) {
-                            this.account = account;
+                            this.registerAuthenticationSuccess();
                         } else {
                             this.authServerProvider.loginMultiploWildfly(
                                 account.username,
                                 this.localStateStorageService.getUserContext(account.username),
                                 account.access_token
                             ).subscribe(() => {
-                                this.account = account;
+                                this.registerAuthenticationSuccess();
                             });
                         }
                     });
                 });
             }
         });
-        this.registerAuthenticationSuccess();
     }
 
     ngAfterViewInit() {
