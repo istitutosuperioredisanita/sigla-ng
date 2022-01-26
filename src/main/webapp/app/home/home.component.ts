@@ -28,6 +28,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     username: string;
     credentials: any;
     isRequesting = false;
+    keycloakEnabled = true;
     @ViewChild('usernameinput') userNameElement: ElementRef;
 
     constructor(
@@ -52,6 +53,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
         this.profileService.getProfileInfo().subscribe((profileInfo) => {
             this.instituteAcronym = profileInfo.instituteAcronym;
+            this.keycloakEnabled = profileInfo.keycloakEnabled;
             if (profileInfo.keycloakEnabled) {
                 this.principal.identity(true).then((account: Account) => {
                     this.authServerProvider.initializeWildfly(account).subscribe(() => {
