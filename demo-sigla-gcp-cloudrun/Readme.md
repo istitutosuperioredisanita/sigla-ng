@@ -1,4 +1,4 @@
-#Deploy della soluzione
+# Deploy della soluzione
 
 Accedere alla Cloud Shell di GCP e autenticarsi tramite il comando
 ```js
