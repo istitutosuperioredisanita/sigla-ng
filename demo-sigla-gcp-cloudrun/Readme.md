@@ -1,4 +1,4 @@
-#Deploy della soluzione
+# Deploy della soluzione
 
 Accedere alla Cloud Shell di GCP e autenticarsi tramite il comando
 ```js
@@ -20,3 +20,5 @@ E infine lanciare il conado di creazione
 ./start-demo.sh
 ```
 
+## Provalo su Google Cloud
+[![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/giusvill/sigla-ng/trunk/demo-sigla-gcp-cloudrun&cloudshell_print=print.txt&shellonly=true)
