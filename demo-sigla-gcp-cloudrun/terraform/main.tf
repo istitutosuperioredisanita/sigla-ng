@@ -41,7 +41,7 @@ resource "google_artifact_registry_repository" "docker_registry" {
   format = "DOCKER"
 }
 
-#BACK END CLOUD RUN 
+#BACK END CLOUD RUN
 resource "google_project_service" "vpc-access-api" {
   service  = "vpcaccess.googleapis.com"
   provider = google-beta
@@ -56,7 +56,7 @@ resource "google_vpc_access_connector" "connector" {
   region        = var.region
   ip_cidr_range = "192.168.0.0/28"
   network       = google_compute_network.vpc_network.name
-  depends_on    = [google_project_service.vpc-access-api]
+  depends_on    = [google_project_service.vpc-access-api, google_compute_subnetwork.subnet]
   project  = var.project_id
 }
 
@@ -81,6 +81,7 @@ resource "google_compute_global_address" "private-ip-address" {
   prefix_length = 16
   network       = google_compute_network.vpc_network.name
   project  = var.project_id
+  depends_on = [google_compute_subnetwork.subnet]
 }
 
 resource "google_service_networking_connection" "private-vpc-connection" {
@@ -98,7 +99,7 @@ resource "google_sql_database_instance" "instance" {
   region           = var.region
   database_version = "POSTGRES_9_6"
   project  = var.project_id
-  
+
   depends_on = [google_service_networking_connection.private-vpc-connection]
 
   settings {
@@ -108,5 +109,5 @@ resource "google_sql_database_instance" "instance" {
       ipv4_enabled    = false
       private_network = "projects/${var.project_id}/global/networks/${google_compute_network.vpc_network.name}"
     }
-  } 
+  }
 }

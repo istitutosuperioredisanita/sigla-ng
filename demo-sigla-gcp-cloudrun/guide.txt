@@ -5,7 +5,7 @@
 1- Impostare l'ID del progetto associato alla cloud shell:
 
 > gcloud config set project [project_id]
-(esempio: gcloud config set project cloud-run-tdig)
+(esempio: gcloud config set project demo-sigla)
 
 2- Impostare l'ID del progetto come variabile d'ambiente:
 > export project_id=[project_id]
