@@ -1,0 +1,39 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  annotations:
+    run.googleapis.com/ingress: all
+  labels:
+    cloud.googleapis.com/location: europe-west4
+  name: sigla-ng
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/maxScale: '100'
+        run.googleapis.com/cloudsql-instances: $project_id:europe-west4:pdb-team-digi-sigla-001
+        run.googleapis.com/execution-environment: gen1
+        run.googleapis.com/vpc-access-connector: projects/$project_id/locations/europe-west4/connectors/vac-team-digi-sigla
+        run.googleapis.com/vpc-access-egress: all-traffic
+    spec:
+      containerConcurrency: 80
+      containers:
+      - env:
+        - name: SIGLA_WILDFLY_URL
+          value: $sigla_thorntail_url
+        - name: SPRING_PROFILES_ACTIVE
+          value: demopostgresql
+        - name: SPRING_DATASOURCE_URL
+          value: jdbc:postgresql://$db_private_ip:5432/sigladb?schema=public
+        image: europe-west4-docker.pkg.dev/$project_id/ar-team-digi-sigla-poc-001/sigla-ng:latest
+        ports:
+        - containerPort: 8080
+          name: http1
+        resources:
+          limits:
+            cpu: 2000m
+            memory: 4096Mi
+      timeoutSeconds: 3600
+  traffic:
+  - latestRevision: true
+    percent: 100
