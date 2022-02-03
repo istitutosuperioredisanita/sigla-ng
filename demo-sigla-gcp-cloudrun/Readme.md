@@ -21,4 +21,4 @@ E infine lanciare il conado di creazione
 ```
 
 ## Provalo su Google Cloud
-[![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/giusvill/sigla-ng/trunk/demo-sigla-gcp-cloudrun&cloudshell_print=print.txt&shellonly=true)
+[![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/consiglionazionaledellericerche/sigla-ng.git&cloudshell_workspace=./demo-sigla-gcp-cloud-run&cloudshell_print=guide.txt&shellonly=true)
