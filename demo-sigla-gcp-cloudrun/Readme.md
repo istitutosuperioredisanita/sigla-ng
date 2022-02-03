@@ -15,7 +15,7 @@ Assicurarsi che tutti gli script siano eseguibili
 chmod +x *.sh
 ```
 
-E infine lanciare il conado di creazione
+E infine lanciare il comando di creazione
 ```js
 ./start-demo.sh
 ```
