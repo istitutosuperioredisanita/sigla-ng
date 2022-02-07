@@ -1,0 +1,107 @@
+---
+apiVersion: "v1"
+kind: "ConfigMap"
+metadata:
+  name: "sigla-thorntail"
+  namespace: "default"
+  labels:
+    app: "sigla-thorntail"
+data:
+  LC_LL: "it_IT.UTF-8"
+  LC_ALL: "it_IT.UTF-8"
+  LANG: "it_IT.UTF-8"
+  THORNTAIL_DATASOURCES_DATA-SOURCES_SIGLA_CONNECTION-URL: "jdbc:postgresql://$db_private_ip:5432/sigladb?schema=public"
+  THORNTAIL_PROJECT_STAGE: "demo-postgres"
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "sigla-thorntail"
+  namespace: "default"
+  labels:
+    app: "sigla-thorntail"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "sigla-thorntail"
+  template:
+    metadata:
+      labels:
+        app: "sigla-thorntail"
+    spec:
+      containers:
+      - name: "sigla-thorntail"
+        image: "europe-west4-docker.pkg.dev/$project_id/ar-team-digi-sigla-gke-poc-001/sigla-main:release"
+        env:
+        - name: "LC_LL"
+          valueFrom:
+            configMapKeyRef:
+              key: "LC_LL"
+              name: "sigla-thorntail"
+        - name: "LC_ALL"
+          valueFrom:
+            configMapKeyRef:
+              key: "LC_ALL"
+              name: "sigla-thorntail"
+        - name: "LANG"
+          valueFrom:
+            configMapKeyRef:
+              key: "LANG"
+              name: "sigla-thorntail"
+        - name: "THORNTAIL_DATASOURCES_DATA-SOURCES_SIGLA_CONNECTION-URL"
+          valueFrom:
+            configMapKeyRef:
+              key: "THORNTAIL_DATASOURCES_DATA-SOURCES_SIGLA_CONNECTION-URL"
+              name: "sigla-thorntail"
+        - name: "THORNTAIL_PROJECT_STAGE"
+          valueFrom:
+            configMapKeyRef:
+              key: "THORNTAIL_PROJECT_STAGE"
+              name: "sigla-thorntail"
+---
+apiVersion: "autoscaling/v2beta1"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "sigla-thorntail"
+  namespace: "default"
+  labels:
+    app: "sigla-thorntail"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "sigla-thorntail"
+    apiVersion: "apps/v1"
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: "Resource"
+    resource:
+      name: "cpu"
+      targetAverageUtilization: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    cloud.google.com/neg: '{"ingress":true}'
+  finalizers:
+  - service.kubernetes.io/load-balancer-cleanup
+  name: sigla-thorntail
+  labels:
+    app: sigla-thorntail
+  namespace: default
+spec:
+  externalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - nodePort: 32745
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: sigla-thorntail
+  sessionAffinity: None
+  type: LoadBalancer
