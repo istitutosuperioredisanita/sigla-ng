@@ -24,7 +24,7 @@ E infine lanciare il comando di creazione
 ./start-demo.sh
 ```
 
-In caso gli ip dei services creati per esporre i POD non siani risultati disponibili durante l'esecuzione di "start-demo.sh", è presente un script di retry
+In caso gli ip dei services creati per esporre i POD non siano risultati disponibili durante l'esecuzione di "start-demo.sh", è presente un script di retry
 ```console
 ./retry_gke_deploy.sh
 ```
