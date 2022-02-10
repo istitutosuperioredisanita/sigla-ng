@@ -19,9 +19,14 @@ Assicurarsi che tutti gli script siano eseguibili
 chmod +x *.sh
 ```
 
-E infine lanciare il conado di creazione
+E infine lanciare il comando di creazione
 ```console
 ./start-demo.sh
+```
+
+In caso gli ip dei services creati per esporre i POD non siano risultati disponibili durante l'esecuzione di "start-demo.sh", è presente un script di retry
+```console
+./retry_gke_deploy.sh
 ```
 
 ## Provalo su Google Cloud

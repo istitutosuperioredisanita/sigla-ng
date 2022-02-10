@@ -7,7 +7,7 @@ metadata:
   labels:
     app: "sigla-ng"
 data:
-  SIGLA_WILDFLY_URL: https://$sigla_thorntail_ip
+  SIGLA_WILDFLY_URL: http://$sigla_thorntail_ip
   SPRING_DATASOURCE_URL: jdbc:postgresql://$db_private_ip:5432/sigladb?schema=public
   SPRING_PROFILES_ACTIVE: demopostgresql
 ---

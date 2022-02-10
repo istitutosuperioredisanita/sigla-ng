@@ -21,7 +21,7 @@ metadata:
   labels:
     app: "sigla-thorntail"
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: "sigla-thorntail"
@@ -73,7 +73,7 @@ spec:
     name: "sigla-thorntail"
     apiVersion: "apps/v1"
   minReplicas: 1
-  maxReplicas: 5
+  maxReplicas: 1
   metrics:
   - type: "Resource"
     resource:

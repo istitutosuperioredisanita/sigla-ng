@@ -1,21 +1,5 @@
 #!/bin/bash
-
-cd terraform
-terraform init
-terraform apply -var="project_id=$project_id"
-cd ..
-
-chmod +x init-db.sh
-./init-db.sh
-chmod +x push-docker-images.sh
-./push-docker-images.sh
-
-mapfile -t service_accounts < <(gcloud iam service-accounts list | grep EMAIL: | grep -E -o "\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}\b")
-
-for sa in "${service_accounts[@]}"
-do
-    gcloud projects add-iam-policy-binding $project_id --member="serviceAccount:$sa"  --role="roles/artifactregistry.reader"
-done
+#Execute this script if during start-demo.sh service ips were not available
 
 gcloud container clusters get-credentials gke-team-digi-sigla-poc-001 --region europe-west4 --project $project_id
 
