@@ -41,15 +41,12 @@ resource "google_artifact_registry_repository" "docker_registry" {
   format = "DOCKER"
 }
 
-#BACK END CLOUD RUN
 resource "google_project_service" "vpc-access-api" {
   service  = "vpcaccess.googleapis.com"
   provider = google-beta
   disable_on_destroy = false
   project  = var.project_id
 }
-
-
 
 # Cloud Router
 resource "google_compute_router" "router" {
