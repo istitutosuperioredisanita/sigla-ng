@@ -4,9 +4,13 @@ keycloak:
     auth-server-url: http://dockerwebtest02.si.cnr.it:8110/auth
     ssl-required: NONE
     resource: sigla
-    public-client: true
+    public-client: false
     use-resource-role-mappings: true
+    credentials:
+        secret: secret
 
 spring:
     autoconfigure:
         exclude: org.springframework.boot.autoconfigure.session.SessionAutoConfiguration
+sso:
+    logout_success_url: https://apps.cnr.it

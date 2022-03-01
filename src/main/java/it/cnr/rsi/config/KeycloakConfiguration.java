@@ -6,6 +6,7 @@ import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,11 +18,16 @@ import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
+import java.util.Optional;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(jsr250Enabled = true)
 @ConditionalOnProperty(value = "keycloak.enabled", matchIfMissing = true, havingValue = "true")
 public class KeycloakConfiguration extends KeycloakWebSecurityConfigurerAdapter {
+
+    @Value("${sso.logout_success_url:}")
+    private String logoutSuccessUrl;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -35,6 +41,10 @@ public class KeycloakConfiguration extends KeycloakWebSecurityConfigurerAdapter 
             .anyRequest()
             .permitAll()
             .and()
+            .logout(logoutConfigurer -> {
+                Optional.ofNullable(logoutSuccessUrl)
+                    .ifPresent(s -> logoutConfigurer.logoutSuccessUrl(s));
+            })
             .exceptionHandling()
             .authenticationEntryPoint(new Http401UnauthorizedEntryPoint());
     }
