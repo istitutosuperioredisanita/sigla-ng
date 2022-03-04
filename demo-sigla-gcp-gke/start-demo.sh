@@ -23,12 +23,15 @@ gcloud sql databases create sigladb --instance=pdb-team-digi-sigla-001
 #docker images
 ./push-docker-images.sh
 
-#give cluster permission to read images
+#give cluster permission reading images and logs
 mapfile -t service_accounts < <(gcloud iam service-accounts list | grep EMAIL: | grep -E -o "\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}\b")
 
 for sa in "${service_accounts[@]}"
 do
-    gcloud projects add-iam-policy-binding $project_id --member="serviceAccount:$sa"  --role="roles/artifactregistry.reader"
+  for role in artifactregistry.reader logging.logWriter monitoring.metricWriter monitoring.viewer stackdriver.resourceMetadata.writer
+  do
+    gcloud projects add-iam-policy-binding $project_id --member="serviceAccount:$sa"  --role="roles/$role"
+  done
 done
 
 #login to cluster
