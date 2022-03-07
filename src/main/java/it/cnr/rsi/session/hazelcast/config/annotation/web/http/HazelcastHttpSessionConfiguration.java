@@ -29,6 +29,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportAware;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.session.MapSession;
@@ -50,7 +51,7 @@ import org.springframework.util.StringUtils;
  * @see EnableHazelcastHttpSession
  */
 @Configuration
-@ConditionalOnProperty(value = "keycloak.enabled", matchIfMissing = true, havingValue = "false")
+@Profile("!keycloak")
 public class HazelcastHttpSessionConfiguration extends SpringHttpSessionConfiguration
 		implements ImportAware {
 

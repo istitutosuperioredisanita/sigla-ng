@@ -28,6 +28,7 @@ import com.hazelcast.core.HazelcastInstance;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Profile;
 import org.springframework.session.MapSession;
 import org.springframework.session.Session;
 import org.springframework.session.SessionRepository;
@@ -71,7 +72,7 @@ import org.springframework.session.web.http.SessionRepositoryFilter;
 @Documented
 @Import(HazelcastHttpSessionConfiguration.class)
 @Configuration
-@ConditionalOnProperty(value = "keycloak.enabled", matchIfMissing = true, havingValue = "false")
+@Profile("!keycloak")
 public @interface EnableHazelcastHttpSession {
 
 	/**
