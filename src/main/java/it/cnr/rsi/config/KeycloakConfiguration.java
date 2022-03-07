@@ -45,15 +45,11 @@ public class KeycloakConfiguration extends KeycloakWebSecurityConfigurerAdapter 
             .anyRequest()
             .permitAll()
             .and()
-            .logout(logoutConfigurer -> {
-                Optional.ofNullable(logoutSuccessUrl)
-                    .ifPresent(s -> logoutConfigurer.logoutSuccessUrl(s));
-                try {
-                    logoutConfigurer.addLogoutHandler(keycloakLogoutHandler());
-                } catch (Exception e) {
-                    LOGGER.error("ERROR on logout", e);
-                }
-            })
+            .logout()
+            .addLogoutHandler(keycloakLogoutHandler())
+            .logoutUrl("/sso/logout").permitAll()
+            .logoutSuccessUrl(Optional.ofNullable(logoutSuccessUrl).orElse("/"))
+            .and()
             .exceptionHandling()
             .authenticationEntryPoint(new Http401UnauthorizedEntryPoint());
     }
