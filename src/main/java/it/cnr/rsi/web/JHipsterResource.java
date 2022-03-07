@@ -40,6 +40,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -118,6 +121,19 @@ public class JHipsterResource {
                     .sorted((o1, o2) -> o1.getDtUltimoAccesso().compareTo(o2.getDtUltimoAccesso()))
                     .findFirst();
                 if (optionalUtente.isPresent()) {
+                    /**
+                     * Controllo la data di ultimo accesso che non sia superiore a 6 mesi
+                     */
+                    if (optionalUtente.flatMap(utente -> Optional.ofNullable(utente.getDtUltimoAccesso()))
+                        .filter(Date.class::isInstance)
+                        .map(Date.class::cast)
+                        .map(Date::toLocalDate)
+                        .map(localDate -> localDate.plusMonths(UserContext.MONTH_EXPIRED))
+                        .map(localDate -> localDate.isBefore(LocalDate.now(ZoneId.systemDefault())))
+                        .orElse(Boolean.FALSE)) {
+                        token.setUpdatedAt(optionalUtente.get().getDtUltimoAccesso().getTime());
+                        return ResponseEntity.unprocessableEntity().body(token);
+                    }
                     userContext = Optional.of(new UserContext(optionalUtente.get()));
                     userContext.get().setLogin(token.getPreferredUsername());
                     userContext.get().setAccess_token(kPrincipal.getKeycloakSecurityContext().getTokenString());

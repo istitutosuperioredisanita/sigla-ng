@@ -14,9 +14,10 @@ export class ErrorComponent implements OnInit {
     family_name: string;
     preferred_username: string;
     email: string;
+    updatedAt: Date;
 
     constructor(
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
     ) {
     }
 
@@ -36,6 +37,10 @@ export class ErrorComponent implements OnInit {
                 this.family_name = params.family_name;
                 this.preferred_username = params.preferred_username;
                 this.email = params.email;
+                if (params.updatedAt) {
+                    this.updatedAt = new Date();
+                    this.updatedAt.setTime(params.updatedAt);
+                }
             }
         });
     }

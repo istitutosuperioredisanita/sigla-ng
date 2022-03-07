@@ -49,7 +49,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     @ViewChild('scriptContainer') scriptContainer: ElementRef;
     @ViewChild('mySplit') mySplitEl: SplitComponent;
     @ViewChild('areaWorkspace') areaWorkspace: ElementRef;
-    @ViewChild('areaTree') areaTree: ElementRef;
+    @ViewChild('areaTree') areaTree: SplitComponent;
 
     constructor(
         private contextService: ContextService,
@@ -97,7 +97,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
 
     @HostListener('window:resize', ['$event'])
     getScreenSize(event?) {
-        if (window.innerWidth > 425) {
+        if (window.innerWidth > 768) {
             this.direction = 'horizontal';
             this.responsive = false;
         } else {
@@ -130,7 +130,6 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     }
 
     gutterClick(e: {gutterNum: number, sizes: Array<number>}) {
-        console.log(e.gutterNum);
         if (e.gutterNum === 1) {
             if (this.sizeTree > 0) {
                 this.sizeTree = 0;

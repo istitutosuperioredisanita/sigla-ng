@@ -46,7 +46,8 @@ export class AuthExpiredInterceptor implements HttpInterceptor {
                                 given_name: data.given_name,
                                 family_name: data.family_name,
                                 preferred_username: data.preferred_username,
-                                email: data.email
+                                email: data.email,
+                                updatedAt: data.updated_at
                             }]);
                             return EMPTY;
                         }
