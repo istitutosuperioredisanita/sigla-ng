@@ -19,6 +19,7 @@
     "@angular/platform-server": "^7.2.16",
     "@angular/router": "^7.2.16",
     "@ng-bootstrap/ng-bootstrap": "4.0.0",
+    "ngx-cnr-uict-sso": "^0.5.0",
     "angular-split": "3.0.1",
     "angular-tree-component": "8.5.2-alpha",
     "bootstrap": "4.0.0-beta",

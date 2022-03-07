@@ -4,6 +4,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { Injector, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxWebstorageModule } from 'ngx-webstorage';
+import { NgxCnrUictSsoModule } from 'ngx-cnr-uict-sso';
 
 import { LoginService, SiglaSharedModule, StateStorageService, UserRouteAccessService } from './shared';
 import { SiglaHomeModule } from './home/home.module';
@@ -53,7 +54,8 @@ import { NotificationInterceptor } from './blocks/interceptor/notification.inter
                 useFactory: HttpLoaderFactory,
                 deps: [HttpClient]
             }
-        })
+        }),
+        NgxCnrUictSsoModule,
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [

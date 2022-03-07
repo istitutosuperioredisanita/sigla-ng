@@ -96,45 +96,23 @@
                     </ul>
                 </li>
                 <jhi-context *ngSwitchCase="true" [isNavbar]="true" class="d-md-flex">Loading context.....</jhi-context>
-                <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer">
-                    <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu">
-                      <span *ngIf="!getImageUrl()">
-                        <i class="fa fa-user pr-1" aria-hidden="true"></i>
-                        <span>{{principal.userIdentity.firstName}} {{principal.userIdentity.lastName}}</span>
-                        <b class="caret"></b>
-                      </span>
-                      <span *ngIf="getImageUrl()">
-                          <img [src]="getImageUrl()" class="profile-image img-circle" alt="Avatar">
-                      </span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-right dropdown-left-auto" ngbDropdownMenu>
-                        <li>
-                            <a class="dropdown-item" routerLink="settings" routerLinkActive="active" (click)="collapseNavbar()">
-                                <i class="fa fa-fw fa-wrench" aria-hidden="true"></i>
-                                <span jhiTranslate="global.menu.account.settings">Settings</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" routerLink="password" routerLinkActive="active" (click)="collapseNavbar()">
-                                <i class="fa fa-fw fa-key" aria-hidden="true"></i>
-                                <span jhiTranslate="global.menu.account.password">Password</span>
-                            </a>
-                        </li>
-                        <li class="dropdown-divider"></li>
-                        <li *ngIf="isMultipleUser()">
-                            <a class="dropdown-item" (click)="changeUser()" id="changeuser">
-                                <i class="fa fa-fw fa-user" aria-hidden="true"></i>
-                                <span [innerHTML]="'global.menu.account.changeuser' | translate:{username: principal.userIdentity.username }">Change User</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" (click)="logout()" id="logout">
-                                <i class="fa fa-fw fa-sign-out" aria-hidden="true"></i>
-                                <span jhiTranslate="global.menu.account.logout">Sign out</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                <ngx-cnr-uict-sso-apps-menu *ngSwitchCase="true" 
+                    [account]="principal.userIdentity" 
+                    class="mr-2">
+                </ngx-cnr-uict-sso-apps-menu>
+                <ngx-cnr-uict-sso-user-menu *ngSwitchCase="true" 
+                    [account]="principal.userIdentity" 
+                    (logoutCallback)="logout()">
+                    <div class="dropdown-divider"></div>
+                    <button class="btn btn-link btn-block" routerLink="settings" routerLinkActive="active" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-wrench" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.account.settings">Settings</span>
+                    </button>
+                    <button *ngIf="isMultipleUser()" class="btn btn-link btn-block" (click)="changeUser()" id="changeuser">
+                        <i class="fa fa-fw fa-user" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.account.changeuser" translateValues="{username: '{{principal.userIdentity.username}}'}">Change User</span>
+                    </button>
+                </ngx-cnr-uict-sso-user-menu>
             </ul>
         </div>
     </nav>
