@@ -37,7 +37,7 @@ export class ErrorComponent implements OnInit {
                 this.family_name = params.family_name;
                 this.preferred_username = params.preferred_username;
                 this.email = params.email;
-                if (params.updatedAt) {
+                if (params.updatedAt && params.updatedAt !== 'null') {
                     this.updatedAt = new Date();
                     this.updatedAt.setTime(params.updatedAt);
                 }
