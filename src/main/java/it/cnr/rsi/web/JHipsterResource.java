@@ -118,7 +118,7 @@ public class JHipsterResource {
                 IDToken token = kPrincipal.getKeycloakSecurityContext().getIdToken();
                 final Optional<Utente> optionalUtente = utenteService.findUsersForUid(token.getPreferredUsername())
                     .stream()
-                    .sorted((o1, o2) -> o1.getDtUltimoAccesso().compareTo(o2.getDtUltimoAccesso()))
+                    .sorted(Comparator.comparing(Utente::getDtUltimoAccesso).reversed())
                     .findFirst();
                 if (optionalUtente.isPresent()) {
                     /**
