@@ -135,6 +135,8 @@ public class JHipsterResource {
                         return ResponseEntity.unprocessableEntity().body(token);
                     }
                     userContext = Optional.of(new UserContext(optionalUtente.get()));
+                    userContext.get().setFirstName(token.getGivenName().toUpperCase(Locale.ITALIAN));
+                    userContext.get().setLastName(token.getFamilyName().toUpperCase(Locale.ITALIAN));
                     userContext.get().setLogin(token.getPreferredUsername());
                     userContext.get().setAccess_token(kPrincipal.getKeycloakSecurityContext().getTokenString());
                 } else {

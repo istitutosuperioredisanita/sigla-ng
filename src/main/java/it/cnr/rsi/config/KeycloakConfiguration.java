@@ -4,7 +4,10 @@ import it.cnr.rsi.security.Http401UnauthorizedEntryPoint;
 import org.keycloak.adapters.KeycloakConfigResolver;
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
+import org.keycloak.adapters.springsecurity.authentication.KeycloakLogoutHandler;
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +28,7 @@ import java.util.Optional;
 @EnableGlobalMethodSecurity(jsr250Enabled = true)
 @Profile("keycloak")
 public class KeycloakConfiguration extends KeycloakWebSecurityConfigurerAdapter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(KeycloakConfiguration.class);
 
     @Value("${sso.logout_success_url:}")
     private String logoutSuccessUrl;
@@ -44,9 +48,19 @@ public class KeycloakConfiguration extends KeycloakWebSecurityConfigurerAdapter 
             .logout(logoutConfigurer -> {
                 Optional.ofNullable(logoutSuccessUrl)
                     .ifPresent(s -> logoutConfigurer.logoutSuccessUrl(s));
+                try {
+                    logoutConfigurer.addLogoutHandler(keycloakLogoutHandler());
+                } catch (Exception e) {
+                    LOGGER.error("ERROR on logout", e);
+                }
             })
             .exceptionHandling()
             .authenticationEntryPoint(new Http401UnauthorizedEntryPoint());
+    }
+
+    @Override
+    protected KeycloakLogoutHandler keycloakLogoutHandler() throws Exception {
+        return super.keycloakLogoutHandler();
     }
 
     @Autowired
