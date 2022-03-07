@@ -18,7 +18,7 @@
                 "login": "Accesso",
                 "logout": "Esci",
                 "register": "Registrazione",
-                "changeuser": "Cambia utente [<b>{{ username }}</b>]"
+                "changeuser": "Cambia utente"
             },
             "admin": {
                 "main": "Amministratore",
