@@ -29,6 +29,25 @@
             <a href="https://consiglionazionaledellericerche.github.io/sigla-main/CHANGELOG.html" target="_help" placement="bottom" ngbTooltip="Info di versione" class="align-items-end d-none d-md-flex">
                 <i class="fa fa-fw fa-info-circle text-white pb-1" aria-hidden="true"></i>
             </a>
+            <div class="sso-user-menu-toggler jh-navbar-toggler d-lg-none float-right">
+                <ngx-cnr-uict-sso-apps-menu *ngIf="isAuthenticated()" [account]="principal.userIdentity" [buttonSize]="'32px'" [iconSize]="'20px'"></ngx-cnr-uict-sso-apps-menu>
+            </div>    
+            <div class="sso-user-menu-toggler jh-navbar-toggler d-lg-none float-right">
+                <ngx-cnr-uict-sso-user-menu *ngIf="isAuthenticated()"
+                    [account]="principal.userIdentity" 
+                    (logoutCallback)="logout()">
+                    <div class="list-group list-group-flush pt-2">
+                        <a class="list-group-item" routerLink="settings" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-wrench" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.account.settings">Settings</span>
+                        </a>
+                        <a *ngIf="isMultipleUser()" class="list-group-item" href="javascript:void(0);" (click)="changeUser()" id="changeuser">
+                            <i class="fa fa-fw fa-user" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.account.changeuser">Change User</span>
+                        </a>
+                    </div>
+                </ngx-cnr-uict-sso-user-menu>
+            </div>
             <a class="jh-navbar-toggler float-right" href="javascript:void(0);" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()">
                 <i class="fa fa-2x fa-fw fa-bars"></i>
             </a>
@@ -98,20 +117,22 @@
                 <jhi-context *ngSwitchCase="true" [isNavbar]="true" class="d-md-flex">Loading context.....</jhi-context>
                 <ngx-cnr-uict-sso-apps-menu *ngSwitchCase="true" 
                     [account]="principal.userIdentity" 
-                    class="mr-2">
+                    class="mr-2 d-none d-md-flex">
                 </ngx-cnr-uict-sso-apps-menu>
-                <ngx-cnr-uict-sso-user-menu *ngSwitchCase="true" 
+                <ngx-cnr-uict-sso-user-menu *ngSwitchCase="true"
+                    class="d-none d-md-flex" 
                     [account]="principal.userIdentity" 
                     (logoutCallback)="logout()">
-                    <div class="dropdown-divider"></div>
-                    <a class="btn btn-link btn-block" routerLink="settings" routerLinkActive="active" (click)="collapseNavbar()">
-                        <i class="fa fa-fw fa-wrench" aria-hidden="true"></i>
-                        <span jhiTranslate="global.menu.account.settings">Settings</span>
-                    </a>
-                    <a *ngIf="isMultipleUser()" class="btn btn-link btn-block" href="javascript:void(0);" (click)="changeUser()" id="changeuser">
-                        <i class="fa fa-fw fa-user" aria-hidden="true"></i>
-                        <span jhiTranslate="global.menu.account.changeuser">Change User</span>
-                    </a>
+                    <div class="list-group list-group-flush pt-2">
+                        <a class="list-group-item" routerLink="settings" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-wrench" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.account.settings">Settings</span>
+                        </a>
+                        <a *ngIf="isMultipleUser()" class="list-group-item" href="javascript:void(0);" (click)="changeUser()" id="changeuser">
+                            <i class="fa fa-fw fa-user" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.account.changeuser">Change User</span>
+                        </a>
+                    </div>
                 </ngx-cnr-uict-sso-user-menu>
             </ul>
         </div>
