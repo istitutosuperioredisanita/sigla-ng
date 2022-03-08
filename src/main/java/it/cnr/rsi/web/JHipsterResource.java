@@ -69,7 +69,7 @@ public class JHipsterResource {
         map.put("instituteAcronym", env.getProperty("institute.acronym", "CNR"));
         map.put("urlChangePassword", env.getProperty("security.ldap.change.password.url"));
         map.put("siglaWildflyURL", env.getProperty("sigla.wildfly.url", ""));
-        map.put("keycloakEnabled", env.getProperty("keycloak.enabled", "false"));
+        map.put("keycloakEnabled", Boolean.valueOf(env.getProperty("keycloak.enabled", "false")));
 
         profiles
             .stream()
