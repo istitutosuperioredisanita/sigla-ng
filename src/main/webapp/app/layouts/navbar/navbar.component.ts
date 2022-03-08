@@ -77,8 +77,7 @@ export class NavbarComponent implements OnInit {
     logout() {
         this.collapseNavbar();
         if (this.keycloakEnabled) {
-            this.principal.authenticate(null);
-            location.href = '/sso/logout';
+            this.loginService.logoutSSO();
         } else {
             this.loginService.logout();
             this.router.navigate(['']);

@@ -5,6 +5,7 @@ import { Principal } from '../auth/principal.service';
 import { AuthServerProvider } from '../auth/auth-session.service';
 import { Router } from '@angular/router';
 import { ContextService } from '../../context/context.service';
+import { Account } from '../user/account.model';
 
 @Injectable()
 export class LoginService {
@@ -60,6 +61,15 @@ export class LoginService {
             this.authServerProvider.logoutWildfly().subscribe();
         });
         this.principal.authenticate(null);
+    }
+
+    logoutSSO() {
+        this.principal.identity(true).then((account: Account) => {
+            this.authServerProvider.logoutWildfly(account.access_token).subscribe(() => {
+                this.principal.authenticate(null);
+                location.href = '/sso/logout';
+            });
+        });
     }
 
 }

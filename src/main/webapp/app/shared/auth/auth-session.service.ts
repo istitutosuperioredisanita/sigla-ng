@@ -67,10 +67,14 @@ export class AuthServerProvider {
         }));
     }
 
-    logoutWildfly(): Observable<any> {
+    logoutWildfly(access_token?: string): Observable<any> {
+        let httpParams: HttpParams = new HttpParams();
+        if (access_token) {
+            httpParams = httpParams.set('access_token', access_token);
+        }
         return this.profileService.getProfileInfo().pipe(switchMap((profileInfo) => {
             return this.http.post(profileInfo.siglaWildflyURL + '/SIGLA/GestioneMenu.do', 'comando=doLogout', {
-                headers: this.headers, withCredentials: true, responseType: 'text'
+                params: httpParams, headers: this.headers, withCredentials: true, responseType: 'text'
             });
         }));
     }
