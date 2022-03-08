@@ -5,22 +5,45 @@ terraform init
 terraform apply -var="project_id=$project_id"
 cd ..
 
-chmod +x init-db.sh
-./init-db.sh
-chmod +x push-docker-images.sh
+#read password from prompt
+while true; do
+  read -s -p "Password: " password
+  echo
+  read -s -p "Password (confirm): " password2
+  echo
+  [ "$password" = "$password2" ] && break
+  echo "Please try again"
+done
+echo $password
+
+#init database
+gcloud sql users create sigla --instance=pdb-team-digi-sigla-001 --password=$password
+gcloud sql databases create sigladb --instance=pdb-team-digi-sigla-001
+
+#docker images
 ./push-docker-images.sh
 
+#give cluster permission reading images and logs
 mapfile -t service_accounts < <(gcloud iam service-accounts list | grep EMAIL: | grep -E -o "\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}\b")
 
 for sa in "${service_accounts[@]}"
 do
-    gcloud projects add-iam-policy-binding $project_id --member="serviceAccount:$sa"  --role="roles/artifactregistry.reader"
+  for role in artifactregistry.reader logging.logWriter monitoring.metricWriter monitoring.viewer stackdriver.resourceMetadata.writer
+  do
+    gcloud projects add-iam-policy-binding $project_id --member="serviceAccount:$sa"  --role="roles/$role"
+  done
 done
 
+#login to cluster
 gcloud container clusters get-credentials gke-team-digi-sigla-poc-001 --region europe-west4 --project $project_id
 
+#retrieve database private ip
 export db_private_ip=$(gcloud sql instances describe pdb-team-digi-sigla-001 | grep '\-\sipAddress:' | grep -E -o '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)')
 
+#create secret for db credentials
+kubectl create secret generic db-credential --from-literal="password=$password"
+
+#deploy first configuration of sigla thorntail
 envsubst <  gke-sigla-thorntail.yaml > gke-sigla-thorntail-sub.yaml
 
 kubectl apply -f gke-sigla-thorntail-sub.yaml

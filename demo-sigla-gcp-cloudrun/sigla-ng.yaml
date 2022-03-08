@@ -25,6 +25,11 @@ spec:
           value: demopostgresql
         - name: SPRING_DATASOURCE_URL
           value: jdbc:postgresql://$db_private_ip:5432/sigladb?schema=public
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-password
+              key: latest
         image: europe-west4-docker.pkg.dev/$project_id/ar-team-digi-sigla-poc-001/sigla-ng:latest
         ports:
         - containerPort: 8080
