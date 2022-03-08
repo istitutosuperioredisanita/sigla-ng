@@ -192,3 +192,10 @@ Logo styles
     font-size: 65%;
     left: -5px;
 }
+.dropdown-item:hover {
+    background-color: #ccc;
+}
+a.list-group-item-action:hover {
+    color: #FFF;
+    background-color: #0066CC;
+}

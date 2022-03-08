@@ -190,7 +190,7 @@
         </a>
         <ul class="dropdown-menu dropdown-menu-50 dropdown-menu-right" ngbDropdownMenu>
             <li *ngFor="let esercizio of contextService.esercizi">
-                <a class="dropdown-item"  (click)="setEsercizio(esercizio)">
+                <a class="dropdown-item"  (click)="setEsercizio(esercizio)" [ngClass]="{'active': esercizio == principal.userIdentity.esercizio}">
                     <span>{{esercizio}}</span>
                 </a>
             </li>
