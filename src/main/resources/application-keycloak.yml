@@ -13,4 +13,10 @@ spring:
     autoconfigure:
         exclude: org.springframework.boot.autoconfigure.session.SessionAutoConfiguration
 sso:
-    logout_success_url: https://apps.cnr.it
+    cnr:
+        user: is_cnr_user
+        matricola: matricola_cnr
+        livello: livello
+        contesto: sigla-app
+        username_cnr: username_cnr
+        logout_success_url: https://apps.cnr.it

@@ -4,12 +4,11 @@ import it.cnr.rsi.security.Http401UnauthorizedEntryPoint;
 import org.keycloak.adapters.KeycloakConfigResolver;
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
-import org.keycloak.adapters.springsecurity.authentication.KeycloakLogoutHandler;
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
+import org.keycloak.adapters.springsecurity.filter.KeycloakAuthenticationProcessingFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -17,7 +16,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
@@ -29,9 +28,8 @@ import java.util.Optional;
 @Profile("keycloak")
 public class KeycloakConfiguration extends KeycloakWebSecurityConfigurerAdapter {
     private static final Logger LOGGER = LoggerFactory.getLogger(KeycloakConfiguration.class);
-
-    @Value("${sso.logout_success_url:}")
-    private String logoutSuccessUrl;
+    @Autowired
+    private SSOConfigurationProperties properties;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -45,25 +43,38 @@ public class KeycloakConfiguration extends KeycloakWebSecurityConfigurerAdapter 
             .anyRequest()
             .permitAll()
             .and()
-            .logout()
-            .addLogoutHandler(keycloakLogoutHandler())
-            .logoutUrl("/sso/logout").permitAll()
-            .logoutSuccessUrl(Optional.ofNullable(logoutSuccessUrl).orElse("/"))
-            .and()
+            .logout(logoutConfigurer -> {
+                Optional.ofNullable(properties.getLogout_success_url())
+                    .ifPresent(s -> logoutConfigurer.logoutSuccessUrl(s));
+            })
             .exceptionHandling()
             .authenticationEntryPoint(new Http401UnauthorizedEntryPoint());
-    }
-
-    @Override
-    protected KeycloakLogoutHandler keycloakLogoutHandler() throws Exception {
-        return super.keycloakLogoutHandler();
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
-        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
         auth.authenticationProvider(keycloakAuthenticationProvider);
+    }
+
+    @Bean
+    @Override
+    protected CustomKeyCloakAuthenticationProvider keycloakAuthenticationProvider() {
+        return new CustomKeyCloakAuthenticationProvider();
+    }
+
+    @Bean
+    @Override
+    protected KeycloakAuthenticationProcessingFilter keycloakAuthenticationProcessingFilter() throws Exception {
+        KeycloakAuthenticationProcessingFilter filter = new KeycloakAuthenticationProcessingFilter(authenticationManagerBean());
+        filter.setSessionAuthenticationStrategy(sessionAuthenticationStrategy());
+        filter.setAuthenticationSuccessHandler(successHandler());
+        return filter;
+    }
+
+    @Bean
+    public CustomKeyCloakAuthSuccessHandler successHandler() {
+        return new CustomKeyCloakAuthSuccessHandler(new SavedRequestAwareAuthenticationSuccessHandler());
     }
 
     @Bean
