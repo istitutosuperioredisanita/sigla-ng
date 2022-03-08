@@ -59,6 +59,11 @@ spec:
             configMapKeyRef:
               key: "THORNTAIL_PROJECT_STAGE"
               name: "sigla-thorntail"
+        - name: "THORNTAIL_DATASOURCES_DATA-SOURCES_SIGLA_PASSWORD"
+          valueFrom:
+            secretKeyRef:
+              name: db-credential
+              key: password
 ---
 apiVersion: "autoscaling/v2beta1"
 kind: "HorizontalPodAutoscaler"

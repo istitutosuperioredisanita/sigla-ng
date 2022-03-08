@@ -37,6 +37,11 @@ spec:
           value: jdbc:postgresql://$db_private_ip:5432/sigladb?schema=public
         - name: THORNTAIL_PROJECT_STAGE
           value: demo-postgres
+        - name: THORNTAIL_DATASOURCES_DATA-SOURCES_SIGLA_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-password
+              key: latest
         - name: THORNTAIL_UNDERTOW_SERVLET-CONTAINERS_DEFAULT_SESSION-COOKIE-SETTING_COMMENT
           value: ;
         - name: THORNTAIL_UNDERTOW_FILTER-CONFIGURATION_RESPONSE-HEADERS_ACCESS-CONTROL-ALLOW-ORIGIN_HEADER-VALUE

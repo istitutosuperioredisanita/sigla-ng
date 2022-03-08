@@ -47,6 +47,11 @@ spec:
             configMapKeyRef:
               key: "SPRING_PROFILES_ACTIVE"
               name: "sigla-ng"
+        - name: "SPRING_DATASOURCE_PASSWORD"
+          valueFrom:
+            secretKeyRef:
+              name: db-credential
+              key: password
 ---
 apiVersion: "autoscaling/v2beta1"
 kind: "HorizontalPodAutoscaler"
