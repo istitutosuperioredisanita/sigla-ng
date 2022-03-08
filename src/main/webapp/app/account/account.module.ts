@@ -18,6 +18,7 @@ import {
     SettingsComponent,
     accountState
 } from './';
+import {SessionsComponent} from './sessions/sessions.component'
 
 @NgModule({
     imports: [
@@ -31,7 +32,8 @@ import {
         PasswordStrengthBarComponent,
         PasswordResetInitComponent,
         PasswordResetFinishComponent,
-        SettingsComponent
+        SettingsComponent,
+        SessionsComponent
     ],
     providers: [
         Register,

@@ -7,7 +7,6 @@ import {
     SiglaSharedCommonModule,
     CSRFService,
     AccountService,
-    UserService,
     StateStorageService,
     LoginService,
     LoginModalService,
@@ -45,7 +44,6 @@ import {ContextComponent} from '../context';
         Principal,
         CSRFService,
         AuthServerProvider,
-        UserService,
         DatePipe
     ],
     entryComponents: [JhiLoginModalComponent, JhiMultipleUserModalComponent, JhiMessaggiModalComponent],

@@ -19,6 +19,7 @@ export class Account {
         public cds: string,
         public uo: string,
         public cdr: string,
-        public users: Account[]
+        public users: Account[],
+        public access_token: string
     ) { }
 }

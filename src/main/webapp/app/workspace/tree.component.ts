@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy, Input, ViewChild, EventEmitter, Output, QueryList, ViewChildren, AfterViewInit } from '@angular/core';
 import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
-import { Principal } from '../shared';
+import { Account, Principal } from '../shared';
 import { Leaf } from './leaf.model';
 import { WorkspaceService } from './workspace.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  Subscription } from 'rxjs';
 import { TreeComponent, TreeNode } from 'angular-tree-component';
-import { Subscription } from 'rxjs/Rx';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { map, debounceTime } from 'rxjs/operators';
 import * as _ from 'lodash';
 
 export class SIGLATreeNode {
@@ -45,8 +45,8 @@ export class SIGLATreeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     searchtree = (text$: Observable<string>) =>
         text$
-        .debounceTime(50)
-        .map((term) => {
+        .pipe(debounceTime(50))
+        .pipe(map((term: string) => {
             const limit = 20;
             let i = 0;
             return this.leafz.filter((v) => {
@@ -60,7 +60,7 @@ export class SIGLATreeComponent implements OnInit, OnDestroy, AfterViewInit {
                     return match;
                 }
             });
-        })
+        }))
 
     formatter = (leaf: Leaf) => '';
 

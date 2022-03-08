@@ -1,10 +1,12 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { Renderer, ElementRef } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
 import { SiglaTestModule } from '../../../../test.module';
 import { PasswordResetInitComponent } from '../../../../../../../main/webapp/app/account/password-reset/init/password-reset-init.component';
 import { PasswordResetInitService } from '../../../../../../../main/webapp/app/account/password-reset/init/password-reset-init.service';
 import { EMAIL_NOT_FOUND_TYPE } from '../../../../../../../main/webapp/app/shared';
+import { of as observableOf} from 'rxjs';
 
 describe('Component Tests', () => {
 
@@ -62,7 +64,7 @@ describe('Component Tests', () => {
 
         it('notifies of success upon successful requestReset',
             inject([PasswordResetInitService], (service: PasswordResetInitService) => {
-                spyOn(service, 'save').and.returnValue(Observable.of({}));
+                spyOn(service, 'save').and.returnValue(observableOf({}));
                 comp.resetAccount.email = 'user@domain.com';
 
                 comp.requestReset();
@@ -76,7 +78,7 @@ describe('Component Tests', () => {
 
         it('notifies of unknown email upon email address not registered/400',
             inject([PasswordResetInitService], (service: PasswordResetInitService) => {
-                spyOn(service, 'save').and.returnValue(Observable.throw({
+                spyOn(service, 'save').and.returnValue(observableThrowError({
                     status: 400,
                     json() {
                         return {type : EMAIL_NOT_FOUND_TYPE}
@@ -95,7 +97,7 @@ describe('Component Tests', () => {
 
         it('notifies of error upon error response',
             inject([PasswordResetInitService], (service: PasswordResetInitService) => {
-                spyOn(service, 'save').and.returnValue(Observable.throw({
+                spyOn(service, 'save').and.returnValue(observableThrowError({
                     status: 503,
                     data: 'something else'
                 }));

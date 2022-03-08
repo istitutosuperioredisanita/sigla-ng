@@ -29,3 +29,5 @@ tomcatAjp:
     enabled: false
     scheme: http
 
+keycloak:
+    enabled: false

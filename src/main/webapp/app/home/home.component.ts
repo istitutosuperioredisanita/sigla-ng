@@ -7,6 +7,7 @@ import { Account, MultipleUserModalService, LoginService, Principal, StateStorag
 import { ContextService} from '../context';
 import { LocalStateStorageService } from '../shared/auth/local-storage.service';
 import { SERVER_API_URL } from '../app.constants';
+import { AuthServerProvider } from '../shared/auth/auth-session.service';
 
 @Component({
     selector: 'jhi-home',
@@ -27,12 +28,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
     username: string;
     credentials: any;
     isRequesting = false;
+    keycloakEnabled = true;
     @ViewChild('usernameinput') userNameElement: ElementRef;
 
     constructor(
         private principal: Principal,
         private loginService: LoginService,
         private multipleUserModalService: MultipleUserModalService,
+        private authServerProvider: AuthServerProvider,
         private stateStorageService: StateStorageService,
         private eventManager: JhiEventManager,
         private profileService: ProfileService,
@@ -40,9 +43,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
         private context: ContextService,
         private localStateStorageService: LocalStateStorageService
     ) {
-        this.profileService.getProfileInfo().subscribe((profileInfo) => {
-            this.instituteAcronym = profileInfo.instituteAcronym;
-        });
     }
 
     ngOnInit() {
@@ -51,10 +51,44 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 this.account = account;
             });
         }
-        this.registerAuthenticationSuccess();
+        this.profileService.getProfileInfo().subscribe((profileInfo) => {
+            this.instituteAcronym = profileInfo.instituteAcronym;
+            this.keycloakEnabled = profileInfo.keycloakEnabled;
+            if (profileInfo.keycloakEnabled) {
+                this.principal.identity(true).then((account: Account) => {
+                    this.authServerProvider.initializeWildfly(account).subscribe(() => {
+                        this.account = account;
+                        if (account.users.length > 1) {
+                            this.context.saveUserContext(
+                                this.localStateStorageService.getUserContext(account.username)
+                            ).toPromise().then((usercontext) => {
+                                this.context.findEsercizi();
+                                this.context.findPreferiti();
+                                this.context.findMessaggi();
+                                this.context.findCds(usercontext);
+                                this.context.findUo(usercontext);
+                                this.context.findCdr(usercontext);
+                            });
+                            this.authServerProvider.loginMultiploWildfly(
+                                account.username,
+                                this.localStateStorageService.getUserContext(account.username),
+                                account.access_token
+                            ).subscribe(() => {
+                                this.principal.setAuthenticated(true);
+                            });
+                        }
+                    });
+                });
+            }
+        });
     }
+
     ngAfterViewInit() {
-        setTimeout(() => this.userNameElement.nativeElement.focus());
+        setTimeout(() => {
+            if (this.userNameElement) {
+                this.userNameElement.nativeElement.focus();
+            }
+        });
     }
 
     registerAuthenticationSuccess() {
@@ -69,7 +103,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return this.principal.isAuthenticated();
     }
 
-    login(redirect: string) {
+    login(redirect?: string) {
         let navigate = redirect || '';
         this.isRequesting = true;
         this.loginService.login({

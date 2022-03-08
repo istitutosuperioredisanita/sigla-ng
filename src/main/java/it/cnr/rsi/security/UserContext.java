@@ -48,12 +48,13 @@ public class UserContext implements UserDetails {
     private String email;
     private Boolean ldap;
 
-    private Collection<? extends GrantedAuthority> authorities;
+    private Collection<GrantedAuthority> authorities;
     private String login;
     private Integer esercizio;
     private String cds;
     private String uo;
     private String cdr;
+    private String access_token;
 
     private Map<String, List<GrantedAuthority>> roles;
     private List<UserContext> users;
@@ -76,13 +77,13 @@ public class UserContext implements UserDetails {
     }
 
 
-    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+    public void setAuthorities(Collection<GrantedAuthority> authorities) {
         this.authorities = authorities;
     }
 
     @Override
     @JsonIgnore
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<GrantedAuthority> getAuthorities() {
         return authorities;
     }
 
@@ -291,5 +292,13 @@ public class UserContext implements UserDetails {
 
     public void setUtenteMultiplo(Boolean utenteMultiplo) {
         this.utenteMultiplo = utenteMultiplo;
+    }
+
+    public String getAccess_token() {
+        return access_token;
+    }
+
+    public void setAccess_token(String access_token) {
+        this.access_token = access_token;
     }
 }

@@ -35,7 +35,7 @@ public interface UtenteRepository extends JpaRepository<Utente, String> {
 	@Query("select a from Utente a where cdUtente = :cdUtente AND flAutenticazioneLdap = :flAutenticazioneLdap")
 	Utente findUserWithAuthenticationLDAP(@Param("cdUtente")String cdUtente, @Param("flAutenticazioneLdap")Boolean flAutenticazioneLdap);
 
-	@Query("select a from Utente a where (cdUtenteUid = :cdUtenteUid OR cdUtente = :cdUtenteUid) AND (dtFineValidita >= CURRENT_TIMESTAMP OR dtFineValidita is null) AND flAutenticazioneLdap = true ")
+	@Query("select a from Utente a where (cdUtenteUid = :cdUtenteUid OR cdUtente = :cdUtenteUid) AND (dtFineValidita >= CURRENT_TIMESTAMP OR dtFineValidita is null) AND flAutenticazioneLdap = true")
     List<Utente> findUsersForUid(@Param("cdUtenteUid")String cdUtenteUid);
 
 }

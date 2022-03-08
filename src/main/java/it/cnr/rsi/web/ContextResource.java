@@ -35,6 +35,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -172,7 +173,17 @@ public class ContextResource {
             .map(String.class::cast)
             .ifPresent(s -> userDetails.setCdr(s));
 
-        SecurityContextHolder.getContext().setAuthentication(new ContextAuthentication(userDetails));
+        SecurityContextHolder.getContext().setAuthentication(
+            new ContextAuthentication(
+                userDetails,
+                Optional.ofNullable(SecurityContextHolder.getContext())
+                    .map(SecurityContext::getAuthentication)
+                    .filter(ContextAuthentication.class::isInstance)
+                    .map(ContextAuthentication.class::cast)
+                    .map(ContextAuthentication::getKeycloakAuthenticationToken)
+                    .orElse(null)
+            )
+        );
         return userDetails;
     }
 

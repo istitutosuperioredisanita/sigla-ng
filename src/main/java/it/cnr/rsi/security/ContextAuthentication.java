@@ -17,20 +17,36 @@
 
 package it.cnr.rsi.security;
 
+import org.keycloak.adapters.OidcKeycloakAccount;
+import org.keycloak.adapters.springsecurity.account.SimpleKeycloakAccount;
+import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+import org.keycloak.adapters.tomcat.SimplePrincipal;
+import org.springframework.data.annotation.Transient;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
+import java.util.Optional;
 
-public class ContextAuthentication implements Authentication {
+public class ContextAuthentication extends KeycloakAuthenticationToken implements Authentication {
     final UserContext userContext;
+    final KeycloakAuthenticationToken keycloakAuthenticationToken;
 
-    public ContextAuthentication(UserContext userContext) {
+    public ContextAuthentication(UserContext userContext, KeycloakAuthenticationToken keycloakAuthenticationToken) {
+        super(
+            Optional.ofNullable(keycloakAuthenticationToken)
+                .flatMap(k -> Optional.ofNullable(k.getAccount()))
+                .orElseGet(() -> new SimpleKeycloakAccount(new SimplePrincipal(""), null, null)),
+            Optional.ofNullable(keycloakAuthenticationToken)
+                .flatMap(k -> Optional.ofNullable(k.isInteractive()))
+                .orElse(Boolean.FALSE)
+        );
         this.userContext = userContext;
+        this.keycloakAuthenticationToken = keycloakAuthenticationToken;
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<GrantedAuthority> getAuthorities() {
         return userContext.getAuthorities();
     }
 
@@ -60,7 +76,18 @@ public class ContextAuthentication implements Authentication {
     }
 
     @Override
+    public OidcKeycloakAccount getAccount() {
+        return Optional.ofNullable(keycloakAuthenticationToken)
+            .map(KeycloakAuthenticationToken::getAccount)
+            .orElse(null);
+    }
+
+    @Override
     public String getName() {
         return userContext.getUsername();
+    }
+
+    public KeycloakAuthenticationToken getKeycloakAuthenticationToken() {
+        return keycloakAuthenticationToken;
     }
 }
