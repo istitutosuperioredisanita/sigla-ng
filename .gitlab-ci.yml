@@ -10,8 +10,8 @@ stages:
 
 variables:
   MAVEN_OPTS: "-Djava.awt.headless=true -Dmaven.repo.local=./.m2/repository -Dsonar.host.url=$SONAR_HOST_URL"
-  MAVEN_CLI_OPTS: "-s .m2/settings.xml -Dmaven.repo.local=./.m2/repository -Pprod  -Dsecurity.ldap.managerDn=$SECURITY_LDAP_MANAGER_DN -Dsecurity.ldap.managerPassword=$SECURITY_LDAP_MANAGER_PASSWORD -Dsecurity.ldap.test.user=$SECURITY_LDAP_TEST_USER -Dsecurity.ldap.test.password=$SECURITY_LDAP_TEST_PASSWORD -Dnexus.url=$NEXUS_URL -Dnexus.login=$NEXUS_USERNAME -Dnexus.pwd=$NEXUS_PASSWORD --batch-mode --errors --fail-at-end --show-version"
-  MAVEN_CLI_CENTRAL_OPTS: "-s .m2/settings.xml -Dmaven.repo.local=./.m2/repository -Pprod,maven-central -Dnexus.url=$NEXUS_URL -Dsonatype.login=$SONATYPE_USERNAME -Dsonatype.pwd=$SONATYPE_PASSWORD -DskipTests --batch-mode --errors --fail-at-end --show-version"
+  MAVEN_CLI_OPTS: "-s .m2/settings.xml -Dmaven.repo.local=./.m2/repository -Pprod  -Duser.timezone=CET -Dsecurity.ldap.managerDn=$SECURITY_LDAP_MANAGER_DN -Dsecurity.ldap.managerPassword=$SECURITY_LDAP_MANAGER_PASSWORD -Dsecurity.ldap.test.user=$SECURITY_LDAP_TEST_USER -Dsecurity.ldap.test.password=$SECURITY_LDAP_TEST_PASSWORD -Dnexus.url=$NEXUS_URL -Dnexus.login=$NEXUS_USERNAME -Dnexus.pwd=$NEXUS_PASSWORD --batch-mode --errors --fail-at-end --show-version"
+  MAVEN_CLI_CENTRAL_OPTS: "-s .m2/settings.xml -Dmaven.repo.local=./.m2/repository -Pprod,maven-central -Duser.timezone=CET -Dnexus.url=$NEXUS_URL -Dsonatype.login=$SONATYPE_USERNAME -Dsonatype.pwd=$SONATYPE_PASSWORD -DskipTests --batch-mode --errors --fail-at-end --show-version"
   CONTAINER_TEST_IMAGE: $CI_PROJECT_PATH:$CI_COMMIT_REF_NAME
   CONTAINER_RELEASE_IMAGE: $CI_PROJECT_PATH:latest
 
