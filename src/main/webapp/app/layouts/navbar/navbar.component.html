@@ -36,12 +36,13 @@
                 <ngx-cnr-uict-sso-user-menu *ngIf="isAuthenticated()"
                     [account]="principal.userIdentity" 
                     (logoutCallback)="logout()">
-                    <div class="list-group list-group-flush pt-2">
-                        <a class="list-group-item" routerLink="settings" routerLinkActive="active" (click)="collapseNavbar()">
+                    <div class="dropdown-divider"></div>
+                    <div class="list-group">
+                        <a class="list-group-item list-group-item-action border-0" routerLink="settings" routerLinkActive="active" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-wrench" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.account.settings">Settings</span>
                         </a>
-                        <a *ngIf="isMultipleUser()" class="list-group-item" href="javascript:void(0);" (click)="changeUser()" id="changeuser">
+                        <a *ngIf="isMultipleUser()" class="list-group-item list-group-item-action border-0" href="javascript:void(0);" (click)="changeUser()" id="changeuser">
                             <i class="fa fa-fw fa-user" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.account.changeuser">Change User</span>
                         </a>
@@ -123,12 +124,13 @@
                     class="d-none d-md-flex" 
                     [account]="principal.userIdentity" 
                     (logoutCallback)="logout()">
-                    <div class="list-group list-group-flush pt-2">
-                        <a class="list-group-item" routerLink="settings" routerLinkActive="active" (click)="collapseNavbar()">
+                    <div class="dropdown-divider"></div>
+                    <div class="list-group">
+                        <a class="list-group-item list-group-item-action border-0" routerLink="settings" routerLinkActive="active" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-wrench" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.account.settings">Settings</span>
                         </a>
-                        <a *ngIf="isMultipleUser()" class="list-group-item" href="javascript:void(0);" (click)="changeUser()" id="changeuser">
+                        <a *ngIf="isMultipleUser()" class="list-group-item list-group-item-action border-0" href="javascript:void(0);" (click)="changeUser()" id="changeuser">
                             <i class="fa fa-fw fa-user" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.account.changeuser">Change User</span>
                         </a>
