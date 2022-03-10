@@ -1,5 +1,17 @@
 # sigla-ng Changelog
 
+## Release 3.0.1  -- _March 10, 2022_ 
+### No issue
+
+>**Add env property sso.apps.menu.display**
+>
+>[08ee4370612cdcc](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/08ee4370612cdcc) marco.spasiano *March 10, 2022*
+
+>**Generate CHANGELOG.md [ci skip]**
+>
+>[8f3152d4071a49f](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/8f3152d4071a49f) marco.spasiano *March 10, 2022*
+
+
 ## Release 3.0.0  -- _March 10, 2022_ 
 ### No issue
 
