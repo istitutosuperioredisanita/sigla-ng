@@ -1,5 +1,333 @@
 # sigla-ng Changelog
 
+## Release 3.0.0  -- _March 10, 2022_ 
+### No issue
+
+>**FIX javadoc profile**
+>
+>[3af039e06734a25](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/3af039e06734a25) marco.spasiano *March 10, 2022*
+
+>**Add javadoc profile**
+>
+>[a4c335a4ddbae78](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/a4c335a4ddbae78) marco.spasiano *March 10, 2022*
+
+>**Add javadoc profile**
+>
+>[15c90a9a4a0515f](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/15c90a9a4a0515f) marco.spasiano *March 10, 2022*
+
+>**Add javadoc profile**
+>
+>[a68624bca1e4d6f](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/a68624bca1e4d6f) marco.spasiano *March 10, 2022*
+
+>**Add MAVEN_RELEASE_VERSION on maven release:prepare**
+>
+>[ba754af7157b3bf](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/ba754af7157b3bf) marco.spasiano *March 10, 2022*
+
+>**Add MAVEN_RELEASE_VERSION on maven release:prepare**
+>
+>[42240482acc07e4](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/42240482acc07e4) marco.spasiano *March 10, 2022*
+
+>**Add Token on local storage**
+>
+>[12c70ce3ecd042f](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/12c70ce3ecd042f) marco.spasiano *March 10, 2022*
+
+>**Add Token on local storage**
+>
+>[a2fbc644e0e0898](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/a2fbc644e0e0898) marco.spasiano *March 10, 2022*
+
+>**FIX error message on login**
+>
+>[917e6aa1eeb1a35](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/917e6aa1eeb1a35) marco.spasiano *March 09, 2022*
+
+>**FIX keycloak state parameter invalid**
+>
+>[dc9d97564ccc19b](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/dc9d97564ccc19b) marco.spasiano *March 08, 2022*
+
+>**FIX keycloak state parameter invalid**
+>
+>[35fce64571503be](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/35fce64571503be) marco.spasiano *March 08, 2022*
+
+>**tidy up cloudrun demo**
+>
+>[4a4c098a05d7603](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/4a4c098a05d7603) Villari Giuseppe *March 08, 2022*
+
+>**Upgrade ngx-cnr-uict-sso-user-menu on navbar**
+>
+>[f7a0f480255134d](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/f7a0f480255134d) marco.spasiano *March 08, 2022*
+
+>**Upgrade ngx-cnr-uict-sso-user-menu on navbar**
+>
+>[e914e81c010822c](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/e914e81c010822c) marco.spasiano *March 08, 2022*
+
+>**FIX profile info keycloakEnabled**
+>
+>[5c17c04aa572b44](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/5c17c04aa572b44) marco.spasiano *March 08, 2022*
+
+>**Arbitrary File Write Vulnerability**
+> * org.postgresql:postgresql
+> * &gt;= 42.1.0, &lt; 42.3.3
+> * 42.3.3
+>
+>[140774ea08449f2](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/140774ea08449f2) marco.spasiano *March 08, 2022*
+
+>**PostgreSQL JDBC Driver (aka PgJDBC) before 42.2.13 allows XXE.**
+>
+>[9b443cc51a48870](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/9b443cc51a48870) marco.spasiano *March 08, 2022*
+
+>**Add timezone for build test**
+>
+>[99f6a3bc6572bf3](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/99f6a3bc6572bf3) marco.spasiano *March 08, 2022*
+
+>**Add custom keycloak context**
+>
+>[3e5e671fe6154a7](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/3e5e671fe6154a7) marco.spasiano *March 08, 2022*
+
+>**Add custom keycloak context**
+>
+>[e2b76c200e67d34](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/e2b76c200e67d34) marco.spasiano *March 08, 2022*
+
+>**Add ngx-cnr-uict-sso-user-menu on navbar**
+>
+>[d521854e7cebda0](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/d521854e7cebda0) marco.spasiano *March 07, 2022*
+
+>**Add ngx-cnr-uict-sso-user-menu on navbar**
+>
+>[1ec81282470730a](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/1ec81282470730a) marco.spasiano *March 07, 2022*
+
+>**Add ngx-cnr-uict-sso-user-menu on navbar**
+>
+>[4d49863100070d7](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/4d49863100070d7) marco.spasiano *March 07, 2022*
+
+>**Add ngx-cnr-uict-sso-user-menu on navbar**
+>
+>[fd793163429c43e](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/fd793163429c43e) marco.spasiano *March 07, 2022*
+
+>**Add ngx-cnr-uict-sso-user-menu on navbar**
+>
+>[e006d70a923f8ae](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/e006d70a923f8ae) marco.spasiano *March 07, 2022*
+
+>**Add sso logout_success_url**
+>
+>[30b8e046b7b0353](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/30b8e046b7b0353) marco.spasiano *March 07, 2022*
+
+>**Add sso logout_success_url**
+>
+>[0ff72f10ac999ba](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/0ff72f10ac999ba) marco.spasiano *March 07, 2022*
+
+>**Add sso logout_success_url**
+>
+>[2f78a32c2b0057d](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/2f78a32c2b0057d) marco.spasiano *March 07, 2022*
+
+>**Add sso logout_success_url**
+>
+>[8d5d44d3faaff1e](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/8d5d44d3faaff1e) marco.spasiano *March 07, 2022*
+
+>**code tidy up**
+>
+>[a007457775c52a0](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/a007457775c52a0) Villari Giuseppe *March 04, 2022*
+
+>**Add sso logout_success_url**
+>
+>[e5955b97dbc4266](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/e5955b97dbc4266) marco.spasiano *March 01, 2022*
+
+>**Gke demo with password prompt**
+>
+>[d7bf5d0b833d202](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/d7bf5d0b833d202) Villari Giuseppe *February 28, 2022*
+
+>**Update Readme.md**
+>
+>[8eaeff471903e84](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/8eaeff471903e84) giusvill *February 10, 2022*
+
+>**Fix protocol on env variables**
+>
+>[7fbaca16383e8e0](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/7fbaca16383e8e0) giusvill *February 10, 2022*
+
+>**Formal details fixed**
+>
+>[a0c9e2f355a89ec](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/a0c9e2f355a89ec) giusvill *February 10, 2022*
+
+>**Fixed bug on services ips availability**
+>
+>[ad1d67bf7e42d59](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/ad1d67bf7e42d59) giusvill *February 10, 2022*
+
+>**Button url update**
+>
+>[3f1f928f05c518c](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/3f1f928f05c518c) giusvill *February 07, 2022*
+
+>**First commit gke demo**
+>
+>[8eb2202c96ac70e](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/8eb2202c96ac70e) giusvill *February 07, 2022*
+
+>**Readme.md updated**
+>
+>[3d4732481e4668c](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/3d4732481e4668c) giusvill *February 03, 2022*
+
+>**Bug Fix**
+>
+>[1f8c7211ffc23da](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/1f8c7211ffc23da) giusvill *February 03, 2022*
+
+>**Readme Button Final**
+>
+>[a1658c54528f596](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/a1658c54528f596) giusvill *February 03, 2022*
+
+>**readme++**
+>
+>[6e31070da485eb2](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/6e31070da485eb2) giusvill *February 03, 2022*
+
+>**User Guide in Cloud Shell**
+>
+>[f454f6576b16ae7](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/f454f6576b16ae7) giusvill *February 03, 2022*
+
+>**Button New Feature**
+>
+>[f7d53fead0c9500](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/f7d53fead0c9500) giusvill *February 03, 2022*
+
+>**Button Added**
+>
+>[d25cf87e4be085d](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/d25cf87e4be085d) giusvill *February 03, 2022*
+
+>**Update Readme.md**
+>
+>[85e4556cedd232e](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/85e4556cedd232e) Marco Spasiano *February 03, 2022*
+
+>**Update Readme.md**
+>
+>[080dd469418348f](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/080dd469418348f) Marco Spasiano *February 03, 2022*
+
+>**Create Readme.md**
+>
+>[6a649489e4ef460](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/6a649489e4ef460) giusvill *February 03, 2022*
+
+>**Add files via upload**
+> * complete scripts to build and deploy Sigla on GCP environment with Cloud Run and Cloud SQL
+>
+>[c2c9fa8edd19879](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/c2c9fa8edd19879) giusvill *February 03, 2022*
+
+>**Upgrade to Angular 7**
+>
+>[2486c0ab74c509f](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/2486c0ab74c509f) marco.spasiano *January 26, 2022*
+
+>**Upgrade to Angular 7**
+>
+>[9af47a776c07c59](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/9af47a776c07c59) marco.spasiano *January 26, 2022*
+
+>**Upgrade to Angular 7**
+>
+>[bf529def54006de](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/bf529def54006de) marco.spasiano *January 25, 2022*
+
+>**Upgrade to Angular 7**
+>
+>[487e18a69f9370a](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/487e18a69f9370a) marco.spasiano *January 25, 2022*
+
+>**Upgrade to Angular 7**
+>
+>[30d06c1c96cb3ce](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/30d06c1c96cb3ce) marco.spasiano *January 25, 2022*
+
+>**Upgrade to Angular 7**
+>
+>[f4ff3adce1ea0f5](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/f4ff3adce1ea0f5) marco.spasiano *January 25, 2022*
+
+>**Upgrade to Angular 7**
+>
+>[5ec6aa83b695c7a](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/5ec6aa83b695c7a) marco.spasiano *January 25, 2022*
+
+>**Upgrade to Angular 7**
+>
+>[d1e9d59eb49f14b](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/d1e9d59eb49f14b) marco.spasiano *January 25, 2022*
+
+>**Upgrade to Angular 7**
+>
+>[06435363127437a](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/06435363127437a) marco.spasiano *January 25, 2022*
+
+>**Upgrade to Angular 7**
+>
+>[c576f625f8e262a](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/c576f625f8e262a) marco.spasiano *January 25, 2022*
+
+>**Upgrade to Angular 7**
+>
+>[2224488c4feead7](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/2224488c4feead7) marco.spasiano *January 25, 2022*
+
+>**Upgrade to Angular 7**
+>
+>[d418c5ecb47d4fc](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/d418c5ecb47d4fc) marco.spasiano *January 25, 2022*
+
+>**Upgrade to Angular 7**
+>
+>[74176684e9ad821](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/74176684e9ad821) marco.spasiano *January 25, 2022*
+
+>**Upgrade to Angular 7**
+>
+>[b61d75db3b48f3f](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/b61d75db3b48f3f) marco.spasiano *January 24, 2022*
+
+>**Upgrade to Angular 7**
+>
+>[fbf2b3fd74d45ba](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/fbf2b3fd74d45ba) marco.spasiano *January 22, 2022*
+
+>**Upgrade to Angular 7**
+>
+>[00cc44bb9ba1442](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/00cc44bb9ba1442) marco.spasiano *January 22, 2022*
+
+>**Upgrade to Angular 7**
+>
+>[5c62abc7ba85b37](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/5c62abc7ba85b37) marco.spasiano *January 21, 2022*
+
+>**Upgrade to Angular 7**
+>
+>[53c89405877bde0](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/53c89405877bde0) marco.spasiano *January 21, 2022*
+
+>**Upgrade to Angular 7**
+>
+>[1bff1274ec8adb6](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/1bff1274ec8adb6) marco.spasiano *January 21, 2022*
+
+>**Upgrade to Angular 7**
+>
+>[05695ac72ece4dc](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/05695ac72ece4dc) marco.spasiano *January 21, 2022*
+
+>**Upgrade to Angular 7**
+>
+>[aa3aa4d8ce35274](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/aa3aa4d8ce35274) marco.spasiano *January 21, 2022*
+
+>**Upgrade to Angular 7**
+>
+>[5c172be39793bcc](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/5c172be39793bcc) marco.spasiano *January 21, 2022*
+
+>**Add configuration for keycloak**
+>
+>[b3aaa77f349f028](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/b3aaa77f349f028) marco.spasiano *January 18, 2022*
+
+>**Add configuration for keycloak**
+>
+>[2ac51381e9bdbec](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/2ac51381e9bdbec) marco.spasiano *January 18, 2022*
+
+>**Add configuration for keycloak**
+>
+>[0b1e414d0e495eb](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/0b1e414d0e495eb) marco.spasiano *January 18, 2022*
+
+>**Add configuration for keycloak**
+>
+>[71902074049cbb2](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/71902074049cbb2) marco.spasiano *January 17, 2022*
+
+>**Add configuration for keycloak**
+>
+>[d7cd8cc2f41ee3e](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/d7cd8cc2f41ee3e) marco.spasiano *January 17, 2022*
+
+>**Add configuration for keycloak**
+>
+>[245315387ee1b31](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/245315387ee1b31) marco.spasiano *January 17, 2022*
+
+>**Add configuration for keycloak**
+>
+>[f21a94a832bd71e](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/f21a94a832bd71e) marco.spasiano *January 11, 2022*
+
+>**Add env variable sigla.wildfly.url**
+>
+>[43504826e85ea12](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/43504826e85ea12) marco.spasiano *January 05, 2022*
+
+>**Generate CHANGELOG.md [ci skip]**
+>
+>[ba81353d70c1fbd](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/ba81353d70c1fbd) marco.spasiano *January 05, 2022*
+
+
 ## Release 2.0.17  -- _January 05, 2022_ 
 ### No issue
 
