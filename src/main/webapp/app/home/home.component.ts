@@ -80,7 +80,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                                         this.principal.setAuthenticated(true);
                                     });
                                 }
-                            });    
+                            });
                         });
                     }
                 });
