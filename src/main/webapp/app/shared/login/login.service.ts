@@ -65,7 +65,7 @@ export class LoginService {
 
     logoutSSO() {
         this.principal.identity(true).then((account: Account) => {
-            this.authServerProvider.logoutWildfly(account.access_token).subscribe(() => {
+            this.authServerProvider.logoutWildfly().subscribe(() => {
                 this.principal.authenticate(null);
                 location.href = '/sso/logout';
             });

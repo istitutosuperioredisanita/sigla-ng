@@ -35,8 +35,7 @@ export class JhiMultipleUserModalComponent implements OnInit {
         this.isRequesting = true;
         this.authServerProvider.loginMultiploWildfly(
             this.selectedUser,
-            this.localStateStorageService.getUserContext(this.selectedUser),
-            this.account.access_token).subscribe(() => {
+            this.localStateStorageService.getUserContext(this.selectedUser)).subscribe(() => {
                 this.principal.identity(true, this.selectedUser).then((account) => {
                     if (this.localStateStorageService.getUserContext(account.username).cds) {
                         this.router.navigate([this.page]);

@@ -154,9 +154,6 @@ export class ContextService  {
         ].join(',');
         httpParams = httpParams.set('comando', 'doSelezionaContesto(' + parameter + ')');
         httpParams = httpParams.set('datetime', String(Date.now()));
-        if (account.access_token) {
-            httpParams = httpParams.set('access_token', account.access_token);
-        }
         return this.profileService.getProfileInfo().pipe(switchMap((profileInfo) => {
             return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/Login.do', {
                 params: httpParams, headers: this.headers, withCredentials: true, responseType: 'text'

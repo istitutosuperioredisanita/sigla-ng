@@ -8,6 +8,7 @@ import { ContextService} from '../context';
 import { LocalStateStorageService } from '../shared/auth/local-storage.service';
 import { SERVER_API_URL } from '../app.constants';
 import { AuthServerProvider } from '../shared/auth/auth-session.service';
+import { AuthService } from '../shared/auth/auth.service';
 
 @Component({
     selector: 'jhi-home',
@@ -36,6 +37,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         private loginService: LoginService,
         private multipleUserModalService: MultipleUserModalService,
         private authServerProvider: AuthServerProvider,
+        private authService: AuthService,
         private stateStorageService: StateStorageService,
         private eventManager: JhiEventManager,
         private profileService: ProfileService,
@@ -56,28 +58,29 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.keycloakEnabled = profileInfo.keycloakEnabled;
             if (profileInfo.keycloakEnabled) {
                 this.principal.identity(true).then((account: Account) => {
-                    if (account && account.access_token) {
-                        this.authServerProvider.initializeWildfly(account).subscribe(() => {
-                            this.account = account;
-                            if (account.users.length > 1) {
-                                this.context.saveUserContext(
-                                    this.localStateStorageService.getUserContext(account.username)
-                                ).toPromise().then((usercontext) => {
-                                    this.context.findEsercizi();
-                                    this.context.findPreferiti();
-                                    this.context.findMessaggi();
-                                    this.context.findCds(usercontext);
-                                    this.context.findUo(usercontext);
-                                    this.context.findCdr(usercontext);
-                                });
-                                this.authServerProvider.loginMultiploWildfly(
-                                    account.username,
-                                    this.localStateStorageService.getUserContext(account.username),
-                                    account.access_token
-                                ).subscribe(() => {
-                                    this.principal.setAuthenticated(true);
-                                });
-                            }
+                    if (account && account.login) {
+                        this.authService.refreshToken().subscribe(() => {
+                            this.authServerProvider.initializeWildfly(account).subscribe(() => {
+                                this.account = account;
+                                if (account.users.length > 1) {
+                                    this.context.saveUserContext(
+                                        this.localStateStorageService.getUserContext(account.username)
+                                    ).toPromise().then((usercontext) => {
+                                        this.context.findEsercizi();
+                                        this.context.findPreferiti();
+                                        this.context.findMessaggi();
+                                        this.context.findCds(usercontext);
+                                        this.context.findUo(usercontext);
+                                        this.context.findCdr(usercontext);
+                                    });
+                                    this.authServerProvider.loginMultiploWildfly(
+                                        account.username,
+                                        this.localStateStorageService.getUserContext(account.username)
+                                    ).subscribe(() => {
+                                        this.principal.setAuthenticated(true);
+                                    });
+                                }
+                            });    
                         });
                     }
                 });

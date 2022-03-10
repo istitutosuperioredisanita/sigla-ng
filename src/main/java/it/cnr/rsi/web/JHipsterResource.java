@@ -45,6 +45,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by francesco on 21/03/17.
@@ -100,6 +101,28 @@ public class JHipsterResource {
         return ResponseEntity.ok(true);
     }
 
+    @GetMapping("/token")
+    public ResponseEntity<?> token() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        final Optional<KeycloakAuthenticationToken> keycloakAuthenticationToken = Optional.ofNullable(authentication)
+            .filter(KeycloakAuthenticationToken.class::isInstance)
+            .map(KeycloakAuthenticationToken.class::cast);
+        if (keycloakAuthenticationToken.isPresent() && keycloakAuthenticationToken.get().isAuthenticated()) {
+            final OidcKeycloakAccount account = keycloakAuthenticationToken.get().getAccount();
+            final Principal principal = account.getPrincipal();
+            if (principal instanceof KeycloakPrincipal) {
+                KeycloakPrincipal kPrincipal = (KeycloakPrincipal) principal;
+                return ResponseEntity.ok(
+                    Stream.of(
+                        new AbstractMap.SimpleEntry<>("access_token", kPrincipal.getKeycloakSecurityContext().getTokenString()),
+                        new AbstractMap.SimpleEntry<>("exp", kPrincipal.getKeycloakSecurityContext().getIdToken().getExp())
+                    ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))
+                );
+            }
+        }
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/account")
     public ResponseEntity<?> account() {
         LOGGER.info("get account");
@@ -138,7 +161,6 @@ public class JHipsterResource {
                     userContext.get().setFirstName(token.getGivenName().toUpperCase(Locale.ITALIAN));
                     userContext.get().setLastName(token.getFamilyName().toUpperCase(Locale.ITALIAN));
                     userContext.get().setLogin(token.getPreferredUsername());
-                    userContext.get().setAccess_token(kPrincipal.getKeycloakSecurityContext().getTokenString());
                 } else {
                     return ResponseEntity.unprocessableEntity().body(token);
                 }

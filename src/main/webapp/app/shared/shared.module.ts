@@ -1,6 +1,7 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { AuthServerProvider } from './auth/auth-session.service';
+import { AuthService } from './auth/auth.service';
 
 import {
     SiglaSharedLibsModule,
@@ -44,7 +45,8 @@ import {ContextComponent} from '../context';
         Principal,
         CSRFService,
         AuthServerProvider,
-        DatePipe
+        DatePipe,
+        AuthService
     ],
     entryComponents: [JhiLoginModalComponent, JhiMultipleUserModalComponent, JhiMessaggiModalComponent],
     exports: [
@@ -55,7 +57,7 @@ import {ContextComponent} from '../context';
         HasAnyAuthorityDirective,
         NotHaveAuthorityDirective,
         DatePipe,
-        ContextComponent
+        ContextComponent,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 

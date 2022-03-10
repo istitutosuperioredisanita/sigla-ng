@@ -40,9 +40,6 @@ export class WorkspaceService {
         let httpParams: HttpParams = new HttpParams();
         httpParams = httpParams.set('comando', 'doSelezionaMenu(' + nodoid + ')');
         httpParams = httpParams.set('datetime', String(Date.now()));
-        if (account && account.access_token) {
-            httpParams = httpParams.set('access_token', account.access_token);
-        }
         return this.profileService.getProfileInfo().pipe(switchMap((profileInfo) => {
             return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/GestioneMenu.do', {
                 params: httpParams, withCredentials: true, responseType: 'text'
@@ -61,9 +58,6 @@ export class WorkspaceService {
     postForm(form: any, account: Account): Observable<string> {
         let httpParams: HttpParams = new HttpParams();
         httpParams = httpParams.set('datetime', String(Date.now()));
-        if (account && account.access_token) {
-            httpParams = httpParams.set('access_token', account.access_token);
-        }
         if (form.comando.value) {
             return this.profileService.getProfileInfo().pipe(switchMap((profileInfo) => {
                 return this.http.post(profileInfo.siglaWildflyURL + '/SIGLA/' + form.getAttribute('action-ng'),
@@ -81,9 +75,6 @@ export class WorkspaceService {
     getAllTODO(account: Account): Observable<string[]> {
         let httpParams: HttpParams = new HttpParams();
         httpParams = httpParams.set('datetime', String(Date.now()));
-        if (account && account.access_token) {
-            httpParams = httpParams.set('access_token', account.access_token);
-        }
         return this.profileService.getProfileInfo().pipe(switchMap((profileInfo) => {
             return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/restapi/todo', {
                 params: httpParams, withCredentials: true
@@ -94,9 +85,6 @@ export class WorkspaceService {
     getTODO(bp: string, account: Account): Observable<TODO[]> {
         let httpParams: HttpParams = new HttpParams();
         httpParams = httpParams.set('datetime', String(Date.now()));
-        if (account && account.access_token) {
-            httpParams = httpParams.set('access_token', account.access_token);
-        }
         return this.profileService.getProfileInfo().pipe(switchMap((profileInfo) => {
             return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/restapi/todo/' + bp, {
                 params: httpParams, withCredentials: true

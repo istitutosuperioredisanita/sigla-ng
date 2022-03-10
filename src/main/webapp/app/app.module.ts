@@ -34,8 +34,10 @@ import {
     ErrorComponent
 } from './layouts';
 import { AuthExpiredInterceptor } from './blocks/interceptor/auth-expired.interceptor';
+import { AuthInterceptor } from './blocks/interceptor/auth.interceptor';
 import { ErrorHandlerInterceptor } from './blocks/interceptor/errorhandler.interceptor';
 import { NotificationInterceptor } from './blocks/interceptor/notification.interceptor';
+import { AuthService } from './shared/auth/auth.service';
 
 @NgModule({
     imports: [
@@ -69,6 +71,12 @@ import { NotificationInterceptor } from './blocks/interceptor/notification.inter
     providers: [
         {
             provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true,
+            deps: [AuthService]
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
             useClass: AuthExpiredInterceptor,
             multi: true,
             deps: [StateStorageService, Router, LoginService]
@@ -90,6 +98,7 @@ import { NotificationInterceptor } from './blocks/interceptor/notification.inter
         UserRouteAccessService,
         ContextService,
         LocalStateStorageService,
+        AuthService,
     ],
     bootstrap: [ JhiMainComponent ]
 })
