@@ -71,6 +71,7 @@ public class JHipsterResource {
         map.put("urlChangePassword", env.getProperty("security.ldap.change.password.url"));
         map.put("siglaWildflyURL", env.getProperty("sigla.wildfly.url", ""));
         map.put("keycloakEnabled", Boolean.valueOf(env.getProperty("keycloak.enabled", "false")));
+        map.put("ssoAppsMenuDisplay", Boolean.valueOf(env.getProperty("sso.apps.menu.display", "false")));
 
         profiles
             .stream()

@@ -5,6 +5,7 @@ export class ProfileInfo {
     urlChangePassword: string;
     siglaWildflyURL: string;
     keycloakEnabled: boolean;
+    ssoAppsMenuDisplay: boolean;
 
     get inProduction() {
         return this.activeProfiles.indexOf('prod') !== -1;

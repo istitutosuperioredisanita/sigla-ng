@@ -31,3 +31,9 @@ tomcatAjp:
 
 keycloak:
     enabled: false
+
+sso:
+    apps:
+        menu:
+            display: false
+
