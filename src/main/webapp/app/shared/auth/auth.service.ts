@@ -17,12 +17,12 @@ export class AuthService {
         private http: HttpClient,
     ) {}
 
-    authorize (force) {
-        let authReturn = this.principal.identity(force).then(authThen.bind(this));
+    authorize(force) {
+        const authReturn = this.principal.identity(force).then(authThen.bind(this));
 
         return authReturn;
 
-        function authThen () {
+        function authThen() {
             const isAuthenticated = this.principal.isAuthenticated();
             const toStateInfo = this.stateStorageService.getDestinationState().destination;
 
@@ -33,8 +33,8 @@ export class AuthService {
             }
 
             // recover and clear previousState after external login redirect (e.g. oauth2)
-            let fromStateInfo = this.stateStorageService.getDestinationState().from;
-            let previousState = this.stateStorageService.getPreviousState();
+            const fromStateInfo = this.stateStorageService.getDestinationState().from;
+            const previousState = this.stateStorageService.getPreviousState();
             if (isAuthenticated && !fromStateInfo.name && previousState) {
                 this.stateStorageService.resetPreviousState();
                 this.router.navigate([previousState.name], { queryParams:  previousState.params  });
@@ -42,7 +42,7 @@ export class AuthService {
             }
 
             if (toStateInfo.data.authorities && toStateInfo.data.authorities.length > 0) {
-                return this.principal.hasAnyAuthority(toStateInfo.data.authorities).then(hasAnyAuthority => {
+                return this.principal.hasAnyAuthority(toStateInfo.data.authorities).then((hasAnyAuthority) => {
                     if (!hasAnyAuthority) {
                         if (isAuthenticated) {
                             // user is signed in but not authorized for desired state
