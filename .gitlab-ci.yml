@@ -114,7 +114,7 @@ catapult-deploy-image:
 #la release è opzionale e manuale.
 perform-maven-release-maven-central:
   stage: release
-  image: maven:alpine
+  image: maven:3-jdk-8
   script:
     # Add gpg private key
     - 'which gnupg || ( apk add --update gnupg && rm -rf /var/cache/apk/*)'
