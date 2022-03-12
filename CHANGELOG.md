@@ -1,5 +1,21 @@
 # sigla-ng Changelog
 
+## Release 3.0.2  -- _March 12, 2022_ 
+### No issue
+
+>**FIX i18n url**
+>
+>[51dd152074eb913](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/51dd152074eb913) marco.spasiano *March 12, 2022*
+
+>**FIX i18n url**
+>
+>[45ce3bfb44a2239](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/45ce3bfb44a2239) marco.spasiano *March 12, 2022*
+
+>**Generate CHANGELOG.md [ci skip]**
+>
+>[83c1649caff8923](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/83c1649caff8923) marco.spasiano *March 10, 2022*
+
+
 ## Release 3.0.1  -- _March 10, 2022_ 
 ### No issue
 
