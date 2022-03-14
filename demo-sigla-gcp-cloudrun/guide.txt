@@ -2,13 +2,12 @@
 
 > gcloud auth login
 
-1- Impostare l'ID del progetto associato alla cloud shell:
-
-> gcloud config set project [project_id]
-(esempio: gcloud config set project demo-sigla)
-
-2- Impostare l'ID del progetto come variabile d'ambiente:
+1- Impostare l'ID del progetto destinazione come variabile d'ambiente:
 > export project_id=[project_id]
+(esempio: export project_id=cloud-run-tdig)
+
+2- Impostare l'ID del progetto sulla cloud shell:
+> gcloud config set project $project_id
 
 3- Assicurarsi che tutti gli script nella directory siano eseguibili:
 > chmod +x *.sh

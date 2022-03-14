@@ -12,6 +12,8 @@ data:
   LANG: "it_IT.UTF-8"
   THORNTAIL_DATASOURCES_DATA-SOURCES_SIGLA_CONNECTION-URL: "jdbc:postgresql://$db_private_ip:5432/sigladb?schema=public"
   THORNTAIL_PROJECT_STAGE: "demo-postgres"
+  THORNTAIL_UNDERTOW_SERVLET-CONTAINERS_DEFAULT_SESSION-COOKIE-SETTING_COMMENT: ";"
+  THORNTAIL_UNDERTOW_FILTER-CONFIGURATION_RESPONSE-HEADERS_ACCESS-CONTROL-ALLOW-ORIGIN_HEADER-VALUE: http://$sigla_ng_ip
 ---
 apiVersion: "apps/v1"
 kind: "Deployment"
@@ -32,7 +34,7 @@ spec:
     spec:
       containers:
       - name: "sigla-thorntail"
-        image: "europe-west4-docker.pkg.dev/$project_id/ar-team-digi-sigla-gke-poc-001/sigla-main:release"
+        image: "europe-west4-docker.pkg.dev/$project_id/ar-team-digi-sigla-poc-001/sigla-main:release"
         env:
         - name: "LC_LL"
           valueFrom:
@@ -64,6 +66,16 @@ spec:
             secretKeyRef:
               name: db-credential
               key: password
+        - name: "THORNTAIL_UNDERTOW_SERVLET-CONTAINERS_DEFAULT_SESSION-COOKIE-SETTING_COMMENT"
+          valueFrom:
+            configMapKeyRef:
+              key: "THORNTAIL_UNDERTOW_SERVLET-CONTAINERS_DEFAULT_SESSION-COOKIE-SETTING_COMMENT"
+              name: "sigla-thorntail"
+        - name: "THORNTAIL_UNDERTOW_FILTER-CONFIGURATION_RESPONSE-HEADERS_ACCESS-CONTROL-ALLOW-ORIGIN_HEADER-VALUE"
+          valueFrom:
+            configMapKeyRef:
+              key: "THORNTAIL_UNDERTOW_FILTER-CONFIGURATION_RESPONSE-HEADERS_ACCESS-CONTROL-ALLOW-ORIGIN_HEADER-VALUE"
+              name: "sigla-thorntail"
 ---
 apiVersion: "autoscaling/v2beta1"
 kind: "HorizontalPodAutoscaler"

@@ -6,13 +6,14 @@ terraform apply -var="project_id=$project_id"
 cd ..
 
 #read password from prompt
+echo "Please chose a password for database instance"
 while true; do
   read -s -p "Password: " password
   echo
   read -s -p "Password (confirm): " password2
   echo
   [ "$password" = "$password2" ] && break
-  echo "Please try again"
+  echo "Incorrect password: please try again"
 done
 
 #Create a secret in GCP secret manager
@@ -47,7 +48,7 @@ gcloud run services add-iam-policy-binding sigla-ng --member="allUsers"  --role=
 
 export sigla_ng_url=$(gcloud run services describe sigla-ng --platform managed --region europe-west4 --format 'value(status.url)' --project $project_id)
 
-#run sigla-thorntail with all correct parameter
+#run sigla-thorntail with all correct parameters
 envsubst <  sigla-thorntail.yaml > sigla-thorntail-sub.yaml
 
 gcloud run services replace sigla-thorntail-sub.yaml

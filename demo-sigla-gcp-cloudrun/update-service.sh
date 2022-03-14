@@ -9,7 +9,7 @@ export db_private_ip=$(gcloud sql instances describe pdb-team-digi-sigla-001 | g
 #deploy sigla service
 export sigla_ng_url=$(gcloud run services describe sigla-ng --platform managed --region europe-west4 --format 'value(status.url)' --project $project_id)
 
-envsubst <  sigla-thorntail-final.yaml > sigla-thorntail-final-sub.yaml
+envsubst <  sigla-thorntail.yaml > sigla-thorntail-sub.yaml
 
 gcloud run services replace sigla-thorntail-final-sub.yaml
 

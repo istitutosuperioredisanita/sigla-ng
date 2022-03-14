@@ -12,9 +12,9 @@ gcloud container clusters get-credentials gke-team-digi-sigla-poc-001 --region e
 #Retrieve and set sigla-ng ip
 export sigla_ng_ip=$(kubectl get services -l app=sigla-ng -o jsonpath="{.items[0].status.loadBalancer.ingress[0].ip}")
 
-envsubst <  gke-sigla-thorntail-final.yaml > gke-sigla-thorntail-final-sub.yaml
+envsubst <  gke-sigla-thorntail.yaml > gke-sigla-thorntail-sub.yaml
 
-kubectl apply -f gke-sigla-thorntail-final-sub.yaml
+kubectl apply -f gke-sigla-thorntail-sub.yaml
 
 #Retrieve and set sigla-thorntail ip
 export sigla_thorntail_ip=$(kubectl get services -l app=sigla-thorntail -o jsonpath="{.items[0].status.loadBalancer.ingress[0].ip}")
