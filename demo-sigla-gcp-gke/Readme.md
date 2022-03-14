@@ -35,7 +35,7 @@ All'interno del progetto ospitante, nella sezione Google Kubernetes Engine, sele
 Filtrando sul **namespace** dell'applicazione (se le istruzioni sono state eseguite as-is, sarà **default**) saranno visibili i due pod di nostro interesse: **sigla-thorntail** e **sigla-ng**.
 Selezionando ciascuno di essi e navigando sul tab **logs** sarà possibile vedere lo standard output del container in tempo reale, filtrare i log o farne il dump da scaricare in locale.
 
-![log](/demo-sigla-gcp-gke/pics/log_gke.png)
+![log](/demo-sigla-gcp-gke/pics/screen_log_gke.png)
 
 # Update della versione di Sigla
 È posibile aggiornare la versione di Sigla, contestualmente all'aggiornamento delle immagini Docker ufficiali ([sigla-thorntail](https://hub.docker.com/r/consiglionazionalericerche/sigla-main/tags), [sigla-ng](https://hub.docker.com/r/consiglionazionalericerche/sigla-ng/tags)), tramite lo script **update-service.sh**.
