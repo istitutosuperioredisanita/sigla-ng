@@ -1,5 +1,21 @@
 # sigla-ng Changelog
 
+## Release 3.0.3  -- _March 13, 2022_ 
+### No issue
+
+>**FIX KeycloakAuthenticationToken acount is present**
+>
+>[3c5eba4a466b555](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/3c5eba4a466b555) marco.spasiano *March 13, 2022*
+
+>**FIX i18n url**
+>
+>[f9fb94e3d89a95e](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/f9fb94e3d89a95e) marco.spasiano *March 13, 2022*
+
+>**Generate CHANGELOG.md [ci skip]**
+>
+>[f88d0f46a3debc7](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/f88d0f46a3debc7) marco.spasiano *March 12, 2022*
+
+
 ## Release 3.0.2  -- _March 12, 2022_ 
 ### No issue
 
