@@ -31,7 +31,7 @@ export class SIGLATreeComponent implements OnInit, OnDestroy, AfterViewInit {
     preferitiListener: Subscription;
     refreshTreeListener: Subscription;
     workspaceListener: Subscription;
-    @ViewChild(TreeComponent) tree: TreeComponent;
+    @ViewChild(TreeComponent, {static : true}) tree: TreeComponent;
     @Output() activateLeaf = new EventEmitter();
     @ViewChildren(NgbPopover) popovers: QueryList<NgbPopover>;
 

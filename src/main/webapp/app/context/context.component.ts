@@ -18,11 +18,11 @@ import { map, debounceTime } from 'rxjs/operators';
 
 export class ContextComponent implements OnInit, OnDestroy {
     @Input() isNavbar: boolean;
-    @ViewChild('contextDrop') contextDrop;
+    @ViewChild('contextDrop', {static : true}) contextDrop;
 
-    @ViewChild('cds') cdsInput: ElementRef;
-    @ViewChild('uo') uoInput: ElementRef;
-    @ViewChild('cdr') cdrInput: ElementRef;
+    @ViewChild('cds', {static : false}) cdsInput: ElementRef;
+    @ViewChild('uo', {static : false}) uoInput: ElementRef;
+    @ViewChild('cdr', {static : false}) cdrInput: ElementRef;
 
     onSelectCdsSubscription: Subscription;
     onSelectUoSubscription: Subscription;

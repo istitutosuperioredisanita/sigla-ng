@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, ElementRef, Renderer, ViewChild, Inject, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ElementRef, Renderer2, ViewChild, Inject, HostListener } from '@angular/core';
 import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
 import { Principal, LoginService, Account } from '../shared';
 import { Subscription } from 'rxjs';
@@ -45,25 +45,25 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     navIsFixed: boolean;
     responsive = false;
 
-    @ViewChild('htmlContainer') container: ElementRef;
-    @ViewChild('scriptContainer') scriptContainer: ElementRef;
-    @ViewChild('mySplit') mySplitEl: SplitComponent;
-    @ViewChild('areaWorkspace') areaWorkspace: ElementRef;
-    @ViewChild('areaTree') areaTree: SplitComponent;
+    @ViewChild('htmlContainer', {static : true}) container: ElementRef;
+    @ViewChild('scriptContainer', {static : true}) scriptContainer: ElementRef;
+    @ViewChild('mySplit', {static : true}) mySplitEl: SplitComponent;
+    @ViewChild('areaWorkspace', {static : true}) areaWorkspace: ElementRef;
+    @ViewChild('areaTree', {static : true}) areaTree: SplitComponent;
 
     constructor(
         private contextService: ContextService,
         private principal: Principal,
         private workspaceService: WorkspaceService,
         private _sanitizer: DomSanitizer,
-        private renderer: Renderer,
+        private renderer: Renderer2,
         private eventManager: JhiEventManager,
         private loginService: LoginService
     ) {
-        this.listenerSubmit = renderer.listenGlobal('body', 'submit', (event) => {
+        this.listenerSubmit = renderer.listen('body', 'submit', (event) => {
             return false;
         });
-        this.listenerSubmitForm = renderer.listenGlobal('body', 'submitForm', (event) => {
+        this.listenerSubmitForm = renderer.listen('body', 'submitForm', (event) => {
             if (event.detail.comando) {
                 const form = event.detail.form;
                 this.startRefreshing();

@@ -1,7 +1,7 @@
 
 import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
-import { Renderer, ElementRef } from '@angular/core';
+import { Renderer2, ElementRef } from '@angular/core';
 import { SiglaTestModule } from '../../../../test.module';
 import { PasswordResetInitComponent } from '../../../../../../../main/webapp/app/account/password-reset/init/password-reset-init.component';
 import { PasswordResetInitService } from '../../../../../../../main/webapp/app/account/password-reset/init/password-reset-init.service';
@@ -21,7 +21,7 @@ describe('Component Tests', () => {
                 providers: [
                     PasswordResetInitService,
                     {
-                        provide: Renderer,
+                        provide: Renderer2,
                         useValue: {
                             invokeElementMethod(renderElement: any, methodName: string, args?: any[]) {}
                         }

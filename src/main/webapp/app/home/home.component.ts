@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, Renderer, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 import { Router, NavigationExtras } from '@angular/router';
@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     credentials: any;
     isRequesting = false;
     keycloakEnabled = true;
-    @ViewChild('usernameinput') userNameElement: ElementRef;
+    @ViewChild('usernameinput', {static : true}) userNameElement: ElementRef;
 
     constructor(
         private principal: Principal,
