@@ -1,8 +1,10 @@
 /* after changing this file run 'yarn run webpack:build' */
-@import '~bootstrap/dist/css/bootstrap.min.css';
+@import '~bootstrap/scss/bootstrap.scss';
 @import '~font-awesome/css/font-awesome.css';
 @import '~font-awesome-animation/dist/font-awesome-animation.min.css';
 @import '~flatpickr/dist/flatpickr.min.css';
 @import '~flatpickr/dist/themes/material_blue.css';
 @import 'animate.min.scss';
 @import 'global.scss';
+@import 'input-group.scss';
+@import 'custom-forms.scss';

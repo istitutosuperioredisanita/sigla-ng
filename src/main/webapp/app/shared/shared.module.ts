@@ -2,6 +2,9 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { AuthServerProvider } from './auth/auth-session.service';
 import { AuthService } from './auth/auth.service';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient } from '@angular/common/http';
 
 import {
     SiglaSharedLibsModule,
@@ -18,14 +21,21 @@ import {
     NotHaveAuthorityDirective,
     HasAnyAuthorityDirective,
     JhiMultipleUserModalComponent,
-    JhiMessaggiModalComponent
+    JhiMessaggiModalComponent,
 } from './';
 import {ContextComponent} from '../context';
 
 @NgModule({
     imports: [
         SiglaSharedLibsModule,
-        SiglaSharedCommonModule
+        SiglaSharedCommonModule,
+        TranslateModule.forChild({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient]
+            }
+        }),
     ],
     declarations: [
         JhiLoginModalComponent,
@@ -63,3 +73,7 @@ import {ContextComponent} from '../context';
 
 })
 export class SiglaSharedModule {}
+// required for AOT compilation
+export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
+    return new TranslateHttpLoader(http);
+}

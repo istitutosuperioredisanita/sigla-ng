@@ -27,12 +27,27 @@ html {
   /* ==========================================================================
   FIX Bootstrap beta
   ========================================================================== */
+  $input-group-addon-bg: #FFF;
+  $custom-control-description-disabled-color: #FFF;
+  $custom-control-spacer-y: 5px;
+  $custom-file-width: 14rem; 
+
+  .back-to-top {
+    z-index: 1052 !important;
+  }
+  .btn-group {
+    display: block;
+  }
   .dropdown-left-auto { 
       left: auto!important; 
   }
   .btn:disabled, button:disabled{
       cursor: not-allowed;
       opacity: .45;
+  }
+  td > div.input-group {
+    width: inherit;
+    display: inline-flex;
   }
   /* ==========================================================================
   Browser Upgrade Prompt
@@ -259,14 +274,6 @@ html {
   .btn-toolbar {
       padding-bottom: 10px;
   }
-  div.input-group > .input-group-addon {
-      color: inherit;
-      background-color: inherit;
-  }
-  td > div.input-group {
-      width: inherit;
-      display: inline-flex;
-  }
   tr.bg-primary > td.TableColumn > div.input-group {
       background-color: white!important;
       width:100%;
@@ -287,11 +294,10 @@ html {
       width: 100%;
       display: block;
   }
-  div.form-group .form-control {
-      width: 100%;
-      display: block;
+  div.Group > table {
+    width: 100%!important
   }
-  
+
   .input-group-searchtool input {
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -300,10 +306,10 @@ html {
       width: 30%!important;
   }
   .input-group-searchtool  input.form-control:nth-child(2):not([class*="w-"]) {
-      width: 80%!important;
+      width: 50%!important;
   }
   .input-group-searchtool  input.form-control:nth-child(3):not([class*="w-"]) {
-    width: 80%!important;
+    width: 70%!important;
   }
   .input-group-searchtool > button.btn:disabled {
       display: none;
@@ -817,3 +823,4 @@ html {
   .w-90 {
     width: 90%!important;
   }
+  

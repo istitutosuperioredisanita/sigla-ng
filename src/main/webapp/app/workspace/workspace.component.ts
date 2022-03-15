@@ -11,6 +11,7 @@ import { ContextService } from '../context/context.service';
 import { Italian } from 'flatpickr/dist/l10n/it.js';
 import { SplitComponent } from 'angular-split';
 import 'flatpickr';
+import { TranslateService } from '@ngx-translate/core';
 declare var flatpickr;
 
 @Component({
@@ -58,8 +59,10 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         private _sanitizer: DomSanitizer,
         private renderer: Renderer2,
         private eventManager: JhiEventManager,
-        private loginService: LoginService
+        private loginService: LoginService,
+        private translateService: TranslateService
     ) {
+        this.translateService.setDefaultLang('it');
         this.listenerSubmit = renderer.listen('body', 'submit', (event) => {
             return false;
         });
@@ -92,7 +95,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
 
     @HostListener('mouseover')
     onMouseOver() {
-        this.eventManager.broadcast({name: 'onWorkspaceHover'});
+        this.eventManager.broadcast('onWorkspaceHover');
     }
 
     @HostListener('window:resize', ['$event'])
@@ -141,7 +144,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         }
     }
 
-    @HostListener('scroll', ['$event'])
+    @HostListener('window:scroll', ['$event'])
     doSomethingOnScroll($event: any) {
         if (window.pageYOffset || $event.srcElement.scrollTop || $event.srcElement.scrollTop > 100) {
             this.navIsFixed = true;

@@ -5,6 +5,7 @@ import { JhiLanguageService } from 'ng-jhipster';
 import { ProfileService } from '../profiles/profile.service'; // FIXME barrel doesnt work here
 import { JhiLanguageHelper, Principal, MultipleUserModalService, LoginService } from '../../shared';
 import { WorkspaceService } from '../../workspace/workspace.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'jhi-navbar',
@@ -34,13 +35,15 @@ export class NavbarComponent implements OnInit {
         public principal: Principal,
         private profileService: ProfileService,
         private workspaceService: WorkspaceService,
-        public router: Router
+        public router: Router,
+        private translateService: TranslateService
     ) {
         this.isNavbarCollapsed = true;
         workspaceService.isMenuHidden().subscribe((hidden) => this.hidden = hidden);
     }
 
     ngOnInit() {
+        this.translateService.setDefaultLang('it');
         this.languageHelper.getAll().then((languages) => {
             this.languages = languages;
         });

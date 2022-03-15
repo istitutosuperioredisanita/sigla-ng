@@ -146,7 +146,7 @@ export class ContextComponent implements OnInit, OnDestroy {
                         name: 'onRefreshTree',
                         content: 'reopenView'
                     });
-                    this.eventManager.broadcast({name: 'onRefreshTodo'});
+                    this.eventManager.broadcast('onRefreshTodo');
                 });
             });
     }
@@ -176,7 +176,7 @@ export class ContextComponent implements OnInit, OnDestroy {
                             content: 'reopenView'
                         });
                     }
-                    this.eventManager.broadcast({name: 'onRefreshTodo'});
+                    this.eventManager.broadcast('onRefreshTodo');
                 });
             });
         this.contextService.setCdsModel(this.cdsModel);

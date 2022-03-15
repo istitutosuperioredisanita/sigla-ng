@@ -31,7 +31,7 @@ export class LoginService {
                                         this.contextService.saveWildflyUserContext(
                                             this.localStateStorageService.getUserContext(account.username), account
                                         ).subscribe(() => {
-                                            this.eventManager.broadcast({name: 'onRefreshTodo'});
+                                            this.eventManager.broadcast('onRefreshTodo');
                                         });
                                         resolve(account);
                                     }
