@@ -42,6 +42,10 @@ spec:
             secretKeyRef:
               name: db-password
               key: latest
+        - name: THORNTAIL_UNDERTOW_SERVLET-CONTAINERS_DEFAULT_SESSION-COOKIE-SETTING_COMMENT
+          value: ;
+        - name: THORNTAIL_UNDERTOW_FILTER-CONFIGURATION_RESPONSE-HEADERS_ACCESS-CONTROL-ALLOW-ORIGIN_HEADER-VALUE
+          value: $sigla_ng_url
         resources:
           limits:
             cpu: 4000m

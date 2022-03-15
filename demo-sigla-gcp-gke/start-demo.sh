@@ -6,15 +6,15 @@ terraform apply -var="project_id=$project_id"
 cd ..
 
 #read password from prompt
+echo "Please chose a password for database instance"
 while true; do
   read -s -p "Password: " password
   echo
   read -s -p "Password (confirm): " password2
   echo
   [ "$password" = "$password2" ] && break
-  echo "Please try again"
+  echo "Incorrect password: please try again"
 done
-echo $password
 
 #init database
 gcloud sql users create sigla --instance=pdb-team-digi-sigla-001 --password=$password
@@ -43,36 +43,12 @@ export db_private_ip=$(gcloud sql instances describe pdb-team-digi-sigla-001 | g
 #create secret for db credentials
 kubectl create secret generic db-credential --from-literal="password=$password"
 
-#deploy first configuration of sigla thorntail
-envsubst <  gke-sigla-thorntail.yaml > gke-sigla-thorntail-sub.yaml
+#DEPLOY SIGLA SERVICE
+#run sigla-ng to obtain his service public ip
 
-kubectl apply -f gke-sigla-thorntail-sub.yaml
+envsubst <  gke-sigla-ng.yaml > gke-sigla-ng-temp.yaml
 
-#Retrieve and set sigla-thorntail ip
-max_attempts=5
-timeout=4
-attempt=0
-while [[ $attempt < $max_attempts ]]
-do
-  export sigla_thorntail_ip=$(kubectl get services -l app=sigla-thorntail -o jsonpath="{.items[0].status.loadBalancer.ingress[0].ip}")
-  if [[ $sigla_thorntail_ip != "" ]]
-  then
-    echo "sigla-thontail ip:" $sigla_thorntail_ip
-    break
-  fi
-  echo "Service ip for sigla-thorntail is not available yet! Retrying in $timeout.." 1>&2
-  sleep $timeout
-  attempt=$(( attempt + 1 ))
-  timeout=$(( timeout * 2 ))
-done
-if [[ $sigla_thorntail_ip == "" ]]
-then
-  echo "Service ip for sigla-thorntail is not available yet!" 1>&2
-fi
-
-envsubst <  gke-sigla-ng.yaml > gke-sigla-ng-sub.yaml
-
-kubectl apply -f gke-sigla-ng-sub.yaml
+kubectl apply -f gke-sigla-ng-temp.yaml
 
 #Retrieve and set sigla-ng ip
 max_attempts=5
@@ -96,6 +72,33 @@ then
   echo "Service ip for sigla-ng is not available yet!" 1>&2
 fi
 
-envsubst <  gke-sigla-thorntail-final.yaml > gke-sigla-thorntail-final-sub.yaml
+#run sigla-thorntail with all correct parameters
+envsubst <  gke-sigla-thorntail.yaml > gke-sigla-thorntail-sub.yaml
 
-kubectl apply -f gke-sigla-thorntail-final-sub.yaml
+kubectl apply -f gke-sigla-thorntail-sub.yaml
+
+max_attempts=5
+timeout=4
+attempt=0
+while [[ $attempt < $max_attempts ]]
+do
+  export sigla_thorntail_ip=$(kubectl get services -l app=sigla-thorntail -o jsonpath="{.items[0].status.loadBalancer.ingress[0].ip}")
+  if [[ $sigla_thorntail_ip != "" ]]
+  then
+    echo "sigla-thontail ip:" $sigla_thorntail_ip
+    break
+  fi
+  echo "Service ip for sigla-thorntail is not available yet! Retrying in $timeout.." 1>&2
+  sleep $timeout
+  attempt=$(( attempt + 1 ))
+  timeout=$(( timeout * 2 ))
+done
+if [[ $sigla_thorntail_ip == "" ]]
+then
+  echo "Service ip for sigla-thorntail is not available yet!" 1>&2
+fi
+
+#update sigla-ng with sigla-thorntail public ip
+envsubst <  gke-sigla-ng.yaml > gke-sigla-ng-sub.yaml
+
+kubectl apply -f gke-sigla-ng-sub.yaml
