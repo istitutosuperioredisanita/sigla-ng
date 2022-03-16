@@ -20,7 +20,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>it.cnr.si.sigla</groupId>
     <artifactId>sigla-ng</artifactId>
-    <version>3.0.4</version>
+    <version>3.0.5-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>sigla-ng</name>
     <description>Nuova Interfaccia - Sistema Informativo per la Gestione delle Linee di Attività</description>
@@ -476,6 +476,6 @@
     <scm>
         <connection>scm:git:ssh://git@git.si.cnr.it/dev/sigla-ng.git</connection>
         <developerConnection>scm:git:ssh://git@git.si.cnr.it/dev/sigla-ng.git</developerConnection>
-        <tag>3.0.4</tag>
+        <tag>HEAD</tag>
     </scm>
 </project>
