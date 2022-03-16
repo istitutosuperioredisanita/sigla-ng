@@ -30,15 +30,20 @@ html {
   $input-group-addon-bg: #FFF;
   $custom-control-description-disabled-color: #FFF;
   $custom-control-spacer-y: 5px;
-  $custom-file-width: 14rem;
-  $custom-file-padding-x: 0.5rem;
+  $custom-file-width: 14rem; 
+  $custom-file-padding-x: 0.5rem; 
   $custom-file-padding-y: 1rem;
+
+  .btn-group > .btn, .btn-group-vertical > .btn {
+    flex: 0 1 auto;
+  }
 
   .back-to-top {
     z-index: 1052 !important;
   }
-  .dropdown-left-auto {
-      left: auto!important;
+  
+  .dropdown-left-auto { 
+      left: auto!important; 
   }
   .btn:disabled, button:disabled{
       cursor: not-allowed;
@@ -57,7 +62,7 @@ html {
       color: #000;
       padding: 0.2em 0;
   }
-
+  
   /* ==========================================================================
   Generic styles
   ========================================================================== */
@@ -83,13 +88,13 @@ html {
   .ng-valid[required], .ng-valid.required  {
     border-left: 5px solid green;
   }
-
+  
   .ng-invalid:not(form)  {
     border-left: 5px solid red;
   }
-
+  
   /* other generic styles */
-
+  
   .jh-card {
       border: none;
       background-color: #F0EFEF;
@@ -97,7 +102,7 @@ html {
 
   table.table-tab {
     margin-bottom: -5px;
-  }
+  } 
 
   td.TabLabel.border-primary {
     background-color: #fff;
@@ -106,29 +111,29 @@ html {
       color: white;
       background-color: red;
   }
-
+  
   .pad {
       padding: 10px;
   }
-
+  
   .w-40 {
       width: 40% !important;
   }
-
+  
   .w-60 {
       width: 60% !important;
   }
-
+  
   .break {
       white-space: normal;
       word-break:break-all;
   }
-
+  
   .readonly {
       background-color: #eee;
       opacity: 1;
   }
-
+  
   /*FIXME this is to support grids in table class; */
   table td[class*=col-], table th[class*=col-] {
       position: static;
@@ -154,11 +159,11 @@ html {
   a:hover {
     cursor: pointer;
   }
-
+  
   .hand {
       cursor: pointer;
   }
-
+  
   /* ==========================================================================
   Custom alerts for notification
   ========================================================================== */
@@ -173,32 +178,32 @@ html {
       padding: 0;
       margin: 0;
   }
-
+  
   .alert .popover pre {
       font-size: 10px;
   }
-
+  
   .alerts .toast {
       position: fixed;
       width: 100%;
   }
-
+  
   .alerts .toast.left {
       left: 5px;
   }
-
+  
   .alerts .toast.right {
       right: 5px;
   }
-
+  
   .alerts .toast.top {
       top: 55px;
   }
-
+  
   .alerts .toast.bottom {
       bottom: 55px;
   }
-
+  
   @media screen and (min-width: 480px) {
       .alerts .toast {
           width: 50%;
@@ -217,11 +222,11 @@ html {
   .no-padding-top { padding-top: 0 !important; }
   .no-padding-bottom { padding-bottom: 0 !important; }
   .no-padding { padding: 0 !important; }
-
+  
   /* bootstrap 3 input-group 100% width
      http://stackoverflow.com/questions/23436430/bootstrap-3-input-group-100-width */
   .width-min { width: 1% !important; }
-
+  
   /* Makes toolbar not wrap on smaller screens
    http://www.sketchingwithcss.com/samplechapter/cheatsheet.html#right */
   .flex-btn-group-container {
@@ -232,44 +237,44 @@ html {
      -webkit-justify-content: flex-end;
      justify-content: flex-end;
   }
-
+  
   /* ==========================================================================
   entity detail page css
   ========================================================================== */
   .row.jh-entity-details > dd {
       margin-bottom: 15px;
   }
-
+  
   @media screen and (min-width: 768px) {
       .row.jh-entity-details > dt {
           margin-bottom: 15px;
       }
-
+  
       .row.jh-entity-details > dd {
           border-bottom: 1px solid #eee;
           padding-left: 180px;
           margin-left: 0;
       }
   }
-
+  
   /* ==========================================================================
   ui bootstrap tweaks
   ========================================================================== */
   .nav, .carousel, .panel-title a {
       cursor: pointer;
   }
-
+  
   .datetime-picker-dropdown > li.date-picker-menu div > table .btn-default,
   .uib-datepicker-popup  > li > div.uib-datepicker > table .btn-default {
       border: 0;
   }
-
+  
   .datetime-picker-dropdown > li.date-picker-menu div > table:focus,
   .uib-datepicker-popup  > li > div.uib-datepicker > table:focus {
       outline: none;
   }
-
-  /* jhipster-needle-css-add-main JHipster will add new css style */
+  
+  /* jhipster-needle-css-add-main JHipster will add new css style */            
   .btn-toolbar {
       padding-bottom: 10px;
   }
@@ -277,7 +282,7 @@ html {
       background-color: white!important;
       width:100%;
   }
-
+  
   fieldset > select.form-control {
       display: inline-block;
   }
@@ -318,7 +323,7 @@ html {
     content:"*";color:red;
   }
   .custom-file{
-    width:100%;
+    width:100%;   
   }
   input:disabled + .custom-file-control {
     opacity: 0.5;
@@ -336,7 +341,7 @@ html {
   .custom-file-control::before {
     content: "Browse...";
   }
-
+  
   .btn-title::before {
       content: attr(title);
       padding-right: 5px;
@@ -359,7 +364,7 @@ html {
       border-style: inherit;
       border-color: inherit;
   }
-
+ 
   input.inputFieldReadOnly {
       background: #F5F5DC;
       background-color:transparent;
@@ -384,7 +389,7 @@ html {
     div.div-sigla-table {
         max-height: 70vh;
         overflow-x: auto;
-    }
+    }      
   }
   nav {
       padding-top: 5px;
@@ -403,26 +408,26 @@ html {
       border-top-style: none;
       border-top-color: transparent;
   }
-
+  
   .fa-spinner {
       margin: 0 10px
   }
-
+  
   ul.freesearch {
       padding: 0 0 0 1px;
       margin: 1px 0 0 15px;
       border-left: 1px dotted #0066CC;
       list-style-type: none;
   }
-
+  
   ul.freesearch li  {
       position: relative;
   }
-
+  
   ul.freesearch > li  {
       margin-bottom: 10px;
   }
-
+  
   ul.freesearch li:before {
       content: '';
       width: 14px;
@@ -434,13 +439,13 @@ html {
   ul.freesearch > li > a  {
       margin-left: 20px;
   }
-
+  
   .title-bar {
       padding: .05rem;
       border-radius: .25rem;
       margin-bottom: .25rem;
   }
-
+  
   .cursor-wait {
       cursor: wait!important;
   }
@@ -461,7 +466,7 @@ html {
       left: 50%;
       top: 50%;
   }
-
+  
   .alert-message-bp.alert-danger > i.fa,
   .alert-message-bp.alert-warning > i.fa {
       -webkit-animation: pulseoutin 6s linear 1 forwards;
@@ -486,7 +491,7 @@ html {
       0% { opacity: 1; }
       100% { opacity: 0;}
   }
-
+  
   @keyframes fadeinout {
       0% { opacity: 1; }
       100% { opacity: 0;}
@@ -576,7 +581,7 @@ html {
     height: 100%;
     background-color: transparent;
   }
-
+  
   /* :not(:required) hides these rules from IE9 and below */
   .loading:not(:required) {
     /* hide "loading..." text */
@@ -586,7 +591,7 @@ html {
     background-color: transparent;
     border: 0;
   }
-
+  
   .loading:not(:required):after {
     content: '';
     display: block;
@@ -603,9 +608,9 @@ html {
     -webkit-box-shadow: rgba(0, 102, 204, 1) 1.5em 0 0 0, rgba(0, 102, 204, 1) 1.1em 1.1em 0 0, rgba(0, 102, 204, 1) 0 1.5em 0 0, rgba(0, 102, 204, 1) -1.1em 1.1em 0 0, rgba(0, 102, 204, 0.5) -1.5em 0 0 0, rgba(0, 102, 204, 0.5) -1.1em -1.1em 0 0, rgba(0, 102, 204, 1) 0 -1.5em 0 0, rgba(0, 102, 204, 1) 1.1em -1.1em 0 0;
     box-shadow: rgba(0, 102, 204, 1) 1.5em 0 0 0, rgba(0, 102, 204, 1) 1.1em 1.1em 0 0, rgba(0, 102, 204, 1) 0 1.5em 0 0, rgba(0, 102, 204, 1) -1.1em 1.1em 0 0, rgba(0, 102, 204, 1) -1.5em 0 0 0, rgba(0, 102, 204, 1) -1.1em -1.1em 0 0, rgba(0, 102, 204, 1) 0 -1.5em 0 0, rgba(0, 102, 204, 1) 1.1em -1.1em 0 0;
   }
-
+  
   /* Animation */
-
+  
   @-webkit-keyframes spinner {
     0% {
       -webkit-transform: rotate(0deg);
@@ -676,7 +681,7 @@ html {
       padding-right: 10px;
       border-bottom: 1px solid rgba(0,0,0,.1);
   }
-
+  
   .tree-children {
       padding-left: 20px;
       -webkit-animation: treefadeoutin 0.5s linear 1 forwards;
@@ -687,24 +692,24 @@ html {
     position:relative;
     display: inline-block;
     cursor: pointer;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+    -webkit-touch-callout: none; 
+    -webkit-user-select: none;   
+    -khtml-user-select: none;    
+    -moz-user-select: none;      
+    -ms-user-select: none;       
+    user-select: none;           
   }
 
   @-webkit-keyframes treefadeoutin {
       0% { opacity: 0; }
       100% { opacity: 1;}
   }
-
+  
   @keyframes treefadeoutin {
       0% { opacity: 0; }
       100% { opacity: 1;}
   }
-
+ 
   @media screen and (min-width: 768px) {
     .tree-shadow {
         border-right: 1px solid rgba(0,0,0,.1);
@@ -770,9 +775,9 @@ html {
   .input-group-context > ngb-typeahead-window {
     width: 100%;
   }
-  .dropdown-menu-50, ngb-typeahead-window {
-    max-height: 50vh;
-    overflow-y: auto;
+  .dropdown-menu-50, ngb-typeahead-window { 
+    max-height: 50vh; 
+    overflow-y: auto; 
   }
   .TableHeader {
       max-width: 50px;
@@ -788,7 +793,7 @@ html {
   .form-control:disabled, .form-control[readonly] {
     cursor: not-allowed;
   }
-
+  
   .card-shadow {
     box-shadow: 0 0 10px 0 rgba(100, 100, 100, 0.26);
   }
@@ -822,3 +827,4 @@ html {
   .w-90 {
     width: 90%!important;
   }
+  
