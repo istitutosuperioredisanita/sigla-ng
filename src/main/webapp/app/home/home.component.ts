@@ -9,6 +9,7 @@ import { LocalStateStorageService } from '../shared/auth/local-storage.service';
 import { SERVER_API_URL } from '../app.constants';
 import { AuthServerProvider } from '../shared/auth/auth-session.service';
 import { AuthService } from '../shared/auth/auth.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'jhi-home',
@@ -43,11 +44,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
         private profileService: ProfileService,
         private router: Router,
         private context: ContextService,
-        private localStateStorageService: LocalStateStorageService
+        private localStateStorageService: LocalStateStorageService,
+        private translateService: TranslateService
     ) {
     }
 
     ngOnInit() {
+        this.translateService.setDefaultLang('it');
         if (this.isAuthenticated()) {
             this.principal.identity().then((account) => {
                 this.account = account;
