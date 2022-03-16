@@ -31,12 +31,14 @@ html {
   $custom-control-description-disabled-color: #FFF;
   $custom-control-spacer-y: 5px;
   $custom-file-width: 14rem; 
+  $custom-file-padding-x: 0.5rem; 
+  $custom-file-padding-y: 1rem;
 
   .back-to-top {
     z-index: 1052 !important;
   }
   .btn-group {
-    display: block;
+    display: inline-flex;
   }
   .dropdown-left-auto { 
       left: auto!important; 
