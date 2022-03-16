@@ -716,7 +716,7 @@ html {
         position: sticky;
         top: 0;
     }
-    split-gutter {
+    .as-split-gutter {
       height: calc(100vh - 180px)!important;
       position: -webkit-sticky; /* Safari */
       position: sticky;
@@ -731,7 +731,7 @@ html {
     .angular-tree-component-sticky {
         height: calc(100vh - 155px + 60px);
     }
-    split-gutter {
+    .as-split-gutter {
       height: calc(100vh - 170px)!important;
     }
   }
@@ -743,7 +743,7 @@ html {
     .angular-tree-component-sticky {
         height: calc(100vh - 180px  + 70px);
     }
-    split-gutter {
+    .as-split-gutter {
       height: calc(100vh - 180px)!important;
     }
   }
@@ -765,7 +765,7 @@ html {
   .input-group-context > ngb-typeahead-window {
     width: 100%;
   }
-  .dropdown-menu { 
+  .dropdown-menu-50, ngb-typeahead-window { 
     max-height: 50vh; 
     overflow-y: auto; 
   }
@@ -787,7 +787,9 @@ html {
   .card-shadow {
     box-shadow: 0 0 10px 0 rgba(100, 100, 100, 0.26);
   }
-
+  .overflow-unset {
+    overflow: unset !important;
+  }
   .w-8 {
     width: 8%!important;
   }

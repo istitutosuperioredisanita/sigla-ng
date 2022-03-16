@@ -17,6 +17,8 @@ export class NavbarComponent implements OnInit {
 
     inProduction: boolean;
     isNavbarCollapsed: boolean;
+    keycloakEnabled: boolean;
+    ssoAppsMenuDisplay: boolean;
     languages: any[];
     instituteAcronym: string;
     swaggerEnabled: boolean;
@@ -46,6 +48,8 @@ export class NavbarComponent implements OnInit {
             this.inProduction = profileInfo.inProduction;
             this.swaggerEnabled = profileInfo.swaggerEnabled;
             this.instituteAcronym = profileInfo.instituteAcronym;
+            this.keycloakEnabled = profileInfo.keycloakEnabled;
+            this.ssoAppsMenuDisplay = profileInfo.ssoAppsMenuDisplay;
         });
         this.workspaceService.version().subscribe((version) => {
             this.version = version;
@@ -74,8 +78,12 @@ export class NavbarComponent implements OnInit {
 
     logout() {
         this.collapseNavbar();
-        this.loginService.logout();
-        this.router.navigate(['']);
+        if (this.keycloakEnabled) {
+            this.loginService.logoutSSO();
+        } else {
+            this.loginService.logout();
+            this.router.navigate(['']);
+        }
     }
 
     changeUser() {

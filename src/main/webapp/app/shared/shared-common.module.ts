@@ -1,20 +1,27 @@
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
+import { registerLocaleData } from '@angular/common';
+import localeDeAt from '@angular/common/locales/it';
+
+registerLocaleData(localeDeAt);
+
 import {
     SiglaSharedLibsModule,
     JhiLanguageHelper,
     FindLanguageFromKeyPipe,
+    FindLanguagePipe,
     JhiAlertComponent,
     JhiAlertErrorComponent
 } from './';
 
 @NgModule({
     imports: [
-        SiglaSharedLibsModule
+        SiglaSharedLibsModule,
     ],
     declarations: [
         FindLanguageFromKeyPipe,
+        FindLanguagePipe,
         JhiAlertComponent,
         JhiAlertErrorComponent
     ],
@@ -23,12 +30,13 @@ import {
         Title,
         {
             provide: LOCALE_ID,
-            useValue: 'it'
+            useValue: 'it-IT'
         },
     ],
     exports: [
         SiglaSharedLibsModule,
         FindLanguageFromKeyPipe,
+        FindLanguagePipe,
         JhiAlertComponent,
         JhiAlertErrorComponent
     ]

@@ -29,3 +29,11 @@ tomcatAjp:
     enabled: false
     scheme: http
 
+keycloak:
+    enabled: false
+
+sso:
+    apps:
+        menu:
+            display: false
+

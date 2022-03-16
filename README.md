@@ -15,14 +15,53 @@ non cambia in alcun modo i processi amministrativi previsti, né influenza dati 
 
 Il progetto è nato con l’obiettivo della revisione dell’intero layout della procedura [SIGLA](https://github.com/consiglionazionaledellericerche/sigla-main) 
 ed è esclusivamente quello di rendere più ‘usabile’ le funzionalità. In alcuni casi la revisione ha riguardato l’aggiunta di utilità importanti sempre al fine di migliorare la navigazione e la gestione delle mappe.
-Per ulteriori informazioni consultare il [Manuale di utilizzo di SIGLA](https://consiglionazionaledellericerche.github.io/sigla-main/nuovo_layout.html).                      
+Per ulteriori informazioni consultare il [Manuale di utilizzo di SIGLA](https://consiglionazionaledellericerche.github.io/sigla-main/nuovo_layout.html).             
+
+# Startup with Docker on H2 without nginx
+```shell script
+docker run -d --name sigla-h2 -e H2_OPTIONS='-ifNotExists' -ti oscarfonts/h2
+docker run -d --name sigla-thorntail -p 8081:8080 --link sigla-h2:db \
+  -e THORNTAIL_PROJECT_STAGE="demo-h2" \
+  -e THORNTAIL_DATASOURCES_DATA-SOURCES_SIGLA_CONNECTION-URL="jdbc:h2:tcp://db:1521/db-sigla" \
+  -e THORNTAIL_UNDERTOW_SERVLET-CONTAINERS_DEFAULT_SESSION-COOKIE-SETTING_COMMENT=";" \
+  -e THORNTAIL_UNDERTOW_FILTER-CONFIGURATION_RESPONSE-HEADERS_ACCESS-CONTROL-ALLOW-ORIGIN_HEADER-VALUE="http://localhost:8080" \
+  -ti consiglionazionalericerche/sigla-main:release
+docker run -d --name sigla-ng -p 8080:8080 --link sigla-h2:db \
+  -e SIGLA_WILDFLY_URL=http://localhost:8081 \
+  -e SPRING_PROFILES_ACTIVE=demo \
+  -e SPRING_DATASOURCE_URL="jdbc:h2:tcp://db:1521/db-sigla" \
+  -ti consiglionazionalericerche/sigla-ng:latest
+```
+_Collegarsi a http://localhost:8080/ username: ENTE password da impostare al primo login._
+
+# Startup with Docker on H2
+```shell script
+git clone git@github.com:consiglionazionaledellericerche/sigla-ng.git
+cd sigla-ng
+docker run -d --name sigla-h2 -e H2_OPTIONS='-ifNotExists' -ti oscarfonts/h2
+docker run -d --name sigla-thorntail --link sigla-h2:db -e THORNTAIL_PROJECT_STAGE="demo-h2" -e THORNTAIL_DATASOURCES_DATA-SOURCES_SIGLA_CONNECTION-URL="jdbc:h2:tcp://db:1521/db-sigla" -ti consiglionazionalericerche/sigla-main:release
+docker run -d --name sigla-ng --link sigla-h2:db -e SPRING_PROFILES_ACTIVE=demo -e SPRING_DATASOURCE_URL="jdbc:h2:tcp://db:1521/db-sigla" -ti consiglionazionalericerche/sigla-ng:latest
+docker run -d --name sigla-nginx -p 80:80 --link sigla-thorntail:sigla-thorntail --link sigla-ng:sigla-ng -v $(pwd)/conf.d/:/etc/nginx/conf.d/:ro -ti nginx
+```
+_Collegarsi a http://localhost/ username: ENTE password da impostare al primo login._
+
+# Startup with Docker on Postgresql
+```shell script
+git clone git@github.com:consiglionazionaledellericerche/sigla-ng.git
+cd sigla-ng
+docker run --name sigla-postgres -v $PWD/init-user-postgres-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh -e POSTGRES_PASSWORD=mysecretpassword -d postgres:9.6
+docker run -d --name sigla-thorntail --link sigla-postgres:db -e THORNTAIL_PROJECT_STAGE="demo-postgres" -e THORNTAIL_DATASOURCES_DATA-SOURCES_SIGLA_CONNECTION-URL="jdbc:postgresql://db:5432/sigladb?schema=public" -ti consiglionazionalericerche/sigla-main:release
+docker run -d --name sigla-ng --link sigla-postgres:db -e SPRING_PROFILES_ACTIVE=demopostgresql -e SPRING_DATASOURCE_URL="jdbc:postgresql://db:5432/sigladb?schema=public" -ti consiglionazionalericerche/sigla-ng:latest
+docker run -d --name sigla-nginx -p 80:80 --link sigla-thorntail:sigla-thorntail --link sigla-ng:sigla-ng -v $(pwd)/conf.d/:/etc/nginx/conf.d/:ro -ti nginx
+```
+_Collegarsi a http://localhost/ username: ENTE password da impostare al primo login._
  
 # Compile & Startup with Docker
 ```shell script
 git clone git@github.com:consiglionazionaledellericerche/sigla-ng.git
 cd sigla-ng
 docker run -d --name sigla-h2 -e H2_OPTIONS='-ifNotExists' -ti oscarfonts/h2
-docker run -d --name sigla-thorntail --link sigla-h2:db -e THORNTAIL_PROJECT_STAGE="demo-h2" -e THORNTAIL_DATASOURCES_DATA-SOURCES_SIGLA_CONNECTION-URL="jdbc:h2:tcp://db:1521/db-sigla" -ti consiglionazionalericerche/sigla-main:latest
+docker run -d --name sigla-thorntail --link sigla-h2:db -e THORNTAIL_PROJECT_STAGE="demo-h2" -e THORNTAIL_DATASOURCES_DATA-SOURCES_SIGLA_CONNECTION-URL="jdbc:h2:tcp://db:1521/db-sigla" -ti consiglionazionalericerche/sigla-main:release
 mvn clean install -DskipTests -Pprod
 docker build -t sigla-ng .
 docker run -d --name sigla-ng --link sigla-h2:db -e SPRING_PROFILES_ACTIVE=demo -e SPRING_DATASOURCE_URL="jdbc:h2:tcp://db:1521/db-sigla" -ti sigla-ng

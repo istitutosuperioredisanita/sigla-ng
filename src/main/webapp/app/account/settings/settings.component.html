@@ -17,8 +17,8 @@
 
 <div class="card m-2 mb-5">
     <div class="card-header">
-        <span class="h2 text-primary" jhiTranslate="settings.title"
-        translateValues="{username: '{{settingsAccount.firstName}} {{settingsAccount.lastName}}'}" *ngIf="settingsAccount">User settings for [<b>{{settingsAccount.firstName}} {{settingsAccount.lastName}}</b>]</span>
+        <span class="h2 text-primary" [innerHTML]="'settings.title' | translate:{username: settingsAccount.login }"
+         *ngIf="settingsAccount">User settings for [<b>{{settingsAccount.firstName}} {{settingsAccount.lastName}}</b>]</span>
     </div>
     <div class="card-block row space">
         <div class="col-md-5 col-lg-4">

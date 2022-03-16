@@ -17,18 +17,42 @@
 
 <nav class="navbar navbar-expand-md jh-navbar">
         <div class="jh-logo-container float-left">
-            <a *ngIf="router.url === '/workspace'" (click)="setHidden(!hidden)" class="text-white text-center" data-action="toggle-sidebar" href="javascript:void(0);">
+            <a *ngIf="router.url === '/workspace'" (click)="setHidden(!hidden)" class="text-white text-center pt-2" data-action="toggle-sidebar" href="javascript:void(0);">
                 <i [ngClass]="{'d-none': hidden}" class="fa fa-fw fa-close fa-tree-size" aria-hidden="true"></i>
                 <i [ngClass]="{'d-none': !hidden}" class="fa fa-fw  fa-bars fa-tree-size" aria-hidden="true"></i>
                 <span class="d-block">MENU</span>
             </a>
             <a class="navbar-brand logo float-left mr-0" routerLink="/" (click)="collapseNavbar()">
                 <span class="logo-img" [ngClass]="getLogo()"></span>
-                <span class="navbar-version">v. {{version}}</span>
+                <span class="navbar-version pl-1 d-none d-md-inline-block">v. {{version}}</span>
             </a>
-            <a href="https://consiglionazionaledellericerche.github.io/sigla-main/CHANGELOG.html" target="_help" placement="bottom" ngbTooltip="Info di versione" class="d-flex align-items-end">
+            <a href="https://consiglionazionaledellericerche.github.io/sigla-main/CHANGELOG.html" target="_help" placement="bottom" ngbTooltip="Info di versione" class="align-items-end d-none d-md-flex">
                 <i class="fa fa-fw fa-info-circle text-white pb-1" aria-hidden="true"></i>
             </a>
+            <div class="sso-user-menu-toggler jh-navbar-toggler d-lg-none float-right">
+                <ngx-cnr-uict-sso-apps-menu *ngIf="ssoAppsMenuDisplay && isAuthenticated()" [account]="principal.userIdentity" [buttonSize]="'32px'" [iconSize]="'20px'"></ngx-cnr-uict-sso-apps-menu>
+            </div>
+            <div class="sso-user-menu-toggler jh-navbar-toggler d-lg-none float-right">
+                <ngx-cnr-uict-sso-user-menu *ngIf="isAuthenticated()"
+                    [account]="principal.userIdentity"
+                    (logoutCallback)="logout()">
+                    <div class="dropdown-divider"></div>
+                    <div class="list-group">
+                        <a class="list-group-item list-group-item-action border-0" routerLink="settings" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-wrench" aria-hidden="true"></i>
+                            <span translate="global.menu.account.settings">Settings</span>
+                        </a>
+                        <a class="list-group-item list-group-item-action border-0" routerLink="password" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-key" aria-hidden="true"></i>
+                            <span translate="global.menu.account.password">Password</span>
+                        </a>
+                        <a *ngIf="isMultipleUser()" class="list-group-item list-group-item-action border-0" href="javascript:void(0);" (click)="changeUser()" id="changeuser">
+                            <i class="fa fa-fw fa-user" aria-hidden="true"></i>
+                            <span translate="global.menu.account.changeuser">Change User</span>
+                        </a>
+                    </div>
+                </ngx-cnr-uict-sso-user-menu>
+            </div>
             <a class="jh-navbar-toggler float-right" href="javascript:void(0);" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()">
                 <i class="fa fa-2x fa-fw fa-bars"></i>
             </a>
@@ -39,7 +63,7 @@
                     <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu">
                         <span>
                             <i class="fa fa-user-plus" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.admin.main">Administration</span>
+                            <span translate="global.menu.admin.main">Administration</span>
                             <b class="caret"></b>
                         </span>
                     </a>
@@ -47,94 +71,79 @@
                         <li>
                             <a class="dropdown-item" routerLink="user-management" routerLinkActive="active" (click)="collapseNavbar()">
                                 <i class="fa fa-fw fa-user" aria-hidden="true"></i>
-                                <span jhiTranslate="global.menu.admin.userManagement">User management</span>
+                                <span translate="global.menu.admin.userManagement">User management</span>
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" routerLink="jhi-metrics" routerLinkActive="active" (click)="collapseNavbar()">
                                 <i class="fa fa-fw fa-tachometer" aria-hidden="true"></i>
-                                <span jhiTranslate="global.menu.admin.metrics">Metrics</span>
+                                <span translate="global.menu.admin.metrics">Metrics</span>
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" routerLink="jhi-health" routerLinkActive="active" (click)="collapseNavbar()">
                                 <i class="fa fa-fw fa-heart" aria-hidden="true"></i>
-                                <span jhiTranslate="global.menu.admin.health">Health</span>
+                                <span translate="global.menu.admin.health">Health</span>
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" routerLink="jhi-configuration" routerLinkActive="active" (click)="collapseNavbar()">
                                 <i class="fa fa-fw fa-list" aria-hidden="true"></i>
-                                <span jhiTranslate="global.menu.admin.configuration">Configuration</span>
+                                <span translate="global.menu.admin.configuration">Configuration</span>
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" routerLink="audits" routerLinkActive="active" (click)="collapseNavbar()">
                                 <i class="fa fa-fw fa-bell" aria-hidden="true"></i>
-                                <span jhiTranslate="global.menu.admin.audits">Audits</span>
+                                <span translate="global.menu.admin.audits">Audits</span>
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" routerLink="logs" routerLinkActive="active" (click)="collapseNavbar()">
                                 <i class="fa fa-fw fa-tasks" aria-hidden="true"></i>
-                                <span jhiTranslate="global.menu.admin.logs">Logs</span>
+                                <span translate="global.menu.admin.logs">Logs</span>
                             </a>
                         </li>
                         <li *ngIf="swaggerEnabled">
                             <a class="dropdown-item" routerLink="docs" routerLinkActive="active" (click)="collapseNavbar()">
                                 <i class="fa fa-fw fa-book" aria-hidden="true"></i>
-                                <span jhiTranslate="global.menu.admin.apidocs">API</span>
+                                <span translate="global.menu.admin.apidocs">API</span>
                             </a>
                         </li>
                         <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
                         <li *ngIf="!inProduction">
                             <a class="dropdown-item" href='/h2-console' target="_tab" (click)="collapseNavbar()">
                                 <i class="fa fa-fw fa-hdd-o" aria-hidden="true"></i>
-                                <span jhiTranslate="global.menu.admin.database">Database</span>
+                                <span translate="global.menu.admin.database">Database</span>
                             </a>
                         </li>
                     </ul>
                 </li>
                 <jhi-context *ngSwitchCase="true" [isNavbar]="true" class="d-md-flex">Loading context.....</jhi-context>
-                <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer">
-                    <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu">
-                      <span *ngIf="!getImageUrl()">
-                        <i class="fa fa-user" aria-hidden="true"></i>
-                        <span>{{principal.userIdentity.firstName}} {{principal.userIdentity.lastName}}</span>
-                        <b class="caret"></b>
-                      </span>
-                      <span *ngIf="getImageUrl()">
-                          <img [src]="getImageUrl()" class="profile-image img-circle" alt="Avatar">
-                      </span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-right dropdown-left-auto" ngbDropdownMenu>
-                        <li>
-                            <a class="dropdown-item" routerLink="settings" routerLinkActive="active" (click)="collapseNavbar()">
-                                <i class="fa fa-fw fa-wrench" aria-hidden="true"></i>
-                                <span jhiTranslate="global.menu.account.settings">Settings</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" routerLink="password" routerLinkActive="active" (click)="collapseNavbar()">
-                                <i class="fa fa-fw fa-key" aria-hidden="true"></i>
-                                <span jhiTranslate="global.menu.account.password">Password</span>
-                            </a>
-                        </li>
-                        <li class="dropdown-divider"></li>
-                        <li *ngIf="isMultipleUser()">
-                            <a class="dropdown-item" (click)="changeUser()" id="changeuser">
-                                <i class="fa fa-fw fa-user" aria-hidden="true"></i>
-                                <span jhiTranslate="global.menu.account.changeuser" translateValues="{username: '{{principal.userIdentity.username}}'}">Change User</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" (click)="logout()" id="logout">
-                                <i class="fa fa-fw fa-sign-out" aria-hidden="true"></i>
-                                <span jhiTranslate="global.menu.account.logout">Sign out</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                <ngx-cnr-uict-sso-apps-menu *ngIf="ssoAppsMenuDisplay && isAuthenticated()"
+                    [account]="principal.userIdentity"
+                    class="mr-2 d-none d-md-flex">
+                </ngx-cnr-uict-sso-apps-menu>
+                <ngx-cnr-uict-sso-user-menu *ngSwitchCase="true"
+                    class="d-none d-md-flex"
+                    [account]="principal.userIdentity"
+                    (logoutCallback)="logout()">
+                    <div class="dropdown-divider"></div>
+                    <div class="list-group">
+                        <a class="list-group-item list-group-item-action border-0" routerLink="settings" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-wrench" aria-hidden="true"></i>
+                            <span translate="global.menu.account.settings">Settings</span>
+                        </a>
+                        <a class="list-group-item list-group-item-action border-0" routerLink="password" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-key" aria-hidden="true"></i>
+                            <span translate="global.menu.account.password">Password</span>
+                        </a>
+                        <a *ngIf="isMultipleUser()" class="list-group-item list-group-item-action border-0" href="javascript:void(0);" (click)="changeUser()">
+                            <i class="fa fa-fw fa-user" aria-hidden="true"></i>
+                            <span translate="global.menu.account.changeuser">Change User</span>
+                        </a>
+                    </div>
+                </ngx-cnr-uict-sso-user-menu>
             </ul>
         </div>
     </nav>

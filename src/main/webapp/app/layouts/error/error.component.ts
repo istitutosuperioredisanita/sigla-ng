@@ -9,8 +9,15 @@ export class ErrorComponent implements OnInit {
     errorMessage: string;
     error403: boolean;
 
+    accessdenied = false;
+    given_name: string;
+    family_name: string;
+    preferred_username: string;
+    email: string;
+    updatedAt: Date;
+
     constructor(
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
     ) {
     }
 
@@ -23,5 +30,22 @@ export class ErrorComponent implements OnInit {
                 this.errorMessage = routeData.errorMessage;
             }
         });
+        this.route.params.subscribe((params) => {
+            if (params.status && params.status === 'accessdenied') {
+                this.accessdenied = true;
+                this.given_name = params.given_name;
+                this.family_name = params.family_name;
+                this.preferred_username = params.preferred_username;
+                this.email = params.email;
+                if (params.updatedAt && params.updatedAt !== 'null') {
+                    this.updatedAt = new Date();
+                    this.updatedAt.setTime(params.updatedAt);
+                }
+            }
+        });
+    }
+
+    logout() {
+        location.href = '/sso/logout';
     }
 }

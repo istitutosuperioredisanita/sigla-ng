@@ -116,12 +116,6 @@ Logo styles
         padding: 0 5px; 
         max-width: 220px;
     }
-    /* FIX firefox tooltip not show for button */
-    @-moz-document url-prefix() {
-        .navbar-typeahead .text-truncate {
-            max-width: inherit!important;
-        }
-    }
 }
 .navbar-form {
     padding: 17px
@@ -197,4 +191,11 @@ Logo styles
 .navbar-badge-messages {
     font-size: 65%;
     left: -5px;
+}
+.dropdown-item:hover {
+    background-color: #ccc;
+}
+a.list-group-item-action:hover {
+    color: #FFF;
+    background-color: #0066CC;
 }

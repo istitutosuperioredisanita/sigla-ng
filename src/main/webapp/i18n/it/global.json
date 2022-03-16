@@ -18,7 +18,7 @@
                 "login": "Accesso",
                 "logout": "Esci",
                 "register": "Registrazione",
-                "changeuser": "Cambia utente [<b>{{ username }}</b>]"
+                "changeuser": "Cambia utente"
             },
             "admin": {
                 "main": "Amministratore",
@@ -126,7 +126,7 @@
     "error": {
         "internalServerError": "Internal server error",
         "server.not.reachable": "Server non raggiungibile",
-        "url.not.found": "Non trovato",
+        "url.not.found": "Il Server al momento non è raggiungibile, riprovare tra qualche secondo",
         "NotNull": "Il campo {{ fieldName }} non può essere vuoto!",
         "Size": "Il campo {{ fieldName }} non è conforme ai requisiti di lunghezza min/max!",
         "userexists": "Il nome utente è già in uso!",

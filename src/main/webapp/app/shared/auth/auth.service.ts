@@ -1,28 +1,30 @@
+import {of as observableOf, throwError as observableThrowError, Subject, Observable, pipe} from 'rxjs';
+import {catchError, map, switchMap} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-
-import { LoginModalService } from '../login/login-modal.service';
+import { Token } from '../model/token.model';
 import { Principal } from './principal.service';
-import { StateStorageService } from './state-storage.service';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class AuthService {
+    private static TOKEN_NAME = 'sigla_token';
+
+    // Stored Token
+    private token: Token;
 
     constructor(
         private principal: Principal,
-        private stateStorageService: StateStorageService,
-        private loginModalService: LoginModalService,
-        private router: Router
+        private http: HttpClient,
     ) {}
 
-    authorize (force) {
-        let authReturn = this.principal.identity(force).then(authThen.bind(this));
+    authorize(force) {
+        const authReturn = this.principal.identity(force).then(authThen.bind(this));
 
         return authReturn;
 
-        function authThen () {
-            let isAuthenticated = this.principal.isAuthenticated();
-            let toStateInfo = this.stateStorageService.getDestinationState().destination;
+        function authThen() {
+            const isAuthenticated = this.principal.isAuthenticated();
+            const toStateInfo = this.stateStorageService.getDestinationState().destination;
 
             // an authenticated user can't access to login and register pages
             if (isAuthenticated && (toStateInfo.name === 'register')) {
@@ -31,8 +33,8 @@ export class AuthService {
             }
 
             // recover and clear previousState after external login redirect (e.g. oauth2)
-            let fromStateInfo = this.stateStorageService.getDestinationState().from;
-            let previousState = this.stateStorageService.getPreviousState();
+            const fromStateInfo = this.stateStorageService.getDestinationState().from;
+            const previousState = this.stateStorageService.getPreviousState();
             if (isAuthenticated && !fromStateInfo.name && previousState) {
                 this.stateStorageService.resetPreviousState();
                 this.router.navigate([previousState.name], { queryParams:  previousState.params  });
@@ -40,7 +42,7 @@ export class AuthService {
             }
 
             if (toStateInfo.data.authorities && toStateInfo.data.authorities.length > 0) {
-                return this.principal.hasAnyAuthority(toStateInfo.data.authorities).then(hasAnyAuthority => {
+                return this.principal.hasAnyAuthority(toStateInfo.data.authorities).then((hasAnyAuthority) => {
                     if (!hasAnyAuthority) {
                         if (isAuthenticated) {
                             // user is signed in but not authorized for desired state
@@ -48,7 +50,7 @@ export class AuthService {
                         } else {
                             // user is not authenticated. Show the state they wanted before you
                             // send them to the login service, so you can return them when you're done
-                            let toStateParamsInfo = this.stateStorageService.getDestinationState().params;
+                            const toStateParamsInfo = this.stateStorageService.getDestinationState().params;
                             this.stateStorageService.storePreviousState(toStateInfo.name, toStateParamsInfo);
                             // now, send them to the signin state so they can log in
                             this.router.navigate(['']);
@@ -60,4 +62,64 @@ export class AuthService {
             return true;
         }
     }
+
+    private setToken(token: Token) {
+        this.token = token;
+        if (this.token == null) {
+          localStorage.removeItem(AuthService.TOKEN_NAME);
+        } else {
+          localStorage.setItem(AuthService.TOKEN_NAME, JSON.stringify(this.token));
+        }
+    }
+
+    /**
+    * Il token.
+    * @returns {Token}
+    */
+    public getToken(): Token {
+        if (this.token) {
+            return this.token;
+        }
+        this.token = JSON.parse(localStorage.getItem(AuthService.TOKEN_NAME));
+        if (this.token) {
+            return this.token;
+        }
+        return null;
+    }
+
+    /**
+    * Se il token è scaduto.
+    * @returns {Boolean}
+    */
+    public isTokenExpired(): Boolean {
+        return this.getToken().valid_until <= new Date().getTime();
+    }
+
+    /**
+    * Recupera il token (refreshato in caso di bisogno).
+    * @returns {Observable<Token>}
+    */
+    public getRefreshedToken(): Observable<Token> {
+        if (this.getToken() == null) {
+            return observableOf(null);
+        }
+        if (!this.isTokenExpired()) {
+            return observableOf(this.getToken());
+        }
+        return this.refreshToken();
+    }
+
+    public refreshToken(): Observable<Token> {
+        return this.http.get<Token>('/api/token').pipe(
+            map(
+              (token) => {
+                token.valid_until = token.exp * 1000;
+                this.setToken(token);
+                return this.getToken();
+              }
+            )
+        );
+        pipe();
+    }
+
 }
