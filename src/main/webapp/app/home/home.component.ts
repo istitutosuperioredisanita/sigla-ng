@@ -13,10 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'jhi-home',
-    templateUrl: './home.component.html',
-    styleUrls: [
-        'home.css'
-    ],
+    templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit, AfterViewInit {
     account: Account;

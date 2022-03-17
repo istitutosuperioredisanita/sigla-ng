@@ -12,8 +12,7 @@ import { map, debounceTime } from 'rxjs/operators';
 @Component({
     selector: 'jhi-context',
     templateUrl: './context.component.html',
-    providers: [NgbDropdown, NgbTypeaheadConfig],
-    styleUrls: ['../layouts/navbar/navbar.css']
+    providers: [NgbDropdown, NgbTypeaheadConfig]
 })
 
 export class ContextComponent implements OnInit, OnDestroy {

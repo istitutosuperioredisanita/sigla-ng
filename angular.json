@@ -3,7 +3,7 @@
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
-      "parcoauto": {
+      "siglang": {
         "root": "",
         "sourceRoot": "src/main/webapp",
         "projectType": "application",
@@ -20,7 +20,7 @@
         "inlineTemplate": false,
         "skipTests": true,
         "prefix": "jhi",
-        "styleExt": "scss"
+        "style": "scss"
       },
       "@schematics/angular:directive": {
         "skipTests": true,

@@ -12,10 +12,7 @@ import { Component, ElementRef, Input, Renderer2 } from '@angular/core';
                 <li class="point"></li>
                 <li class="point"></li>
             </ul>
-        </div>`,
-    styleUrls: [
-        'password-strength-bar.css'
-    ]
+        </div>`
 })
 export class PasswordStrengthBarComponent {
 

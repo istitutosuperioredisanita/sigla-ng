@@ -17,10 +17,7 @@ export class SIGLATreeNode {
 
 @Component({
     selector: 'jhi-tree',
-    templateUrl: './tree.component.html',
-    styleUrls: [
-        'tree.css'
-    ]
+    templateUrl: './tree.component.html'
 })
 export class SIGLATreeComponent implements OnInit, OnDestroy, AfterViewInit {
     isRequesting: boolean;

@@ -5,6 +5,7 @@
         "moduleResolution": "node",
         "sourceMap": true,
         "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
         "removeComments": false,
         "noImplicitAny": false,
         "skipLibCheck": true,
@@ -22,8 +23,7 @@
         "allowJs": true
     },
     "include": [
-        "src/main/webapp/app",
-        "src/test/javascript/"
+        "src/main/webapp/app"
     ],
     "exclude": [
         "node_modules"

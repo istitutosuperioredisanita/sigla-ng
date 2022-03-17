@@ -16,10 +16,7 @@ declare var flatpickr;
 
 @Component({
     selector: 'jhi-workspace',
-    templateUrl: './workspace.component.html',
-    styleUrls: [
-        'workspace.css'
-    ],
+    templateUrl: './workspace.component.html'
 })
 export class WorkspaceComponent implements OnInit, OnDestroy {
     account: Account;
