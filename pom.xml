@@ -258,6 +258,9 @@
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
+                                <configuration>
+                                    <arguments>install --legacy-peer-deps</arguments>
+                                </configuration>
                             </execution>
                             <execution>
                                 <id>webpack build dev</id>
@@ -266,7 +269,7 @@
                                 </goals>
                                 <phase>generate-resources</phase>
                                 <configuration>
-                                    <arguments>run webpack:build --legacy-peer-deps</arguments>
+                                    <arguments>run webpack:build</arguments>
                                     <npmInheritsProxyConfigFromMaven>false</npmInheritsProxyConfigFromMaven>
                                 </configuration>
                             </execution>
