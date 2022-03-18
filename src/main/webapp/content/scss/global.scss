@@ -950,18 +950,6 @@ Logo styles
 .navbar-form {
   padding: 17px
 }
-@media screen and (min-width: 1024px) and (max-width: 1440px) {
-  .logo-img {
-      height: 28px;
-      width: 108px;
-  }
-  .fa-tree-size {
-      font-size: 2em;
-  }
-  .jh-navbar {
-      height: 55px;
-  }
-}
 @media screen and (max-width: 1024px) {
   .fa-tree-size {
       font-size: 2.5em;
