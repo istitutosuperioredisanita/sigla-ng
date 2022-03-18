@@ -3,7 +3,8 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const rxPaths = require('rxjs/_esm5/path-mapping');
 const MergeJsonWebpackPlugin = require("merge-jsons-webpack-plugin");
-
+const CompressionPlugin = require('compression-webpack-plugin');
+const path = require('path');
 const utils = require('./utils.js');
 
 module.exports = (options) => ({
@@ -17,6 +18,10 @@ module.exports = (options) => ({
     },
     stats: {
         children: false
+    },
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: '[name].[hash].js'
     },
     module: {
         rules: [
@@ -97,6 +102,7 @@ module.exports = (options) => ({
             chunks: ['vendors', 'polyfills', 'global', 'main'],
             chunksSortMode: 'manual',
             inject: 'body'
-        })
+        }),
+        new CompressionPlugin()
     ]
 });

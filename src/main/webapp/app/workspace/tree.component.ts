@@ -4,7 +4,7 @@ import { Account, Principal } from '../shared';
 import { Leaf } from './leaf.model';
 import { WorkspaceService } from './workspace.service';
 import { Observable ,  Subscription } from 'rxjs';
-import { TreeComponent, TreeNode } from 'angular-tree-component';
+import { TreeComponent, TreeNode } from '@circlon/angular-tree-component';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { map, debounceTime } from 'rxjs/operators';
 import * as _ from 'lodash';
