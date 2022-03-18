@@ -3,7 +3,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const rxPaths = require('rxjs/_esm5/path-mapping');
 const MergeJsonWebpackPlugin = require("merge-jsons-webpack-plugin");
-
+const path = require('path');
 const utils = require('./utils.js');
 
 module.exports = (options) => ({
@@ -18,6 +18,10 @@ module.exports = (options) => ({
     stats: {
         children: false
     },
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: '[name].[hash].js'
+    },
     module: {
         rules: [
             {
@@ -30,7 +34,7 @@ module.exports = (options) => ({
                     minifyJS:false,
                     minifyCSS:false
                 },
-                exclude: ['./src/main/webapp/index.html']
+                exclude: ['/src/main/webapp/index.html']
             },
             {
                 test: /\.(jpe?g|png|gif|svg|woff2?|ttf|eot)$/i,
@@ -49,13 +53,13 @@ module.exports = (options) => ({
                 }
             },
             // Ignore warnings about System.import in Angular
-            { test: /[\/\\]@angular[\/\\].+\.js$/, parser: { system: true } },
+            //{ test: /[\/\\]@angular[\/\\].+\.js$/, parser: { system: true } },
         ]
     },
     plugins: [
         new webpack.DefinePlugin({
             'process.env': {
-                NODE_ENV: `'${options.env}'`,
+                //NODE_ENV: `'${options.env}'`,
                 BUILD_TIMESTAMP: `'${new Date().getTime()}'`,
                 VERSION: `'${utils.parseVersion()}'`,
                 DEBUG_INFO_ENABLED: options.env === 'development',
@@ -73,7 +77,8 @@ module.exports = (options) => ({
             /angular(\\|\/)core(\\|\/)/,
             utils.root('src/main/webapp/app'), {}
         ),
-        new CopyWebpackPlugin([
+        new CopyWebpackPlugin({
+            patterns: [
                 { from: './src/main/webapp/favicon.ico', to: 'favicon.ico' },
                 { from: './src/main/webapp/manifest.webapp', to: 'manifest.webapp' },
                 { from: './node_modules/moment/moment.js', to: 'moment.js' },
@@ -81,7 +86,7 @@ module.exports = (options) => ({
                 // { from: './src/main/webapp/sw.js', to: 'sw.js' },
                 // jhipster-needle-add-assets-to-webpack - JHipster will add/remove third-party resources in this array
                 { from: './src/main/webapp/robots.txt', to: 'robots.txt' }
-        ]),
+        ]}),
         new MergeJsonWebpackPlugin({
             output: {
                 groupBy: [
@@ -92,10 +97,10 @@ module.exports = (options) => ({
             }
         }),
         new HtmlWebpackPlugin({
-            template: './src/main/webapp/index.html',
+            template: '/src/main/webapp/index.html',
             chunks: ['vendors', 'polyfills', 'global', 'main'],
             chunksSortMode: 'manual',
             inject: 'body'
-        })
+        }),
     ]
 });

@@ -36,8 +36,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <frontend-maven-plugin.version>1.12.0</frontend-maven-plugin.version>
-        <node.version>v8.12.0</node.version>
-        <npm.version>6.4.1</npm.version>
+        <node.version>v12.22.5</node.version>
+        <npm.version>7.16.0</npm.version>
         <spring-boot.version>2.2.2.RELEASE</spring-boot.version>
         <keycloak.version>16.1.0</keycloak.version>
         <maven.javadoc.skip>true</maven.javadoc.skip>
@@ -258,6 +258,9 @@
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
+                                <configuration>
+                                    <arguments>install --legacy-peer-deps</arguments>
+                                </configuration>
                             </execution>
                             <execution>
                                 <id>webpack build dev</id>

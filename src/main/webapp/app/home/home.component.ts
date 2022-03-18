@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, Renderer, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 import { Router, NavigationExtras } from '@angular/router';
@@ -9,13 +9,11 @@ import { LocalStateStorageService } from '../shared/auth/local-storage.service';
 import { SERVER_API_URL } from '../app.constants';
 import { AuthServerProvider } from '../shared/auth/auth-session.service';
 import { AuthService } from '../shared/auth/auth.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'jhi-home',
-    templateUrl: './home.component.html',
-    styleUrls: [
-        'home.css'
-    ],
+    templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit, AfterViewInit {
     account: Account;
@@ -30,7 +28,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     credentials: any;
     isRequesting = false;
     keycloakEnabled = true;
-    @ViewChild('usernameinput') userNameElement: ElementRef;
+    @ViewChild('usernameinput', {static : true}) userNameElement: ElementRef;
 
     constructor(
         private principal: Principal,
@@ -43,11 +41,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
         private profileService: ProfileService,
         private router: Router,
         private context: ContextService,
-        private localStateStorageService: LocalStateStorageService
+        private localStateStorageService: LocalStateStorageService,
+        private translateService: TranslateService
     ) {
     }
 
     ngOnInit() {
+        this.translateService.setDefaultLang('it');
         if (this.isAuthenticated()) {
             this.principal.identity().then((account) => {
                 this.account = account;

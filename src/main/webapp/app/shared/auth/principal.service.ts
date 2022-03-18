@@ -96,7 +96,7 @@ export class Principal {
                         this.context.findUo(usercontext);
                         this.context.findCdr(usercontext);
                         if (force === undefined) {
-                            this.eventManager.broadcast({name: 'onRefreshTodo'});
+                            this.eventManager.broadcast('onRefreshTodo');
                         }
                     });
                     this.authenticated = true;

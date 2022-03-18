@@ -1,12 +1,10 @@
-import { Component, OnInit, AfterViewInit, Renderer, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Router } from '@angular/router';
-import { JhiLanguageService, JhiEventManager } from 'ng-jhipster';
+import { JhiLanguageService } from 'ng-jhipster';
 import { Account, Principal} from '../';
 import { Messaggio } from '../../context/messaggio.model';
 import { ContextService } from '../../context/context.service';
 import { LoginService } from '../login/login.service';
-import { StateStorageService } from '../auth/state-storage.service';
 
 @Component({
     selector: 'jhi-messaggi-modal',
