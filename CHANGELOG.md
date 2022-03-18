@@ -1,5 +1,105 @@
 # sigla-ng Changelog
 
+## Release 3.0.5  -- _March 18, 2022_ 
+### No issue
+
+>**Upgrade version of ngx-cnr-uict-sso**
+>
+>[10a2f99a5e058ee](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/10a2f99a5e058ee) marco.spasiano *March 18, 2022*
+
+>**Upgrade to angular 12.2.16**
+>
+>[c51b267f3475b08](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/c51b267f3475b08) marco.spasiano *March 18, 2022*
+
+>**Upgrade to angular 12.2.16**
+>
+>[9b1426d35a8c5d0](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/9b1426d35a8c5d0) marco.spasiano *March 18, 2022*
+
+>**Upgrade to angular 12.2.16**
+>
+>[a2d72f39e7ec6c6](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/a2d72f39e7ec6c6) marco.spasiano *March 17, 2022*
+
+>**Upgrade to angular 12.2.16**
+>
+>[a85743a5dcdc705](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/a85743a5dcdc705) marco.spasiano *March 17, 2022*
+
+>**Upgrade to angular 12.2.16**
+>
+>[2796a888c2f9e21](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/2796a888c2f9e21) marco.spasiano *March 17, 2022*
+
+>**Upgrade to angular 12.2.16**
+>
+>[cc06c5c6b813afa](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/cc06c5c6b813afa) marco.spasiano *March 17, 2022*
+
+>**Upgrade to angular 12.2.16**
+>
+>[a12d91661791349](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/a12d91661791349) marco.spasiano *March 17, 2022*
+
+>**Upgrade to angular 12.2.16**
+>
+>[c84defaf4446de9](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/c84defaf4446de9) marco.spasiano *March 17, 2022*
+
+>**Upgrade to angular 12.2.16**
+>
+>[10bff0d3819ad24](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/10bff0d3819ad24) marco.spasiano *March 17, 2022*
+
+>**Generate CHANGELOG.md [ci skip]**
+>
+>[1a3ac2ae89ef0d2](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/1a3ac2ae89ef0d2) marco.spasiano *March 16, 2022*
+
+>**Upgrade to angular 12**
+>
+>[571ebfa5a2b12b1](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/571ebfa5a2b12b1) marco.spasiano *March 16, 2022*
+
+>**Upgrade to angular 12**
+>
+>[5cf2acac200a0aa](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/5cf2acac200a0aa) marco.spasiano *March 16, 2022*
+
+>**Upgrade to angular 12**
+>
+>[6546bcda7598c79](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/6546bcda7598c79) marco.spasiano *March 16, 2022*
+
+>**Upgrade to angular 12**
+>
+>[7f3307b6347927a](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/7f3307b6347927a) marco.spasiano *March 16, 2022*
+
+>**Upgrade to angular 11.2**
+>
+>[0b8240535cdb584](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/0b8240535cdb584) marco.spasiano *March 16, 2022*
+
+>**Upgrade to angular 11.2**
+>
+>[56954f3368e7b7f](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/56954f3368e7b7f) marco.spasiano *March 15, 2022*
+
+>**upgrade to angular 11**
+>
+>[6ab765e33f13ca2](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/6ab765e33f13ca2) marco.spasiano *March 15, 2022*
+
+>**upgrade to angular 9.1**
+>
+>[2717783da99f2f8](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/2717783da99f2f8) marco.spasiano *March 15, 2022*
+
+>**upgrade to angular 9.1**
+>
+>[6843df1a3ad68bb](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/6843df1a3ad68bb) marco.spasiano *March 15, 2022*
+
+>**upgrade to angular 9.1**
+>
+>[9666e4016ff9b87](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/9666e4016ff9b87) marco.spasiano *March 15, 2022*
+
+>**upgrade to angular 9.1**
+>
+>[33eacda6c91c4d1](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/33eacda6c91c4d1) marco.spasiano *March 15, 2022*
+
+>**upgrade to angular 9.1**
+>
+>[9cf55a7eb6307e9](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/9cf55a7eb6307e9) marco.spasiano *March 15, 2022*
+
+>**upgrade to angular 8.2**
+>
+>[5e750211aa07f86](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/5e750211aa07f86) marco.spasiano *March 15, 2022*
+
+
 ## Release 3.0.4  -- _March 16, 2022_ 
 ### No issue
 
