@@ -1,7 +1,15 @@
 # sigla-ng Changelog
 
-## Release 3.0.5  -- _March 18, 2022_ 
+## Release 3.0.6  -- _March 18, 2022_ 
 ### No issue
+
+>**FIX @media screen navbar and logo**
+>
+>[42c077b1930f96e](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/42c077b1930f96e) marco.spasiano *March 18, 2022*
+
+>**Generate CHANGELOG.md [ci skip]**
+>
+>[c5d474b0bac6528](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/c5d474b0bac6528) marco.spasiano *March 18, 2022*
 
 >**Upgrade version of ngx-cnr-uict-sso**
 >
