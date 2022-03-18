@@ -1,38 +1,65 @@
 const webpack = require('webpack');
+const writeFilePlugin = require('write-file-webpack-plugin');
 const webpackMerge = require('webpack-merge');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-const Visualizer = require('webpack-visualizer-plugin');
-const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
+const SimpleProgressWebpackPlugin = require('simple-progress-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
-const AngularCompilerPlugin = require('@ngtools/webpack').AngularCompilerPlugin;
+const WebpackNotifierPlugin = require('webpack-notifier');
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
+const sass = require('sass');
 
 const utils = require('./utils.js');
 const commonConfig = require('./webpack.common.js');
 
-const ENV = 'production';
-const sass = require('sass');
+const ENV = 'development';
 
-module.exports = webpackMerge(commonConfig({ env: ENV }), {
-    // Enable source maps. Please note that this will slow down the build.
-    // You have to enable it in UglifyJSPlugin config below and in tsconfig-aot.json as well
-    // devtool: 'source-map',
+module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
     entry: {
         polyfills: './src/main/webapp/app/polyfills',
-        global: './src/main/webapp/content/scss/global.scss',
+        global: './src/main/webapp/content/scss/vendor.scss',
         main: './src/main/webapp/app/app.main'
     },
     output: {
-        path: utils.root('target/classes/public'),
-        filename: 'app/[name].[hash].bundle.js',
-        chunkFilename: 'app/[id].[hash].chunk.js'
+        path: utils.root('target/www'),
+        filename: 'app/[name].bundle.js',
+        chunkFilename: 'app/[id].chunk.js'
     },
     module: {
         rules: [{
-            test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
-            loader: '@ngtools/webpack'
+            test: /\.ts$/,
+            enforce: 'pre',
+            loader: 'tslint-loader',
+            exclude: ['/node_modules', new RegExp('reflect-metadata\\' + path.sep + 'Reflect\\.ts')]
+        },
+        {
+            test: /\.ts$/,
+            use: [
+                'angular2-template-loader',
+                {
+                    loader: 'cache-loader',
+                    options: {
+                      cacheDirectory: path.resolve('target/cache-loader')
+                    }
+                },
+                {
+                    loader: 'thread-loader',
+                    options: {
+                        // there should be 1 cpu for the fork-ts-checker-webpack-plugin
+                        workers: require('os').cpus().length - 1
+                    }
+                },
+                {
+                    loader: 'ts-loader',
+                    options: {
+                        transpileOnly: true,
+                        happyPackMode: true
+                    }
+                },
+                'angular-router-loader'
+            ],
+            exclude: ['/node_modules']
         },
         {
             test: /\.scss$/,
@@ -44,15 +71,10 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
         },
         {
             test: /(vendor\.scss|global\.scss)/,
-            use: [
-                MiniCssExtractPlugin.loader,
-                'css-loader',
-                'postcss-loader',
-                {
-                    loader: 'sass-loader',
-                    options: { implementation: sass }
-                }
-            ]
+            use: ['style-loader', 'css-loader', 'postcss-loader', {
+                loader: 'sass-loader',
+                options: { implementation: sass }
+            }]
         },
         {
             test: /\.css$/,
@@ -61,11 +83,7 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
         },
         {
             test: /(vendor\.css|global\.css)/,
-            use: [
-                MiniCssExtractPlugin.loader,
-                'css-loader',
-                'postcss-loader'
-            ]
+            use: ['style-loader', 'css-loader']
         }]
     },
     optimization: {
@@ -110,27 +128,18 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
             new OptimizeCSSAssetsPlugin({})
         ]
     },
+    stats: process.env.JHI_DISABLE_WEBPACK_LOGS ? 'none' : options.stats,
     plugins: [
+        process.env.JHI_DISABLE_WEBPACK_LOGS
+            ? null
+            : new SimpleProgressWebpackPlugin({
+                format: options.stats === 'minimal' ? 'compact' : 'expanded'
+              }),
         new MiniCssExtractPlugin({
             // Options similar to the same options in webpackOptions.output
             // both options are optional
             filename: '[name].[contenthash].css',
             chunkFilename: '[id].css'
-        }),
-        new MomentLocalesPlugin({
-            localesToKeep: [
-                    'it'
-                    // jhipster-needle-i18n-language-moment-webpack - JHipster will add/remove languages in this array
-                ]
-        }),
-        new Visualizer({
-            // Webpack statistics in target folder
-            filename: '../stats.html'
-        }),
-        new AngularCompilerPlugin({
-            mainPath: utils.root('src/main/webapp/app/app.main.ts'),
-            tsConfigPath: utils.root('tsconfig-aot.json'),
-            sourceMap: true
         }),
         new webpack.LoaderOptionsPlugin({
             minimize: true,
@@ -139,7 +148,19 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
         new WorkboxPlugin.GenerateSW({
           clientsClaim: true,
           skipWaiting: true,
+        }),
+        new webpack.ContextReplacementPlugin(
+            /angular(\\|\/)core(\\|\/)/,
+            path.resolve(__dirname, './src/main/webapp')
+        ),
+        //new writeFilePlugin(),
+        new webpack.WatchIgnorePlugin({paths:[
+            utils.root('src/test'),
+        ]}),
+        new WebpackNotifierPlugin({
+            title: 'JHipster',
+            contentImage: path.join(__dirname, 'logo-jhipster.png')
         })
-    ],
+    ].filter(Boolean),
     mode: 'production'
 });

@@ -44,6 +44,7 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
+    "@ngtools/webpack": "7.2.4",
     "@angular-devkit/build-angular": "12.2.16",
     "@angular/cli": "12.2.16",
     "@angular/compiler-cli": "^12.2.16",
@@ -127,7 +128,7 @@
     "webpack:local-ng": "yarn run webpack-dev-server --config webpack/webpack.local-ng.js --progress --hot --profile --port=9060",
     "webpack:local-all": "yarn run webpack-dev-server --config webpack/webpack.local-all.js --progress --hot --profile --port=9060",
     "webpack:iss": "yarn run webpack-dev-server --config webpack/webpack.iss.js --progress --hot --profile --port=9060",
-    "webpack:build:main": "yarn run webpack --config webpack/webpack.dev.js",
+    "webpack:build:main": "yarn run webpack --config webpack/webpack.prod.js",
     "webpack:build": "yarn run cleanup && yarn run webpack:build:main",
     "webpack:prod:main": "yarn run webpack -- --config webpack/webpack.prod.js --progress --profile",
     "webpack:prod": "yarn run cleanup && yarn run webpack:prod:main && yarn run clean-www",

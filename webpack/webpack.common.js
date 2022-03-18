@@ -3,7 +3,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const rxPaths = require('rxjs/_esm5/path-mapping');
 const MergeJsonWebpackPlugin = require("merge-jsons-webpack-plugin");
-const CompressionPlugin = require('compression-webpack-plugin');
 const path = require('path');
 const utils = require('./utils.js');
 
@@ -103,6 +102,5 @@ module.exports = (options) => ({
             chunksSortMode: 'manual',
             inject: 'body'
         }),
-        new CompressionPlugin()
     ]
 });
