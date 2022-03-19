@@ -122,10 +122,10 @@
                 <jhi-context *ngSwitchCase="true" [isNavbar]="true" class="d-md-flex">Loading context.....</jhi-context>
                 <ngx-cnr-uict-sso-apps-menu *ngIf="ssoAppsMenuDisplay && isAuthenticated()"
                     [account]="principal.userIdentity"
-                    class="mr-2 d-none d-md-flex pt-2">
+                    class="d-none d-md-flex">
                 </ngx-cnr-uict-sso-apps-menu>
                 <ngx-cnr-uict-sso-user-menu *ngSwitchCase="true"
-                    class="d-none d-md-flex pt-2"
+                    class="d-none d-md-flex"
                     [account]="principal.userIdentity"
                     (logoutCallback)="logout()">
                     <div class="dropdown-divider"></div>
