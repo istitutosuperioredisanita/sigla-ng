@@ -1,5 +1,17 @@
 # sigla-ng Changelog
 
+## Release 3.0.7  -- _March 19, 2022_ 
+### No issue
+
+>**FIX sso-user-menu**
+>
+>[7647389fd5d018c](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/7647389fd5d018c) marco.spasiano *March 19, 2022*
+
+>**Generate CHANGELOG.md [ci skip]**
+>
+>[b406db847846089](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/b406db847846089) marco.spasiano *March 18, 2022*
+
+
 ## Release 3.0.6  -- _March 18, 2022_ 
 ### No issue
 
