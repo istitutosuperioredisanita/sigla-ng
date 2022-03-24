@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#enable Google Api
+./enable_api.sh
+
+#infrastructure deploy by Terraform
 cd terraform
 terraform init
 terraform apply -var="project_id=$project_id"
