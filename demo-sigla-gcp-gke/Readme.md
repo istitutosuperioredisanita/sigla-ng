@@ -55,7 +55,7 @@ Successivamente viene utilizzato Terraform, il tool che crea l’infrastruttura 
 * Cloud SQL (PostgreSQL)
 * Google Kubernetes Engine Cluster
 
-Nella folder **Terraform** sono contenuti i file che descrivono l'infrastruttura e che vengono utilizzati come input dallo strumento.
+Nella folder **Terraform** sono contenuti i file che descrivono l'infrastruttura e che vengono utilizzati come input dallo strumento: nel file **main.tf**, dentro il blocco ```resource "google_sql_database_instance" "instance"```, è presente il flag ```deletion_protection```. Questo parametro, se omesso, è implicitamente valorizzato a ```true``` e impedisce di eliminare il database tramite Terraform. Trattandosi di una demo, il flag è esplicitamente valorizzato a ```false```, ma nel caso in cui si voglia riutilizzare gli script, è sufficiente commentare, o eliminare, l'intera riga ```deletion_protection = false```.
 
 Viene poi richiesto all'utente di scegliere e digitare la password che servirà all'applicazione per autenticarsi ed utilizzare il database: questa verrà salvata in maniera sicura come **secret** sul cluster GKE rilasciato. L'istanza Postgres viene quindi inizializzata.
 
@@ -85,6 +85,9 @@ Selezionando ciascuno di essi e navigando sul tab **logs** sarà possibile veder
 È posibile aggiornare la versione di Sigla, contestualmente all'aggiornamento delle immagini Docker ufficiali ([sigla-thorntail](https://hub.docker.com/r/consiglionazionalericerche/sigla-main/tags), [sigla-ng](https://hub.docker.com/r/consiglionazionalericerche/sigla-ng/tags)), tramite lo script **update-service.sh**.
 
 Lo script scarica le ultime versioni delle immagini dal Docker Hub, utilizzando i tag **latest** per sigla-ng e **release** per sigla-main, e le aggiorna sull'artifact registry del progetto, successivamente rilancia i file di configurazione .yaml in modo da aggiornare i container sul cluster GKE.
+
+# Eliminazione risorse
+Una volta ultimata la demo, è possibile eliminare tutte le risorse create tramite l'esecuzione dello script **clean-environment.sh**.
 
 # Provalo su Google Cloud
 [![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/consiglionazionaledellericerche/sigla-ng.git&cloudshell_workspace=./demo-sigla-gcp-gke&cloudshell_print=guide.txt&shellonly=true)

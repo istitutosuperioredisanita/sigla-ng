@@ -116,7 +116,6 @@ resource "google_service_account" "default" {
   project                 = var.project_id
 }
 
-
 resource "google_container_cluster" "primary" {
   project                 = var.project_id
   name     = "gke-team-digi-sigla-poc-001"
