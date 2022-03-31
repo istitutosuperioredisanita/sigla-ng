@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #enable Google Api
+echo "Enabling Google API:"
 ./enable_api.sh
 
 #infrastructure deploy by Terraform
