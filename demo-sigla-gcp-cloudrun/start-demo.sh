@@ -66,3 +66,8 @@ export sigla_thorntail_url=$(gcloud run services describe sigla-thorntail --plat
 envsubst <  sigla-ng.yaml > sigla-ng-sub.yaml
 
 gcloud run services replace sigla-ng-sub.yaml
+
+echo "Sigla Deploy is finished!"
+echo "Services can take few minutes to be up and running"
+echo "sigla-thortail interface: $sigla_thorntail_url/SIGLA/Login.do"
+echo "sigla-ng frontend: $sigla_ng_url"

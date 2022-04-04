@@ -107,3 +107,8 @@ fi
 envsubst <  gke-sigla-ng.yaml > gke-sigla-ng-sub.yaml
 
 kubectl apply -f gke-sigla-ng-sub.yaml
+
+echo "Sigla Deploy is finished!"
+echo "Services can take few minutes to be up and running"
+echo "sigla-thortail interface: $sigla_thorntail_ip/SIGLA/Login.do"
+echo "sigla-ng frontend: $sigla_ng_ip"
