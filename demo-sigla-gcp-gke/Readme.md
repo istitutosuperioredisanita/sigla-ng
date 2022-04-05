@@ -8,8 +8,12 @@ Sul progetto dovranno essere attivate le seguenti API:
 * Serverless VPC Access API
 * Cloud SQL Admin API
 
-All'interno del path della demo, è presente lo script **enable_api.sh** che consentirà ad un utente **owner** del progetto di abilitare le API sopracitate da cloud shell.
+All'interno del path della demo, è presente lo script **enable_api.sh** che consentirà ad un utente **owner** (o **editor** più **Kubernetes Admin Engine**) del progetto di abilitare le API sopracitate da cloud shell.
 Questo passaggio verrà eseguito nel flusso principale del deploy della soluzione.
+
+È posibile verificare che l'utente in uso abbia i permessi utili al deploy dell'intera soluzione eseguendo il comando ```./check-permissions.sh``` all'interno della directory della demo.
+
+Per una corretta esecuzione degli script, la cloud shell deve essere istanziata in modalità **non-ephemeral** (impostata già di default). A tal proposito, quando si sceglie di eseguire la demo direttamente dal pulsante **[Provalo su Google Cloud](#provalo-su-google-cloud)** assicurarsi di scegliere l’opzione **☑ Trust Repo** all’apertura della Cloud Shell. In caso contrario la shell verrà istanziata in modalità [**ephemeral**](https://cloud.google.com/shell/docs/using-cloud-shell#choosing_ephemeral_mode).
 
 # Deploy della soluzione
 
@@ -51,7 +55,7 @@ Successivamente viene utilizzato Terraform, il tool che crea l’infrastruttura 
 * Cloud SQL (PostgreSQL)
 * Google Kubernetes Engine Cluster
 
-Nella folder **Terraform** sono contenuti i file che descrivono l'infrastruttura e che vengono utilizzati come input dallo strumento.
+Nella folder **Terraform** sono contenuti i file che descrivono l'infrastruttura e che vengono utilizzati come input dallo strumento: nel file **main.tf**, dentro il blocco ```resource "google_sql_database_instance" "instance"```, è presente il flag ```deletion_protection```. Questo parametro, se omesso, è implicitamente valorizzato a ```true``` e impedisce di eliminare il database tramite Terraform. Trattandosi di una demo, il flag è esplicitamente valorizzato a ```false```, ma nel caso in cui si voglia riutilizzare gli script, è sufficiente commentare, o eliminare, l'intera riga ```deletion_protection = false```.
 
 Viene poi richiesto all'utente di scegliere e digitare la password che servirà all'applicazione per autenticarsi ed utilizzare il database: questa verrà salvata in maniera sicura come **secret** sul cluster GKE rilasciato. L'istanza Postgres viene quindi inizializzata.
 
@@ -81,6 +85,9 @@ Selezionando ciascuno di essi e navigando sul tab **logs** sarà possibile veder
 È posibile aggiornare la versione di Sigla, contestualmente all'aggiornamento delle immagini Docker ufficiali ([sigla-thorntail](https://hub.docker.com/r/consiglionazionalericerche/sigla-main/tags), [sigla-ng](https://hub.docker.com/r/consiglionazionalericerche/sigla-ng/tags)), tramite lo script **update-service.sh**.
 
 Lo script scarica le ultime versioni delle immagini dal Docker Hub, utilizzando i tag **latest** per sigla-ng e **release** per sigla-main, e le aggiorna sull'artifact registry del progetto, successivamente rilancia i file di configurazione .yaml in modo da aggiornare i container sul cluster GKE.
+
+# Eliminazione risorse
+Una volta ultimata la demo, è possibile eliminare tutte le risorse create tramite l'esecuzione dello script **clean-environment.sh**.
 
 # Provalo su Google Cloud
 [![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/consiglionazionaledellericerche/sigla-ng.git&cloudshell_workspace=./demo-sigla-gcp-gke&cloudshell_print=guide.txt&shellonly=true)
