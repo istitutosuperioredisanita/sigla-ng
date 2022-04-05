@@ -16,8 +16,6 @@ Questo passaggio verrà eseguito nel flusso principale del deploy della soluzion
 
 Per una corretta esecuzione degli script, la cloud shell deve essere istanziata in modalità **non-ephemeral** (impostata già di default). A tal proposito, quando si sceglie di eseguire la demo direttamente dal pulsante **[Provalo su Google Cloud](#provalo-su-google-cloud)** assicurarsi di scegliere l’opzione **☑ Trust Repo** all’apertura della Cloud Shell. In caso contrario la shell verrà istanziata in modalità [**ephemeral**](https://cloud.google.com/shell/docs/using-cloud-shell#choosing_ephemeral_mode).
 
-<img src="./pics/trust_repo.png" width=50% height=50%>
-
 # Deploy della soluzione
 
 Accedere alla Cloud Shell di GCP e autenticarsi tramite il comando
