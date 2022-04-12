@@ -4,12 +4,6 @@
 echo "Enabling Google API:"
 ./enable_api.sh
 
-#infrastructure deploy by Terraform
-cd terraform
-terraform init
-terraform apply -var="project_id=$project_id"
-cd ..
-
 #read password from prompt
 echo "Please chose a password for database instance"
 while true; do
@@ -20,6 +14,12 @@ while true; do
   [ "$password" = "$password2" ] && break
   echo "Incorrect password: please try again"
 done
+
+#infrastructure deploy by Terraform
+cd terraform
+terraform init
+terraform apply -var="project_id=$project_id"
+cd ..
 
 #init database
 gcloud sql users create sigla --instance=pdb-team-digi-sigla-001 --password=$password
