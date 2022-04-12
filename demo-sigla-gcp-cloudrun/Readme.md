@@ -83,6 +83,9 @@ Lo script scarica le nuove immagini dal Docker Hub, utilizzando i tag **latest**
 
 # Eliminazione risorse
 Una volta ultimata la demo, è possibile eliminare tutte le risorse create tramite l'esecuzione dello script **clean-environment.sh**.
+È posibile che si presenti un bug noto dovuto alla cancellazione dei servizi Cloud Run che utilizzano un VPC access connector: la VPC collegata risulta imposibile da eliminare. Lo script è concepito in modo da prevenire questa casistica, ma se si presentasse il problema è necessario fare richiesta al supporto tecnico di Google per eliminare la singola risorsa.
+Un altro workaround possibile prevede l'eliminazione dell'intero progetto GCP ospitante, nel caso in cui quest'ultimo non contenga altre risorse esterne alla demo o che venga utilizzato per altri scopi terzi.
+Il riferimento all'anomalia di cui sopra è consultabile a questo [link](https://issuetracker.google.com/issues/186792016?pli=1).
 
 # Provalo su Google Cloud
 [![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/consiglionazionaledellericerche/sigla-ng.git&cloudshell_workspace=./demo-sigla-gcp-cloudrun&cloudshell_print=guide.txt&shellonly=true)

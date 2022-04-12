@@ -3,6 +3,8 @@
 #delete cloud run services
 gcloud run services delete sigla-ng --region europe-west4 --quiet
 gcloud run services delete sigla-thorntail --region europe-west4 --quiet
+echo "Waiting for Cloud Run Services deletion going effective..."
+sleep 3m
 
 #delete cloud secret db-password
 gcloud secrets delete db-password --quiet
@@ -16,7 +18,7 @@ terraform apply -destroy -var="project_id=$project_id" -auto-approve -target goo
 terraform apply -destroy -var="project_id=$project_id" -auto-approve -target google_compute_router.router
 terraform apply -destroy -var="project_id=$project_id" -auto-approve -target google_service_networking_connection.private-vpc-connection
 echo "Waiting for VPC Access connector deletion going effective..."
-sleep 3m
+sleep 1m
 terraform apply -destroy -var="project_id=$project_id" -auto-approve -target google_compute_subnetwork.subnet
 terraform apply -destroy -var="project_id=$project_id" -auto-approve -target google_compute_network.vpc_network
 terraform apply -destroy -var="project_id=$project_id" -auto-approve
