@@ -1,5 +1,7 @@
-# Requisiti
+# Modello di deployment
+![schema](/demo-sigla-gcp-cloudrun/pics/architecture_schema_cloud_run.jpg)
 
+# Requisiti
 L’utente deve possedere un **Google Cloud Project** collegato ad un **billing account**. 
 Sul progetto dovranno essere attivate le seguenti API: 
 * Compute Engine API
@@ -16,8 +18,10 @@ Questo passaggio verrà eseguito nel flusso principale del deploy della soluzion
 
 Per una corretta esecuzione degli script, la cloud shell deve essere istanziata in modalità **non-ephemeral** (impostata già di default). A tal proposito, quando si sceglie di eseguire la demo direttamente dal pulsante **[Provalo su Google Cloud](#provalo-su-google-cloud)** assicurarsi di scegliere l’opzione **☑ Trust Repo** all’apertura della Cloud Shell. In caso contrario la shell verrà istanziata in modalità [**ephemeral**](https://cloud.google.com/shell/docs/using-cloud-shell#choosing_ephemeral_mode).
 
-# Deploy della soluzione
+## Provalo su Google Cloud
+[![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/consiglionazionaledellericerche/sigla-ng.git&cloudshell_workspace=./demo-sigla-gcp-cloudrun&cloudshell_print=guide.txt&shellonly=true)
 
+# Deployment
 Accedere alla Cloud Shell di GCP e autenticarsi tramite il comando
 ```console
 gcloud auth login
@@ -41,7 +45,8 @@ E infine lanciare il comando di creazione
 ```console
 ./start-demo.sh
 ```
-## Passagi logici del deploy
+
+## Passagi logici del deployment
 Come primo step, vengono abilitate tutte le Google Api descritte nei **Requisiti** tramite l'esecuzione dello script **enable_api.sh**.
 Successivamente viene utilizzato Terraform, il tool che crea l’infrastruttura a partire da un linguaggio dichiarativo, che in questa demo rilascia le seguenti componenti:
 
@@ -65,27 +70,21 @@ Terminati i passaggi precedenti, verrà rilasciato Sigla utilizzando i comandi *
 4. Rilasciare sigla-thorntail su Cloud Run e renderlo reggiungibile tramite browser senza autenticazione
 5. Recuperare l’url di sigla-thorntail e aggiornare la configurazione di sigla-ng
 
-## Schema architetturale
-
-![schema](/demo-sigla-gcp-cloudrun/pics/architecture_schema_cloud_run.jpg)
-
-# Visualizzare i log dell'applicazione
+# Troubleshooting e management
+## Visualizzare i log dell'applicazione
 Una volta ultimato il deploy dell'intera soluzione, sarà possibile visualizzare lo standard output del container direttamente dalla console di GCP.
 All'interno del progetto ospitante, nella sezione Google Cloud Run, saranno visibili i due servizi di nostro interesse: **sigla-thorntail** e **sigla-ng**.
 Selezionando ciascuno di essi e navigando sul tab **logs** sarà possibile vedere lo standard output del container in tempo reale, filtrare i log o farne il dump da scaricare in locale.
 
 ![log](/demo-sigla-gcp-cloudrun/pics/screen_log_cloud_run.png)
 
-# Update della versione di Sigla
+## Update della versione di Sigla
 È posibile aggiornare la versione di Sigla, contestualmente all'aggiornamento delle immagini Docker ufficiali ([sigla-thorntail](https://hub.docker.com/r/consiglionazionalericerche/sigla-main/tags), [sigla-ng](https://hub.docker.com/r/consiglionazionalericerche/sigla-ng/tags)), tramite lo script **update-service.sh**.
 
 Lo script scarica le nuove immagini dal Docker Hub, utilizzando i tag **latest** per sigla-ng e **release** per sigla-main, e le aggiorna sull'artifact registry del progetto, successivamente rilancia i file di configurazione .yaml in modo da aggiornare i container sui servizi Cloud Run.
 
-# Eliminazione risorse
+## Eliminazione risorse
 Una volta ultimata la demo, è possibile eliminare tutte le risorse create tramite l'esecuzione dello script **clean-environment.sh**.
 È posibile che si presenti un bug noto dovuto alla cancellazione dei servizi Cloud Run che utilizzano un VPC access connector: la VPC collegata risulta imposibile da eliminare. Lo script è concepito in modo da prevenire questa casistica, ma se si presentasse il problema è necessario fare richiesta al supporto tecnico di Google per eliminare la singola risorsa.
 Un altro workaround possibile prevede l'eliminazione dell'intero progetto GCP ospitante, nel caso in cui quest'ultimo non contenga altre risorse esterne alla demo o che venga utilizzato per altri scopi terzi.
 Il riferimento all'anomalia di cui sopra è consultabile a questo [link](https://issuetracker.google.com/issues/186792016?pli=1).
-
-# Provalo su Google Cloud
-[![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/consiglionazionaledellericerche/sigla-ng.git&cloudshell_workspace=./demo-sigla-gcp-cloudrun&cloudshell_print=guide.txt&shellonly=true)
