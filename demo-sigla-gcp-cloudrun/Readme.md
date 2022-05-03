@@ -85,6 +85,6 @@ Lo script scarica le nuove immagini dal Docker Hub, utilizzando i tag **latest**
 
 ## Eliminazione risorse
 Una volta ultimata la demo, è possibile eliminare tutte le risorse create tramite l'esecuzione dello script **clean-environment.sh**.
-È posibile che si presenti un bug noto dovuto alla cancellazione dei servizi Cloud Run che utilizzano un VPC access connector: la VPC collegata risulta imposibile da eliminare. Lo script è concepito in modo da prevenire questa casistica, ma se si presentasse il problema è necessario fare richiesta al supporto tecnico di Google per eliminare la singola risorsa.
-Un altro workaround possibile prevede l'eliminazione dell'intero progetto GCP ospitante, nel caso in cui quest'ultimo non contenga altre risorse esterne alla demo o che venga utilizzato per altri scopi terzi.
+È posibile che si presenti un bug noto dovuto alla cancellazione dei servizi Cloud Run che utilizzano un VPC access connector: la VPC collegata risulta imposibile da eliminare. Lo script è concepito in modo da prevenire questa casistica, ma se si presentasse il problema è necessario fare richiesta al supporto tecnico di Google per eliminare la singola risorsa. 
+La presenza di questo errore impedisce anche la successiva ri-creazione dell'intero environment sullo stesso progetto: a tal proposito, un altro workaround possibile prevede l'eliminazione dell'intero progetto GCP ospitante, assicurandosi prima che quest'ultimo non contenga altre risorse esterne alla demo o che venga utilizzato per scopi terzi.
 Il riferimento all'anomalia di cui sopra è consultabile a questo [link](https://issuetracker.google.com/issues/186792016?pli=1).
