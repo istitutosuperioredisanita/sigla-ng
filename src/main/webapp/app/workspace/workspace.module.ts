@@ -4,7 +4,7 @@ import { SiglaSharedModule, UserRouteAccessService } from '../shared';
 
 import { WORKSPACE_ROUTE, WorkspaceComponent, WorkspaceService, SIGLATreeComponent } from './';
 
-import { TreeModule, TreeDraggedElement } from 'angular-tree-component';
+import { TreeModule, TreeDraggedElement } from '@circlon/angular-tree-component';
 import { AngularSplitModule } from 'angular-split';
 
 @NgModule({

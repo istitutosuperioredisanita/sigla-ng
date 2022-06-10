@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, ElementRef, Renderer, ViewChild, Inject, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ElementRef, Renderer2, ViewChild, Inject, HostListener } from '@angular/core';
 import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
 import { Principal, LoginService, Account } from '../shared';
 import { Subscription } from 'rxjs';
@@ -11,14 +11,12 @@ import { ContextService } from '../context/context.service';
 import { Italian } from 'flatpickr/dist/l10n/it.js';
 import { SplitComponent } from 'angular-split';
 import 'flatpickr';
+import { TranslateService } from '@ngx-translate/core';
 declare var flatpickr;
 
 @Component({
     selector: 'jhi-workspace',
-    templateUrl: './workspace.component.html',
-    styleUrls: [
-        'workspace.css'
-    ],
+    templateUrl: './workspace.component.html'
 })
 export class WorkspaceComponent implements OnInit, OnDestroy {
     account: Account;
@@ -45,25 +43,27 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     navIsFixed: boolean;
     responsive = false;
 
-    @ViewChild('htmlContainer') container: ElementRef;
-    @ViewChild('scriptContainer') scriptContainer: ElementRef;
-    @ViewChild('mySplit') mySplitEl: SplitComponent;
-    @ViewChild('areaWorkspace') areaWorkspace: ElementRef;
-    @ViewChild('areaTree') areaTree: SplitComponent;
+    @ViewChild('htmlContainer', {static : true}) container: ElementRef;
+    @ViewChild('scriptContainer', {static : true}) scriptContainer: ElementRef;
+    @ViewChild('mySplit', {static : true}) mySplitEl: SplitComponent;
+    @ViewChild('areaWorkspace', {static : true}) areaWorkspace: ElementRef;
+    @ViewChild('areaTree', {static : true}) areaTree: SplitComponent;
 
     constructor(
         private contextService: ContextService,
         private principal: Principal,
         private workspaceService: WorkspaceService,
         private _sanitizer: DomSanitizer,
-        private renderer: Renderer,
+        private renderer: Renderer2,
         private eventManager: JhiEventManager,
-        private loginService: LoginService
+        private loginService: LoginService,
+        private translateService: TranslateService
     ) {
-        this.listenerSubmit = renderer.listenGlobal('body', 'submit', (event) => {
+        this.translateService.setDefaultLang('it');
+        this.listenerSubmit = renderer.listen('body', 'submit', (event) => {
             return false;
         });
-        this.listenerSubmitForm = renderer.listenGlobal('body', 'submitForm', (event) => {
+        this.listenerSubmitForm = renderer.listen('body', 'submitForm', (event) => {
             if (event.detail.comando) {
                 const form = event.detail.form;
                 this.startRefreshing();
@@ -92,7 +92,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
 
     @HostListener('mouseover')
     onMouseOver() {
-        this.eventManager.broadcast({name: 'onWorkspaceHover'});
+        this.eventManager.broadcast('onWorkspaceHover');
     }
 
     @HostListener('window:resize', ['$event'])
@@ -141,7 +141,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         }
     }
 
-    @HostListener('scroll', ['$event'])
+    @HostListener('window:scroll', ['$event'])
     doSomethingOnScroll($event: any) {
         if (window.pageYOffset || $event.srcElement.scrollTop || $event.srcElement.scrollTop > 100) {
             this.navIsFixed = true;

@@ -17,7 +17,7 @@ const ENV = 'development';
 module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
     devtool: 'eval-source-map',
     devServer: {
-        contentBase: './build/www',
+        static: './build/www',
         proxy: [{
             context: [
                 /* jhipster-needle-add-entity-to-webpack - JHipster will add entity api paths here */
@@ -40,13 +40,15 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
             headers: {host:'sigla-main.test.si.cnr.it'},
             secure: false
         }],
+        /*
         watchOptions: {
             ignored: /node_modules/
         }
+        */
     },
     entry: {
         polyfills: './src/main/webapp/app/polyfills',
-        global: './src/main/webapp/content/scss/global.scss',
+        global: './src/main/webapp/content/scss/vendor.scss',
         main: './src/main/webapp/app/app.main'
     },
     output: {
@@ -59,7 +61,7 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
             test: /\.ts$/,
             enforce: 'pre',
             loader: 'tslint-loader',
-            exclude: ['node_modules', new RegExp('reflect-metadata\\' + path.sep + 'Reflect\\.ts')]
+            exclude: ['/node_modules', new RegExp('reflect-metadata\\' + path.sep + 'Reflect\\.ts')]
         },
         {
             test: /\.ts$/,
@@ -87,7 +89,7 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
                 },
                 'angular-router-loader'
             ],
-            exclude: ['node_modules']
+            exclude: ['/node_modules']
         },
         {
             test: /\.scss$/,
@@ -116,11 +118,6 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
     },
     stats: process.env.JHI_DISABLE_WEBPACK_LOGS ? 'none' : options.stats,
     plugins: [
-        new webpack.DefinePlugin({
-            'process.env': {
-                KEYCLOAKLOGOUTURL: `'http://dockerwebtest02.si.cnr.it:8110/auth/realms/cnr/protocol/openid-connect/logout'`
-            }
-        }),
         process.env.JHI_DISABLE_WEBPACK_LOGS
             ? null
             : new SimpleProgressWebpackPlugin({
@@ -146,10 +143,10 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
             /angular(\\|\/)core(\\|\/)/,
             path.resolve(__dirname, './src/main/webapp')
         ),
-        new writeFilePlugin(),
-        new webpack.WatchIgnorePlugin([
+        //new writeFilePlugin(),
+        new webpack.WatchIgnorePlugin({paths:[
             utils.root('src/test'),
-        ]),
+        ]}),
         new WebpackNotifierPlugin({
             title: 'JHipster',
             contentImage: path.join(__dirname, 'logo-jhipster.png')

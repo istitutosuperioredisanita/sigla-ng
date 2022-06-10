@@ -25,7 +25,6 @@ export * from './user/account.model';
 export * from './user/user.model';
 export * from './user/user.context.model';
 export * from './model/response-wrapper.model';
-export * from './model/request-util';
 export * from './model/base-entity';
 export * from './shared-libs.module';
 export * from './shared-common.module';

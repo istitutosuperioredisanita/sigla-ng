@@ -17,22 +17,22 @@
 
 <nav class="navbar navbar-expand-md jh-navbar">
         <div class="jh-logo-container float-left">
-            <a *ngIf="router.url === '/workspace'" (click)="setHidden(!hidden)" class="text-white text-center pt-2" data-action="toggle-sidebar" href="javascript:void(0);">
+            <a *ngIf="router.url === '/workspace'" (click)="setHidden(!hidden)" class="text-white text-center pt-2" data-action="toggle-sidebar">
                 <i [ngClass]="{'d-none': hidden}" class="fa fa-fw fa-close fa-tree-size" aria-hidden="true"></i>
-                <i [ngClass]="{'d-none': !hidden}" class="fa fa-fw  fa-bars fa-tree-size" aria-hidden="true"></i>
+                <i [ngClass]="{'d-none': !hidden}" class="fa fa-fw fa-bars fa-tree-size" aria-hidden="true"></i>
                 <span class="d-block">MENU</span>
             </a>
-            <a class="navbar-brand logo float-left mr-0" routerLink="/" (click)="collapseNavbar()">
+            <a class="navbar-brand logo float-left mr-0"  routerLink="/" (click)="collapseNavbar()">
                 <span class="logo-img" [ngClass]="getLogo()"></span>
                 <span class="navbar-version pl-1 d-none d-md-inline-block">v. {{version}}</span>
             </a>
             <a href="https://consiglionazionaledellericerche.github.io/sigla-main/CHANGELOG.html" target="_help" placement="bottom" ngbTooltip="Info di versione" class="align-items-end d-none d-md-flex">
                 <i class="fa fa-fw fa-info-circle text-white pb-1" aria-hidden="true"></i>
             </a>
-            <div class="sso-user-menu-toggler jh-navbar-toggler d-lg-none float-right">
+            <div class="sso-user-menu-toggler jh-navbar-toggler d-lg-none float-right mt-2">
                 <ngx-cnr-uict-sso-apps-menu *ngIf="ssoAppsMenuDisplay && isAuthenticated()" [account]="principal.userIdentity" [buttonSize]="'32px'" [iconSize]="'20px'"></ngx-cnr-uict-sso-apps-menu>
             </div>
-            <div class="sso-user-menu-toggler jh-navbar-toggler d-lg-none float-right">
+            <div class="sso-user-menu-toggler jh-navbar-toggler d-lg-none float-right mt-2">
                 <ngx-cnr-uict-sso-user-menu *ngIf="isAuthenticated()"
                     [account]="principal.userIdentity"
                     (logoutCallback)="logout()">
@@ -53,7 +53,7 @@
                     </div>
                 </ngx-cnr-uict-sso-user-menu>
             </div>
-            <a class="jh-navbar-toggler float-right" href="javascript:void(0);" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()">
+            <a class="jh-navbar-toggler float-right" *ngIf="isAuthenticated()" href="javascript:void(0);" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()">
                 <i class="fa fa-2x fa-fw fa-bars"></i>
             </a>
         </div>
@@ -122,7 +122,7 @@
                 <jhi-context *ngSwitchCase="true" [isNavbar]="true" class="d-md-flex">Loading context.....</jhi-context>
                 <ngx-cnr-uict-sso-apps-menu *ngIf="ssoAppsMenuDisplay && isAuthenticated()"
                     [account]="principal.userIdentity"
-                    class="mr-2 d-none d-md-flex">
+                    class="d-none d-md-flex">
                 </ngx-cnr-uict-sso-apps-menu>
                 <ngx-cnr-uict-sso-user-menu *ngSwitchCase="true"
                     class="d-none d-md-flex"

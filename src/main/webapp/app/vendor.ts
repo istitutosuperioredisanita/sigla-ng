@@ -53,7 +53,10 @@ import {
     faFilePdf,
     faCheckDouble,
     faInfoCircle,
-    faEnvelopeOpen
+    faEnvelopeOpen,
+    faCalendar,
+    faTree,
+    faClose
 } from '@fortawesome/free-solid-svg-icons';
 
 // Adds the SVG icon to the library so you can use it in your page
@@ -106,4 +109,7 @@ library.add(faFilePdf);
 library.add(faCheckDouble);
 library.add(faInfoCircle);
 library.add(faEnvelopeOpen);
+library.add(faCalendar);
+library.add(faTree);
+library.add(faClose);
 // jhipster-needle-add-element-to-vendor - JHipster will add new menu items here

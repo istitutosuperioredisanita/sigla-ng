@@ -1,3 +1,4 @@
+/.angular/cache
 target/
 !.mvn/wrapper/maven-wrapper.jar
 
@@ -30,3 +31,4 @@ bower_components/
 /node/
 /package-lock.json
 /*.log
+/yarn.lock

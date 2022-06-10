@@ -12,17 +12,16 @@ import { map, debounceTime } from 'rxjs/operators';
 @Component({
     selector: 'jhi-context',
     templateUrl: './context.component.html',
-    providers: [NgbDropdown, NgbTypeaheadConfig],
-    styleUrls: ['../layouts/navbar/navbar.css']
+    providers: [NgbDropdown, NgbTypeaheadConfig]
 })
 
 export class ContextComponent implements OnInit, OnDestroy {
     @Input() isNavbar: boolean;
-    @ViewChild('contextDrop') contextDrop;
+    @ViewChild('contextDrop', {static : true}) contextDrop;
 
-    @ViewChild('cds') cdsInput: ElementRef;
-    @ViewChild('uo') uoInput: ElementRef;
-    @ViewChild('cdr') cdrInput: ElementRef;
+    @ViewChild('cds', {static : false}) cdsInput: ElementRef;
+    @ViewChild('uo', {static : false}) uoInput: ElementRef;
+    @ViewChild('cdr', {static : false}) cdrInput: ElementRef;
 
     onSelectCdsSubscription: Subscription;
     onSelectUoSubscription: Subscription;
@@ -146,7 +145,7 @@ export class ContextComponent implements OnInit, OnDestroy {
                         name: 'onRefreshTree',
                         content: 'reopenView'
                     });
-                    this.eventManager.broadcast({name: 'onRefreshTodo'});
+                    this.eventManager.broadcast('onRefreshTodo');
                 });
             });
     }
@@ -176,7 +175,7 @@ export class ContextComponent implements OnInit, OnDestroy {
                             content: 'reopenView'
                         });
                     }
-                    this.eventManager.broadcast({name: 'onRefreshTodo'});
+                    this.eventManager.broadcast('onRefreshTodo');
                 });
             });
         this.contextService.setCdsModel(this.cdsModel);

@@ -4,7 +4,7 @@ import { Account, Principal } from '../shared';
 import { Leaf } from './leaf.model';
 import { WorkspaceService } from './workspace.service';
 import { Observable ,  Subscription } from 'rxjs';
-import { TreeComponent, TreeNode } from 'angular-tree-component';
+import { TreeComponent, TreeNode } from '@circlon/angular-tree-component';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { map, debounceTime } from 'rxjs/operators';
 import * as _ from 'lodash';
@@ -17,10 +17,7 @@ export class SIGLATreeNode {
 
 @Component({
     selector: 'jhi-tree',
-    templateUrl: './tree.component.html',
-    styleUrls: [
-        'tree.css'
-    ]
+    templateUrl: './tree.component.html'
 })
 export class SIGLATreeComponent implements OnInit, OnDestroy, AfterViewInit {
     isRequesting: boolean;
@@ -31,7 +28,7 @@ export class SIGLATreeComponent implements OnInit, OnDestroy, AfterViewInit {
     preferitiListener: Subscription;
     refreshTreeListener: Subscription;
     workspaceListener: Subscription;
-    @ViewChild(TreeComponent) tree: TreeComponent;
+    @ViewChild(TreeComponent, {static : true}) tree: TreeComponent;
     @Output() activateLeaf = new EventEmitter();
     @ViewChildren(NgbPopover) popovers: QueryList<NgbPopover>;
 

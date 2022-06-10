@@ -8,7 +8,6 @@ import { NgxCnrUictSsoModule } from 'ngx-cnr-uict-sso';
 
 import { LoginService, SiglaSharedModule, StateStorageService, UserRouteAccessService } from './shared';
 import { SiglaHomeModule } from './home/home.module';
-import { SiglaAdminModule } from './admin/admin.module';
 import { SiglaAccountModule } from './account/account.module';
 import { SiglaEntityModule } from './entities/entity.module';
 import { SiglaWorkspaceModule } from './workspace/workspace.module';
@@ -46,7 +45,6 @@ import { AuthService } from './shared/auth/auth.service';
         NgxWebstorageModule.forRoot({ prefix: 'jhi', separator: '-'}),
         SiglaSharedModule,
         SiglaHomeModule,
-        SiglaAdminModule,
         SiglaAccountModule,
         SiglaEntityModule,
         SiglaWorkspaceModule,

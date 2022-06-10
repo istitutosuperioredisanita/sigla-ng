@@ -68,7 +68,7 @@
                         <ng-template #popoverContent>
                             <span *ngIf="!node.data.cdaccesso" class="text-primary">{{node.data.name}}</span>
                             <p *ngIf="node.data.cdaccesso">Codice Accesso: <span class="text-primary">{{node.data.cdaccesso}}</span></p>
-                            <p *ngIf="node.data.dsaccesso">Descrizione: <span class="text-primary">{{node.data.dsaccesso}}<span></p>
+                            <p *ngIf="node.data.dsaccesso">Descrizione: <span class="text-primary">{{node.data.dsaccesso}}</span></p>
                         </ng-template>
                         <span *ngIf="!node.isLeaf" class="chevron float-right col col-auto">
                         <i *ngIf="!node.isExpanded" class="fa fa-chevron-right" aria-hidden="true"></i>
