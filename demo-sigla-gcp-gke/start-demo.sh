@@ -1,9 +1,8 @@
 #!/bin/bash
 
-cd terraform
-terraform init
-terraform apply -var="project_id=$project_id"
-cd ..
+#enable Google Api
+echo "Enabling Google API:"
+./enable_api.sh
 
 #read password from prompt
 echo "Please chose a password for database instance"
@@ -15,6 +14,12 @@ while true; do
   [ "$password" = "$password2" ] && break
   echo "Incorrect password: please try again"
 done
+
+#infrastructure deploy by Terraform
+cd terraform
+terraform init
+terraform apply -var="project_id=$project_id"
+cd ..
 
 #init database
 gcloud sql users create sigla --instance=pdb-team-digi-sigla-001 --password=$password
@@ -102,3 +107,8 @@ fi
 envsubst <  gke-sigla-ng.yaml > gke-sigla-ng-sub.yaml
 
 kubectl apply -f gke-sigla-ng-sub.yaml
+
+echo "Sigla Deploy is finished!"
+echo "Services can take few minutes to be up and running"
+echo "sigla-thortail interface: $sigla_thorntail_ip/SIGLA/Login.do"
+echo "sigla-ng frontend: $sigla_ng_ip"

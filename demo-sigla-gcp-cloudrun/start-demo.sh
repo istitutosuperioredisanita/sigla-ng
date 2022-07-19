@@ -1,9 +1,8 @@
 #!/bin/bash
 
-cd terraform
-terraform init
-terraform apply -var="project_id=$project_id"
-cd ..
+#enable Google Api
+echo "Enabling Google API:"
+./enable_api.sh
 
 #read password from prompt
 echo "Please chose a password for database instance"
@@ -19,6 +18,12 @@ done
 #Create a secret in GCP secret manager
 gcloud secrets create db-password
 echo -n $password | gcloud secrets versions add db-password --data-file=-
+
+#infrastructure deploy by Terraform
+cd terraform
+terraform init
+terraform apply -var="project_id=$project_id"
+cd ..
 
 #init database
 gcloud sql users create sigla --instance=pdb-team-digi-sigla-001 --password=$password
@@ -61,3 +66,8 @@ export sigla_thorntail_url=$(gcloud run services describe sigla-thorntail --plat
 envsubst <  sigla-ng.yaml > sigla-ng-sub.yaml
 
 gcloud run services replace sigla-ng-sub.yaml
+
+echo "Sigla Deploy is finished!"
+echo "Services can take few minutes to be up and running"
+echo "sigla-thortail interface: $sigla_thorntail_url/SIGLA/Login.do"
+echo "sigla-ng frontend: $sigla_ng_url"

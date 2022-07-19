@@ -95,6 +95,9 @@ resource "google_sql_database_instance" "instance" {
   database_version = "POSTGRES_9_6"
   project  = var.project_id
 
+  #comment line above to prevent database deletion
+  deletion_protection = false
+
   depends_on = [google_service_networking_connection.private-vpc-connection]
 
   settings {
@@ -112,7 +115,6 @@ resource "google_service_account" "default" {
   display_name = "Service Account"
   project                 = var.project_id
 }
-
 
 resource "google_container_cluster" "primary" {
   project                 = var.project_id
