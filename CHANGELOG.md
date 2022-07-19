@@ -1,7 +1,23 @@
 # sigla-ng Changelog
 
-## Release 3.0.7  -- _March 19, 2022_ 
+## Release 3.0.8  -- _June 06, 2022_ 
 ### No issue
+
+>**Add background logo**
+>
+>[5570e3b70b88b7d](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/5570e3b70b88b7d) marco.spasiano *June 06, 2022*
+
+>**Upgrade ngx-cnr-uict-sso to 0.9.3**
+>
+>[aaa98fa800325cf](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/aaa98fa800325cf) marco.spasiano *March 29, 2022*
+
+>**Upgrade ngx-cnr-uict-sso to 0.9.2**
+>
+>[bf4adcb47c643d5](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/bf4adcb47c643d5) marco.spasiano *March 25, 2022*
+
+>**Generate CHANGELOG.md [ci skip]**
+>
+>[c1a9c5c3eb6cd2c](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/c1a9c5c3eb6cd2c) marco.spasiano *March 19, 2022*
 
 >**FIX sso-user-menu**
 >
