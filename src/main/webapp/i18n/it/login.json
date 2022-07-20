@@ -6,7 +6,8 @@
             "password.placeholder": "La tua password",
             "rememberme": "Ricordami",
             "button": "Accedi",
-            "change-password": "Cambia password"
+            "change-password": "Cambia password",
+            "manage-account": "Gestione account"
         },
         "messages": {
             "error": {

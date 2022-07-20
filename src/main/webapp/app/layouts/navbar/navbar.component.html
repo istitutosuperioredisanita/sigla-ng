@@ -35,6 +35,8 @@
             <div class="sso-user-menu-toggler jh-navbar-toggler d-lg-none float-right mt-2">
                 <ngx-cnr-uict-sso-user-menu *ngIf="isAuthenticated()"
                     [account]="principal.userIdentity"
+                    [manageAccountLabel]="accountLabel"
+                    (manageAccountCallback)="manageAccount()"
                     (logoutCallback)="logout()">
                     <div class="dropdown-divider"></div>
                     <div class="list-group">
@@ -120,13 +122,17 @@
                     </ul>
                 </li>
                 <jhi-context *ngSwitchCase="true" [isNavbar]="true" class="d-md-flex">Loading context.....</jhi-context>
-                <ngx-cnr-uict-sso-apps-menu *ngIf="ssoAppsMenuDisplay && isAuthenticated()"
+                <ngx-cnr-uict-sso-apps-menu
+                    *ngIf="ssoAppsMenuDisplay && isAuthenticated()"
+                    class="mt-1"
                     [account]="principal.userIdentity"
                     class="d-none d-md-flex">
                 </ngx-cnr-uict-sso-apps-menu>
                 <ngx-cnr-uict-sso-user-menu *ngSwitchCase="true"
-                    class="d-none d-md-flex"
+                    class="d-none d-md-flex mt-1"
                     [account]="principal.userIdentity"
+                    [manageAccountLabel]="accountLabel"
+                    (manageAccountCallback)="manageAccount()"
                     (logoutCallback)="logout()">
                     <div class="dropdown-divider"></div>
                     <div class="list-group">

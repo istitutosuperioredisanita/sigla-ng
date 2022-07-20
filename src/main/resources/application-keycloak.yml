@@ -20,3 +20,7 @@ sso:
         contesto: sigla-app
         username_cnr: username_cnr
         logout_success_url: https://apps.cnr.it
+
+security:
+    ldap:
+        change.password.url: "https://utenti.cnr.it"

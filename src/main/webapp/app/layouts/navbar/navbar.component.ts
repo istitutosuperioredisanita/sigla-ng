@@ -19,6 +19,8 @@ export class NavbarComponent implements OnInit {
     ssoAppsMenuDisplay: boolean;
     languages: any[];
     instituteAcronym: string;
+    urlChangePassword: string;
+    accountLabel: string;
     swaggerEnabled: boolean;
     modalRef: NgbModalRef;
     version: string;
@@ -50,6 +52,12 @@ export class NavbarComponent implements OnInit {
             this.instituteAcronym = profileInfo.instituteAcronym;
             this.keycloakEnabled = profileInfo.keycloakEnabled;
             this.ssoAppsMenuDisplay = profileInfo.ssoAppsMenuDisplay;
+            this.urlChangePassword = profileInfo.urlChangePassword;
+            if (this.urlChangePassword) {
+                this.translateService.get('login.form.manage-account').subscribe((text: string) => {
+                    this.accountLabel = text;
+                });
+            }
         });
         this.workspaceService.version().subscribe((version) => {
             this.version = version;
@@ -101,5 +109,9 @@ export class NavbarComponent implements OnInit {
 
     setHidden(hidden: boolean) {
         this.workspaceService.menuHidden(hidden);
+    }
+
+    manageAccount() {
+        location.href = this.urlChangePassword;
     }
 }

@@ -20,7 +20,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>it.cnr.si.sigla</groupId>
     <artifactId>sigla-ng</artifactId>
-    <version>3.0.7-SNAPSHOT</version>
+    <version>3.0.9-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>sigla-ng</name>
     <description>Nuova Interfaccia - Sistema Informativo per la Gestione delle Linee di Attività</description>
