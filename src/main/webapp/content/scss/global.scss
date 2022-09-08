@@ -385,6 +385,18 @@ html {
   span.form-control:empty{
       display: none;
   }
+
+  table.sigla-table thead,
+  table.sigla-table tfoot {
+    position: sticky;
+  }
+  table.sigla-table thead {
+    inset-block-start: -1px; /* "top" */
+  }
+  table.sigla-table tfoot {
+    inset-block-end: -1px; /* "bottom" */
+  }
+
   @media screen and (min-width: 768px) {
     div.div-sigla-table {
         max-height: 70vh;
@@ -760,6 +772,9 @@ html {
   @media screen and (max-width: 768px) {
     ngb-typeahead-window {
         min-width: 90vw!important;
+    }
+    .logo-img {
+      zoom: 80%;
     }
   }
   ngb-typeahead-window {
