@@ -166,6 +166,9 @@ function doScaricaExcel(url) {
 function doPrint(url) {
     window.open(url, "Stampa", 'toolbar=no,resizable,scrollbars,width=800,height=600').focus() 
 }
+function doOpenWindow(url, name, params) {
+    window.open(url, name, params).focus() 
+}
 function handleOnLoad() {
     window.onloadHandlers.evaluate()
 }
