@@ -1,5 +1,17 @@
 # sigla-ng Changelog
 
+## Release 3.0.10  -- _October 27, 2022_ 
+### No issue
+
+>**Update sigla-main.js**
+>
+>[248d1428c7b1fd3](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/248d1428c7b1fd3) SPASIANO MARCO *October 27, 2022*
+
+>**Generate CHANGELOG.md [ci skip]**
+>
+>[d4edb147bff845b](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/d4edb147bff845b) marco.spasiano *September 08, 2022*
+
+
 ## Release 3.0.9  -- _September 08, 2022_ 
 ### No issue
 
