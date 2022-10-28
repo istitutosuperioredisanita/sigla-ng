@@ -1,5 +1,17 @@
 # sigla-ng Changelog
 
+## Release 3.0.11  -- _October 28, 2022_ 
+### No issue
+
+>**Update global.scss**
+>
+>[56d6707aca0403d](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/56d6707aca0403d) SPASIANO MARCO *October 28, 2022*
+
+>**Generate CHANGELOG.md [ci skip]**
+>
+>[254bde8e132de4c](https://github.com/consiglionazionaledellericerche/sigla-ng/commit/254bde8e132de4c) marco.spasiano *October 27, 2022*
+
+
 ## Release 3.0.10  -- _October 27, 2022_ 
 ### No issue
 
