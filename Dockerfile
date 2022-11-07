@@ -36,10 +36,14 @@ ENV BASE_URL=http://localhost:8080
 ENV APPLICATION_CONTEXT=/SIGLA
 ENV API_CONTEXT=/restapi
 ENV URL_CHANGE_PASSWORD=https://utenti.cnr.it/utenti/app/action/pub/pass/password
+ENV SSO_APPS_MENU_DISPLAY=false
 ENV INSTITUTE_ACRONYM=CNR
 ENV OIDC_ENABLE=false
-ENV OIDC_FORCE=false
-ENV SSO_APPS_MENU_DISPLAY=false
+ENV OIDC_AUTHORITY=http://dockerwebtest02.si.cnr.it:8110/auth/realms/cnr/.well-known/openid-configuration
+ENV OIDC_CLIENTID=angular-public
+ENV OIDC_REDIRECTURL=http://localhost:9000
+ENV OIDC_POSTLOGOUTREDIRECTURL=https://apps.cnr.it
+
 
 # When the container starts, replace the env.js with values from environment variables
 CMD ["/bin/sh",  "-c",  "envsubst < /usr/share/nginx/html/env.template.js > /usr/share/nginx/html/env.js && exec nginx -g 'daemon off;'"]

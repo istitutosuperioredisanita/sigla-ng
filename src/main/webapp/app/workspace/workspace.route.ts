@@ -11,5 +11,5 @@ export const WORKSPACE_ROUTE: Route = {
         authorities: ['ROLE_USER'],
         pageTitle: 'global.menu.workspace'
     },
-    canActivate: environment.oidc.enable ? [AutoLoginAllRoutesGuard] : [UserRouteAccessService]
+    canActivate: ((environment.oidc.enable  === 'true') ? true : false) ? [AutoLoginAllRoutesGuard] : [UserRouteAccessService]
 };

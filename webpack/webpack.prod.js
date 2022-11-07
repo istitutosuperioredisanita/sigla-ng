@@ -98,33 +98,6 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
             }
         },
         minimizer: [
-            new TerserPlugin({
-                parallel: true,
-                cache: true,
-                terserOptions: {
-                    ie8: false,
-                    // sourceMap: true, // Enable source maps. Please note that this will slow down the build
-                    compress: {
-                        dead_code: true,
-                        warnings: false,
-                        properties: true,
-                        drop_debugger: true,
-                        conditionals: true,
-                        booleans: true,
-                        loops: true,
-                        unused: true,
-                        toplevel: true,
-                        if_return: true,
-                        inline: true,
-                        join_vars: true
-                    },
-                    output: {
-                        comments: false,
-                        beautify: false,
-                        indent_level: 2
-                    }
-                }
-            }),
             new OptimizeCSSAssetsPlugin({})
         ]
     },

@@ -10,5 +10,5 @@ export const HOME_ROUTE: Route = {
         authorities: [],
         pageTitle: 'home.title'
     },
-    canActivate: environment.oidc.enable ? [AutoLoginAllRoutesGuard] : []
+    canActivate: ((environment.oidc.enable  === 'true') ? true : false) ? [AutoLoginAllRoutesGuard] : []
 };

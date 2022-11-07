@@ -18,7 +18,7 @@ export class AuthServerProvider {
     }
 
     loginWildfly(credentials, userContext: UserContext): Observable<any> {
-        if (environment.oidc.enable) {
+        if ((environment.oidc.enable  === 'true') ? true : false) {
             return this.accountService.get();
         } else {
             const data = 'j_username=' + encodeURIComponent(credentials.username) + '&j_password=' + encodeURIComponent(credentials.password);

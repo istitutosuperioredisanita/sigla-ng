@@ -10,7 +10,7 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private oidcSecurityService: OidcSecurityService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-      if (environment.oidc.enable) {
+      if ((environment.oidc.enable  === 'true') ? true : false) {
         const copiedReq = req.clone({
           params: req.params
             .set(`access_token`, this.oidcSecurityService.getAccessToken())

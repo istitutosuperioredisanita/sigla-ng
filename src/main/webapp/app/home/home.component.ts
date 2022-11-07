@@ -42,7 +42,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-        this.oidcEnable = environment.oidc.enable;
+        this.oidcEnable = (environment.oidc.enable === 'true') ? true : false;
         this.translateService.setDefaultLang('it');
         if (!this.oidcEnable && this.isAuthenticated()) {
             this.principal.identity().then((account) => {

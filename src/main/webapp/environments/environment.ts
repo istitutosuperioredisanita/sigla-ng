@@ -6,11 +6,11 @@ export const environment = {
   debug: window['env']['debug'] || false,
   urlChangePassword: window['env']['urlChangePassword'],
   instituteAcronym: window['env']['instituteAcronym'],
-  ssoAppsMenuDisplay: window['env']['ssoAppsMenuDisplay'] || false,
+  ssoAppsMenuDisplay: window['env']['ssoAppsMenuDisplay'] || 'false',
   oidc: {
-    enable: window['env']['oidc.enable'] || false,
-    authority: window["env"]["oidc.authority"],
-    redirectUrl: window["env"]["oidc.redirectUrl"],
+    enable: window['env']['oidc.enable'] || 'false',
+    authority: window['env']['oidc.authority'],
+    redirectUrl: window['env']['oidc.redirectUrl'],
     clientId: window['env']['oidc.clientId'],
     postLogoutRedirectUri: window['env']['oidc.postLogoutRedirectUri'] || window.location.origin
   }

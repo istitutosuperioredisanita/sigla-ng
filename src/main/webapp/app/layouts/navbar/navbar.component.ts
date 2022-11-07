@@ -42,13 +42,13 @@ export class NavbarComponent implements OnInit {
 
     ngOnInit() {
         this.translateService.setDefaultLang('it');
-        this.oidcEnabled = environment.oidc.enable;
+        this.oidcEnabled = (environment.oidc.enable  === 'true') ? true : false;
         this.languageHelper.getAll().then((languages) => {
             this.languages = languages;
         });
         this.inProduction = environment.production;
         this.instituteAcronym = environment.instituteAcronym;
-        this.ssoAppsMenuDisplay = environment.ssoAppsMenuDisplay;
+        this.ssoAppsMenuDisplay = (environment.ssoAppsMenuDisplay === 'true') ? true : false;
         this.urlChangePassword = environment.urlChangePassword;
         if (this.urlChangePassword) {
             this.translateService.get('login.form.manage-account').subscribe((text: string) => {
