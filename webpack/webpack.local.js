@@ -29,7 +29,7 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
                 '/auth'
             ],
             target: 'http://as4dock.si.cnr.it',
-            headers: {host:'sigla-ng.test.si.cnr.it'},
+            headers: {host:'sigla-ng-ep.test.si.cnr.it'},
             secure: false
         },
         {

@@ -1,5 +1,5 @@
-import {of as observableOf, throwError as observableThrowError, Subject, Observable, pipe} from 'rxjs';
-import {catchError, map, switchMap} from 'rxjs/operators';
+import {of as observableOf, Observable, pipe} from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Token } from '../model/token.model';
 import { Principal } from './principal.service';

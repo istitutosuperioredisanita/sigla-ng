@@ -53,6 +53,9 @@ html {
     width: inherit;
     display: inline-flex;
   }
+  .breadcrumb-item + .breadcrumb-item::before {
+    color: #fff;
+  }
   /* ==========================================================================
   Browser Upgrade Prompt
   ========================================================================== */
@@ -389,6 +392,7 @@ html {
   table.sigla-table thead,
   table.sigla-table tfoot {
     position: sticky;
+    z-index: 1;
   }
   table.sigla-table thead {
     inset-block-start: -1px; /* "top" */

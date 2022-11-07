@@ -22,7 +22,7 @@ export class JhiMultipleUserModalComponent implements OnInit {
         private principal: Principal,
         public activeModal: NgbActiveModal
     ) {
-        this.principal.identity().then((account) => {
+        this.principal.identity().then((account: Account) => {
             this.account = account;
         });
     }

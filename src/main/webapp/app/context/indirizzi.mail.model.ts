@@ -1,17 +1,16 @@
 export class IndirizziMail {
     constructor(
-        public id: {
-            cdUtente: string,
-            indirizzoMail: string
-        },
+        public cd_utente: string,
+        public indirizzo_mail: string,
         public checked: boolean,
-        public erroreMancataApprovazioneVarBilancioRes: boolean,
-        public approvazioneVarStanziamentoResiduo: boolean,
-        public erroreMancataApprovazioneVarBilancioComp: boolean,
-        public approvazioneVarStanziamentoCompetenza: boolean,
-        public esitoPositivoFattElettronicaAttiva: boolean,
-        public esitoNegativoFattElettronicaAttiva: boolean,
-        public notificaRicezioneFatturaPassiva: boolean,
-        public dacr: Date
+        public fl_err_appr_var_bil_cnr_res: boolean,
+        public fl_com_app_var_stanz_res: boolean,
+        public fl_err_appr_var_bil_cnr_comp: boolean,
+        public fl_com_app_var_stanz_comp: boolean,
+        public flEsitoPosFattElettr: boolean,
+        public flEsitoNegFattElettr: boolean,
+        public flFepNotificaRicezione: boolean,
+        public crudStatus: number,
+        public pgVerRec: number
     ) { }
 }

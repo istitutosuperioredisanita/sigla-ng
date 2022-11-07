@@ -43,7 +43,7 @@
                     <table class="sigla-table table table-bordered table-hover table-striped table-sm">
                         <thead class="table-primary">
                             <tr>
-                                <th class="TableHeader align-middle" align="center" valign="center">
+                                <th class="TableHeader align-middle" valign="center">
                                     <button class="btn btn-sm btn-link hand" (click)="selectAll()" placement="right" container="body"  ngbTooltip="Seleziona/Deseleziona tutti">
                                         <i class="fa fa-check-square-o" aria-hidden="true"></i>
                                     </button>
@@ -53,9 +53,9 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let indirizzoMail of indirizziMail" (click)="setClickedRow(indirizzoMail)" class="hand"
-                                [ngClass]="{'bg-primary text-white' : indirizzoMail.id.indirizzoMail == currentIndirizzoMail.id.indirizzoMail}">
+                                [ngClass]="{'bg-primary text-white' : indirizzoMail.indirizzo_mail == currentIndirizzoMail.indirizzo_mail}">
                                 <td><input type="checkbox" [(ngModel)]="indirizzoMail.checked"></td>
-                                <td>{{indirizzoMail.id.indirizzoMail}}</td>
+                                <td>{{indirizzoMail.indirizzo_mail}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -69,8 +69,8 @@
                 <form name="form" role="form" (ngSubmit)="save()" #settingsForm="ngForm" *ngIf="settingsAccount" novalidate>
                     <div class="form-group">
                         <label class="form-control-label" for="email" jhiTranslate="settings.form.email">E-Mail</label>
-                        <input type="email" [disabled]="!isFormInserting()" class="form-control" id="email" name="email" placeholder="{{'global.form.email.placeholder' | translate}}"
-                                [(ngModel)]="currentIndirizzoMail.id.indirizzoMail" minlength="5" maxlength="100" #emailInput="ngModel" email required>
+                        <input type="email" [disabled]="!isFormInserting()" class="form-control w-100" id="email" name="email" placeholder="{{'global.form.email.placeholder' | translate}}"
+                                [(ngModel)]="currentIndirizzoMail.indirizzo_mail" minlength="5" maxlength="100" #emailInput="ngModel" email required>
                         <div *ngIf="emailInput.dirty && emailInput.invalid">
                             <small class="form-text text-danger"
                                 *ngIf="emailInput.errors.required" jhiTranslate="global.messages.validate.email.required">
@@ -93,25 +93,25 @@
                     <h5 class="text-primary mt-2">Variazioni</h5>
                     <div class="card p-2">
                         <div class="form-check">
-                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.erroreMancataApprovazioneVarBilancioRes" id="erroreMancataApprovazioneVarBilancioRes" name="erroreMancataApprovazioneVarBilancioRes">
+                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.fl_err_appr_var_bil_cnr_res" id="erroreMancataApprovazioneVarBilancioRes" name="erroreMancataApprovazioneVarBilancioRes">
                             <label class="form-check-label" for="erroreMancataApprovazioneVarBilancioRes">
                                 Invia errore di mancata approvazione Variazioni al Bilancio dell'Ente
                             </label>
                         </div>
                         <div class="form-check">
-                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.approvazioneVarStanziamentoResiduo" id="approvazioneVarStanziamentoResiduo" name="approvazioneVarStanziamentoResiduo">
+                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.fl_com_app_var_stanz_res" id="approvazioneVarStanziamentoResiduo" name="approvazioneVarStanziamentoResiduo">
                             <label class="form-check-label" for="approvazioneVarStanziamentoResiduo">
                                 Comunica avvenuta approvazione Variazioni allo Stanziamento Residuo
                             </label>
                         </div>
                         <div class="form-check">
-                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.erroreMancataApprovazioneVarBilancioComp" id="erroreMancataApprovazioneVarBilancioComp" name="erroreMancataApprovazioneVarBilancioComp">
+                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.fl_err_appr_var_bil_cnr_comp" id="erroreMancataApprovazioneVarBilancioComp" name="erroreMancataApprovazioneVarBilancioComp">
                             <label class="form-check-label" for="erroreMancataApprovazioneVarBilancioComp">
                                     Invia errore di mancata approvazione Variazioni al Bilancio dell'Ente generate da Variazioni alla Competenza
                             </label>
                         </div>
                         <div class="form-check">
-                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.approvazioneVarStanziamentoCompetenza" id="approvazioneVarStanziamentoCompetenza" name="approvazioneVarStanziamentoCompetenza">
+                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.fl_com_app_var_stanz_comp" id="approvazioneVarStanziamentoCompetenza" name="approvazioneVarStanziamentoCompetenza">
                             <label class="form-check-label" for="approvazioneVarStanziamentoCompetenza">
                                 Comunica avvenuta approvazione Variazioni alla Competenza
                             </label>
@@ -120,13 +120,13 @@
                     <h5 class="text-primary mt-2">Fatturazione Elettronica Attiva</h5>
                     <div class="card p-2">
                         <div class="form-check">
-                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.esitoPositivoFattElettronicaAttiva" id="esitoPositivoFattElettronicaAttiva" name="esitoPositivoFattElettronicaAttiva">
+                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.flEsitoPosFattElettr" id="esitoPositivoFattElettronicaAttiva" name="esitoPositivoFattElettronicaAttiva">
                             <label class="form-check-label" for="esitoPositivoFattElettronicaAttiva">
                                 Comunicazione via Mail dell'esito positivo
                             </label>
                         </div>
                         <div class="form-check">
-                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.esitoNegativoFattElettronicaAttiva" id="esitoNegativoFattElettronicaAttiva" name="esitoNegativoFattElettronicaAttiva">
+                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.flEsitoNegFattElettr" id="esitoNegativoFattElettronicaAttiva" name="esitoNegativoFattElettronicaAttiva">
                             <label class="form-check-label" for="esitoNegativoFattElettronicaAttiva">
                                 Comunicazione via Mail dell'esito negativo
                             </label>
@@ -135,7 +135,7 @@
                     <h5 class="text-primary mt-2">Fatturazione Elettronica Passiva</h5>
                     <div class="card p-2">
                         <div class="form-check">
-                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.notificaRicezioneFatturaPassiva" id="notificaRicezioneFatturaPassiva" name="notificaRicezioneFatturaPassiva">
+                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.flFepNotificaRicezione" id="notificaRicezioneFatturaPassiva" name="notificaRicezioneFatturaPassiva">
                             <label class="form-check-label" for="notificaRicezioneFatturaPassiva">
                                 Comunicazione via Mail ricezione nuova Fattura elettronica
                             </label>

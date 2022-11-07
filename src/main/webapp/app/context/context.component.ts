@@ -135,19 +135,15 @@ export class ContextComponent implements OnInit, OnDestroy {
             Pair.getFirst(this.uoModel),
             Pair.getFirst(this.cdrModel)
         );
-        this.contextService
-            .saveEsecizio(esercizio)
-            .subscribe((identity: Account) => {
-                this.principal.authenticate(identity);
-                this.contextService.saveWildflyUserContext(userContext, this.principal.getAccount()).subscribe(() => {
-                    this.localStateStorageService.storeEsercizio(this.principal.getAccount().username, esercizio);
-                    this.eventManager.broadcast({
-                        name: 'onRefreshTree',
-                        content: 'reopenView'
-                    });
-                    this.eventManager.broadcast('onRefreshTodo');
-                });
+        this.contextService.saveWildflyUserContext(userContext).subscribe(() => {
+            this.principal.getAccount().setEsercizio(esercizio);
+            this.localStateStorageService.storeEsercizio(this.principal.getAccount().username, esercizio);
+            this.eventManager.broadcast({
+                name: 'onRefreshTree',
+                content: 'reopenView'
             });
+            this.eventManager.broadcast('onRefreshTodo');
+        });
     }
 
     resetContext(): void {
@@ -163,25 +159,21 @@ export class ContextComponent implements OnInit, OnDestroy {
                 Pair.getFirst(this.uoModel),
                 Pair.getFirst(this.cdrModel)
             );
-        this.contextService
-            .saveUserContext(userContext)
-            .subscribe((identity) => {
-                this.principal.authenticate(identity);
-                this.contextService.saveWildflyUserContext(userContext, this.principal.getAccount()).subscribe(() => {
-                    this.localStateStorageService.storeUserContext(this.principal.getAccount().username, userContext);
-                    if (refreshTree) {
-                        this.eventManager.broadcast({
-                            name: 'onRefreshTree',
-                            content: 'reopenView'
-                        });
-                    }
-                    this.eventManager.broadcast('onRefreshTodo');
+        this.contextService.saveWildflyUserContext(userContext).subscribe(() => {
+            this.localStateStorageService.storeUserContext(this.principal.getAccount().username, userContext);
+            if (refreshTree) {
+                this.eventManager.broadcast({
+                    name: 'onRefreshTree',
+                    content: 'reopenView'
                 });
-            });
-        this.contextService.setCdsModel(this.cdsModel);
-        this.contextService.setUoModel(this.uoModel);
-        this.contextService.setCdRModel(this.cdrModel);
-        this.router.navigate(['/workspace']);
+            }
+            this.contextService.findEsercizi(this.cdsModel ? this.cdsModel.first : undefined);
+            this.eventManager.broadcast('onRefreshTodo');
+            this.contextService.setCdsModel(this.cdsModel);
+            this.contextService.setUoModel(this.uoModel);
+            this.contextService.setCdRModel(this.cdrModel);
+            this.router.navigate(['/workspace']);
+        });
     }
 
     getCodiceCdS(): string {

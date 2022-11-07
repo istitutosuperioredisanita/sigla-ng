@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class AuthExpiredInterceptor implements HttpInterceptor {
-    private API_ACCOUNT = '/api/account';
+    private API_ACCOUNT = '/restapi/account';
     constructor(
         private stateStorageService: StateStorageService,
         private router: Router,
@@ -22,11 +22,7 @@ export class AuthExpiredInterceptor implements HttpInterceptor {
                 (error: any) => {
                     const destination = this.stateStorageService.getDestinationState();
                     if (error instanceof HttpErrorResponse) {
-                        if (error.status === 401 && error.message !== '') {
-                            if (error.url.indexOf(this.API_ACCOUNT) !== -1) {
-                                location.href = '/sso/login';
-                                return EMPTY;
-                            }
+                        if ((error.status === 401 || error.status === 0) && error.message !== '') {
                             if (error.url.indexOf('/api/authentication') === -1) {
                                 this.loginService.logoutAndRedirect();
                                 return EMPTY;

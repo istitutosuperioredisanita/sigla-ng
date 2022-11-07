@@ -28,7 +28,7 @@
             [resultTemplate]="rt"
             [inputFormatter]="formatter"
             [resultFormatter]="formatter"
-            (selectItem)="onSelectLeaf($event.item)"
+            (selectItem)="onSelectLeaf($event.item, true)"
             class="form-control outline-secondary"
             placeholder="Cerca nel menu......"
             id="search-tree"/>

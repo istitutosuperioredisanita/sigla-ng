@@ -34,7 +34,7 @@ export class JhiMessaggiModalComponent {
     }
 
     newMessaggio() {
-        this.currentMessaggio = new Messaggio(0, false, null, null, null, null, null);
+        this.currentMessaggio = new Messaggio(0, false, null, null, null, null, null, null);
     }
 
     setClickedRow(messaggio: Messaggio) {
@@ -43,14 +43,16 @@ export class JhiMessaggiModalComponent {
 
     selectAll() {
         this.contextService.messaggi.forEach((messaggio) => {
-            messaggio.checked = !messaggio.checked;
+            if (messaggio.cd_utente !== null) {
+                messaggio.checked = !messaggio.checked;
+            }
         });
     }
 
     deleteCurrentMessaggio() {
         this.contextService.deleteMessaggi(
             this.contextService.messaggi.filter((messaggio) => {
-                return messaggio.pgMessaggio === this.currentMessaggio.pgMessaggio;
+                return messaggio.pg_messaggio === this.currentMessaggio.pg_messaggio;
             })
         ).subscribe((messaggi) => {
             this.contextService.messaggi = messaggi;

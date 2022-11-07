@@ -1,4 +1,6 @@
 /* after changing this file run 'yarn run webpack:build' */
+$breadcrumb-divider: quote(">");
+
 @import '~bootstrap/scss/bootstrap.scss';
 @import '~font-awesome-animation/dist/font-awesome-animation.min.css';
 @import '~flatpickr/dist/flatpickr.min.css';

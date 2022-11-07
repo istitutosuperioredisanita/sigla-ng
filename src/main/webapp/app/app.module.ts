@@ -27,7 +27,6 @@ import {
     LayoutRoutingModule,
     NavbarComponent,
     FooterComponent,
-    ProfileService,
     PageRibbonComponent,
     ActiveMenuDirective,
     ErrorComponent
@@ -37,6 +36,8 @@ import { AuthInterceptor } from './blocks/interceptor/auth.interceptor';
 import { ErrorHandlerInterceptor } from './blocks/interceptor/errorhandler.interceptor';
 import { NotificationInterceptor } from './blocks/interceptor/notification.interceptor';
 import { AuthService } from './shared/auth/auth.service';
+import { AuthModule, LogLevel, OidcSecurityService } from 'angular-auth-oidc-client';
+import { environment } from '../environments/environment';
 
 @NgModule({
     imports: [
@@ -56,6 +57,18 @@ import { AuthService } from './shared/auth/auth.service';
             }
         }),
         NgxCnrUictSsoModule,
+        AuthModule.forRoot({
+            config: {
+              authority: environment.oidc.authority || window.location.origin,
+              redirectUrl: environment.oidc.redirectUrl || window.location.origin,
+              postLogoutRedirectUri: environment.oidc.postLogoutRedirectUri || window.location.origin,
+              clientId: environment.oidc.clientId || 'clientId',
+              scope: 'openid profile email offline_access',
+              responseType: 'code',
+              useRefreshToken: true,
+              logLevel: LogLevel.None,
+            },
+          }),
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [
@@ -71,7 +84,7 @@ import { AuthService } from './shared/auth/auth.service';
             provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptor,
             multi: true,
-            deps: [AuthService]
+            deps: [OidcSecurityService]
         },
         {
             provide: HTTP_INTERCEPTORS,
@@ -91,7 +104,6 @@ import { AuthService } from './shared/auth/auth.service';
             multi: true,
             deps: [Injector]
         },
-        ProfileService,
         PaginationConfig,
         UserRouteAccessService,
         ContextService,

@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, Input, ElementRef, Renderer2, ViewChild, Inject, HostListener } from '@angular/core';
-import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
+import { Component, OnInit, OnDestroy, ElementRef, Renderer2, ViewChild, HostListener } from '@angular/core';
+import { JhiEventManager } from 'ng-jhipster';
 import { Principal, LoginService, Account } from '../shared';
 import { Subscription } from 'rxjs';
 import { WorkspaceService } from './workspace.service';
@@ -127,6 +127,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         this.onSelectCdrSubscription = this.eventManager.subscribe('onSelectCdr', (message) => {
             this.cdrModel = message.content;
         });
+        this.caricaTODO();
     }
 
     gutterClick(e: {gutterNum: number, sizes: Array<number>}) {
@@ -194,7 +195,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         if (this.leaf) {
             this.siglaPageTitle = this.leaf.breadcrumbS;
             this.startRefreshing();
-            this.workspaceService.openMenu(nodo.id, this.account).subscribe((html) => {
+            this.workspaceService.openMenu(nodo.id, this.account, nodo.favorites).subscribe((html) => {
                 this.renderHtml(html);
                 this.stopRefreshing();
             }, (error) => {
@@ -243,7 +244,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
             const siglaPageTitle = this.container.nativeElement.querySelector('sigla-page-title');
             const form = this.container.nativeElement.querySelector('form');
             if (siglaPageTitle) {
-                siglaPageTitle.innerHTML = this.leaf.breadcrumbS + ' - ' + siglaTitle.innerHTML + siglaPageTitle.innerHTML;
+                siglaPageTitle.innerHTML = siglaTitle.innerHTML + siglaPageTitle.innerHTML;
             }
             this.logoVisible = (
                 form === null ||

@@ -15,6 +15,7 @@
                     "401": "<strong>Accesso non riuscito!</strong> Si prega di controllare le credenziali e riprovare.",
                     "403": "<strong>Accesso non riuscito!</strong> Utente non utilizzato da più di sei mesi.",
                     "404": "<strong>Accesso non riuscito!</strong> Errore di collegamento, riprovare.",
+                    "500": "<strong>Accesso non riuscito!</strong> Errore di collegamento, riprovare.",
                     "504": "<strong>Accesso non riuscito!</strong> Richiesta scaduta, riprovare.",
                     "503": "<strong>Accesso non riuscito!</strong> Errore di collegamento, riprovare.",
                     "555": "<strong>Utente non più valido o con data di validità scaduta.</strong> Contattare l'amministratore utenti di SIGLA.",

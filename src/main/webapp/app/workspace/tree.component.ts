@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, Input, ViewChild, EventEmitter, Output, QueryList, ViewChildren, AfterViewInit } from '@angular/core';
-import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
+import { Component, OnInit, OnDestroy, ViewChild, EventEmitter, Output, QueryList, ViewChildren, AfterViewInit } from '@angular/core';
+import { JhiEventManager } from 'ng-jhipster';
 import { Account, Principal } from '../shared';
 import { Leaf } from './leaf.model';
 import { WorkspaceService } from './workspace.service';
@@ -8,6 +8,7 @@ import { TreeComponent, TreeNode } from '@circlon/angular-tree-component';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { map, debounceTime } from 'rxjs/operators';
 import * as _ from 'lodash';
+import { LocalStateStorageService } from '../shared/auth/local-storage.service';
 
 export class SIGLATreeNode {
     id: String;
@@ -33,7 +34,7 @@ export class SIGLATreeComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChildren(NgbPopover) popovers: QueryList<NgbPopover>;
 
     constructor(
-        private jhiLanguageService: JhiLanguageService,
+        private localStateStorageService: LocalStateStorageService,
         private workspaceService: WorkspaceService,
         private principal: Principal,
         private eventManager: JhiEventManager
@@ -61,31 +62,32 @@ export class SIGLATreeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     formatter = (leaf: Leaf) => '';
 
-    onSelectLeaf = (leaf: Leaf) => {
+    onSelectLeaf = (leaf: Leaf, favorites: boolean) => {
         leaf.breadcrumb.map((segment) => {
             const leafId = _.keys(segment)[0];
             const node = this.tree.treeModel.getNodeById(leafId);
             this.tree.treeModel.setFocusedNode(node);
-            this.activateTreeNode(this.tree.treeModel.getFocusedNode());
+            this.activateTreeNode(this.tree.treeModel.getFocusedNode(), favorites);
         });
     }
 
     ngOnInit() {
         const that = this;
-        this.initTree();
-        this.principal.identity().then((account) => {
+        this.principal.getIdentyAccount(false).then((account) => {
             this.account = account;
+            const userContext = this.localStateStorageService.getUserContext(account.username);
+            this.initTree(userContext.esercizio, userContext.uo);
         });
         this.preferitiListener = this.eventManager.subscribe('onPreferitiSelected', (message) => {
             const leaf = that.leafz.filter((v) => {
                 return v.id === message.content;
             })[0];
             if (leaf) {
-                that.onSelectLeaf(leaf);
+                that.onSelectLeaf(leaf, true);
             }
         });
         this.refreshTreeListener = this.eventManager.subscribe('onRefreshTree', (message) => {
-            this.initTree(message);
+            this.initTree(undefined, undefined, message);
         });
         this.workspaceListener = this.eventManager.subscribe('onWorkspaceHover', (message) => {
             this.popovers.forEach((p) => p.close());
@@ -138,7 +140,7 @@ export class SIGLATreeComponent implements OnInit, OnDestroy, AfterViewInit {
         return this.leafs[id];
     }
 
-    activateTreeNode = (node: TreeNode) => {
+    activateTreeNode = (node: TreeNode, afavorites: boolean) => {
         this.popovers.forEach((p) => p.close());
         const aleaf = this.leafz.filter((v) => {
             return v.id === node.id;
@@ -147,7 +149,8 @@ export class SIGLATreeComponent implements OnInit, OnDestroy, AfterViewInit {
             node.focus(true);
             this.activateLeaf.emit({
                 id: node.id,
-                leaf: aleaf
+                leaf: aleaf,
+                favorites: afavorites
             });
         } else {
             node.expand();
@@ -167,7 +170,8 @@ export class SIGLATreeComponent implements OnInit, OnDestroy, AfterViewInit {
             node.focus(true);
             this.activateLeaf.emit({
                 id: node.id,
-                leaf: aleaf
+                leaf: aleaf,
+                favorites: false
             });
         } else {
             if (node.isCollapsed) {
@@ -183,13 +187,13 @@ export class SIGLATreeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    initTree(message?: string) {
+    initTree(esecizio?: number, uo?: string, message?: string) {
         this.isRequesting = true;
         let focusedNode = undefined;
         if (this.tree.treeModel.getFocusedNode()) {
             focusedNode = this.tree.treeModel.getFocusedNode().data.id;
         }
-        this.workspaceService.getTree().subscribe(
+        this.workspaceService.getTree(esecizio, uo).subscribe(
             (leafs) => {
                 this.leafs = leafs;
                 const nodes = _.flatten(_.values<Leaf>(this.leafs));
@@ -204,7 +208,7 @@ export class SIGLATreeComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (message && focusedNode && message['content'] === 'reopenView') {
                     const node = this.tree.treeModel.getNodeById(focusedNode);
                     this.tree.treeModel.setFocusedNode(node);
-                    this.activateTreeNode(this.tree.treeModel.getFocusedNode());
+                    this.activateTreeNode(this.tree.treeModel.getFocusedNode(), false);
                 }
             }
         );
@@ -215,7 +219,7 @@ export class SIGLATreeComponent implements OnInit, OnDestroy, AfterViewInit {
             (content) => {
                 this.nodes = [];
                 this.tree.treeModel.update();
-                this.initTree(message);
+                this.initTree(undefined, undefined, message);
                 this.tree.treeModel.collapseAll();
             }
         );

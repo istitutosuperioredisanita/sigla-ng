@@ -83,6 +83,8 @@ module.exports = (options) => ({
                 { from: './src/main/webapp/manifest.webapp', to: 'manifest.webapp' },
                 { from: './node_modules/moment/moment.js', to: 'moment.js' },
                 { from: './src/main/webapp/sigla-main.js', to: 'sigla-main.js' },
+                { from: './src/main/webapp/env.js', to: 'env.js' },
+                { from: './src/main/webapp/env.template.js', to: 'env.template.js' },
                 // { from: './src/main/webapp/sw.js', to: 'sw.js' },
                 // jhipster-needle-add-assets-to-webpack - JHipster will add/remove third-party resources in this array
                 { from: './src/main/webapp/robots.txt', to: 'robots.txt' }

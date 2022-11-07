@@ -155,16 +155,19 @@ function doStampa() {
     submitForm('doPrint');
 }
 function doHelp(url) {
-    window.open(url, "Aiuto", 'toolbar=no,resizable,scrollbars,width=767,height=600').focus()
+    window.open(window.env.baseUrl + url, "Aiuto", 'toolbar=no,resizable,scrollbars,width=767,height=600').focus()
 }
 function doExcel() {
     submitForm('doExcel');
 }
 function doScaricaExcel(url) {
-    window.open(url, "Excel", 'toolbar=no,resizable,scrollbars,width=800,height=600').focus() 
+    window.open(window.env.baseUrl + url, "Excel", 'toolbar=no,resizable,scrollbars,width=800,height=600').focus() 
 }
 function doPrint(url) {
-    window.open(url, "Stampa", 'toolbar=no,resizable,scrollbars,width=800,height=600').focus() 
+    window.open(window.env.baseUrl + url, "Stampa", 'toolbar=no,resizable,scrollbars,width=800,height=600').focus() 
+}
+function doOpenWindow(url, name, params) {
+    window.open(window.env.baseUrl + url, name, params).focus() 
 }
 function handleOnLoad() {
     window.onloadHandlers.evaluate()

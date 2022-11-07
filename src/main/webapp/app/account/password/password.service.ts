@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { SERVER_API_URL } from '../../app.constants';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class PasswordService {
@@ -9,6 +9,10 @@ export class PasswordService {
     constructor(private http: HttpClient) {}
 
     save(newPassword: string): Observable<any> {
-        return this.http.post(SERVER_API_URL + 'api/account/change-password', newPassword);
+        return this.http.post(environment.apiUrl + '/account/change-password', {
+            newPassword
+        }, {
+            withCredentials: true
+        });
     }
 }

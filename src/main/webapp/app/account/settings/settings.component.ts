@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { JhiLanguageService, JhiAlertService } from 'ng-jhipster';
+import { JhiAlertService } from 'ng-jhipster';
 import { IndirizziMail, ContextService } from '../../context/index';
-import { Principal, AccountService, JhiLanguageHelper } from '../../shared';
-import { WorkspaceService } from '../../workspace/workspace.service';
+import { Principal, JhiLanguageHelper } from '../../shared';
 import { FORM_STATUS } from '../../shared';
 
 @Component({
@@ -19,11 +18,8 @@ export class SettingsComponent implements OnInit {
     public formStatus: number;
 
     constructor(
-        private account: AccountService,
         private principal: Principal,
-        private languageService: JhiLanguageService,
         private languageHelper: JhiLanguageHelper,
-        private workspaceService: WorkspaceService,
         private alertService: JhiAlertService,
         private contextService: ContextService
     ) {
@@ -45,10 +41,8 @@ export class SettingsComponent implements OnInit {
 
     newIndirizzoMail() {
         this.currentIndirizzoMail = new IndirizziMail(
-            {
-                cdUtente: null,
-                indirizzoMail: null
-            }, false, false, false, false, false, false, false, false, null);
+            null, null, false, false, false, false, false, false, false, false, null, 1
+        );
     }
 
     save() {
@@ -69,11 +63,12 @@ export class SettingsComponent implements OnInit {
     }
 
     newRow() {
+        const email = this.indirizziMail.filter((indirizzo: IndirizziMail) => {
+            return indirizzo.indirizzo_mail === this.settingsAccount.email;
+        }).length === 0 ? this.settingsAccount.email : null;
         const indirizzoMail = new IndirizziMail(
-            {
-                cdUtente: this.settingsAccount.username,
-                indirizzoMail: this.settingsAccount.email
-            }, false, false, false, false, false, false, false, false, null);
+            this.settingsAccount.username, email, false, false, false, false, false, false, false, false, 1, 1
+        );
         this.indirizziMail.push(indirizzoMail);
         this.currentIndirizzoMail = indirizzoMail;
         this.formStatus = FORM_STATUS.INSERT;
@@ -81,6 +76,7 @@ export class SettingsComponent implements OnInit {
 
     undoEditing() {
         this.formStatus = FORM_STATUS.UNDEFINED;
+        this.currentIndirizzoMail.crudStatus = 5;
         const index: number = this.indirizziMail.indexOf(this.currentIndirizzoMail);
         if (index !== -1) {
             this.indirizziMail.splice(index, 1);
@@ -92,7 +88,7 @@ export class SettingsComponent implements OnInit {
         const indirizzi = this.indirizziMail.filter((indirizzo) => {
             return indirizzo.checked;
         }).map((key) => {
-            return key.id.indirizzoMail;
+            return key.indirizzo_mail;
         });
         if (indirizzi.length === 0) {
             this.alertService.error('global.messages.error.norowsselected');
@@ -110,6 +106,7 @@ export class SettingsComponent implements OnInit {
     setClickedRow(currentIndirizzoMail: IndirizziMail) {
         if (!this.isFormInserting()) {
             this.currentIndirizzoMail = currentIndirizzoMail;
+            this.currentIndirizzoMail.crudStatus = 2;
         }
     }
 
@@ -120,7 +117,7 @@ export class SettingsComponent implements OnInit {
     }
 
     isDisabled(): boolean {
-        return this.currentIndirizzoMail.id.cdUtente == null;
+        return this.currentIndirizzoMail.cd_utente == null;
     }
 
     isFormInserting(): boolean {
