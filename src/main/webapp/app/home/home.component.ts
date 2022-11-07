@@ -121,10 +121,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
                     });
                     // // previousState was set in the authExpiredInterceptor before being redirected to login modal.
                     // // since login is succesful, go to stored previousState and clear previousState
-                    const previousState = this.stateStorageService.getPreviousState();
-                    if (previousState) {
-                        this.stateStorageService.resetPreviousState();
-                        this.router.navigate([previousState.name], { queryParams:  previousState.params });
+                    if (!this.oidcEnable) {
+                        const previousState = this.stateStorageService.getPreviousState();
+                        if (previousState) {
+                            this.stateStorageService.resetPreviousState();
+                            this.router.navigate([previousState.name], { queryParams:  previousState.params });
+                        }
                     }
                     this.authenticationError = false;
                 } else {

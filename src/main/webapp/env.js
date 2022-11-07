@@ -10,7 +10,7 @@
     window["env"]["instituteAcronym"] = "CNR";
     window["env"]["ssoAppsMenuDisplay"] = true;
 
-    window["env"]["oidc.enable"] = false;
+    window["env"]["oidc.enable"] = true;
     window["env"]["oidc.authority"] = "http://dockerwebtest02.si.cnr.it:8110/auth/realms/cnr/.well-known/openid-configuration";
     window["env"]["oidc.redirectUrl"] = "http://localhost:9000";
     window["env"]["oidc.clientId"] = "angular-public";

@@ -10,8 +10,10 @@ import { Pair } from '../context/pair.model';
 import { ContextService } from '../context/context.service';
 import { Italian } from 'flatpickr/dist/l10n/it.js';
 import { SplitComponent } from 'angular-split';
+import { environment } from '../../environments/environment';
 import 'flatpickr';
 import { TranslateService } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 declare var flatpickr;
 
 @Component({
@@ -55,6 +57,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         private workspaceService: WorkspaceService,
         private _sanitizer: DomSanitizer,
         private renderer: Renderer2,
+        private router: Router,
         private eventManager: JhiEventManager,
         private loginService: LoginService,
         private translateService: TranslateService
@@ -109,25 +112,29 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.principal.identity().then((account) => {
-            this.account = account;
-        });
-        this.refreshTodoListener = this.eventManager.subscribe('onRefreshTodo', () => {
+        if (this.principal.isAuthenticated()) {
+            this.principal.identity().then((account) => {
+                this.account = account;
+            });
+            this.refreshTodoListener = this.eventManager.subscribe('onRefreshTodo', () => {
+                this.caricaTODO();
+            });
+            this.cdsModel = this.contextService.cdsModel;
+            this.uoModel = this.contextService.uoModel;
+            this.cdrModel = this.contextService.cdrModel;
+            this.onSelectCdsSubscription = this.eventManager.subscribe('onSelectCds', (message) => {
+                this.cdsModel = message.content;
+            });
+            this.onSelectUoSubscription = this.eventManager.subscribe('onSelectUo', (message) => {
+                this.uoModel = message.content;
+            });
+            this.onSelectCdrSubscription = this.eventManager.subscribe('onSelectCdr', (message) => {
+                this.cdrModel = message.content;
+            });
             this.caricaTODO();
-        });
-        this.cdsModel = this.contextService.cdsModel;
-        this.uoModel = this.contextService.uoModel;
-        this.cdrModel = this.contextService.cdrModel;
-        this.onSelectCdsSubscription = this.eventManager.subscribe('onSelectCds', (message) => {
-            this.cdsModel = message.content;
-        });
-        this.onSelectUoSubscription = this.eventManager.subscribe('onSelectUo', (message) => {
-            this.uoModel = message.content;
-        });
-        this.onSelectCdrSubscription = this.eventManager.subscribe('onSelectCdr', (message) => {
-            this.cdrModel = message.content;
-        });
-        this.caricaTODO();
+        } else {
+            this.router.navigate(['']);
+        }
     }
 
     gutterClick(e: {gutterNum: number, sizes: Array<number>}) {
@@ -177,10 +184,18 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.listenerSubmit();
         this.listenerSubmitForm();
-        this.refreshTodoListener.unsubscribe();
-        this.eventManager.destroy(this.onSelectCdsSubscription);
-        this.eventManager.destroy(this.onSelectUoSubscription);
-        this.eventManager.destroy(this.onSelectCdrSubscription);
+        if (this.refreshTodoListener) {
+            this.refreshTodoListener.unsubscribe();
+        }
+        if (this.onSelectCdsSubscription) {
+            this.eventManager.destroy(this.onSelectCdsSubscription);
+        }
+        if (this.onSelectUoSubscription) {
+            this.eventManager.destroy(this.onSelectUoSubscription);
+        }
+        if (this.onSelectCdrSubscription) {
+            this.eventManager.destroy(this.onSelectCdrSubscription);
+        }
     }
 
     openNodo(cdNodo: string) {
