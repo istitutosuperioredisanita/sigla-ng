@@ -41,7 +41,7 @@ ENV INSTITUTE_ACRONYM=CNR
 ENV OIDC_ENABLE=false
 ENV OIDC_AUTHORITY=http://dockerwebtest02.si.cnr.it:8110/auth/realms/cnr/.well-known/openid-configuration
 ENV OIDC_CLIENTID=angular-public
-ENV OIDC_REDIRECTURL=http://localhost:9000
+ENV OIDC_REDIRECTURL=
 ENV OIDC_POSTLOGOUTREDIRECTURL=https://apps.cnr.it
 
 
