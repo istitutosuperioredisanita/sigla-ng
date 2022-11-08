@@ -169,6 +169,9 @@ function doPrint(url) {
 function doOpenWindow(url, name, params) {
     window.open(window.env.baseUrl + url, name, params).focus() 
 }
+function doOpenWindow(url, name, params) {
+    window.open(url, name, params).focus() 
+}
 function handleOnLoad() {
     window.onloadHandlers.evaluate()
 }

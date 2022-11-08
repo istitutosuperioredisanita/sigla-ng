@@ -18,33 +18,6 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
     devtool: 'eval-source-map',
     devServer: {
         static: './build/www',
-        proxy: [{
-            context: [
-                /* jhipster-needle-add-entity-to-webpack - JHipster will add entity api paths here */
-                '/api',
-                '/management',
-                '/swagger-resources',
-                '/v2/api-docs',
-                '/h2-console',
-                '/auth'
-            ],
-            target: 'http://as4dock.si.cnr.it',
-            headers: {host:'sigla-ng.test.si.cnr.it'},
-            secure: false
-        },
-        {
-            context: [
-                '/SIGLA'
-            ],
-            target: 'http://as4dock.si.cnr.it',
-            headers: {host:'sigla-main.test.si.cnr.it'},
-            secure: false
-        }],
-        /*
-        watchOptions: {
-            ignored: /node_modules/
-        }
-        */
     },
     entry: {
         polyfills: './src/main/webapp/app/polyfills',
