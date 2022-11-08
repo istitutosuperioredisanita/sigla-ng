@@ -38,6 +38,7 @@ ENV API_CONTEXT=/restapi
 ENV URL_CHANGE_PASSWORD=https://utenti.cnr.it/utenti/app/action/pub/pass/password
 ENV SSO_APPS_MENU_DISPLAY=false
 ENV INSTITUTE_ACRONYM=CNR
+ENV RIBBON=Development
 ENV OIDC_ENABLE=false
 ENV OIDC_AUTHORITY=http://dockerwebtest02.si.cnr.it:8110/auth/realms/cnr/.well-known/openid-configuration
 ENV OIDC_CLIENTID=angular-public

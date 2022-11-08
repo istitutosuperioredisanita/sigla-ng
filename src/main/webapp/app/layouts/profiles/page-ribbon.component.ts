@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'jhi-page-ribbon',
-    template: `<div class="ribbon" *ngIf="ribbonEnv"><a href="" jhiTranslate="global.ribbon.{{ribbonEnv}}">{{ribbonEnv}}</a></div>`
+    template: `<div class="ribbon" *ngIf="ribbonEnv"><a href="">{{ribbonEnv}}</a></div>`
 })
 export class PageRibbonComponent implements OnInit {
 
@@ -11,5 +12,6 @@ export class PageRibbonComponent implements OnInit {
     constructor() {}
 
     ngOnInit() {
+        this.ribbonEnv = environment.ribbon;
     }
 }

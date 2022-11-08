@@ -9,6 +9,7 @@
     window['env']['urlChangePassword'] = '${URL_CHANGE_PASSWORD}';
     window['env']['instituteAcronym'] = '${INSTITUTE_ACRONYM}';
     window['env']['ssoAppsMenuDisplay'] = '${SSO_APPS_MENU_DISPLAY}';
+    window['env']['ribbon'] = '${RIBBON}';
 
     window['env']['oidc.enable'] = '${OIDC_ENABLE}';
     window['env']['oidc.authority'] = '${OIDC_AUTHORITY}';

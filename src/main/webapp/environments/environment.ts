@@ -7,6 +7,7 @@ export const environment = {
   urlChangePassword: window['env']['urlChangePassword'],
   instituteAcronym: window['env']['instituteAcronym'],
   ssoAppsMenuDisplay: window['env']['ssoAppsMenuDisplay'] || 'false',
+  ribbon: window['env']['ribbon'],
   oidc: {
     enable: window['env']['oidc.enable'] || 'false',
     authority: window['env']['oidc.authority'],

@@ -9,6 +9,7 @@
     window['env']['production'] = false;
     window['env']['instituteAcronym'] = 'CNR';
     window['env']['ssoAppsMenuDisplay'] = 'true';
+    window['env']['ribbon'] = 'Development';
 
     window['env']['oidc.enable'] = 'true';
     window['env']['oidc.authority'] = 'http://dockerwebtest02.si.cnr.it:8110/auth/realms/cnr/.well-known/openid-configuration';

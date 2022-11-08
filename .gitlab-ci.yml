@@ -18,9 +18,9 @@ docker-build-push-hub:
     - docker build -t $CI_PROJECT_NAME:$CI_COMMIT_REF_NAME .
     - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
     - docker tag $CI_PROJECT_NAME:$CI_COMMIT_REF_NAME $DOCKER_HUB_ORGANIZATION/$CI_PROJECT_NAME:$CI_COMMIT_REF_NAME
-    - docker tag $CI_PROJECT_NAME:$CI_COMMIT_REF_NAME $DOCKER_HUB_ORGANIZATION/$CI_PROJECT_NAME:latest
+    - docker tag $CI_PROJECT_NAME:$CI_COMMIT_REF_NAME $DOCKER_HUB_ORGANIZATION/$CI_PROJECT_NAME:release
     - docker push $DOCKER_HUB_ORGANIZATION/$CI_PROJECT_NAME:$CI_COMMIT_REF_NAME
-    - docker push $DOCKER_HUB_ORGANIZATION/$CI_PROJECT_NAME:latest
+    - docker push $DOCKER_HUB_ORGANIZATION/$CI_PROJECT_NAME:release
   only:
     - tags
 
@@ -64,6 +64,7 @@ catapult-deploy-image:
     - >
       curl --fail -s -X POST $CATAPULT_URL -H 'Content-type:application/json' --data '{"id":"'"$CI_PROJECT_PATH:$CI_COMMIT_REF_NAME"'", "git":true}'
   except:
+    - tags
     variables:
       - $CI_COMMIT_MESSAGE =~ /prepare release/ || $CI_COMMIT_MESSAGE =~ /prepare for next development iteration/
 
