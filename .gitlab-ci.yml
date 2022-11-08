@@ -34,8 +34,6 @@ docker-build-push-master:
     - docker tag $CONTAINER_TEST_IMAGE $CI_REGISTRY/$CONTAINER_RELEASE_IMAGE
     - docker push $CI_REGISTRY/$CONTAINER_RELEASE_IMAGE
   only:
-    variables:
-      - $CI_COMMIT_MESSAGE !~ /prepare release/ && $CI_COMMIT_MESSAGE !~ /prepare for next development iteration/
     refs:
       - master
 
@@ -65,6 +63,4 @@ catapult-deploy-image:
       curl --fail -s -X POST $CATAPULT_URL -H 'Content-type:application/json' --data '{"id":"'"$CI_PROJECT_PATH:$CI_COMMIT_REF_NAME"'", "git":true}'
   except:
     - tags
-    variables:
-      - $CI_COMMIT_MESSAGE =~ /prepare release/ || $CI_COMMIT_MESSAGE =~ /prepare for next development iteration/
 
