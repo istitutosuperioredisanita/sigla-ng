@@ -5,7 +5,7 @@
         var evt = document.createEvent( 'CustomEvent' );
         evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
         return evt;
-       }    
+       }
       CustomEvent.prototype = window.Event.prototype;
       window.CustomEvent = CustomEvent;
 })();
@@ -41,7 +41,7 @@ function disableDblClick() {
 function focused(element) {
     if (document.mainForm.focusedElement)
         document.mainForm.focusedElement.value = element.name;
-}        
+}
 // Funzioni per implementare effetto di rollover
 function setClassNames(element) {
     if (!element.originalClassName) {
@@ -161,16 +161,13 @@ function doExcel() {
     submitForm('doExcel');
 }
 function doScaricaExcel(url) {
-    window.open(window.env.baseUrl + url, "Excel", 'toolbar=no,resizable,scrollbars,width=800,height=600').focus() 
+    window.open(window.env.baseUrl + url, "Excel", 'toolbar=no,resizable,scrollbars,width=800,height=600').focus()
 }
 function doPrint(url) {
-    window.open(window.env.baseUrl + url, "Stampa", 'toolbar=no,resizable,scrollbars,width=800,height=600').focus() 
+    window.open(window.env.baseUrl + url, "Stampa", 'toolbar=no,resizable,scrollbars,width=800,height=600').focus()
 }
 function doOpenWindow(url, name, params) {
-    window.open(window.env.baseUrl + url, name, params).focus() 
-}
-function doOpenWindow(url, name, params) {
-    window.open(url, name, params).focus() 
+    window.open(window.env.baseUrl + url, name, params).focus()
 }
 function handleOnLoad() {
     window.onloadHandlers.evaluate()
@@ -208,7 +205,7 @@ function scrollIntoView(elementName) {
     } catch(e) {
 
     }
-    
+
 }
 
 // Funzioni per gli input modali
@@ -223,10 +220,10 @@ function modalInputFocused(input) {
     confirmButton.oldClassName = confirmButton.className;
     cancelButton.oldClassName = cancelButton.className;
     confirmButton.className = confirmButton.className + ' bg-primary';
-    cancelButton.className = cancelButton.className + ' bg-primary'; 
+    cancelButton.className = cancelButton.className + ' bg-primary';
     for (i = 0;i < form.elements.length;i++) {
         var element = form.elements[i]
-        if (element != input && element != confirmButton && 
+        if (element != input && element != confirmButton &&
             element != cancelButton && !element.disabled &&
             element.className.indexOf("fieldset") == -1 &&
             element.type.indexOf("fieldset") == -1) {
@@ -245,10 +242,10 @@ function resetModalDisabled(form,input) {
     var confirmButton = form.elements[input.name+".confirm"];
     var cancelButton = form.elements[input.name+".cancel"];
     if (confirmButton.oldClassName) {
-        confirmButton.className = confirmButton.oldClassName;        
+        confirmButton.className = confirmButton.oldClassName;
     }
     if (cancelButton.oldClassName) {
-        cancelButton.className = cancelButton.oldClassName;        
+        cancelButton.className = cancelButton.oldClassName;
     }
     if (input != null)
         input.modal = false;
@@ -267,18 +264,18 @@ function modalInputButtonFocused(button,name) {
 function cancelModalInputChange(button,name) {
     var form = button.form;
     var input = form.elements[name];
-    if (!input.changed) 
+    if (!input.changed)
         return;
     if (input.old_value) {
-        input.value = input.old_value;        
-    }    
+        input.value = input.old_value;
+    }
     input.changed = false;
     resetModalDisabled(form,input);
 }
 function confirmModalInputChange(button,name,command) {
     var form = button.form;
     var input = form.elements[name];
-    if (!input.changed) 
+    if (!input.changed)
         return;
     form.modal = false;
     resetModalDisabled(form,input);
@@ -301,7 +298,7 @@ function inputFileName(element) {
     document.getElementById('span-' + element.name).title = title;
 }
 
-function restoreWorkspace() {            
+function restoreWorkspace() {
 }
 function showMessage(level,img,text) {
 }
