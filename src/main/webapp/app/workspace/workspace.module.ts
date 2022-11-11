@@ -10,15 +10,13 @@ import { AngularSplitModule } from 'angular-split';
 @NgModule({
     imports: [
         SiglaSharedModule,
-        RouterModule.forRoot([ WORKSPACE_ROUTE ], { useHash: true } ),
+        RouterModule.forRoot([WORKSPACE_ROUTE], { useHash: true }),
         TreeModule,
         AngularSplitModule
     ],
     declarations: [
         WorkspaceComponent,
         SIGLATreeComponent
-    ],
-    entryComponents: [
     ],
     providers: [
         WorkspaceService,
