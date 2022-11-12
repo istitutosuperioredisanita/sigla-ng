@@ -133,5 +133,82 @@
         "emailexists": "L'email è già in uso!",
         "idexists": "Un(a) nuovo/a {{entityName}} non può già avere un ID"
     },
-    "footer": "copyright ©2017 Consiglio Nazionale delle Ricerche"
+    "footer": "copyright ©2017 Consiglio Nazionale delle Ricerche",
+    "home": {
+        "title": "Sistema Informativo per la Gestione delle Linee di Attività",
+        "subtitle": "Documenti contabili/amministrativi",
+        "logged": {
+            "message": "Autenticato come \"{{username}}\"."
+        }
+    },
+    "login": {
+        "title": "Selezionare l'utente applicativo con cui accedere",
+        "form": {
+            "password": "Password",
+            "password.placeholder": "La tua password",
+            "rememberme": "Ricordami",
+            "button": "Accedi",
+            "change-password": "Cambia password",
+            "manage-account": "Gestione account"
+        },
+        "messages": {
+            "error": {
+                "authentication": {
+                    "401": "<strong>Accesso non riuscito!</strong> Si prega di controllare le credenziali e riprovare.",
+                    "403": "<strong>Accesso non riuscito!</strong> Utente non utilizzato da più di sei mesi.",
+                    "404": "<strong>Accesso non riuscito!</strong> Errore di collegamento, riprovare.",
+                    "500": "<strong>Accesso non riuscito!</strong> Errore di collegamento, riprovare.",
+                    "504": "<strong>Accesso non riuscito!</strong> Richiesta scaduta, riprovare.",
+                    "503": "<strong>Accesso non riuscito!</strong> Errore di collegamento, riprovare.",
+                    "555": "<strong>Utente non più valido o con data di validità scaduta.</strong> Contattare l'amministratore utenti di SIGLA.",
+                    "User credentials have expired": "Utente non utilizzato da più di sei mesi.",
+                    "Bad credentials": "Credenziali errate",
+                    "No message available": ""
+                }
+            }
+        },
+        "password" : {
+            "forgot": "Password dimenticata?"
+        }
+    },
+    "settings": {
+        "title": "Impostazioni per l'utente [<b>{{username}}</b>]",
+        "form": {
+            "firstname": "Nome",
+            "firstname.placeholder": "Il tuo nome",
+            "lastname": "Cognome",
+            "lastname.placeholder": "Il tuo cognome",
+            "button": "Salva",
+            "language": "Lingua",
+            "email" : "E-Mail"
+        },
+        "messages": {
+            "error": {
+                "fail": "<strong>Si è verificato un errore!</strong> Impossibile salvare le impostazioni.",
+                "emailexists": "<strong>L'indirizzo email è già in uso!</strong> Si prega di sceglierne un altro."
+            },
+            "success": "<strong>Impostazioni salvate!</strong>",
+            "validate": {
+                "firstname": {
+                    "required": "Il nome è obbligatorio.",
+                    "minlength": "Il nome deve essere di almeno 1 carattere",
+                    "maxlength": "Il nome non può contenere più di 50 caratteri"
+                },
+                "lastname": {
+                    "required": "Il cognome è obbligatorio.",
+                    "minlength": "Il cognome deve essere di almeno 1 carattere",
+                    "maxlength": "Il cognome non può contenere più di 50 caratteri"
+                }
+            }
+        }
+    },
+    "messaggi": {
+        "title": "Sessioni attive per [<b>{{username}}</b>]",
+        "table": {
+            "oggetto": "Oggetto",
+            "messaggio": "Messaggio",
+            "dacr": "Data di Creazione",
+            "button": "Invalida"
+        }
+    }    
 }

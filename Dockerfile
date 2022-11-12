@@ -16,7 +16,7 @@ WORKDIR /ng-app
 COPY . .
 
 ## Build the angular app in production mode and store the artifacts in dist folder
-RUN npm run webpack:build
+RUN $(npm bin)/ng build --configuration production --aot --build-optimizer --output-hashing=all
 
 
 ### STAGE 2: Setup ###
@@ -30,7 +30,7 @@ COPY nginx/default.conf /etc/nginx/conf.d/
 RUN rm -rf /usr/share/nginx/html/*
 
 ## From 'builder' stage copy over the artifacts in dist folder to default nginx public folder
-COPY --from=builder /ng-app/target/www /usr/share/nginx/html
+COPY --from=builder /ng-app/dist /usr/share/nginx/html
 
 ENV BASE_URL=http://localhost:8080
 ENV APPLICATION_CONTEXT=/SIGLA
@@ -47,4 +47,4 @@ ENV OIDC_POSTLOGOUTREDIRECTURL=https://apps.cnr.it
 
 
 # When the container starts, replace the env.js with values from environment variables
-CMD ["/bin/sh",  "-c",  "envsubst < /usr/share/nginx/html/env.template.js > /usr/share/nginx/html/env.js && exec nginx -g 'daemon off;'"]
+CMD ["/bin/sh",  "-c",  "envsubst < /usr/share/nginx/html/content/env.template.js > /usr/share/nginx/html/content/env.js && exec nginx -g 'daemon off;'"]

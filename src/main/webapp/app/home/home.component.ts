@@ -7,6 +7,7 @@ import { LocalStateStorageService } from '../shared/auth/local-storage.service';
 import { SERVER_API_URL } from '../app.constants';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../../environments/environment';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
     selector: 'jhi-home',
@@ -36,6 +37,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         private router: Router,
         private localStateStorageService: LocalStateStorageService,
         private translateService: TranslateService,
+        private oidcSecurityService: OidcSecurityService
     ) {
     }
 
@@ -49,8 +51,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
         this.instituteAcronym = environment.instituteAcronym;
         if (this.oidcEnable && !this.isAuthenticated()) {
-            this.login();
-        }
+            console.log('init oidc');
+            this.oidcSecurityService.checkAuth().subscribe(({isAuthenticated}) => {
+                if (isAuthenticated) {
+                    this.login();
+                }
+            })
+        }        
     }
 
     ngAfterViewInit() {

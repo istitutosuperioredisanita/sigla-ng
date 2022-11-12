@@ -43,7 +43,7 @@ import { environment } from '../environments/environment';
     imports: [
         BrowserModule,
         LayoutRoutingModule,
-        NgxWebstorageModule.forRoot({ prefix: 'jhi', separator: '-'}),
+        NgxWebstorageModule.forRoot(),
         SiglaSharedModule,
         SiglaHomeModule,
         SiglaAccountModule,
@@ -65,7 +65,9 @@ import { environment } from '../environments/environment';
               clientId: environment.oidc.clientId || 'clientId',
               scope: 'openid profile email offline_access',
               responseType: 'code',
+              silentRenew: true,
               useRefreshToken: true,
+              ignoreNonceAfterRefresh: true,
               logLevel: LogLevel.None,
             },
           }),
