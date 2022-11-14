@@ -18,8 +18,8 @@ export class AuthInterceptor implements HttpInterceptor {
               return this.oidcSecurityService.forceRefreshSession().pipe(
                 switchMap(({accessToken}) => {
                   const copiedReq = req.clone({
-                    params: req.params
-                      .set(`access_token`, accessToken)
+                    headers: req.headers
+                      .set(`Authorization`, `Bearer ${accessToken}`)
                   });
                   return next.handle(copiedReq);  
                 })
@@ -28,8 +28,8 @@ export class AuthInterceptor implements HttpInterceptor {
               return this.oidcSecurityService.getAccessToken().pipe(
                 switchMap((accessToken) => {
                   const copiedReq = req.clone({
-                    params: req.params
-                      .set(`access_token`, accessToken)
+                    headers: req.headers
+                      .set(`Authorization`, `Bearer ${accessToken}`)
                   });
                   return next.handle(copiedReq);  
                 })
