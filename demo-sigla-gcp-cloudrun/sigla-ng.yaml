@@ -19,20 +19,11 @@ spec:
       containerConcurrency: 80
       containers:
       - env:
-        - name: SIGLA_WILDFLY_URL
+        - name: BASE_URL
           value: $sigla_thorntail_url
-        - name: SPRING_PROFILES_ACTIVE
-          value: demopostgresql
-        - name: SPRING_DATASOURCE_URL
-          value: jdbc:postgresql://$db_private_ip:5432/sigladb?schema=public
-        - name: SPRING_DATASOURCE_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: db-password
-              key: latest
         image: europe-west4-docker.pkg.dev/$project_id/ar-team-digi-sigla-poc-001/sigla-ng:latest
         ports:
-        - containerPort: 8080
+        - containerPort: 80
           name: http1
         resources:
           limits:
