@@ -68,7 +68,9 @@ import { environment } from '../environments/environment';
               silentRenew: true,
               useRefreshToken: true,
               ignoreNonceAfterRefresh: true,
-              logLevel: LogLevel.Debug,
+              autoUserInfo: false,
+              maxIdTokenIatOffsetAllowedInSeconds: 300,
+              logLevel: LogLevel.None,
             },
           }),
         // jhipster-needle-angular-add-module JHipster will add new module here
