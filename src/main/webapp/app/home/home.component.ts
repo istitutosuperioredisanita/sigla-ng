@@ -98,11 +98,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
                     }
                 };
                 this.router.navigate(['password'], navigationExtras);
-            } else if (!account.enabled) {
+            } else if (!account.enabled || !account.credentialsNonExpired) {
                 this.authenticationErrorStatus = 555;
                 this.principal.setAuthenticated(false);
                 this.isRequesting = false;
                 this.authenticationError = true;
+                this.router.navigate(['/error', {
+                    status: 'accessdenied',
+                    given_name: account.firstName,
+                    family_name: account.lastName,
+                    preferred_username: account.login,
+                    email: account.email,
+                    updatedAt: account.updatedAt||'.'
+                }]);
             } else {
                 if (account.users.length === 1) {
                     this.principal.authenticate(account);

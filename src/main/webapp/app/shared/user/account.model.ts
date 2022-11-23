@@ -19,6 +19,7 @@ export class Account {
     public uo: string;
     public cdr: string;
     public users: any[];
+    public updatedAt: Date;
     public accountUsers: Account[] = [];
 
     constructor(users?: any[]) {
