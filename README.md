@@ -1,7 +1,6 @@
 # SIGLA NG - _Sistema Informativo Gestione Linee di Attività_
 
 [![license](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
-[![maven central](https://img.shields.io/maven-central/v/it.cnr.si.sigla/sigla-ng.svg?style=flat)](https://mvnrepository.com/artifact/it.cnr.si.sigla/sigla-ng)
 [![Docker Stars](https://img.shields.io/docker/stars/consiglionazionalericerche/sigla-ng.svg)](https://hub.docker.com/r/consiglionazionalericerche/sigla-ng/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/consiglionazionalericerche/sigla-ng.svg)](https://hub.docker.com/r/consiglionazionalericerche/sigla-ng/)
 [![docs](https://img.shields.io/travis/consiglionazionaledellericerche/sigla-main.svg?label=docs)](https://consiglionazionaledellericerche.github.io/sigla-main)
