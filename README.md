@@ -28,7 +28,7 @@ docker run -p 8081:8080 -d --name sigla-thorntail --link sigla-h2:db \
 docker pull consiglionazionalericerche/sigla-ng:latest
 docker run -d --name sigla-ng -p 9000:80 \
   -e BASE_URL=http://localhost:8081 \
-  -ti consiglionazionalericerche/sigla-ng:latest
+  -ti consiglionazionalericerche/sigla-ng:release
 ```
 _Collegarsi a http://localhost:9000/ username: ENTE password da impostare al primo login._
 
@@ -42,7 +42,7 @@ docker run -p 8081:8080 -d --name sigla-thorntail --link sigla-postgres:db -e TH
 docker pull consiglionazionalericerche/sigla-ng:latest
 docker run -d --name sigla-ng -p 9000:80 \
   -e BASE_URL=http://localhost:8081 \
-  -ti consiglionazionalericerche/sigla-ng:latest
+  -ti consiglionazionalericerche/sigla-ng:release
 ```
 _Collegarsi a http://localhost:9000/ username: ENTE password da impostare al primo login._
 
@@ -56,7 +56,7 @@ docker run -p 8081:8080 -d --name sigla-thorntail --link sigla-oracle:db -e LC_A
 docker pull consiglionazionalericerche/sigla-ng:latest
 docker run -d --name sigla-ng -p 9000:80 \
   -e BASE_URL=http://localhost:8081 \
-  -ti consiglionazionalericerche/sigla-ng:latest
+  -ti consiglionazionalericerche/sigla-ng:release
 ```
 _Collegarsi a http://localhost:9000/ username: ENTE password da impostare al primo login._
 
