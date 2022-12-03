@@ -3,7 +3,6 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Account, AccountService, UserContext } from '../../shared';
 import { environment } from '../../../environments/environment';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Injectable()
 export class AuthServerProvider {
@@ -12,7 +11,6 @@ export class AuthServerProvider {
     });
     constructor(
         private http: HttpClient,
-        private oidcSecurityService: OidcSecurityService,
         private accountService: AccountService,
     ) {
     }
@@ -37,11 +35,7 @@ export class AuthServerProvider {
         });
     }
 
-    loginMultiploWildfly(utenteMultiplo: string, userContext: UserContext, access_token?: string): Observable<any> {
-        let httpParams: HttpParams = new HttpParams();
-        if (access_token) {
-            httpParams = httpParams.set('access_token', access_token);
-        }
+    loginMultiploWildfly(utenteMultiplo: string, userContext: UserContext): Observable<any> {
         const data = 'main.utente_multiplo=' + utenteMultiplo +
             '&context.esercizio=' + userContext.esercizio +
             '&context.cds=' + userContext.cds +
@@ -49,17 +43,13 @@ export class AuthServerProvider {
             '&context.cdr=' + userContext.cdr +
             '&comando=doEntraUtenteMultiplo';
         return this.http.post(environment.applicationContextUrl + '/Login.do', data, {
-            params: httpParams, headers: this.headers, withCredentials: true, responseType: 'text'
+            headers: this.headers, withCredentials: true, responseType: 'text'
         });
     }
 
-    logoutWildfly(access_token?: string): Observable<any> {
-        let httpParams: HttpParams = new HttpParams();
-        if (access_token) {
-            httpParams = httpParams.set('access_token', access_token);
-        }
+    logoutWildfly(): Observable<any> {
         return this.http.post(environment.applicationContextUrl + '/GestioneMenu.do', 'comando=doLogout', {
-            params: httpParams, headers: this.headers, withCredentials: true, responseType: 'text'
+            headers: this.headers, withCredentials: true, responseType: 'text'
         });
     }
 }

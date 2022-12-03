@@ -1,16 +1,9 @@
-import {of as observableOf, Observable, pipe} from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Token } from '../model/token.model';
 import { Principal } from './principal.service';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class AuthService {
-    private static TOKEN_NAME = 'sigla_token';
-
-    // Stored Token
-    private token: Token;
 
     constructor(
         private principal: Principal,
@@ -62,64 +55,4 @@ export class AuthService {
             return true;
         }
     }
-
-    private setToken(token: Token) {
-        this.token = token;
-        if (this.token == null) {
-          localStorage.removeItem(AuthService.TOKEN_NAME);
-        } else {
-          localStorage.setItem(AuthService.TOKEN_NAME, JSON.stringify(this.token));
-        }
-    }
-
-    /**
-    * Il token.
-    * @returns {Token}
-    */
-    public getToken(): Token {
-        if (this.token) {
-            return this.token;
-        }
-        this.token = JSON.parse(localStorage.getItem(AuthService.TOKEN_NAME));
-        if (this.token) {
-            return this.token;
-        }
-        return null;
-    }
-
-    /**
-    * Se il token è scaduto.
-    * @returns {Boolean}
-    */
-    public isTokenExpired(): Boolean {
-        return this.getToken().valid_until <= new Date().getTime();
-    }
-
-    /**
-    * Recupera il token (refreshato in caso di bisogno).
-    * @returns {Observable<Token>}
-    */
-    public getRefreshedToken(): Observable<Token> {
-        if (this.getToken() == null) {
-            return observableOf(null);
-        }
-        if (!this.isTokenExpired()) {
-            return observableOf(this.getToken());
-        }
-        return this.refreshToken();
-    }
-
-    public refreshToken(): Observable<Token> {
-        return this.http.get<Token>('/api/token').pipe(
-            map(
-              (token) => {
-                token.valid_until = token.exp * 1000;
-                this.setToken(token);
-                return this.getToken();
-              }
-            )
-        );
-        pipe();
-    }
-
 }

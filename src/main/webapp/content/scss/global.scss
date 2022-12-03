@@ -310,13 +310,13 @@ html {
       white-space: nowrap;
   }
   .input-group-searchtool input:first-child:not([class*="w-"]) {
-      width: 30%!important;
+      width: 10%!important;
   }
   .input-group-searchtool  input.form-control:nth-child(2):not([class*="w-"]) {
-      width: 50%!important;
+      width: 30%!important;
   }
   .input-group-searchtool  input.form-control:nth-child(3):not([class*="w-"]) {
-    width: 70%!important;
+    width: 40%!important;
   }
   .input-group-searchtool > button.btn:disabled {
       display: none;
