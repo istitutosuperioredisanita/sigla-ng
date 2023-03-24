@@ -63,7 +63,7 @@
                         placement="right"
                         triggers="mouseenter"
                         popoverTitle="Info - {{node.id}}"
-                        [ngbPopover]="popoverContent">{{node.data.name}}</span>
+                        [ngbPopover]="popoverContent" [autoClose]="'outside'">{{node.data.name}}</span>
                         <span *ngIf="!node.isLeaf" class="d-inline-block text-truncate col tree-col-label">{{node.data.name}}</span>
                         <ng-template #popoverContent>
                             <span *ngIf="!node.data.cdaccesso" class="text-primary">{{node.data.name}}</span>
