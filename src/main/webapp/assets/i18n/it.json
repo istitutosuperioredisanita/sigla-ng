@@ -131,7 +131,8 @@
         "Size": "Il campo {{ fieldName }} non è conforme ai requisiti di lunghezza min/max!",
         "userexists": "Il nome utente è già in uso!",
         "emailexists": "L'email è già in uso!",
-        "idexists": "Un(a) nuovo/a {{entityName}} non può già avere un ID"
+        "idexists": "Un(a) nuovo/a {{entityName}} non può già avere un ID",
+        "title": "Pagina di errore"
     },
     "footer": "copyright ©2017 Consiglio Nazionale delle Ricerche",
     "home": {
@@ -161,6 +162,7 @@
                     "504": "<strong>Accesso non riuscito!</strong> Richiesta scaduta, riprovare.",
                     "503": "<strong>Accesso non riuscito!</strong> Errore di collegamento, riprovare.",
                     "555": "<strong>Utente non più valido o con data di validità scaduta.</strong> Contattare l'amministratore utenti di SIGLA.",
+                    "556": "<p><strong>Utente valido ma non abilitato all'utilizzo di SIGLA.</strong> Contattare l'amministratore delle utenze dell'Istituto.</p>",
                     "User credentials have expired": "Utente non utilizzato da più di sei mesi.",
                     "Bad credentials": "Credenziali errate",
                     "No message available": ""

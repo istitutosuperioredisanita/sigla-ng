@@ -4,6 +4,8 @@ export class Account {
     public accountNonExpired: boolean;
     public enabled: boolean;
     public credentialsNonExpired: boolean;
+    public ldap: boolean;
+    public abilitatoLdap: boolean;
     public authorities: string[];
     public email: string;
     public firstName: string;

@@ -12,6 +12,7 @@ import { Principal } from 'app/shared';
 export class ErrorComponent implements OnInit {
     errorMessage: string;
     error403: boolean;
+    error: string;
 
     accessdenied = false;
     given_name: string;
@@ -41,6 +42,7 @@ export class ErrorComponent implements OnInit {
             }
         });
         this.route.params.subscribe((params) => {
+            this.error = params.error;
             if (params.status && params.status === 'accessdenied') {
                 this.accessdenied = true;
                 this.given_name = params.given_name;

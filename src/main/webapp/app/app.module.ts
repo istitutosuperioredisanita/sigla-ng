@@ -38,11 +38,13 @@ import { NotificationInterceptor } from './blocks/interceptor/notification.inter
 import { AuthService } from './shared/auth/auth.service';
 import { AuthModule, LogLevel, OidcSecurityService } from 'angular-auth-oidc-client';
 import { environment } from '../environments/environment';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
     imports: [
         BrowserModule,
         LayoutRoutingModule,
+        FontAwesomeModule,
         NgxWebstorageModule.forRoot(),
         SiglaSharedModule,
         SiglaHomeModule,

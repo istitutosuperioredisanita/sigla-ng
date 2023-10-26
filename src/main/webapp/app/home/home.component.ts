@@ -98,6 +98,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
                     }
                 };
                 this.router.navigate(['password'], navigationExtras);
+            } else if (account.ldap && !account.abilitatoLdap) {
+                this.authenticationErrorStatus = 556;
+                this.principal.setAuthenticated(false);
+                this.isRequesting = false;
+                this.authenticationError = true;
+                this.router.navigate(['/error', {
+                    status: 'accessdenied',
+                    error: 'login.messages.error.authentication.556',            
+                    given_name: account.firstName,
+                    family_name: account.lastName,
+                    preferred_username: account.login,
+                    email: account.email,
+                    updatedAt: account.updatedAt||'.'
+                }]);
             } else if (!account.enabled || !account.credentialsNonExpired) {
                 this.authenticationErrorStatus = 555;
                 this.principal.setAuthenticated(false);

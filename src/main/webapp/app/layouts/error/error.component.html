@@ -21,7 +21,8 @@
             <h2 class="card-header">
                 <i class="fa fa-exclamation-triangle fa-fw fa-2x text-danger" aria-hidden="true"></i>
                 <span>Sistema non disponibile per l'utente {{preferred_username}}</span>
-                <span *ngIf="updatedAt">, utente non utilizzato da più di sei mesi ultimo accesso il {{updatedAt | date:'longDate'}}, contattare l'amministratore delle Utenze.</span>
+                <span *ngIf="error" jhiTranslate="{{error}}"></span>
+                <span *ngIf="updatedAt && !error">, utente non utilizzato da più di sei mesi ultimo accesso il {{updatedAt | date:'longDate'}}, contattare l'amministratore delle Utenze.</span>
             </h2>
             <div class="card-body">
                 <div class="col text-monospace">
