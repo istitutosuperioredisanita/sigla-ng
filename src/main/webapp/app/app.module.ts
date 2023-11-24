@@ -71,7 +71,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
               useRefreshToken: true,
               ignoreNonceAfterRefresh: true,
               autoUserInfo: false,
-              maxIdTokenIatOffsetAllowedInSeconds: 300,
+              disableIatOffsetValidation: true,
               logLevel: LogLevel.None,
             },
           }),
