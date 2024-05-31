@@ -160,6 +160,7 @@
                     <plugin>
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
+                        <version>2.2.2.RELEASE</version>
                         <configuration>
                             <executable>true</executable>
                             <includeSystemScope>true</includeSystemScope>
@@ -226,6 +227,7 @@
                     <plugin>
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
+                        <version>2.2.2.RELEASE</version>
                         <configuration>
                             <executable>true</executable>
                             <includeSystemScope>true</includeSystemScope>
@@ -328,6 +330,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.2.2.RELEASE</version>
                 <executions>
                     <execution>
                         <goals>
