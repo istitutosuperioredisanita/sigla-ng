@@ -6,6 +6,7 @@ import { AuthServerProvider } from '../auth/auth-session.service';
 import { Router } from '@angular/router';
 import { ContextService } from '../../context/context.service';
 import { Account } from '../user/account.model';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Injectable()
 export class LoginService {
@@ -16,58 +17,52 @@ export class LoginService {
         private router: Router,
         private eventManager: JhiEventManager,
         private localStateStorageService: LocalStateStorageService,
-        private contextService: ContextService
+        private contextService: ContextService,
+        private oidcSecurityService: OidcSecurityService
     ) {}
 
     login(credentials, callback?) {
         const cb = callback || function() {};
         return new Promise((resolve, reject) => {
-            this.authServerProvider.login(credentials).subscribe((data) => {
-                this.authServerProvider.loginWildfly((credentials),
-                        this.localStateStorageService.getUserContext(credentials.username)).subscribe((dataWildfly) => {
-                            this.authServerProvider.initializeWildfly(undefined).subscribe(() => {
-                                this.principal.identity(true).then((account) => {
-                                    if (account !== null) {
-                                        this.contextService.saveWildflyUserContext(
-                                            this.localStateStorageService.getUserContext(account.username), account
-                                        ).subscribe(() => {
-                                            this.eventManager.broadcast('onRefreshTodo');
-                                        });
-                                        resolve(account);
-                                    }
-                                });
-                            });
-                }, (err) => {
-                    reject(err);
-                    return cb(err);
+            this.authServerProvider.loginWildfly((credentials), this.localStateStorageService.getUserContext(credentials.username)).subscribe((accountWildfly: Account) => {
+                this.authServerProvider.initializeWildfly(undefined).subscribe(() => {
+                    this.contextService.saveWildflyUserContext(this.localStateStorageService.getUserContext(accountWildfly.username)).subscribe(() => {
+                        this.principal.identity(true).then((account) => {
+                            if (account !== null) {
+                                resolve(account);
+                            }
+                        });
+                        this.eventManager.broadcast('onRefreshTodo');
+                    });
                 });
-                return cb();
             }, (err) => {
                 reject(err);
                 return cb(err);
             });
+            return cb();
         });
     }
 
     logoutAndRedirect(): void {
         if (this.principal.isAuthenticated()) {
             this.logout();
+            this.principal.authenticate(null);
             this.router.navigate(['']);
         }
     }
 
     logout() {
-        this.authServerProvider.logout().subscribe(() => {
-            this.authServerProvider.logoutWildfly().subscribe();
+        this.authServerProvider.logoutWildfly().subscribe(() => {
+            this.principal.authenticate(null);
         });
-        this.principal.authenticate(null);
     }
 
     logoutSSO() {
         this.principal.identity(true).then((account: Account) => {
             this.authServerProvider.logoutWildfly().subscribe(() => {
-                this.principal.authenticate(null);
-                location.href = '/sso/logout';
+                this.oidcSecurityService.logoffAndRevokeTokens().subscribe(() => {
+                    this.principal.authenticate(null);
+                });
             });
         });
     }

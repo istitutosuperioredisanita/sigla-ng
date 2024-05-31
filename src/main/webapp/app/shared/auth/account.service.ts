@@ -1,22 +1,23 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { SERVER_API_URL } from '../../app.constants';
-import { map, switchMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+import { Account } from '../user/account.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class AccountService  {
-    constructor(private http: HttpClient) { }
+    constructor(
+        private http: HttpClient,
+    ) { }
 
-    get(user?: string): Observable<any> {
-        let url = 'api/account';
+    get(user?: string): Observable<Account> {
+        let url = environment.apiUrl + '/account';
         if (user) {
             url += '/' + user;
         }
-        return this.http.get(url).pipe(map((res: any) => res));
-    }
-
-    save(account: any): Observable<any> {
-        return this.http.post(SERVER_API_URL + 'api/account', account);
+        return this.http.get(url, {
+            withCredentials: true
+        }).pipe(map((res: Account) => res));
     }
 }

@@ -53,6 +53,9 @@ html {
     width: inherit;
     display: inline-flex;
   }
+  .breadcrumb-item + .breadcrumb-item::before {
+    color: #fff;
+  }
   /* ==========================================================================
   Browser Upgrade Prompt
   ========================================================================== */
@@ -101,7 +104,7 @@ html {
   }
 
   table.table-tab {
-    margin-bottom: -5px;
+    margin-bottom: -4px;
   }
 
   td.TabLabel.border-primary {
@@ -307,13 +310,13 @@ html {
       white-space: nowrap;
   }
   .input-group-searchtool input:first-child:not([class*="w-"]) {
-      width: 30%!important;
+      width: 10%!important;
   }
   .input-group-searchtool  input.form-control:nth-child(2):not([class*="w-"]) {
-      width: 50%!important;
+      width: 30%!important;
   }
   .input-group-searchtool  input.form-control:nth-child(3):not([class*="w-"]) {
-    width: 70%!important;
+    width: 40%!important;
   }
   .input-group-searchtool > button.btn:disabled {
       display: none;
@@ -389,6 +392,7 @@ html {
   table.sigla-table thead,
   table.sigla-table tfoot {
     position: sticky;
+    z-index: 1;
   }
   table.sigla-table thead {
     inset-block-start: -1px; /* "top" */

@@ -1,32 +1,43 @@
 import { Observable } from 'rxjs';
-import { switchMap, take} from 'rxjs/operators';
-import { Injectable, Injector } from '@angular/core';
-import { AuthService } from '../../shared/auth/auth.service';
+import { Injectable } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { environment } from '../../../environments/environment';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(private authService: AuthService) {}
+  constructor(private oidcSecurityService: OidcSecurityService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
-    // Le richieste di config non devono essere intercettate
-    if (req.url.indexOf('/SIGLA') === -1) {
+      if (((environment.oidc.enable  === 'true') ? true : false) && req.url.indexOf(environment.baseUrl) != -1) {
+        return this.oidcSecurityService.isAuthenticated().pipe(
+          switchMap((isAuthenticated) => {
+            if(!isAuthenticated) {
+              return this.oidcSecurityService.forceRefreshSession().pipe(
+                switchMap(({accessToken}) => {
+                  const copiedReq = req.clone({
+                    headers: req.headers
+                      .set(`Authorization`, `Bearer ${accessToken}`)
+                  });
+                  return next.handle(copiedReq);  
+                })
+              );
+            } else {
+              return this.oidcSecurityService.getAccessToken().pipe(
+                switchMap((accessToken) => {
+                  const copiedReq = req.clone({
+                    headers: req.headers
+                      .set(`Authorization`, `Bearer ${accessToken}`)
+                  });
+                  return next.handle(copiedReq);  
+                })
+              );
+            }
+          })
+        );
+      }
       return next.handle(req);
-    }
-
-    return this.authService.getRefreshedToken().pipe(
-      take(1),
-      switchMap((token) => {
-        if (token && token.access_token) {
-          const copiedReq = req.clone({
-            params: req.params
-              .set('access_token', token.access_token)
-          });
-          return next.handle(copiedReq);
-        }
-        return next.handle(req);
-      }));
   }
 }

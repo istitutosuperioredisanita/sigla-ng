@@ -1,22 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { ProfileService } from './profile.service';
-import { ProfileInfo } from './profile-info.model';
+import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'jhi-page-ribbon',
-    template: `<div class="ribbon" *ngIf="ribbonEnv"><a href="" jhiTranslate="global.ribbon.{{ribbonEnv}}">{{ribbonEnv}}</a></div>`
+    template: `<div class="ribbon" *ngIf="ribbonEnv"><a href="">{{ribbonEnv}}</a></div>`
 })
 export class PageRibbonComponent implements OnInit {
 
-    profileInfo: ProfileInfo;
     ribbonEnv: string;
 
-    constructor(private profileService: ProfileService) {}
+    constructor() {}
 
     ngOnInit() {
-        this.profileService.getProfileInfo().subscribe((profileInfo) => {
-            this.profileInfo = profileInfo;
-            this.ribbonEnv = profileInfo.ribbonEnv;
-        });
+        this.ribbonEnv = environment.ribbon;
     }
 }

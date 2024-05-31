@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 @NgModule({
     imports: [
         SiglaSharedModule,
-        RouterModule.forRoot([ HOME_ROUTE ], { useHash: true }),
+        RouterModule.forRoot(HOME_ROUTE, { useHash: true }),
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
@@ -21,10 +21,7 @@ import { HttpClient } from '@angular/common/http';
     declarations: [
         HomeComponent,
     ],
-    entryComponents: [
-    ],
-    providers: [
-    ],
+    providers: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SiglaHomeModule {}

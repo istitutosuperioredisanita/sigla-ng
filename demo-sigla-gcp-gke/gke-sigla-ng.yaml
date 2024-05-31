@@ -7,9 +7,7 @@ metadata:
   labels:
     app: "sigla-ng"
 data:
-  SIGLA_WILDFLY_URL: http://$sigla_thorntail_ip
-  SPRING_DATASOURCE_URL: jdbc:postgresql://$db_private_ip:5432/sigladb?schema=public
-  SPRING_PROFILES_ACTIVE: demopostgresql
+  BASE_URL: http://$sigla_thorntail_ip
 ---
 apiVersion: "apps/v1"
 kind: "Deployment"
@@ -32,26 +30,11 @@ spec:
       - name: "sigla-ng"
         image: "europe-west4-docker.pkg.dev/$project_id/ar-team-digi-sigla-poc-001/sigla-ng:latest"
         env:
-        - name: "SIGLA_WILDFLY_URL"
+        - name: "BASE_URL"
           valueFrom:
             configMapKeyRef:
-              key: "SIGLA_WILDFLY_URL"
+              key: "BASE_URL"
               name: "sigla-ng"
-        - name: "SPRING_DATASOURCE_URL"
-          valueFrom:
-            configMapKeyRef:
-              key: "SPRING_DATASOURCE_URL"
-              name: "sigla-ng"
-        - name: "SPRING_PROFILES_ACTIVE"
-          valueFrom:
-            configMapKeyRef:
-              key: "SPRING_PROFILES_ACTIVE"
-              name: "sigla-ng"
-        - name: "SPRING_DATASOURCE_PASSWORD"
-          valueFrom:
-            secretKeyRef:
-              name: db-credential
-              key: password
 ---
 apiVersion: "autoscaling/v2beta1"
 kind: "HorizontalPodAutoscaler"
@@ -93,7 +76,7 @@ spec:
   - nodePort: 32750
     port: 80
     protocol: TCP
-    targetPort: 8080
+    targetPort: 80
   selector:
     app: sigla-ng
   sessionAffinity: None

@@ -6,13 +6,11 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
 
 import {
-    Register,
     ActivateService,
     PasswordService,
     PasswordResetInitService,
     PasswordResetFinishService,
     PasswordStrengthBarComponent,
-    RegisterComponent,
     ActivateComponent,
     PasswordComponent,
     PasswordResetInitComponent,
@@ -20,7 +18,6 @@ import {
     SettingsComponent,
     accountState
 } from './';
-import {SessionsComponent} from './sessions/sessions.component'
 
 @NgModule({
     imports: [
@@ -36,16 +33,13 @@ import {SessionsComponent} from './sessions/sessions.component'
     ],
     declarations: [
         ActivateComponent,
-        RegisterComponent,
         PasswordComponent,
         PasswordStrengthBarComponent,
         PasswordResetInitComponent,
         PasswordResetFinishComponent,
         SettingsComponent,
-        SessionsComponent
     ],
     providers: [
-        Register,
         ActivateService,
         PasswordService,
         PasswordResetInitService,

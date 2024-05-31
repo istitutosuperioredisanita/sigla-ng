@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute} from '@angular/router';
 import { Principal, LoginService, Account } from '../../shared';
 import { PasswordService } from './password.service';
-import { ProfileService } from '../../layouts/profiles/profile.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'jhi-password',
@@ -21,7 +21,6 @@ export class PasswordComponent implements OnInit {
         private principal: Principal,
         public router: Router,
         private route: ActivatedRoute,
-        public profileService: ProfileService,
         public loginService: LoginService
     ) {}
 
@@ -29,13 +28,11 @@ export class PasswordComponent implements OnInit {
         this.principal.identity().then((account) => {
             this.account = account;
             if (account.ldap) {
-                this.profileService.getProfileInfo().subscribe((profileInfo) => {
-                    if (window.confirm('Per cambiare la password è necessario un reindirizzamento, si desidera continuare?')) {
-                        location.href = profileInfo.urlChangePassword;
-                    } else {
-                        this.router.navigate(['']);
-                    }
-                });
+                if (window.confirm('Per cambiare la password è necessario un reindirizzamento, si desidera continuare?')) {
+                    location.href = environment.urlChangePassword;
+                } else {
+                    this.router.navigate(['']);
+                }
             }
         });
     }

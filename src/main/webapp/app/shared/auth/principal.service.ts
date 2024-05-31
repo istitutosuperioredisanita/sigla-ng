@@ -68,6 +68,39 @@ export class Principal {
         return Promise.resolve(true);
     }
 
+    getIdentyAccount(force?: boolean, user?: string): Promise<any> {
+        let reloadUserIdentity = false;
+        if (force === true) {
+            reloadUserIdentity = true;
+        }
+
+        // check and see if we have retrieved the userIdentity data from the server.
+        // if we have, reuse it by immediately resolving
+        if (!reloadUserIdentity && this.userIdentity) {
+            return Promise.resolve(this.userIdentity);
+        }
+        // retrieve the userIdentity data from the server, update the identity object, and then resolve.
+        return this.account.get(user).toPromise().then((account: Account) => {
+            if (account) {
+                const that = this;
+                this.userIdentity = Object.assign(new Account(account.users), account);
+                if (user || (this.userIdentity.users.length === 1 || !force) ) {
+                    this.authenticated = true;
+                }
+            } else {
+                this.userIdentity = null;
+                this.authenticated = false;
+            }
+            this.authenticationState.next(this.userIdentity);
+            return this.userIdentity;
+        }).catch((err) => {
+            this.userIdentity = null;
+            this.authenticated = false;
+            this.authenticationState.next(this.userIdentity);
+            return null;
+        });
+    }
+
     identity(force?: boolean, user?: string): Promise<any> {
         let reloadUserIdentity = false;
         if (force === true) {
@@ -80,25 +113,20 @@ export class Principal {
             return Promise.resolve(this.userIdentity);
         }
         // retrieve the userIdentity data from the server, update the identity object, and then resolve.
-        return this.account.get(user).toPromise().then((account) => {
+        return this.account.get(user).toPromise().then((account: Account) => {
             if (account) {
                 const that = this;
-                this.userIdentity = account;
-                if (user || (this.userIdentity.users.length === 1 || !force)) {
-                    this.context.saveUserContext(
-                        this.localStateStorageService.getUserContext(this.userIdentity.username)
-                    ).toPromise().then((usercontext) => {
-                        that.userIdentity = usercontext;
-                        this.context.findEsercizi();
-                        this.context.findPreferiti();
-                        this.context.findMessaggi();
-                        this.context.findCds(usercontext);
-                        this.context.findUo(usercontext);
-                        this.context.findCdr(usercontext);
-                        if (force === undefined) {
-                            this.eventManager.broadcast('onRefreshTodo');
-                        }
-                    });
+                this.userIdentity = Object.assign(new Account(account.users), account);
+                if (user || (this.userIdentity.users.length === 1 || !force) ) {
+                    this.context.findEsercizi(account.cds);
+                    this.context.findPreferiti();
+                    this.context.findMessaggi();
+                    this.context.findCds(account);
+                    this.context.findUo(account);
+                    this.context.findCdr(account);
+                    if (force === undefined) {
+                        this.eventManager.broadcast('onRefreshTodo');
+                    }
                     this.authenticated = true;
                 }
             } else {

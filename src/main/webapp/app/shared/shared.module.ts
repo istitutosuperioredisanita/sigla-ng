@@ -58,7 +58,6 @@ import {ContextComponent} from '../context';
         DatePipe,
         AuthService
     ],
-    entryComponents: [JhiLoginModalComponent, JhiMultipleUserModalComponent, JhiMessaggiModalComponent],
     exports: [
         SiglaSharedCommonModule,
         JhiLoginModalComponent,
@@ -70,7 +69,6 @@ import {ContextComponent} from '../context';
         ContextComponent,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
-
 })
 export class SiglaSharedModule {}
 // required for AOT compilation

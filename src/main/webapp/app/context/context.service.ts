@@ -7,9 +7,8 @@ import { Pair } from './pair.model';
 import { Preferiti } from '../context/preferiti.model';
 import { Messaggio } from '../context/messaggio.model';
 import { IndirizziMail } from './index';
-import { SERVER_API_URL } from '../app.constants';
-import { ProfileService } from '../layouts/profiles/profile.service';
 import { map, switchMap } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class ContextService  {
@@ -25,23 +24,26 @@ export class ContextService  {
     headers = new HttpHeaders ({
         'Content-Type': 'application/x-www-form-urlencoded'
     });
-    private resourceUrlIndirizziEmail = SERVER_API_URL + 'api/context/indirizzi-mail/';
-    private resourceUrlMessaggi = SERVER_API_URL + 'api/context/messaggi/';
 
     constructor(
         private http: HttpClient,
         private eventManager: JhiEventManager,
-        private profileService: ProfileService
     ) {
     }
 
-    findEsercizi(): void {
-        this.getEsercizi()
+    findEsercizi(cds?: string): void {
+        this.getEsercizi(cds)
             .subscribe((esercizi) => this.esercizi = esercizi);
     }
 
-    getEsercizi(): Observable<number[]> {
-        return this.http.get(SERVER_API_URL + 'api/context/esercizio').pipe(map((res: any) => res));
+    getEsercizi(cds?: string): Observable<number[]> {
+        let httpParams: HttpParams = new HttpParams();
+        if (cds) {
+            httpParams = httpParams.set('cds', cds);
+        }
+        return this.http.get(environment.apiUrl + '/context/esercizi', {
+            params: httpParams, withCredentials: true
+        }).pipe(map((res: number[]) => res));
     }
 
     findPreferiti(): void {
@@ -50,19 +52,27 @@ export class ContextService  {
     }
 
     getPreferiti(): Observable<Preferiti[]> {
-        return this.http.get(SERVER_API_URL + 'api/context/preferiti').pipe(map((res: any) => res));
+        return this.http.get(environment.apiUrl + '/context/preferiti', {
+            withCredentials: true
+        }).pipe(map((res: Preferiti[]) => res));
     }
 
     getIndirizziMail(): Observable<IndirizziMail[]> {
-        return this.http.get(this.resourceUrlIndirizziEmail).pipe(map((res: any) => res));
+        return this.http.get(environment.apiUrl + '/context/indirizzi-mail', {
+            withCredentials: true
+        }).pipe(map((res: IndirizziMail[]) => res));
     }
 
     postIndirizziMail(indirizzi: any): Observable<IndirizziMail[]> {
-        return this.http.post(this.resourceUrlIndirizziEmail, indirizzi).pipe(map((res: any) => res));
+        return this.http.post(environment.apiUrl + '/context/indirizzi-mail', indirizzi, {
+            withCredentials: true
+        }).pipe(map((res: IndirizziMail[]) => res));
     }
 
     deleteIndirizziEmail(indirizzi: string[]): Observable<IndirizziMail[]> {
-        return this.http.delete(`${this.resourceUrlIndirizziEmail}${indirizzi}`).pipe(map((res: any) => res));
+        return this.http.delete(`${environment.apiUrl + '/context/indirizzi-mail/'}${indirizzi.join('/') + '/delete'}`, {
+            withCredentials: true
+        }).pipe(map((res: IndirizziMail[]) => res));
     }
 
     findMessaggi(): void {
@@ -71,11 +81,15 @@ export class ContextService  {
     }
 
     getMessaggi(): Observable<Messaggio[]> {
-        return this.http.get(this.resourceUrlMessaggi).pipe(map((res: any) => res));
+        return this.http.get(environment.apiUrl + '/context/messaggi', {
+            withCredentials: true
+        }).pipe(map((res: Messaggio[]) => res));
     }
 
     deleteMessaggi(messaggi: any): Observable<Messaggio[]> {
-        return this.http.post(this.resourceUrlMessaggi, messaggi).pipe(map((res: any) => res));
+        return this.http.post(environment.apiUrl + '/context/messaggi', messaggi, {
+            withCredentials: true
+        }).pipe(map((res: Messaggio[]) => res));
     }
 
     findCds(account: Account): void {
@@ -93,7 +107,9 @@ export class ContextService  {
         if (uo) {
             httpParams = httpParams.set('uo', uo);
         }
-        return this.http.get(SERVER_API_URL + 'api/context/cds', {params: httpParams}).pipe(map((res: any) => res));
+        return this.http.get(environment.apiUrl + '/context/cds', {
+            params: httpParams, withCredentials: true
+        }).pipe(map((res: Pair[]) => res));
     }
 
     findUo(account?: Account): void {
@@ -113,7 +129,9 @@ export class ContextService  {
         if (cds) {
             httpParams = httpParams = httpParams.set('cds', cds);
         }
-        return this.http.get(SERVER_API_URL + 'api/context/uo', {params: httpParams}).pipe(map((res: any) => res));
+        return this.http.get(environment.apiUrl + '/context/uo', {
+            params: httpParams, withCredentials: true
+        }).pipe(map((res: Pair[]) => res));
     }
 
     getCdr(uo: string): Observable<Pair[]> {
@@ -121,7 +139,9 @@ export class ContextService  {
         if (uo) {
             httpParams = httpParams.set('uo', uo);
         }
-        return this.http.get(SERVER_API_URL + 'api/context/cdr', {params: httpParams}).pipe(map((res: any) => res));
+        return this.http.get(environment.apiUrl + '/context/cdr', {
+            params: httpParams, withCredentials: true
+        }).pipe(map((res: Pair[]) => res));
     }
 
     findCdr(account: Account): void {
@@ -134,17 +154,7 @@ export class ContextService  {
             });
     }
 
-    saveEsecizio(esercizio: number): Observable<Account> {
-        return this.http.post(SERVER_API_URL + 'api/context', {
-            'esercizio' : esercizio
-        }).pipe(map((res: any) => res));
-    }
-
-    saveUserContext(userContext: UserContext): Observable<any> {
-        return this.http.post(SERVER_API_URL + 'api/context', userContext).pipe(map((res: any) => res));
-    }
-
-    saveWildflyUserContext(userContext: UserContext, account: Account): Observable<string> {
+    saveWildflyUserContext(userContext: UserContext): Observable<string> {
         let httpParams: HttpParams = new HttpParams();
         const parameter = [
             userContext.esercizio,
@@ -154,11 +164,9 @@ export class ContextService  {
         ].join(',');
         httpParams = httpParams.set('comando', 'doSelezionaContesto(' + parameter + ')');
         httpParams = httpParams.set('datetime', String(Date.now()));
-        return this.profileService.getProfileInfo().pipe(switchMap((profileInfo) => {
-            return this.http.get(profileInfo.siglaWildflyURL + '/SIGLA/Login.do', {
-                params: httpParams, headers: this.headers, withCredentials: true, responseType: 'text'
-            }).pipe(map((res: any) => res));
-        }));
+        return this.http.get(environment.applicationContextUrl + '/Login.do', {
+            params: httpParams, headers: this.headers, withCredentials: true, responseType: 'text'
+        }).pipe(map((res: any) => res));
     }
 
     setUoModel(pair: Pair) {

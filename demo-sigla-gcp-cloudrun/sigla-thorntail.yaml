@@ -44,7 +44,7 @@ spec:
               key: latest
         - name: THORNTAIL_UNDERTOW_SERVLET-CONTAINERS_DEFAULT_SESSION-COOKIE-SETTING_COMMENT
           value: ;
-        - name: THORNTAIL_UNDERTOW_FILTER-CONFIGURATION_RESPONSE-HEADERS_ACCESS-CONTROL-ALLOW-ORIGIN_HEADER-VALUE
+        - name: CORS_ALLOW-ORIGIN
           value: $sigla_ng_url
         resources:
           limits:

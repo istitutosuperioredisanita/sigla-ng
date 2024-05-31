@@ -2,14 +2,12 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angula
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 import { Router, NavigationExtras } from '@angular/router';
-import { ProfileService } from '../layouts/profiles/profile.service'; // FIXME barrel doesnt work here
 import { Account, MultipleUserModalService, LoginService, Principal, StateStorageService } from '../shared';
-import { ContextService} from '../context';
 import { LocalStateStorageService } from '../shared/auth/local-storage.service';
 import { SERVER_API_URL } from '../app.constants';
-import { AuthServerProvider } from '../shared/auth/auth-session.service';
-import { AuthService } from '../shared/auth/auth.service';
 import { TranslateService } from '@ngx-translate/core';
+import { environment } from '../../environments/environment';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
     selector: 'jhi-home',
@@ -22,70 +20,44 @@ export class HomeComponent implements OnInit, AfterViewInit {
     authenticationErrorStatus = 401;
     authenticationErrorMessage: string;
     instituteAcronym: string;
-    password: string;
+    password = '';
     rememberMe: boolean;
-    username: string;
+    username = '';
     credentials: any;
     isRequesting = false;
-    keycloakEnabled = true;
+    oidcEnable = false;
     @ViewChild('usernameinput', {static : true}) userNameElement: ElementRef;
 
     constructor(
         private principal: Principal,
         private loginService: LoginService,
         private multipleUserModalService: MultipleUserModalService,
-        private authServerProvider: AuthServerProvider,
-        private authService: AuthService,
         private stateStorageService: StateStorageService,
         private eventManager: JhiEventManager,
-        private profileService: ProfileService,
         private router: Router,
-        private context: ContextService,
         private localStateStorageService: LocalStateStorageService,
-        private translateService: TranslateService
+        private translateService: TranslateService,
+        private oidcSecurityService: OidcSecurityService
     ) {
     }
 
     ngOnInit() {
+        this.oidcEnable = (environment.oidc.enable === 'true') ? true : false;
         this.translateService.setDefaultLang('it');
-        if (this.isAuthenticated()) {
+        if (!this.oidcEnable && this.isAuthenticated()) {
             this.principal.identity().then((account) => {
                 this.account = account;
             });
         }
-        this.profileService.getProfileInfo().subscribe((profileInfo) => {
-            this.instituteAcronym = profileInfo.instituteAcronym;
-            this.keycloakEnabled = profileInfo.keycloakEnabled;
-            if (profileInfo.keycloakEnabled) {
-                this.principal.identity(true).then((account: Account) => {
-                    if (account && account.login) {
-                        this.authService.refreshToken().subscribe(() => {
-                            this.authServerProvider.initializeWildfly(account).subscribe(() => {
-                                this.account = account;
-                                if (account.users.length > 1) {
-                                    this.context.saveUserContext(
-                                        this.localStateStorageService.getUserContext(account.username)
-                                    ).toPromise().then((usercontext) => {
-                                        this.context.findEsercizi();
-                                        this.context.findPreferiti();
-                                        this.context.findMessaggi();
-                                        this.context.findCds(usercontext);
-                                        this.context.findUo(usercontext);
-                                        this.context.findCdr(usercontext);
-                                    });
-                                    this.authServerProvider.loginMultiploWildfly(
-                                        account.username,
-                                        this.localStateStorageService.getUserContext(account.username)
-                                    ).subscribe(() => {
-                                        this.principal.setAuthenticated(true);
-                                    });
-                                }
-                            });
-                        });
-                    }
-                });
-            }
-        });
+        this.instituteAcronym = environment.instituteAcronym;
+        if (this.oidcEnable && !this.isAuthenticated()) {
+            console.log('init oidc');
+            this.oidcSecurityService.checkAuth().subscribe(({isAuthenticated}) => {
+                if (isAuthenticated) {
+                    this.login();
+                }
+            })
+        }        
     }
 
     ngAfterViewInit() {
@@ -126,18 +98,36 @@ export class HomeComponent implements OnInit, AfterViewInit {
                     }
                 };
                 this.router.navigate(['password'], navigationExtras);
-            } else if (!account.enabled) {
+            } else if (account.ldap && !account.abilitatoLdap) {
+                this.authenticationErrorStatus = 556;
+                this.principal.setAuthenticated(false);
+                this.isRequesting = false;
+                this.authenticationError = true;
+                this.router.navigate(['/error', {
+                    status: 'accessdenied',
+                    error: 'login.messages.error.authentication.556',            
+                    given_name: account.firstName,
+                    family_name: account.lastName,
+                    preferred_username: account.login,
+                    email: account.email,
+                    updatedAt: account.updatedAt||'.'
+                }]);
+            } else if (!account.enabled || !account.credentialsNonExpired) {
                 this.authenticationErrorStatus = 555;
                 this.principal.setAuthenticated(false);
                 this.isRequesting = false;
                 this.authenticationError = true;
+                this.router.navigate(['/error', {
+                    status: 'accessdenied',
+                    given_name: account.firstName,
+                    family_name: account.lastName,
+                    preferred_username: account.login,
+                    email: account.email,
+                    updatedAt: account.updatedAt||'.'
+                }]);
             } else {
-                 if (account.users.length === 1) {
-                    this.context.saveUserContext(
-                        this.localStateStorageService.getUserContext(account.username)
-                    ).subscribe((usercontext) => {
-                        this.principal.authenticate(usercontext);
-                    });
+                if (account.users.length === 1) {
+                    this.principal.authenticate(account);
                     if (this.router.url === '/register' || (/activate/.test(this.router.url)) ||
                         this.router.url === '/finishReset' || this.router.url === '/requestReset') {
                         this.router.navigate(['']);
@@ -158,15 +148,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
                     });
                     // // previousState was set in the authExpiredInterceptor before being redirected to login modal.
                     // // since login is succesful, go to stored previousState and clear previousState
-                    const previousState = this.stateStorageService.getPreviousState();
-                    if (previousState) {
-                        this.stateStorageService.resetPreviousState();
-                        this.router.navigate([previousState.name], { queryParams:  previousState.params });
+                    if (!this.oidcEnable) {
+                        const previousState = this.stateStorageService.getPreviousState();
+                        if (previousState) {
+                            this.stateStorageService.resetPreviousState();
+                            this.router.navigate([previousState.name], { queryParams:  previousState.params });
+                        }
                     }
                     this.authenticationError = false;
-                 } else {
+                } else {
                     this.modalRef = this.multipleUserModalService.open('workspace');
-                 }
+                }
             }
         }).catch((error) => {
             if (error.status) {

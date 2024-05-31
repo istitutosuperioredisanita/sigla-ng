@@ -17,6 +17,8 @@ export class MultipleUserModalService {
         this.isOpen = true;
         const modalRef = this.modalService.open(JhiMultipleUserModalComponent, {
             windowClass: 'fade',
+            animation: true,
+            keyboard: false,
             backdrop: false
         });
         modalRef.componentInstance.page = page;

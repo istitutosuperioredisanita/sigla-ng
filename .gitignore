@@ -29,6 +29,5 @@ bower_components/
 
 /node_modules/
 /node/
-/package-lock.json
 /*.log
 /yarn.lock

@@ -20,17 +20,15 @@
         <span class="hipster img-fluid img-rounded"></span>
     </div>
     <div class="col-md-9 pb-5 mb-3">
-        <h1 translate="home.title" class="text-primary">Welcome, Java Hipster!</h1>
-        <p class="lead text-primary" translate="home.subtitle">This is your homepage</p>
+        <h1 translate class="text-primary">home.title</h1>
+        <p class="lead text-primary" translate>home.subtitle</p>
 
         <div [ngSwitch]="isAuthenticated()">
             <div *ngSwitchCase="true">
                 <jhi-context [isNavbar]="false">Loading context.....</jhi-context>
             </div>
             <div *ngSwitchCase="false">
-                <div *ngIf="keycloakEnabled" class="col-lg-9 col-xl-8 loading">
-                </div>    
-                <div *ngIf="!keycloakEnabled" class="col-lg-9 col-xl-8">
+                <div class="col-lg-9 col-xl-8" *ngIf="!oidcEnable">
                     <div class="card">
                         <div class="card-header border-1 py-1 d-flex align-items-center">
                             <span class="login-img img-thumbnail mr-1" [ngClass]="getLogo()"></span>
@@ -54,8 +52,8 @@
                                     <input type="password" class="form-control" name="password" id="password" placeholder="{{'login.form.password.placeholder' | translate}}"
                                            [(ngModel)]="password">
                                 </div>
-                                <button type="submit" [disabled]="loginForm.form.invalid" class="btn btn-lg btn-primary btn-block"><span translate="login.form.button">Sign in</span> <i *ngIf="isRequesting" class="fa fa-refresh"  [ngClass]="{'faa-spin animated' : isRequesting}"></i></button>
-                                <button type="button" (click)="login('password')" [disabled]="loginForm.form.invalid" class="btn btn-lg btn-outline-dark btn-block" translate="login.form.change-password">Cambia Password</button>
+                                <button type="submit" [disabled]="loginForm.form.invalid" class="btn btn-lg btn-primary btn-block"><span translate>login.form.button</span> <i *ngIf="isRequesting" class="fa fa-refresh"  [ngClass]="{'faa-spin animated' : isRequesting}"></i></button>
+                                <button type="button" (click)="login('password')" [disabled]="loginForm.form.invalid" class="btn btn-lg btn-outline-dark btn-block" translate>login.form.change-password</button>
                             </form>
 
                         </div>

@@ -26,7 +26,7 @@
         <table class="sigla-table table table-bordered table-hover table-striped table-sm">
             <thead class="table-primary">
                 <tr>
-                    <th class="TableHeader align-middle" align="center" valign="center">
+                    <th class="TableHeader align-middle" valign="center">
                         <button class="btn btn-sm btn-link hand" (click)="selectAll()" placement="top" container="body"  ngbTooltip="Seleziona/Deseleziona tutti">
                             <i class="fa fa-check-square-o" aria-hidden="true"></i>
                         </button>
@@ -37,16 +37,16 @@
             </thead>
             <tbody>
                 <tr *ngFor="let messaggio of contextService.messaggi" (click)="setClickedRow(messaggio)" class="hand"
-                    [ngClass]="{'bg-primary text-white' : messaggio.pgMessaggio == currentMessaggio.pgMessaggio}">
-                    <td><input type="checkbox" [(ngModel)]="messaggio.checked"></td>
-                    <td>{{messaggio.dacr | date:'longDate'}}</td>
+                    [ngClass]="{'bg-primary text-white' : messaggio.pg_messaggio == currentMessaggio.pg_messaggio}">
+                    <td><input type="checkbox" [disabled]="messaggio.cd_utente == null" [(ngModel)]="messaggio.checked"></td>
+                    <td>{{messaggio.data_creazione | date:'longDate'}}</td>
                     <td>{{messaggio.soggetto}}</td>
                 </tr>
             </tbody>
         </table>
     </div>
     <div class="btn-group w-100 border mt-1 rounded-left rounded-right" role="group" aria-label="toolbar">
-        <button class="btn btn-sm btn-light text-danger hand" (click)="deleteCurrentMessaggio()" placement="top" container="body"  ngbTooltip="Elimina messaggio corrente">
+        <button class="btn btn-sm btn-light text-danger hand" [disabled]="currentMessaggio.cd_utente == null" (click)="deleteCurrentMessaggio()" placement="top" container="body"  ngbTooltip="Elimina messaggio corrente">
             <i class="fa fa-trash-o" aria-hidden="true"></i>
         </button>
         <button class="btn btn-sm btn-light text-danger hand" (click)="deleteMessaggiSelezionati()" placement="top" container="body"  ngbTooltip="Elimina selezionati">

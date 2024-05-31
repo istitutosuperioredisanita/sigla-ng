@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiLanguageService } from 'ng-jhipster';
-import { ProfileService } from '../profiles/profile.service'; // FIXME barrel doesnt work here
 import { JhiLanguageHelper, Principal, MultipleUserModalService, LoginService } from '../../shared';
 import { WorkspaceService } from '../../workspace/workspace.service';
 import { TranslateService } from '@ngx-translate/core';
+import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'jhi-navbar',
@@ -15,7 +15,7 @@ export class NavbarComponent implements OnInit {
 
     inProduction: boolean;
     isNavbarCollapsed: boolean;
-    keycloakEnabled: boolean;
+    oidcEnabled: boolean;
     ssoAppsMenuDisplay: boolean;
     languages: any[];
     instituteAcronym: string;
@@ -32,7 +32,6 @@ export class NavbarComponent implements OnInit {
         private languageService: JhiLanguageService,
         private multipleUserModalService: MultipleUserModalService,
         public principal: Principal,
-        private profileService: ProfileService,
         private workspaceService: WorkspaceService,
         public router: Router,
         private translateService: TranslateService
@@ -43,22 +42,19 @@ export class NavbarComponent implements OnInit {
 
     ngOnInit() {
         this.translateService.setDefaultLang('it');
+        this.oidcEnabled = (environment.oidc.enable  === 'true') ? true : false;
         this.languageHelper.getAll().then((languages) => {
             this.languages = languages;
         });
-        this.profileService.getProfileInfo().subscribe((profileInfo) => {
-            this.inProduction = profileInfo.inProduction;
-            this.swaggerEnabled = profileInfo.swaggerEnabled;
-            this.instituteAcronym = profileInfo.instituteAcronym;
-            this.keycloakEnabled = profileInfo.keycloakEnabled;
-            this.ssoAppsMenuDisplay = profileInfo.ssoAppsMenuDisplay;
-            this.urlChangePassword = profileInfo.urlChangePassword;
-            if (this.urlChangePassword) {
-                this.translateService.get('login.form.manage-account').subscribe((text: string) => {
-                    this.accountLabel = text;
-                });
-            }
-        });
+        this.inProduction = environment.production;
+        this.instituteAcronym = environment.instituteAcronym;
+        this.ssoAppsMenuDisplay = (environment.ssoAppsMenuDisplay === 'true') ? true : false;
+        this.urlChangePassword = environment.urlChangePassword;
+        if (this.urlChangePassword) {
+            this.translateService.get('login.form.manage-account').subscribe((text: string) => {
+                this.accountLabel = text;
+            });
+        }
         this.workspaceService.version().subscribe((version) => {
             this.version = version;
         });
@@ -86,7 +82,7 @@ export class NavbarComponent implements OnInit {
 
     logout() {
         this.collapseNavbar();
-        if (this.keycloakEnabled) {
+        if (this.oidcEnabled) {
             this.loginService.logoutSSO();
         } else {
             this.loginService.logout();
