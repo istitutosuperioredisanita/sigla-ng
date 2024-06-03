@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ProfileService } from '../profiles/profile.service'; // FIXME barrel doesnt work here
+import { environment } from '../../../environments/environment';
+
 @Component({
     selector: 'jhi-footer',
     templateUrl: './footer.component.html'
@@ -7,14 +8,9 @@ import { ProfileService } from '../profiles/profile.service'; // FIXME barrel do
 export class FooterComponent implements OnInit {
      instituteAcronym: string;
 
-     constructor(
-             private profileService: ProfileService,
-         ) {
-         }
+     constructor() {}
 
      ngOnInit() {
-         this.profileService.getProfileInfo().subscribe((profileInfo) => {
-             this.instituteAcronym = profileInfo.instituteAcronym;
-            });
+        this.instituteAcronym = environment.instituteAcronym;
      }
  }
