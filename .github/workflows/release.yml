@@ -17,15 +17,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        env:
-          GITHUB_USERNAME: ${{ github.actor }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}          
+
+      - name: Log in to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
       - name: Upgrade version
         run: |
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
           git config --global user.name "${{ github.actor }}"
           npm version $NEW_VERSION
           git push
+
       - name: Build Docker image
         run: |
           docker build -t ghcr.io/$IMAGE_NAME:$NEW_VERSION .
