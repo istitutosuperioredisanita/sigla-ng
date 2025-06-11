@@ -13,8 +13,12 @@ jobs:
       packages: write
 
     steps:
-      - uses: actions/checkout@v3
-
+      - uses: actions/checkout@v4
+        with:
+          ref: 'main'
+        env:
+          GITHUB_USERNAME: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}          
       - name: Build Docker image
         run: |
           docker build -t ghcr.io/$IMAGE_NAME:latest .

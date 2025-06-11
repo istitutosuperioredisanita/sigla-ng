@@ -19,6 +19,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: 'main'
+        env:
+          GITHUB_USERNAME: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}          
       - name: Upgrade version
         run: |
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
