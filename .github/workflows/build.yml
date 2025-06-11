@@ -1,0 +1,24 @@
+name: Build
+on: [push, pull_request]
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}/sigla-ng
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: |
+          docker build -t ghcr.io/$IMAGE_NAME:latest .
+
+      - name: Push Docker image
+        run: |
+          docker push ghcr.io/$IMAGE_NAME:latest
