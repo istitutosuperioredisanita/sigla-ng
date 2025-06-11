@@ -1,0 +1,35 @@
+name: Release
+on:
+  release:
+    types: [created]
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}/sigla-ng
+  NEW_VERSION: ${{ github.event.release.tag_name }}
+
+jobs:
+  build:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+        env:
+          GITHUB_USERNAME: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}          
+      - name: Upgrade version
+        run: |
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git config --global user.name "${{ github.actor }}"
+          npm version $NEW_VERSION
+          git push
+      - name: Build Docker image
+        run: |
+          docker build -t ghcr.io/$IMAGE_NAME:$NEW_VERSION .
+
+      - name: Push Docker image
+        run: |
+          docker push ghcr.io/$IMAGE_NAME:$NEW_VERSION
