@@ -22,8 +22,7 @@
               "src/main/webapp/favicon.ico"
             ],
             "styles": [
-              "src/main/webapp/content/scss/vendor.scss",
-              "src/main/webapp/assets/css/custom.css"
+              "src/main/webapp/content/scss/vendor.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
