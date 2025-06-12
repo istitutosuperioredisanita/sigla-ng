@@ -36,6 +36,7 @@
             "language": "Lingua"
         },
         "form": {
+            "password.title": "Password per [<b>{{username}}</b>]",
             "username": "Utente",
             "username.placeholder": "Il tuo nome utente",
             "newpassword": "Nuova password",

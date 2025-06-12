@@ -29,7 +29,7 @@
             </div>
             <div *ngSwitchCase="false">
                 <div class="col-lg-9 col-xl-8" *ngIf="!oidcEnable">
-                    <div class="card">
+                    <div class="card shadow">
                         <div class="card-header border-1 py-1 d-flex align-items-center">
                             <span class="login-img img-thumbnail mr-1" [ngClass]="getLogo()"></span>
                             <span class="h3" jhiTranslate="login.title">Sign in</span>
@@ -53,9 +53,7 @@
                                            [(ngModel)]="password">
                                 </div>
                                 <button type="submit" [disabled]="loginForm.form.invalid" class="btn btn-lg btn-primary btn-block"><span translate>login.form.button</span> <i *ngIf="isRequesting" class="fa fa-refresh"  [ngClass]="{'faa-spin animated' : isRequesting}"></i></button>
-                                <button type="button" (click)="login('password')" [disabled]="loginForm.form.invalid" class="btn btn-lg btn-outline-dark btn-block" translate>login.form.change-password</button>
                             </form>
-
                         </div>
                     </div>
                 </div>
