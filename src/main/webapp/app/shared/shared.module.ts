@@ -28,6 +28,7 @@ import { TranslateDirective } from './language/translate.directive';
 
 @NgModule({
     imports: [
+        DatePipe,
         SiglaSharedLibsModule,
         SiglaSharedCommonModule,
         TranslateModule.forChild({

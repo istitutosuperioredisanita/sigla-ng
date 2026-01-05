@@ -79,7 +79,7 @@ export class SIGLATreeComponent implements OnInit, OnDestroy, AfterViewInit {
             this.initTree(userContext.esercizio, userContext.uo);
         });
         this.preferitiListener = this.eventManager.subscribe('onPreferitiSelected', (message) => {
-            console.log('Evento ricevuto con dati:', message);            
+            console.log('Evento ricevuto con dati:', message);
             const leaf = that.leafz.filter((v) => {
                 return v.id === message;
             })[0];
@@ -88,6 +88,7 @@ export class SIGLATreeComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         });
         this.refreshTreeListener = this.eventManager.subscribe('onRefreshTree', (message) => {
+            console.log('Evento ricevuto con dati:', message);
             this.initTree(undefined, undefined, message);
         });
         this.workspaceListener = this.eventManager.subscribe('onWorkspaceHover', (message) => {
@@ -206,7 +207,7 @@ export class SIGLATreeComponent implements OnInit, OnDestroy, AfterViewInit {
                     });
                 this.nodes = this.getChildNodes('0');
                 this.stopRefreshing();
-                if (message && focusedNode && message['content'] === 'reopenView') {
+                if (message && focusedNode && message === 'reopenView') {
                     const node = this.tree.treeModel.getNodeById(focusedNode);
                     this.tree.treeModel.setFocusedNode(node);
                     this.activateTreeNode(this.tree.treeModel.getFocusedNode(), false);
