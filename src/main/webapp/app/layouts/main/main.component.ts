@@ -5,7 +5,8 @@ import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'jhi-main',
-    templateUrl: './main.component.html'
+    templateUrl: './main.component.html',
+    standalone: false
 })
 export class JhiMainComponent implements OnInit {
     constructor(

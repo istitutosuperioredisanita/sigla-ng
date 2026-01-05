@@ -13,7 +13,8 @@ import { EventManager } from '../auth/event-manager.service';
                     <pre [innerHTML]="alert.msg"></pre>
                 </ngb-alert>
             </div>
-        </div>`
+        </div>`,
+    standalone: false
 })
 export class JhiAlertErrorComponent implements OnDestroy {
     alerts: any[];

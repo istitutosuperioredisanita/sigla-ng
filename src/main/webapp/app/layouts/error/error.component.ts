@@ -7,7 +7,8 @@ import { Principal } from 'app/shared';
 
 @Component({
     selector: 'jhi-error',
-    templateUrl: './error.component.html'
+    templateUrl: './error.component.html',
+    standalone: false
 })
 export class ErrorComponent implements OnInit {
     errorMessage: string;

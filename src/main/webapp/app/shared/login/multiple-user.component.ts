@@ -7,7 +7,8 @@ import { LocalStateStorageService } from '../auth/local-storage.service';
 
 @Component({
     selector: 'jhi-multiple-user-modal',
-    templateUrl: './multiple-user.component.html'
+    templateUrl: './multiple-user.component.html',
+    standalone: false
 })
 export class JhiMultipleUserModalComponent implements OnInit {
     public account: Account;

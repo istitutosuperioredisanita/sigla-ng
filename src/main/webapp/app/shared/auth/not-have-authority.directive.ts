@@ -13,7 +13,8 @@ import { Principal } from './principal.service';
  * ```
  */
 @Directive({
-    selector: '[jhiNotHaveAuthority]'
+    selector: '[jhiNotHaveAuthority]',
+    standalone: false
 })
 export class NotHaveAuthorityDirective {
 

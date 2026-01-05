@@ -4,7 +4,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Directive({
-  selector: '[jhiTranslate]'
+    selector: '[jhiTranslate]',
+    standalone: false
 })
 export class TranslateDirective implements OnInit, OnChanges, OnDestroy {
   @Input() jhiTranslate!: string;

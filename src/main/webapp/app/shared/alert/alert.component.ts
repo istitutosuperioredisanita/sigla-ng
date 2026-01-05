@@ -10,7 +10,8 @@ import { AlertService } from './alert.service';
                     <pre [innerHTML]="alert.msg"></pre>
                 </ngb-alert>
             </div>
-        </div>`
+        </div>`,
+    standalone: false
 })
 export class JhiAlertComponent implements OnInit, OnDestroy {
     alerts: any[];

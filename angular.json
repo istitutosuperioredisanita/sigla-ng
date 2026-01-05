@@ -9,13 +9,16 @@
       "projectType": "application",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist",
+            "outputPath": {
+              "base": "dist"
+            },
             "index": "src/main/webapp/index.html",
-            "main": "src/main/webapp/app/app.main.ts",
             "tsConfig": "./tsconfig.json",
-            "polyfills": "src/main/webapp/app/polyfills.ts",
+            "polyfills": [
+              "src/main/webapp/app/polyfills.ts"
+            ],
             "assets": [
               "src/main/webapp/assets",
               "src/main/webapp/content",
@@ -34,12 +37,11 @@
               "node_modules/popper.js/dist/umd/popper.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js"
             ],
-            "vendorChunk": true,
             "extractLicenses": false,
-            "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "browser": "src/main/webapp/app/app.main.ts"
           },
           "configurations": {
             "production": {
@@ -53,9 +55,7 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true
+              "extractLicenses": true
             }
           },
           "defaultConfiguration": ""

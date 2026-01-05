@@ -9,6 +9,7 @@ import { environment } from '../../../environments/environment';
 @Component({
     selector: 'jhi-navbar',
     templateUrl: './navbar.component.html',
+    standalone: false
 })
 export class NavbarComponent implements OnInit {
 

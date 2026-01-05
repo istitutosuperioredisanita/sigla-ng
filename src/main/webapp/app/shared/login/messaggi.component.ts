@@ -11,7 +11,8 @@ import { ContextService } from '../../context/context.service';
         .mh-45-vh {
             max-height: 45vh;
         }
-    `]
+    `],
+    standalone: false
 })
 export class JhiMessaggiModalComponent {
     public account: Account;

@@ -6,7 +6,8 @@ import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'jhi-password',
-    templateUrl: './password.component.html'
+    templateUrl: './password.component.html',
+    standalone: false
 })
 export class PasswordComponent implements OnInit {
     doNotMatch: string;

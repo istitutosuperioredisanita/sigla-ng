@@ -6,7 +6,8 @@ import { AlertService } from '../../shared/alert/alert.service';
 
 @Component({
     selector: 'jhi-settings',
-    templateUrl: './settings.component.html'
+    templateUrl: './settings.component.html',
+    standalone: false
 })
 export class SettingsComponent implements OnInit {
     error: string;

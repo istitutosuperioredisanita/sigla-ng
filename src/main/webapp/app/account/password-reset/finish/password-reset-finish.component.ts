@@ -7,7 +7,8 @@ import { LoginModalService } from '../../../shared';
 
 @Component({
     selector: 'jhi-password-reset-finish',
-    templateUrl: './password-reset-finish.component.html'
+    templateUrl: './password-reset-finish.component.html',
+    standalone: false
 })
 export class PasswordResetFinishComponent implements OnInit, AfterViewInit {
     confirmPassword: string;

@@ -12,7 +12,8 @@ import { Component, ElementRef, Input, Renderer2 } from '@angular/core';
                 <li class="point"></li>
                 <li class="point"></li>
             </ul>
-        </div>`
+        </div>`,
+    standalone: false
 })
 export class PasswordStrengthBarComponent {
 
