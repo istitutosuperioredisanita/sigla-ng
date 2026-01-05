@@ -2,22 +2,20 @@
 
 # We label our stage as 'builder'
 FROM node:alpine as builder
-LABEL MAINTAINER Marco Spasiano <marco.spasiano@cnr.it>
 
 COPY package.json package-lock.json ./
 
 RUN npm set progress=false && npm config set depth 0 && npm cache clean --force
 
 ## Storing node modules on a separate layer will prevent unnecessary npm installs at each build
-RUN npm i --legacy-peer-deps && mkdir /ng-app && cp -R ./node_modules ./ng-app
+RUN npm i && mkdir /ng-app && cp -R ./node_modules ./ng-app
 
 WORKDIR /ng-app
 
 COPY . .
 
 ## Build the angular app in production mode and store the artifacts in dist folder
-RUN $(npm bin)/ng build --configuration production --aot --build-optimizer --output-hashing=all
-
+RUN node_modules/.bin/ng build --configuration production --aot --output-hashing=all --base-href /
 
 ### STAGE 2: Setup ###
 
