@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from '../shared/auth/event-manager.service';
 import { Router, NavigationExtras } from '@angular/router';
 import { Account, MultipleUserModalService, LoginService, Principal, StateStorageService } from '../shared';
 import { LocalStateStorageService } from '../shared/auth/local-storage.service';
@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         private loginService: LoginService,
         private multipleUserModalService: MultipleUserModalService,
         private stateStorageService: StateStorageService,
-        private eventManager: JhiEventManager,
+        private eventManager: EventManager,
         private router: Router,
         private localStateStorageService: LocalStateStorageService,
         private translateService: TranslateService,

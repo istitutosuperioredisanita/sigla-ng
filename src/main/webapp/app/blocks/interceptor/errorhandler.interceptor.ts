@@ -1,10 +1,10 @@
-import { JhiEventManager } from 'ng-jhipster';
 import { HttpInterceptor, HttpRequest, HttpErrorResponse, HttpHandler, HttpEvent } from '@angular/common/http';
+import { EventManager } from '../../shared/auth/event-manager.service';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 export class ErrorHandlerInterceptor implements HttpInterceptor {
-    constructor(private eventManager: JhiEventManager) {}
+    constructor(private eventManager: EventManager) {}
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(

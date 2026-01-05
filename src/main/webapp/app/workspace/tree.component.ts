@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy, ViewChild, EventEmitter, Output, QueryList, ViewChildren, AfterViewInit } from '@angular/core';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from '../shared/auth/event-manager.service';
 import { Account, Principal } from '../shared';
 import { Leaf } from './leaf.model';
 import { WorkspaceService } from './workspace.service';
 import { Observable ,  Subscription } from 'rxjs';
-import { TreeComponent, TreeNode } from '@circlon/angular-tree-component';
+import { TreeComponent, TreeNode } from '@ali-hm/angular-tree-component';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { map, debounceTime } from 'rxjs/operators';
 import * as _ from 'lodash';
@@ -37,7 +37,7 @@ export class SIGLATreeComponent implements OnInit, OnDestroy, AfterViewInit {
         private localStateStorageService: LocalStateStorageService,
         private workspaceService: WorkspaceService,
         private principal: Principal,
-        private eventManager: JhiEventManager
+        private eventManager: EventManager
     ) {
     }
 
@@ -79,8 +79,9 @@ export class SIGLATreeComponent implements OnInit, OnDestroy, AfterViewInit {
             this.initTree(userContext.esercizio, userContext.uo);
         });
         this.preferitiListener = this.eventManager.subscribe('onPreferitiSelected', (message) => {
+            console.log('Evento ricevuto con dati:', message);            
             const leaf = that.leafz.filter((v) => {
-                return v.id === message.content;
+                return v.id === message;
             })[0];
             if (leaf) {
                 that.onSelectLeaf(leaf, true);

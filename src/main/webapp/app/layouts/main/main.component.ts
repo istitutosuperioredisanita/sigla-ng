@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, NavigationEnd } from '@angular/router';
-import { JhiLanguageHelper } from '../../shared';
+import { LanguageHelper } from '../../shared';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class JhiMainComponent implements OnInit {
     constructor(
-        private jhiLanguageHelper: JhiLanguageHelper,
+        private languageHelper: LanguageHelper,
         private router: Router,
         private translateService: TranslateService
     ) {}
@@ -26,7 +26,7 @@ export class JhiMainComponent implements OnInit {
         this.translateService.setDefaultLang('it');
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
-                this.jhiLanguageHelper.updateTitle(this.getPageTitle(this.router.routerState.snapshot.root));
+                this.languageHelper.updateTitle(this.getPageTitle(this.router.routerState.snapshot.root));
             }
         });
     }

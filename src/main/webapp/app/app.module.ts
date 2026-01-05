@@ -1,6 +1,5 @@
 import './vendor.ts';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { JhiEventManager } from 'ng-jhipster';
 import { Injector, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxWebstorageModule } from 'ngx-webstorage';
@@ -39,6 +38,7 @@ import { AuthService } from './shared/auth/auth.service';
 import { AuthModule, LogLevel, OidcSecurityService } from 'angular-auth-oidc-client';
 import { environment } from '../environments/environment';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { EventManager } from './shared/auth/event-manager.service';
 
 @NgModule({
     imports: [
@@ -102,7 +102,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
             provide: HTTP_INTERCEPTORS,
             useClass: ErrorHandlerInterceptor,
             multi: true,
-            deps: [JhiEventManager]
+            deps: [EventManager]
         },
         {
             provide: HTTP_INTERCEPTORS,

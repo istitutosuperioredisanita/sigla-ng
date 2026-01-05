@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiLanguageService } from 'ng-jhipster';
 import { Account, Principal} from '../';
 import { Messaggio } from '../../context/messaggio.model';
 import { ContextService } from '../../context/context.service';
-import { LoginService } from '../login/login.service';
 
 @Component({
     selector: 'jhi-messaggi-modal',
@@ -21,8 +19,6 @@ export class JhiMessaggiModalComponent {
     public currentMessaggio: Messaggio;
 
     constructor(
-        private languageService: JhiLanguageService,
-        private loginService: LoginService,
         private principal: Principal,
         public activeModal: NgbActiveModal,
         public contextService: ContextService

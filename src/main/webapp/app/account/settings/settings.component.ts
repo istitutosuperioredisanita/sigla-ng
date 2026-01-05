@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { JhiAlertService } from 'ng-jhipster';
 import { IndirizziMail, ContextService } from '../../context/index';
-import { Principal, JhiLanguageHelper } from '../../shared';
+import { Principal, LanguageHelper } from '../../shared';
 import { FORM_STATUS } from '../../shared';
+import { AlertService } from '../../shared/alert/alert.service';
 
 @Component({
     selector: 'jhi-settings',
@@ -19,8 +19,8 @@ export class SettingsComponent implements OnInit {
 
     constructor(
         private principal: Principal,
-        private languageHelper: JhiLanguageHelper,
-        private alertService: JhiAlertService,
+        private languageHelper: LanguageHelper,
+        private alertService: AlertService,
         private contextService: ContextService
     ) {
     }

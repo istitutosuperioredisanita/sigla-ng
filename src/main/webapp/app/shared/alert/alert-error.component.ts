@@ -1,7 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { Subscription } from 'rxjs';
+import { AlertService } from './alert.service';
+import { EventManager } from '../auth/event-manager.service';
 
 @Component({
     selector: 'jhi-alert-error',
@@ -18,7 +19,7 @@ export class JhiAlertErrorComponent implements OnDestroy {
     alerts: any[];
     cleanHttpErrorListener: Subscription;
     /* tslint:disable */
-    constructor(private alertService: JhiAlertService, private eventManager: JhiEventManager, private translateService: TranslateService) {
+    constructor(private alertService: AlertService, private eventManager: EventManager, private translateService: TranslateService) {
         /* tslint:enable */
         this.alerts = [];
 
@@ -107,8 +108,7 @@ export class JhiAlertErrorComponent implements OnDestroy {
                     timeout: 5000,
                     toast: this.alertService.isToast(),
                     scoped: true
-                },
-                this.alerts
+                }
             )
         );
     }

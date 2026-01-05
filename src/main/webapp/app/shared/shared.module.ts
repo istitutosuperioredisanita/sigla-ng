@@ -24,6 +24,7 @@ import {
     JhiMessaggiModalComponent,
 } from './';
 import {ContextComponent} from '../context';
+import { TranslateDirective } from './language/translate.directive';
 
 @NgModule({
     imports: [
@@ -38,6 +39,7 @@ import {ContextComponent} from '../context';
         }),
     ],
     declarations: [
+        TranslateDirective,
         JhiLoginModalComponent,
         JhiMultipleUserModalComponent,
         JhiMessaggiModalComponent,
@@ -59,6 +61,7 @@ import {ContextComponent} from '../context';
         AuthService
     ],
     exports: [
+        TranslateDirective,
         SiglaSharedCommonModule,
         JhiLoginModalComponent,
         JhiMultipleUserModalComponent,

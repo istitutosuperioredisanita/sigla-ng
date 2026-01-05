@@ -1,8 +1,7 @@
 import { Component, AfterViewInit, Renderer2, ElementRef } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
-import { JhiEventManager } from 'ng-jhipster';
-
+import { EventManager } from '../../shared/auth/event-manager.service';
 import { LoginService } from './login.service';
 import { StateStorageService } from '../auth/state-storage.service';
 
@@ -18,7 +17,7 @@ export class JhiLoginModalComponent implements AfterViewInit {
     credentials: any;
 
     constructor(
-        private eventManager: JhiEventManager,
+        private eventManager: EventManager,
         private loginService: LoginService,
         private stateStorageService: StateStorageService,
         private elementRef: ElementRef,

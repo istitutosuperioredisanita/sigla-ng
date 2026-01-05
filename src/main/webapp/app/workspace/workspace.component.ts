@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ElementRef, Renderer2, ViewChild, HostListener } from '@angular/core';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from '../shared/auth/event-manager.service';
 import { Principal, LoginService, Account } from '../shared';
 import { Subscription } from 'rxjs';
 import { WorkspaceService } from './workspace.service';
@@ -58,7 +58,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         private _sanitizer: DomSanitizer,
         private renderer: Renderer2,
         private router: Router,
-        private eventManager: JhiEventManager,
+        private eventManager: EventManager,
         private loginService: LoginService,
         private translateService: TranslateService
     ) {
@@ -123,13 +123,13 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
             this.uoModel = this.contextService.uoModel;
             this.cdrModel = this.contextService.cdrModel;
             this.onSelectCdsSubscription = this.eventManager.subscribe('onSelectCds', (message) => {
-                this.cdsModel = message.content;
+                this.cdsModel = message;
             });
             this.onSelectUoSubscription = this.eventManager.subscribe('onSelectUo', (message) => {
-                this.uoModel = message.content;
+                this.uoModel = message;
             });
             this.onSelectCdrSubscription = this.eventManager.subscribe('onSelectCdr', (message) => {
-                this.cdrModel = message.content;
+                this.cdrModel = message;
             });
             this.caricaTODO();
         } else {
@@ -200,9 +200,9 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
 
     openNodo(cdNodo: string) {
         this.eventManager.broadcast({
-                name: 'onPreferitiSelected',
-                content: cdNodo
-            });
+            name: 'onPreferitiSelected',
+            content: cdNodo
+        });
     }
 
     onNotify(nodo: any): void {

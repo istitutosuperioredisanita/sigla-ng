@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from '../../shared/auth/event-manager.service';
 import { LocalStateStorageService } from '../auth/local-storage.service';
 import { Principal } from '../auth/principal.service';
 import { AuthServerProvider } from '../auth/auth-session.service';
@@ -15,7 +15,7 @@ export class LoginService {
         private principal: Principal,
         private authServerProvider: AuthServerProvider,
         private router: Router,
-        private eventManager: JhiEventManager,
+        private eventManager: EventManager,
         private localStateStorageService: LocalStateStorageService,
         private contextService: ContextService,
         private oidcSecurityService: OidcSecurityService

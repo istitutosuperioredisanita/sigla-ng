@@ -8,7 +8,7 @@
     window['env']['urlChangePassword'] = 'https://utenti.cnr.it/utenti/app/action/pub/home';
     window['env']['production'] = false;
     window['env']['instituteAcronym'] = 'ISS';
-    window['env']['ssoAppsMenuDisplay'] = 'true';
+    window['env']['ssoAppsMenuDisplay'] = 'false';
     window['env']['ribbon'] = 'Development';
 
     window['env']['oidc.enable'] = 'false';

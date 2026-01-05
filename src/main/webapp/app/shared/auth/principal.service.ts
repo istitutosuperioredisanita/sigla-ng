@@ -4,7 +4,7 @@ import { AccountService } from './account.service';
 import { Account } from '../user/account.model';
 import { ContextService } from '../../context/context.service';
 import { LocalStateStorageService } from './local-storage.service';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from '../../shared/auth/event-manager.service';
 
 @Injectable()
 export class Principal {
@@ -15,7 +15,7 @@ export class Principal {
     constructor(
         private account: AccountService,
         private context: ContextService,
-        private eventManager: JhiEventManager,
+        private eventManager: EventManager,
         private localStateStorageService: LocalStateStorageService
     ) {}
 

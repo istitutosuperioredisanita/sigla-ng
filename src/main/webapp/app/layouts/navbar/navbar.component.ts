@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiLanguageService } from 'ng-jhipster';
-import { JhiLanguageHelper, Principal, MultipleUserModalService, LoginService } from '../../shared';
+import { LanguageService, LanguageHelper, Principal, MultipleUserModalService, LoginService } from '../../shared';
 import { WorkspaceService } from '../../workspace/workspace.service';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../environments/environment';
@@ -28,8 +27,8 @@ export class NavbarComponent implements OnInit {
 
     constructor(
         private loginService: LoginService,
-        private languageHelper: JhiLanguageHelper,
-        private languageService: JhiLanguageService,
+        private languageHelper: LanguageHelper,
+        private languageService: LanguageService,
         private multipleUserModalService: MultipleUserModalService,
         public principal: Principal,
         private workspaceService: WorkspaceService,

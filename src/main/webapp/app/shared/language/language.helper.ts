@@ -6,7 +6,7 @@ import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import { LANGUAGES } from './language.constants';
 
 @Injectable()
-export class JhiLanguageHelper {
+export class LanguageHelper {
     renderer: Renderer2 = null;
 
     constructor(

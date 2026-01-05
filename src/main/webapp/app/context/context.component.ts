@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { NgbDropdown, NgbModalRef, NgbTypeaheadConfig } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from '../shared/auth/event-manager.service';
 import { Router } from '@angular/router';
 import { ContextService } from './context.service';
 import { Principal, UserContext, MessaggiModalService, Account} from '../shared';
@@ -37,7 +37,7 @@ export class ContextComponent implements OnInit, OnDestroy {
         public router: Router,
         public principal: Principal,
         private localStateStorageService: LocalStateStorageService,
-        private eventManager: JhiEventManager,
+        private eventManager: EventManager,
         private messaggiModalService: MessaggiModalService
     ) {
     }
@@ -47,13 +47,13 @@ export class ContextComponent implements OnInit, OnDestroy {
         this.uoModel = this.contextService.uoModel;
         this.cdrModel = this.contextService.cdrModel;
         this.onSelectCdsSubscription = this.eventManager.subscribe('onSelectCds', (message) => {
-            this.cdsModel = message.content;
+            this.cdsModel = message;
         });
         this.onSelectUoSubscription = this.eventManager.subscribe('onSelectUo', (message) => {
-            this.uoModel = message.content;
+            this.uoModel = message;
         });
         this.onSelectCdrSubscription = this.eventManager.subscribe('onSelectCdr', (message) => {
-            this.cdrModel = message.content;
+            this.cdrModel = message;
         });
     }
 
@@ -186,9 +186,9 @@ export class ContextComponent implements OnInit, OnDestroy {
 
     openPreferiti(cdNodo: string) {
         this.eventManager.broadcast({
-                name: 'onPreferitiSelected',
-                content: cdNodo
-            });
+            name: 'onPreferitiSelected',
+            content: cdNodo
+        });
     }
 
     refreshPreferiti() {

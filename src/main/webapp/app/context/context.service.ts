@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from '../shared/auth/event-manager.service';
 import { Observable } from 'rxjs';
 import { UserContext, Account} from '../shared';
 import { Pair } from './pair.model';
@@ -27,7 +27,7 @@ export class ContextService  {
 
     constructor(
         private http: HttpClient,
-        private eventManager: JhiEventManager,
+        private eventManager: EventManager,
     ) {
     }
 

@@ -8,7 +8,7 @@ registerLocaleData(localeDeAt);
 
 import {
     SiglaSharedLibsModule,
-    JhiLanguageHelper,
+    LanguageHelper,
     FindLanguageFromKeyPipe,
     FindLanguagePipe,
     JhiAlertComponent,
@@ -26,7 +26,7 @@ import {
         JhiAlertErrorComponent
     ],
     providers: [
-        JhiLanguageHelper,
+        LanguageHelper,
         Title,
         {
             provide: LOCALE_ID,
