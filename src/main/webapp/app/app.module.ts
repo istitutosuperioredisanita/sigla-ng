@@ -1,4 +1,4 @@
-import './vendor.ts';
+import './vendor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Injector, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
