@@ -1,10 +1,10 @@
 /* after changing this file run 'yarn run webpack:build' */
 $breadcrumb-divider: quote(">");
 
-@import '~bootstrap/scss/bootstrap.scss';
-@import '~font-awesome-animation/dist/font-awesome-animation.min.css';
-@import '~flatpickr/dist/flatpickr.min.css';
-@import '~flatpickr/dist/themes/material_blue.css';
+@import 'bootstrap/scss/bootstrap.scss';
+@import 'font-awesome-animation/dist/font-awesome-animation.min.css';
+@import 'flatpickr/dist/flatpickr.min.css';
+@import 'flatpickr/dist/themes/material_blue.css';
 @import './animate.min.scss';
 @import './global.scss';
 @import './input-group.scss';
