@@ -7,7 +7,7 @@
     window['env']['apiUrl'] = 'http://localhost:8080/SIGLA/restapi';
     window['env']['urlChangePassword'] = 'https://utenti.cnr.it/utenti/app/action/pub/home';
     window['env']['production'] = false;
-    window['env']['instituteAcronym'] = 'CNR';
+    window['env']['instituteAcronym'] = 'ISS';
     window['env']['ssoAppsMenuDisplay'] = 'true';
     window['env']['ribbon'] = 'Development';
 
