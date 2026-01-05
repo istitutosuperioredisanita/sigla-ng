@@ -18,7 +18,6 @@ export class TranslateDirective implements OnInit, OnChanges, OnDestroy {
   ngOnInit(): void {
     // Aggiorna la traduzione quando cambia la lingua globale
     this.translateService.onLangChange
-      .pipe(takeUntil(this.destroy$))
       .subscribe(() => this.getTranslation());
   }
 
