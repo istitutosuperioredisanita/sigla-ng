@@ -1,8 +1,8 @@
 ### STAGE 1: Build ###
 
 # We label our stage as 'builder'
-FROM node:16-alpine as builder
-MAINTAINER Marco Spasiano <marco.spasiano@cnr.it>
+FROM node:alpine as builder
+LABEL MAINTAINER Marco Spasiano <marco.spasiano@cnr.it>
 
 COPY package.json package-lock.json ./
 
