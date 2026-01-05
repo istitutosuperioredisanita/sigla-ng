@@ -1,26 +1,31 @@
 {
     "compilerOptions": {
-        "target": "esnext",
-        "module": "es2020",
-        "moduleResolution": "node",
-        "esModuleInterop": true,
-        "sourceMap": true,
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "removeComments": false,
-        "noImplicitAny": false,
-        "skipLibCheck": true,
-        "outDir": "target/www/app",
-        "lib": ["es7", "dom"],
-        "typeRoots": [
-            "node_modules/@types"
-        ],
-        "baseUrl": "./",
-        "paths": {
-            "app/*": ["src/main/webapp/app/*"]
-        },
-        "importHelpers": true,
-        "allowJs": true
+      "target": "esnext",
+      "module": "es2020",
+      "moduleResolution": "bundler",
+      "esModuleInterop": true,
+      "sourceMap": true,
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
+      "removeComments": false,
+      "noImplicitAny": false,
+      "skipLibCheck": true,
+      "outDir": "target/www/app",
+      "lib": [
+        "es7",
+        "dom"
+      ],
+      "typeRoots": [
+        "node_modules/@types"
+      ],
+      "baseUrl": "./",
+      "paths": {
+        "app/*": [
+          "src/main/webapp/app/*"
+        ]
+      },
+      "importHelpers": true,
+      "allowJs": true
     },
     "include": [
         "src/main/webapp/app"

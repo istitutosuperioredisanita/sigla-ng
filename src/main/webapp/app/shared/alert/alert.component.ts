@@ -5,11 +5,15 @@ import { AlertService } from './alert.service';
     selector: 'jhi-alert',
     template: `
         <div class="alerts" role="alert">
-            <div *ngFor="let alert of alerts" [ngClass]="{\'alert.position\': true, \'toast\': alert.toast}">
-                <ngb-alert *ngIf="alert && alert.type && alert.msg" [type]="alert.type" (close)="alert.close(alerts)">
-                    <pre [innerHTML]="alert.msg"></pre>
+          @for (alert of alerts; track alert) {
+            <div [ngClass]="{\'alert.position\': true, \'toast\': alert.toast}">
+              @if (alert && alert.type && alert.msg) {
+                <ngb-alert [type]="alert.type" (close)="alert.close(alerts)">
+                  <pre [innerHTML]="alert.msg"></pre>
                 </ngb-alert>
+              }
             </div>
+          }
         </div>`,
     standalone: false
 })

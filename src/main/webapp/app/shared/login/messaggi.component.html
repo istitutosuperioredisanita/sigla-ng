@@ -1,66 +1,68 @@
 <!--
-  ~ Copyright (C) 2019  Consiglio Nazionale delle Ricerche
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as
-  ~     published by the Free Software Foundation, either version 3 of the
-  ~     License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License
-  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
-  -->
+~ Copyright (C) 2019  Consiglio Nazionale delle Ricerche
+~
+~     This program is free software: you can redistribute it and/or modify
+~     it under the terms of the GNU Affero General Public License as
+~     published by the Free Software Foundation, either version 3 of the
+~     License, or (at your option) any later version.
+~
+~     This program is distributed in the hope that it will be useful,
+~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+~     GNU Affero General Public License for more details.
+~
+~     You should have received a copy of the GNU Affero General Public License
+~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
 
 <div class="modal-header">
-    <h4 class="modal-title text-primary"><i aria-hidden="true" class="fa fa-envelope-open-o"></i> Messaggi</h4>
-    <button type="button" class="close hand" data-dismiss="modal" aria-label="Close" (click)="confirm()">
-        <span aria-hidden="true">&times;</span>
-    </button>
+  <h4 class="modal-title text-primary"><i aria-hidden="true" class="fa fa-envelope-open-o"></i> Messaggi</h4>
+  <button type="button" class="close hand" data-dismiss="modal" aria-label="Close" (click)="confirm()">
+    <span aria-hidden="true">&times;</span>
+  </button>
 </div>
 <div class="modal-body">
-    <div class="div-sigla-table table-responsive col-sm-12 mh-45-vh">
-        <table class="sigla-table table table-bordered table-hover table-striped table-sm">
-            <thead class="table-primary">
-                <tr>
-                    <th class="TableHeader align-middle" valign="center">
-                        <button class="btn btn-sm btn-link hand" (click)="selectAll()" placement="top" container="body"  ngbTooltip="Seleziona/Deseleziona tutti">
-                            <i class="fa fa-check-square-o" aria-hidden="true"></i>
-                        </button>
-                    </th>
-                    <th jhiTranslate="messaggi.table.dacr">Data di creazione</th>
-                    <th jhiTranslate="messaggi.table.oggetto">Oggetto</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let messaggio of contextService.messaggi" (click)="setClickedRow(messaggio)" class="hand"
-                    [ngClass]="{'bg-primary text-white' : messaggio.pg_messaggio == currentMessaggio.pg_messaggio}">
-                    <td><input type="checkbox" [disabled]="messaggio.cd_utente == null" [(ngModel)]="messaggio.checked"></td>
-                    <td>{{messaggio.data_creazione | date:'longDate'}}</td>
-                    <td>{{messaggio.soggetto}}</td>
-                </tr>
-            </tbody>
-        </table>
+  <div class="div-sigla-table table-responsive col-sm-12 mh-45-vh">
+    <table class="sigla-table table table-bordered table-hover table-striped table-sm">
+      <thead class="table-primary">
+        <tr>
+          <th class="TableHeader align-middle" valign="center">
+            <button class="btn btn-sm btn-link hand" (click)="selectAll()" placement="top" container="body"  ngbTooltip="Seleziona/Deseleziona tutti">
+              <i class="fa fa-check-square-o" aria-hidden="true"></i>
+            </button>
+          </th>
+          <th jhiTranslate="messaggi.table.dacr">Data di creazione</th>
+          <th jhiTranslate="messaggi.table.oggetto">Oggetto</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (messaggio of contextService.messaggi; track messaggio) {
+          <tr (click)="setClickedRow(messaggio)" class="hand"
+            [ngClass]="{'bg-primary text-white' : messaggio.pg_messaggio == currentMessaggio.pg_messaggio}">
+            <td><input type="checkbox" [disabled]="messaggio.cd_utente == null" [(ngModel)]="messaggio.checked"></td>
+            <td>{{messaggio.data_creazione | date:'longDate'}}</td>
+            <td>{{messaggio.soggetto}}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  <div class="btn-group w-100 border mt-1 rounded-left rounded-right" role="group" aria-label="toolbar">
+    <button class="btn btn-sm btn-light text-danger hand" [disabled]="currentMessaggio.cd_utente == null" (click)="deleteCurrentMessaggio()" placement="top" container="body"  ngbTooltip="Elimina messaggio corrente">
+      <i class="fa fa-trash-o" aria-hidden="true"></i>
+    </button>
+    <button class="btn btn-sm btn-light text-danger hand" (click)="deleteMessaggiSelezionati()" placement="top" container="body"  ngbTooltip="Elimina selezionati">
+      <i class="fa fa-trash" aria-hidden="true"></i>
+    </button>
+  </div>
+  <div class="card border p-3 mt-2">
+    <div class="form-group row bb-1">
+      <label class="col-sm-2 text-primary" jhiTranslate="messaggi.table.oggetto">Oggetto</label>
+      <div class="col-sm-10">{{currentMessaggio.soggetto}}</div>
     </div>
-    <div class="btn-group w-100 border mt-1 rounded-left rounded-right" role="group" aria-label="toolbar">
-        <button class="btn btn-sm btn-light text-danger hand" [disabled]="currentMessaggio.cd_utente == null" (click)="deleteCurrentMessaggio()" placement="top" container="body"  ngbTooltip="Elimina messaggio corrente">
-            <i class="fa fa-trash-o" aria-hidden="true"></i>
-        </button>
-        <button class="btn btn-sm btn-light text-danger hand" (click)="deleteMessaggiSelezionati()" placement="top" container="body"  ngbTooltip="Elimina selezionati">
-            <i class="fa fa-trash" aria-hidden="true"></i>
-        </button>
+    <div class="form-group row">
+      <label class="col-sm-2 text-primary" jhiTranslate="messaggi.table.messaggio">Messaggio</label>
+      <div class="col-sm-10">{{currentMessaggio.corpo}}</div>
     </div>
-    <div class="card border p-3 mt-2">
-        <div class="form-group row bb-1">
-            <label class="col-sm-2 text-primary" jhiTranslate="messaggi.table.oggetto">Oggetto</label>
-            <div class="col-sm-10">{{currentMessaggio.soggetto}}</div>
-        </div>
-        <div class="form-group row">
-            <label class="col-sm-2 text-primary" jhiTranslate="messaggi.table.messaggio">Messaggio</label>
-            <div class="col-sm-10">{{currentMessaggio.corpo}}</div>
-        </div>
-    </div>
+  </div>
 </div>

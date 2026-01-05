@@ -1,83 +1,99 @@
 <!--
-  ~ Copyright (C) 2019  Consiglio Nazionale delle Ricerche
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as
-  ~     published by the Free Software Foundation, either version 3 of the
-  ~     License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License
-  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
-  -->
+~ Copyright (C) 2019  Consiglio Nazionale delle Ricerche
+~
+~     This program is free software: you can redistribute it and/or modify
+~     it under the terms of the GNU Affero General Public License as
+~     published by the Free Software Foundation, either version 3 of the
+~     License, or (at your option) any later version.
+~
+~     This program is distributed in the hope that it will be useful,
+~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+~     GNU Affero General Public License for more details.
+~
+~     You should have received a copy of the GNU Affero General Public License
+~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
 
 <ng-template #rt let-r="result" let-t="term">
-    <div>
-        <span>{{r.breadcrumbS}}</span>
-    </div>
+  <div>
+    <span>{{r.breadcrumbS}}</span>
+  </div>
 </ng-template>
 <div class="search-typehead">
-    <div class="input-group">
-        <input
-            [ngbTypeahead]="searchtree"
-            container="body"
-            [resultTemplate]="rt"
-            [inputFormatter]="formatter"
-            [resultFormatter]="formatter"
-            (selectItem)="onSelectLeaf($event.item, true)"
-            class="form-control outline-secondary"
-            placeholder="Cerca nel menu......"
-            id="search-tree"/>
-            <a class="input-group-addon btn"
-                (click)="refreshTree()"
-                placement="left"
-                container="body"
-                ngbTooltip="Rigenera voci di menu e chiude tutti i rami aperti">
-                <i class="fa fa-refresh text-info"  [ngClass]="{'faa-spin animated' : isRequesting}"></i>
-            </a>
-    </div>
+  <div class="input-group">
+    <input
+      [ngbTypeahead]="searchtree"
+      container="body"
+      [resultTemplate]="rt"
+      [inputFormatter]="formatter"
+      [resultFormatter]="formatter"
+      (selectItem)="onSelectLeaf($event.item, true)"
+      class="form-control outline-secondary"
+      placeholder="Cerca nel menu......"
+      id="search-tree"/>
+    <a class="input-group-addon btn"
+      (click)="refreshTree()"
+      placement="left"
+      container="body"
+      ngbTooltip="Rigenera voci di menu e chiude tutti i rami aperti">
+      <i class="fa fa-refresh text-info"  [ngClass]="{'faa-spin animated' : isRequesting}"></i>
+    </a>
+  </div>
 </div>
 <tree-root [nodes]="nodes" class="tree-menu">
-    <ng-template #treeNodeFullTemplate
-            let-node="node"
-            let-index="index"
-            let-templates="templates">
-        <div
-            class="tree-node tree-node-level-{{ node.level }}"
-            [class]="node.getClass()"
-            [class.tree-node-expanded]="node.isExpanded && node.hasChildren"
-            [class.tree-node-collapsed]="node.isCollapsed && node.hasChildren"
-            [class.tree-node-leaf]="node.isLeaf"
-            [class.tree-node-active]="node.isActive"
-            [class.tree-node-focused]="node.isFocused">
+  <ng-template #treeNodeFullTemplate
+    let-node="node"
+    let-index="index"
+    let-templates="templates">
+    <div
+      class="tree-node tree-node-level-{{ node.level }}"
+      [class]="node.getClass()"
+      [class.tree-node-expanded]="node.isExpanded && node.hasChildren"
+      [class.tree-node-collapsed]="node.isCollapsed && node.hasChildren"
+      [class.tree-node-leaf]="node.isLeaf"
+      [class.tree-node-active]="node.isActive"
+      [class.tree-node-focused]="node.isFocused">
 
-            <div class="node-wrapper node-item" [style.padding-left]="node.getNodePadding()" (click)="toggleTreeNode(node)">
-                <div class="node-content-wrapper row">
-                    <span *ngIf="node.isLeaf"
-                        class="d-inline-block text-truncate col tree-col-label"
-                        container="body"
-                        placement="right"
-                        triggers="mouseenter"
-                        popoverTitle="Info - {{node.id}}"
-                        [ngbPopover]="popoverContent" [autoClose]="'outside'">{{node.data.name}}</span>
-                        <span *ngIf="!node.isLeaf" class="d-inline-block text-truncate col tree-col-label">{{node.data.name}}</span>
-                        <ng-template #popoverContent>
-                            <span *ngIf="!node.data.cdaccesso" class="text-primary">{{node.data.name}}</span>
-                            <p *ngIf="node.data.cdaccesso">Codice Accesso: <span class="text-primary">{{node.data.cdaccesso}}</span></p>
-                            <p *ngIf="node.data.dsaccesso">Descrizione: <span class="text-primary">{{node.data.dsaccesso}}</span></p>
-                        </ng-template>
-                        <span *ngIf="!node.isLeaf" class="chevron float-right col col-auto">
-                        <i *ngIf="!node.isExpanded" class="fa fa-chevron-right" aria-hidden="true"></i>
-                        <i *ngIf="node.isExpanded"  class="fa fa-chevron-up" aria-hidden="true"></i>
-                    </span>
-                </div>
-            </div>
-            <tree-node-children [node]="node" [templates]="templates">
-            </tree-node-children>
+      <div class="node-wrapper node-item" [style.padding-left]="node.getNodePadding()" (click)="toggleTreeNode(node)">
+        <div class="node-content-wrapper row">
+          @if (node.isLeaf) {
+            <span
+              class="d-inline-block text-truncate col tree-col-label"
+              container="body"
+              placement="right"
+              triggers="mouseenter"
+              popoverTitle="Info - {{node.id}}"
+            [ngbPopover]="popoverContent" [autoClose]="'outside'">{{node.data.name}}</span>
+          }
+          @if (!node.isLeaf) {
+            <span class="d-inline-block text-truncate col tree-col-label">{{node.data.name}}</span>
+          }
+          <ng-template #popoverContent>
+            @if (!node.data.cdaccesso) {
+              <span class="text-primary">{{node.data.name}}</span>
+            }
+            @if (node.data.cdaccesso) {
+              <p>Codice Accesso: <span class="text-primary">{{node.data.cdaccesso}}</span></p>
+            }
+            @if (node.data.dsaccesso) {
+              <p>Descrizione: <span class="text-primary">{{node.data.dsaccesso}}</span></p>
+            }
+          </ng-template>
+          @if (!node.isLeaf) {
+            <span class="chevron float-right col col-auto">
+              @if (!node.isExpanded) {
+                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+              }
+              @if (node.isExpanded) {
+                <i  class="fa fa-chevron-up" aria-hidden="true"></i>
+              }
+            </span>
+          }
         </div>
-    </ng-template>
+      </div>
+      <tree-node-children [node]="node" [templates]="templates">
+      </tree-node-children>
+    </div>
+  </ng-template>
 </tree-root>

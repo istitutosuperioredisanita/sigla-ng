@@ -1,58 +1,62 @@
 <!--
-  ~ Copyright (C) 2019  Consiglio Nazionale delle Ricerche
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as
-  ~     published by the Free Software Foundation, either version 3 of the
-  ~     License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License
-  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
-  -->
+~ Copyright (C) 2019  Consiglio Nazionale delle Ricerche
+~
+~     This program is free software: you can redistribute it and/or modify
+~     it under the terms of the GNU Affero General Public License as
+~     published by the Free Software Foundation, either version 3 of the
+~     License, or (at your option) any later version.
+~
+~     This program is distributed in the hope that it will be useful,
+~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+~     GNU Affero General Public License for more details.
+~
+~     You should have received a copy of the GNU Affero General Public License
+~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
 
 <div>
-    <div class="col-md-7 offset-md-3 m-auto pt-3" [hidden]="!accessdenied">
-        <div class="card card-shadow" >
-            <h2 class="card-header">
-                <i class="fa fa-exclamation-triangle fa-fw fa-2x text-danger" aria-hidden="true"></i>
-                <span>Sistema non disponibile per l'utente {{preferred_username}}</span>
-                <span *ngIf="error" jhiTranslate="{{error}}"></span>
-                <span *ngIf="updatedAt && !error">, utente non utilizzato da più di sei mesi ultimo accesso il {{updatedAt | date:'longDate'}}, contattare l'amministratore delle Utenze.</span>
-            </h2>
-            <div class="card-body">
-                <div class="col text-monospace">
-                    <p class="h3">Ciao {{given_name}}, siamo spiacenti ma la tua utenza <span  class="badge badge-pill badge-dark">{{preferred_username}}</span> non ha accesso a questo sistema.</p>
-                    <div>login: <strong class="font-weight-bold">{{preferred_username}}</strong></div>
-                    <div>nome: <strong class="font-weight-bold">{{given_name}}</strong></div>
-                    <div>cognome: <strong class="font-weight-bold">{{family_name}}</strong></div>
-                    <div>email: <strong class="font-weight-bold">{{email}}</strong></div>
-                </div>
-            </div>
-            <div class="card-footer">
-                <button class="btn btn-outline-primary btn-block" (click)="logout()">
-                    <i class="fa fa-fw fa-sign-out" aria-hidden="true"></i>
-                    <span jhiTranslate="global.menu.account.logout">Sign out</span>
-                </button>
-            </div>
-        </div>    
-    </div>
-    <div class="row" [hidden]="accessdenied">
-        <div class="col-md-4">
-            <span class="hipster img-fluid rounded"></span>
+  <div class="col-md-7 offset-md-3 m-auto pt-3" [hidden]="!accessdenied">
+    <div class="card card-shadow" >
+      <h2 class="card-header">
+        <i class="fa fa-exclamation-triangle fa-fw fa-2x text-danger" aria-hidden="true"></i>
+        <span>Sistema non disponibile per l'utente {{preferred_username}}</span>
+        @if (error) {
+          <span jhiTranslate="{{error}}"></span>
+        }
+        @if (updatedAt && !error) {
+          <span>, utente non utilizzato da più di sei mesi ultimo accesso il {{updatedAt | date:'longDate'}}, contattare l'amministratore delle Utenze.</span>
+        }
+      </h2>
+      <div class="card-body">
+        <div class="col text-monospace">
+          <p class="h3">Ciao {{given_name}}, siamo spiacenti ma la tua utenza <span  class="badge badge-pill badge-dark">{{preferred_username}}</span> non ha accesso a questo sistema.</p>
+          <div>login: <strong class="font-weight-bold">{{preferred_username}}</strong></div>
+          <div>nome: <strong class="font-weight-bold">{{given_name}}</strong></div>
+          <div>cognome: <strong class="font-weight-bold">{{family_name}}</strong></div>
+          <div>email: <strong class="font-weight-bold">{{email}}</strong></div>
         </div>
-        <div class="col-md-8">
-            <h1 jhiTranslate="error.title">Error Page!</h1>
-            <div [hidden]="!errorMessage">
-                <div class="alert alert-danger">{{errorMessage}}
-                </div>
-            </div>
-            <div [hidden]="!error403" class="alert alert-danger" jhiTranslate="error.http.403">You are not authorized to access this page.
-            </div>
-        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-outline-primary btn-block" (click)="logout()">
+          <i class="fa fa-fw fa-sign-out" aria-hidden="true"></i>
+          <span jhiTranslate="global.menu.account.logout">Sign out</span>
+        </button>
+      </div>
     </div>
+  </div>
+  <div class="row" [hidden]="accessdenied">
+    <div class="col-md-4">
+      <span class="hipster img-fluid rounded"></span>
+    </div>
+    <div class="col-md-8">
+      <h1 jhiTranslate="error.title">Error Page!</h1>
+      <div [hidden]="!errorMessage">
+        <div class="alert alert-danger">{{errorMessage}}
+        </div>
+      </div>
+      <div [hidden]="!error403" class="alert alert-danger" jhiTranslate="error.http.403">You are not authorized to access this page.
+      </div>
+    </div>
+  </div>
 </div>

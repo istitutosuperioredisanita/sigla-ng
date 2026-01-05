@@ -1,63 +1,77 @@
 <!--
-  ~ Copyright (C) 2019  Consiglio Nazionale delle Ricerche
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as
-  ~     published by the Free Software Foundation, either version 3 of the
-  ~     License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License
-  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
-  -->
+~ Copyright (C) 2019  Consiglio Nazionale delle Ricerche
+~
+~     This program is free software: you can redistribute it and/or modify
+~     it under the terms of the GNU Affero General Public License as
+~     published by the Free Software Foundation, either version 3 of the
+~     License, or (at your option) any later version.
+~
+~     This program is distributed in the hope that it will be useful,
+~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+~     GNU Affero General Public License for more details.
+~
+~     You should have received a copy of the GNU Affero General Public License
+~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
 
 <div class="row">
-    <div class="col-md-3">
-        <span class="hipster img-fluid img-rounded"></span>
-    </div>
-    <div class="col-md-9 pb-5 mb-3">
-        <h1 translate class="text-primary">home.title</h1>
-        <p class="lead text-primary" translate>home.subtitle</p>
+  <div class="col-md-3">
+    <span class="hipster img-fluid img-rounded"></span>
+  </div>
+  <div class="col-md-9 pb-5 mb-3">
+    <h1 translate class="text-primary">home.title</h1>
+    <p class="lead text-primary" translate>home.subtitle</p>
 
-        <div [ngSwitch]="isAuthenticated()">
-            <div *ngSwitchCase="true">
-                <jhi-context [isNavbar]="false">Loading context.....</jhi-context>
-            </div>
-            <div *ngSwitchCase="false">
-                <div class="col-lg-9 col-xl-8" *ngIf="!oidcEnable">
-                    <div class="card shadow">
-                        <div class="card-header border-1 py-1 d-flex align-items-center">
-                            <span class="login-img img-thumbnail mr-1" [ngClass]="getLogo()"></span>
-                            <span class="h3" jhiTranslate="login.title">Sign in</span>
+    <div>
+      @switch (isAuthenticated()) {
+        @case (true) {
+          <div>
+            <jhi-context [isNavbar]="false">Loading context.....</jhi-context>
+          </div>
+        }
+        @case (false) {
+          <div>
+            @if (!oidcEnable) {
+              <div class="col-lg-9 col-xl-8">
+                <div class="card shadow">
+                  <div class="card-header border-1 py-1 d-flex align-items-center">
+                    <span class="login-img img-thumbnail mr-1" [ngClass]="getLogo()"></span>
+                    <span class="h3" jhiTranslate="login.title">Sign in</span>
+                  </div>
+                  <div class="card-block p-2">
+                    <div>
+                      @if (authenticationError) {
+                        <div class="alert alert-danger">
+                          <div jhiTranslate="login.messages.error.authentication.{{authenticationErrorStatus}}">
+                            <strong>Failed to sign in!</strong> Please check your credentials and try again.
+                          </div>
+                          @if (authenticationErrorMessage) {
+                            <small jhiTranslate="login.messages.error.authentication.{{authenticationErrorMessage}}">{{authenticationErrorMessage}}</small>
+                          }
                         </div>
-                        <div class="card-block p-2">
-                            <div>
-                                <div class="alert alert-danger" *ngIf="authenticationError">
-                                    <div jhiTranslate="login.messages.error.authentication.{{authenticationErrorStatus}}">
-                                        <strong>Failed to sign in!</strong> Please check your credentials and try again.
-                                    </div>
-                                    <small jhiTranslate="login.messages.error.authentication.{{authenticationErrorMessage}}" *ngIf="authenticationErrorMessage">{{authenticationErrorMessage}}</small>
-                                </div>
-                            </div>
-                            <form class="form" role="form" (ngSubmit)="login()" #loginForm="ngForm">
-                                <div class="form-group input-group input-group-lg">
-                                    <input type="text" class="form-control" name="username" id="username"  placeholder="{{'global.form.username.placeholder' | translate}}"
-                                    [(ngModel)]="username" #usernameinput>
-                                </div>
-                                <div class="form-group input-group input-group-lg">
-                                    <input type="password" class="form-control" name="password" id="password" placeholder="{{'login.form.password.placeholder' | translate}}"
-                                           [(ngModel)]="password">
-                                </div>
-                                <button type="submit" [disabled]="loginForm.form.invalid" class="btn btn-lg btn-primary btn-block"><span translate>login.form.button</span> <i *ngIf="isRequesting" class="fa fa-refresh"  [ngClass]="{'faa-spin animated' : isRequesting}"></i></button>
-                            </form>
-                        </div>
+                      }
                     </div>
+                    <form class="form" role="form" (ngSubmit)="login()" #loginForm="ngForm">
+                      <div class="form-group input-group input-group-lg">
+                        <input type="text" class="form-control" name="username" id="username"  placeholder="{{'global.form.username.placeholder' | translate}}"
+                          [(ngModel)]="username" #usernameinput>
+                      </div>
+                      <div class="form-group input-group input-group-lg">
+                        <input type="password" class="form-control" name="password" id="password" placeholder="{{'login.form.password.placeholder' | translate}}"
+                          [(ngModel)]="password">
+                      </div>
+                      <button type="submit" [disabled]="loginForm.form.invalid" class="btn btn-lg btn-primary btn-block"><span translate>login.form.button</span> @if (isRequesting) {
+                      <i class="fa fa-refresh"  [ngClass]="{'faa-spin animated' : isRequesting}"></i>
+                    }</button>
+                  </form>
                 </div>
+              </div>
             </div>
+          }
         </div>
-    </div>
+      }
+    }
+  </div>
+</div>
 </div>

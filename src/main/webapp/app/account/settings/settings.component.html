@@ -1,148 +1,164 @@
 <!--
-  ~ Copyright (C) 2019  Consiglio Nazionale delle Ricerche
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as
-  ~     published by the Free Software Foundation, either version 3 of the
-  ~     License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License
-  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
-  -->
+~ Copyright (C) 2019  Consiglio Nazionale delle Ricerche
+~
+~     This program is free software: you can redistribute it and/or modify
+~     it under the terms of the GNU Affero General Public License as
+~     published by the Free Software Foundation, either version 3 of the
+~     License, or (at your option) any later version.
+~
+~     This program is distributed in the hope that it will be useful,
+~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+~     GNU Affero General Public License for more details.
+~
+~     You should have received a copy of the GNU Affero General Public License
+~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
 
 <div class="card m-2 mb-5">
-    <div class="card-header">
-        <span class="h2 text-primary" [innerHTML]="'settings.title' | translate:{username: settingsAccount.login }"
-         *ngIf="settingsAccount">User settings for [<b>{{settingsAccount.firstName}} {{settingsAccount.lastName}}</b>]</span>
+  <div class="card-header">
+    @if (settingsAccount) {
+      <span class="h2 text-primary" [innerHTML]="'settings.title' | translate:{username: settingsAccount.login }"
+        >User settings for [<b>{{settingsAccount.firstName}} {{settingsAccount.lastName}}</b>]</span>
+      }
     </div>
     <div class="card-block row space">
-        <div class="col-md-5 col-lg-4">
-            <div class="m-2">
-            <div id="crudToolbar" class="btn-toolbar mb-1" role="toolbar" aria-label="Toolbar with button groups">
-                    <div class="btn-group d-flex w-100" role="group">
-                        <button accesskey="N" [disabled]="isFormInserting()" (click)="newRow()" class="btn btn-outline-dark btn-title w-100" title="Nuovo">
-                            <i class="fa fa-fw  fa-plus text-info" aria-hidden="true"></i>
-                        </button>
-                        <button accesskey="S" (click)="save()" class="btn btn-outline-dark btn-title w-100" title="Salva">
-                            <i class="fa fa-fw  fa-floppy-o text-primary" aria-hidden="true"></i>
-                        </button>
-                        <button accesskey="E" [disabled]="isFormInserting()" (click)="deleteRows()" class="btn btn-outline-dark btn-title w-100" title="Elimina">
-                            <i class="fa fa-fw fa-trash text-danger" aria-hidden="true"></i>
-                        </button>
-                        <button accesskey="E" [disabled]="!isFormInserting()" (click)="undoEditing()" class="btn btn-outline-dark btn-title w-100" title="Annulla">
-                            <i class="fa fa-fw fa-undo text-success" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="div-sigla-table table-responsive col-sm-12">
-                    <table class="sigla-table table table-bordered table-hover table-striped table-sm">
-                        <thead class="table-primary">
-                            <tr>
-                                <th class="TableHeader align-middle" valign="center">
-                                    <button class="btn btn-sm btn-link hand" (click)="selectAll()" placement="right" container="body"  ngbTooltip="Seleziona/Deseleziona tutti">
-                                        <i class="fa fa-check-square-o" aria-hidden="true"></i>
-                                    </button>
-                                </th>
-                                <th jhiTranslate="settings.form.email">E-Mail</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let indirizzoMail of indirizziMail" (click)="setClickedRow(indirizzoMail)" class="hand"
-                                [ngClass]="{'bg-primary text-white' : indirizzoMail.indirizzo_mail == currentIndirizzoMail.indirizzo_mail}">
-                                <td><input type="checkbox" [(ngModel)]="indirizzoMail.checked"></td>
-                                <td>{{indirizzoMail.indirizzo_mail}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+      <div class="col-md-5 col-lg-4">
+        <div class="m-2">
+          <div id="crudToolbar" class="btn-toolbar mb-1" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-group d-flex w-100" role="group">
+              <button accesskey="N" [disabled]="isFormInserting()" (click)="newRow()" class="btn btn-outline-dark btn-title w-100" title="Nuovo">
+                <i class="fa fa-fw  fa-plus text-info" aria-hidden="true"></i>
+              </button>
+              <button accesskey="S" (click)="save()" class="btn btn-outline-dark btn-title w-100" title="Salva">
+                <i class="fa fa-fw  fa-floppy-o text-primary" aria-hidden="true"></i>
+              </button>
+              <button accesskey="E" [disabled]="isFormInserting()" (click)="deleteRows()" class="btn btn-outline-dark btn-title w-100" title="Elimina">
+                <i class="fa fa-fw fa-trash text-danger" aria-hidden="true"></i>
+              </button>
+              <button accesskey="E" [disabled]="!isFormInserting()" (click)="undoEditing()" class="btn btn-outline-dark btn-title w-100" title="Annulla">
+                <i class="fa fa-fw fa-undo text-success" aria-hidden="true"></i>
+              </button>
             </div>
+          </div>
+          <div class="div-sigla-table table-responsive col-sm-12">
+            <table class="sigla-table table table-bordered table-hover table-striped table-sm">
+              <thead class="table-primary">
+                <tr>
+                  <th class="TableHeader align-middle" valign="center">
+                    <button class="btn btn-sm btn-link hand" (click)="selectAll()" placement="right" container="body"  ngbTooltip="Seleziona/Deseleziona tutti">
+                      <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                    </button>
+                  </th>
+                  <th jhiTranslate="settings.form.email">E-Mail</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (indirizzoMail of indirizziMail; track indirizzoMail) {
+                  <tr (click)="setClickedRow(indirizzoMail)" class="hand"
+                    [ngClass]="{'bg-primary text-white' : indirizzoMail.indirizzo_mail == currentIndirizzoMail.indirizzo_mail}">
+                    <td><input type="checkbox" [(ngModel)]="indirizzoMail.checked"></td>
+                    <td>{{indirizzoMail.indirizzo_mail}}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div class="col-md-7 col-lg-8">
-            <div class="m-2">
-                <jhi-alert-error></jhi-alert-error>
-                <jhi-alert></jhi-alert>
-                <form name="form" role="form" (ngSubmit)="save()" #settingsForm="ngForm" *ngIf="settingsAccount" novalidate>
-                    <div class="form-group">
-                        <label class="form-control-label" for="email" jhiTranslate="settings.form.email">E-Mail</label>
-                        <input type="email" [disabled]="!isFormInserting()" class="form-control w-100" id="email" name="email" placeholder="{{'global.form.email.placeholder' | translate}}"
-                                [(ngModel)]="currentIndirizzoMail.indirizzo_mail" minlength="5" maxlength="100" #emailInput="ngModel" email required>
-                        <div *ngIf="emailInput.dirty && emailInput.invalid">
-                            <small class="form-text text-danger"
-                                *ngIf="emailInput.errors.required" jhiTranslate="global.messages.validate.email.required">
-                                Your email is required.
-                            </small>
-                            <small class="form-text text-danger"
-                                *ngIf="emailInput.errors.email" jhiTranslate="global.messages.validate.email.invalid">
-                                Your email is invalid.
-                            </small>
-                            <small class="form-text text-danger"
-                                *ngIf="emailInput.errors.minlength" jhiTranslate="global.messages.validate.email.minlength">
-                                Your email is required to be at least 5 characters.
-                            </small>
-                            <small class="form-text text-danger"
-                                *ngIf="emailInput.errors.maxlength" jhiTranslate="global.messages.validate.email.maxlength">
-                                Your email cannot be longer than 100 characters.
-                            </small>
-                        </div>
-                    </div>
-                    <h5 class="text-primary mt-2">Variazioni</h5>
-                    <div class="card p-2">
-                        <div class="form-check">
-                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.fl_err_appr_var_bil_cnr_res" id="erroreMancataApprovazioneVarBilancioRes" name="erroreMancataApprovazioneVarBilancioRes">
-                            <label class="form-check-label" for="erroreMancataApprovazioneVarBilancioRes">
-                                Invia errore di mancata approvazione Variazioni al Bilancio dell'Ente
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.fl_com_app_var_stanz_res" id="approvazioneVarStanziamentoResiduo" name="approvazioneVarStanziamentoResiduo">
-                            <label class="form-check-label" for="approvazioneVarStanziamentoResiduo">
-                                Comunica avvenuta approvazione Variazioni allo Stanziamento Residuo
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.fl_err_appr_var_bil_cnr_comp" id="erroreMancataApprovazioneVarBilancioComp" name="erroreMancataApprovazioneVarBilancioComp">
-                            <label class="form-check-label" for="erroreMancataApprovazioneVarBilancioComp">
-                                    Invia errore di mancata approvazione Variazioni al Bilancio dell'Ente generate da Variazioni alla Competenza
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.fl_com_app_var_stanz_comp" id="approvazioneVarStanziamentoCompetenza" name="approvazioneVarStanziamentoCompetenza">
-                            <label class="form-check-label" for="approvazioneVarStanziamentoCompetenza">
-                                Comunica avvenuta approvazione Variazioni alla Competenza
-                            </label>
-                        </div>
-                    </div>
-                    <h5 class="text-primary mt-2">Fatturazione Elettronica Attiva</h5>
-                    <div class="card p-2">
-                        <div class="form-check">
-                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.flEsitoPosFattElettr" id="esitoPositivoFattElettronicaAttiva" name="esitoPositivoFattElettronicaAttiva">
-                            <label class="form-check-label" for="esitoPositivoFattElettronicaAttiva">
-                                Comunicazione via Mail dell'esito positivo
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.flEsitoNegFattElettr" id="esitoNegativoFattElettronicaAttiva" name="esitoNegativoFattElettronicaAttiva">
-                            <label class="form-check-label" for="esitoNegativoFattElettronicaAttiva">
-                                Comunicazione via Mail dell'esito negativo
-                            </label>
-                        </div>
-                    </div>
-                    <h5 class="text-primary mt-2">Fatturazione Elettronica Passiva</h5>
-                    <div class="card p-2">
-                        <div class="form-check">
-                            <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.flFepNotificaRicezione" id="notificaRicezioneFatturaPassiva" name="notificaRicezioneFatturaPassiva">
-                            <label class="form-check-label" for="notificaRicezioneFatturaPassiva">
-                                Comunicazione via Mail ricezione nuova Fattura elettronica
-                            </label>
-                        </div>
-                    </div>
-                </form>
-            </div>
+      </div>
+      <div class="col-md-7 col-lg-8">
+        <div class="m-2">
+          <jhi-alert-error></jhi-alert-error>
+          <jhi-alert></jhi-alert>
+          @if (settingsAccount) {
+            <form name="form" role="form" (ngSubmit)="save()" #settingsForm="ngForm" novalidate>
+              <div class="form-group">
+                <label class="form-control-label" for="email" jhiTranslate="settings.form.email">E-Mail</label>
+                <input type="email" [disabled]="!isFormInserting()" class="form-control w-100" id="email" name="email" placeholder="{{'global.form.email.placeholder' | translate}}"
+                  [(ngModel)]="currentIndirizzoMail.indirizzo_mail" minlength="5" maxlength="100" #emailInput="ngModel" email required>
+                @if (emailInput.dirty && emailInput.invalid) {
+                  <div>
+                    @if (emailInput.errors.required) {
+                      <small class="form-text text-danger"
+                        jhiTranslate="global.messages.validate.email.required">
+                        Your email is required.
+                      </small>
+                    }
+                    @if (emailInput.errors.email) {
+                      <small class="form-text text-danger"
+                        jhiTranslate="global.messages.validate.email.invalid">
+                        Your email is invalid.
+                      </small>
+                    }
+                    @if (emailInput.errors.minlength) {
+                      <small class="form-text text-danger"
+                        jhiTranslate="global.messages.validate.email.minlength">
+                        Your email is required to be at least 5 characters.
+                      </small>
+                    }
+                    @if (emailInput.errors.maxlength) {
+                      <small class="form-text text-danger"
+                        jhiTranslate="global.messages.validate.email.maxlength">
+                        Your email cannot be longer than 100 characters.
+                      </small>
+                    }
+                  </div>
+                }
+              </div>
+              <h5 class="text-primary mt-2">Variazioni</h5>
+              <div class="card p-2">
+                <div class="form-check">
+                  <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.fl_err_appr_var_bil_cnr_res" id="erroreMancataApprovazioneVarBilancioRes" name="erroreMancataApprovazioneVarBilancioRes">
+                  <label class="form-check-label" for="erroreMancataApprovazioneVarBilancioRes">
+                    Invia errore di mancata approvazione Variazioni al Bilancio dell'Ente
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.fl_com_app_var_stanz_res" id="approvazioneVarStanziamentoResiduo" name="approvazioneVarStanziamentoResiduo">
+                  <label class="form-check-label" for="approvazioneVarStanziamentoResiduo">
+                    Comunica avvenuta approvazione Variazioni allo Stanziamento Residuo
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.fl_err_appr_var_bil_cnr_comp" id="erroreMancataApprovazioneVarBilancioComp" name="erroreMancataApprovazioneVarBilancioComp">
+                  <label class="form-check-label" for="erroreMancataApprovazioneVarBilancioComp">
+                    Invia errore di mancata approvazione Variazioni al Bilancio dell'Ente generate da Variazioni alla Competenza
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.fl_com_app_var_stanz_comp" id="approvazioneVarStanziamentoCompetenza" name="approvazioneVarStanziamentoCompetenza">
+                  <label class="form-check-label" for="approvazioneVarStanziamentoCompetenza">
+                    Comunica avvenuta approvazione Variazioni alla Competenza
+                  </label>
+                </div>
+              </div>
+              <h5 class="text-primary mt-2">Fatturazione Elettronica Attiva</h5>
+              <div class="card p-2">
+                <div class="form-check">
+                  <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.flEsitoPosFattElettr" id="esitoPositivoFattElettronicaAttiva" name="esitoPositivoFattElettronicaAttiva">
+                  <label class="form-check-label" for="esitoPositivoFattElettronicaAttiva">
+                    Comunicazione via Mail dell'esito positivo
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.flEsitoNegFattElettr" id="esitoNegativoFattElettronicaAttiva" name="esitoNegativoFattElettronicaAttiva">
+                  <label class="form-check-label" for="esitoNegativoFattElettronicaAttiva">
+                    Comunicazione via Mail dell'esito negativo
+                  </label>
+                </div>
+              </div>
+              <h5 class="text-primary mt-2">Fatturazione Elettronica Passiva</h5>
+              <div class="card p-2">
+                <div class="form-check">
+                  <input type="checkbox" [disabled]="isDisabled()" [(ngModel)]="currentIndirizzoMail.flFepNotificaRicezione" id="notificaRicezioneFatturaPassiva" name="notificaRicezioneFatturaPassiva">
+                  <label class="form-check-label" for="notificaRicezioneFatturaPassiva">
+                    Comunicazione via Mail ricezione nuova Fattura elettronica
+                  </label>
+                </div>
+              </div>
+            </form>
+          }
         </div>
+      </div>
     </div>
-</div>
+  </div>
