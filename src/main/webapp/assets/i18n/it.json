@@ -47,7 +47,8 @@
             "confirmpassword.placeholder": "Conferma nuova password",
             "email": "Email",
             "email.placeholder": "Il tuo indirizzo email",
-            "autocomplete.placeholder": "Digita per cercare..."
+            "autocomplete.placeholder": "Digita per cercare...",
+            "filter.placeholder": "Inserire un valore per filtrare i risultati..."
         },
         "messages": {
             "info": {
@@ -143,6 +144,20 @@
         "subtitle": "Documenti contabili/amministrativi",
         "logged": {
             "message": "Autenticato come \"{{username}}\"."
+        }
+    },
+    "dashboard": {
+        "indice-tempestivita": {
+            "title": "Indice di Tempestività dei Pagamenti",
+            "esercizio": "Esercizio",
+            "uo": "Unità Organizzativa",
+            "trimestre": {
+                "1": "Primo Trimestre",
+                "2": "Secondo Trimestre",
+                "3": "Terzo Trimestre",
+                "4": "Quarto Trimestre"
+            },
+            "intero-anno": "Intero Anno"
         }
     },
     "login": {

@@ -124,7 +124,7 @@ export class ContextService  {
             });
     }
 
-    getUo(cds: string): Observable<Pair[]> {
+    getUo(cds?: string): Observable<Pair[]> {
         let httpParams: HttpParams = new HttpParams();
         if (cds) {
             httpParams = httpParams = httpParams.set('cds', cds);

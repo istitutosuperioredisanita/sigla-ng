@@ -1,1 +1,7 @@
-<indice-tempestivita-pagamenti></indice-tempestivita-pagamenti>
+<div class="row pt-2">
+    <div class="col-md-4">
+        <a [routerLink]="['/indice-tempestivita-pagamenti']" [queryParams]="{dashboard: false}">
+            <indice-tempestivita-pagamenti [dashboard]="true"></indice-tempestivita-pagamenti>
+        </a>
+    </div>
+</div>

@@ -1,19 +1,28 @@
-import { Component, ElementRef, OnInit, OnDestroy, ViewChild } from "@angular/core";
+import { Component, ElementRef, OnInit, OnDestroy, ViewChild, Input } from "@angular/core";
 import { ContextService } from "app/context";
 import { IndiceTempestivitaPagamentiService } from "./indice-tempestivita-pagamenti.service";
 import { TranslateService } from "@ngx-translate/core";
 import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { Observable ,  Subscription } from 'rxjs';
+import { map, debounceTime } from 'rxjs/operators';
+import { Pair } from "../../context/pair.model";
+
 import * as am5 from '@amcharts/amcharts5';
 import * as am5radar from "@amcharts/amcharts5/radar";
-import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 import * as am5xy from "@amcharts/amcharts5/xy";
+import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
+import { NgbDropdown, NgbTypeaheadConfig } from "@ng-bootstrap/ng-bootstrap";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
     selector: 'indice-tempestivita-pagamenti',
     templateUrl: './indice-tempestivita-pagamenti.component.html',
+    providers: [NgbDropdown, NgbTypeaheadConfig],
     standalone: false
 })
 export class IndiceTempestivitaPagamentiComponent implements OnInit, OnDestroy {
+    @Input() dashboard: boolean = false;
+
     protected filterForm: FormGroup;
 
     @ViewChild('chartdivTrimestre1', { static: true }) chartdivTrimestre1: ElementRef;
@@ -23,11 +32,16 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, OnDestroy {
     @ViewChild('chartdivEsercizio', { static: true }) chartdivEsercizio: ElementRef;
     
     chartDivStyle = 'height:30vh !important';
-    
+    chartDivClass = 'col-md-3 font-weight-bold text-monospace text-center text-success';
+
     private roots: Map<string, am5.Root | null> = new Map();
     private chartRefs: Map<string, ElementRef> = new Map();
+    @ViewChild('uo', {static : false}) uoInput: ElementRef;
+    protected uoPairs: Pair[];
 
     constructor(
+        protected route: ActivatedRoute,
+        protected router: Router,
         protected formBuilder: FormBuilder,
         protected contextService: ContextService,
         protected indiceService: IndiceTempestivitaPagamentiService,
@@ -35,7 +49,24 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        // Inizializza la mappa dei riferimenti ai chart
+        // Sottoscrivi ai queryParams per reagire ai cambiamenti
+        this.route.queryParams.subscribe(params => {
+            // Se c'è il parametro, usalo, altrimenti usa l'@Input
+            if (params['dashboard'] !== undefined) {
+                this.dashboard = params['dashboard'] === 'true';
+            }
+            
+            this.initializeComponent();
+        });
+    }
+
+    private initializeComponent(): void {
+        // Resetta la classe se necessario
+        this.chartDivClass = 'col-md-3 font-weight-bold text-monospace text-center text-success';
+        if (this.dashboard) {
+            this.chartDivClass += ' d-none';
+        }
+
         this.chartRefs.set('0', this.chartdivEsercizio);
         this.chartRefs.set('1', this.chartdivTrimestre1);
         this.chartRefs.set('2', this.chartdivTrimestre2);
@@ -48,9 +79,12 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, OnDestroy {
         });
 
         this.filterForm.valueChanges.subscribe((value: any) => {
-            this.callIndice(value.esercizio, value.uo);
+            this.callIndice(value?.esercizio, value?.uo?.first);
         });
 
+        this.contextService.getUo().subscribe((result: Pair[]) => {
+            this.uoPairs = result;
+        });
         this.callIndice(this.filterForm.controls['esercizio'].value);
     }
 
@@ -71,6 +105,39 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, OnDestroy {
             currentRoot.dispose();
         }
         return am5.Root.new(element.nativeElement);
+    }
+
+    searchuo = (text$: Observable<string>) =>
+        text$
+        .pipe(debounceTime(200))
+        .pipe(map((term: string) => this.filterPair(term, this.uoPairs, 'uo')
+        .slice(0, 200)));
+
+    filterPair(term: string, pairs: Pair[], type: string): Pair[] {
+        if (term === '') {
+            return pairs;
+        } else {
+            return pairs.filter((v) => new RegExp(term, 'gi').test(v.first + ' - ' + v.second));
+        }
+    }
+
+    formatter = (pair: Pair) => pair.first + ' - ' + pair.second;
+    formatterFirst = (pair: Pair) => pair.first;
+
+    openTypeaheadUo() {
+        this.uoInput.nativeElement.value = '';
+        this.uoInput.nativeElement.dispatchEvent(this.createNewEvent('input'));
+    }
+
+    createNewEvent(eventName) {
+        let event;
+        if (typeof(Event) === 'function') {
+            event = new Event(eventName);
+        } else {
+            event = document.createEvent('Event');
+            event.initEvent(eventName, true, true);
+        }
+        return event;
     }
 
     callIndice(esercizio: number, uo?: string): void {
@@ -132,7 +199,7 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, OnDestroy {
             maxDeviation: 0,
             min: -30,
             max: 30,
-            strictMinMax: true,
+            strictMinMax: false,
             renderer: axisRenderer
         }));
 
@@ -155,9 +222,14 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, OnDestroy {
             centerX: am5.percent(50),
             textAlign: "center",
             centerY: am5.percent(50),
-            fontSize: "1.5em"
+            fontSize: "1.2em"
         }));
-
+        if (value > xAxis.get("max")) {
+            xAxis.set("max", Math.ceil(value / 10) * 10);
+        }
+        if (value < xAxis.get("min")) {
+            xAxis.set("min", Math.floor(value / 10) * 10);
+        }
         axisDataItem.set("value", value);
 
         bullet.get("sprite").on("rotation", () => {
@@ -213,7 +285,37 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, OnDestroy {
                 fillOpacity: 0.8
             });
         });
+        // Trova i valori min e max dai tuoi bandsData
+        const minValue = Math.min(...bandsData.map(b => b.lowScore)); // -30
+        const maxValue = Math.max(...bandsData.map(b => b.highScore)); // 30
+        if (value > maxValue) {
+            const axisRange = xAxis.createAxisRange(xAxis.makeDataItem({}));
 
+            axisRange.setAll({
+                value: maxValue,
+                endValue: Math.ceil(value / 10) * 10
+            });
+
+            axisRange.get("axisFill").setAll({
+                visible: true,
+                fill: am5.color(0x000000),
+                fillOpacity: 0.8
+            });
+        }
+        if (value < minValue) {
+            const axisRange = xAxis.createAxisRange(xAxis.makeDataItem({}));
+
+            axisRange.setAll({
+                value: Math.floor(value / 10) * 10,
+                endValue: minValue
+            });
+
+            axisRange.get("axisFill").setAll({
+                visible: true,
+                fill: am5.color('#007bff'),
+                fillOpacity: 0.8
+            });
+        }
         // Animazione iniziale
         chartGauge.appear(1000, 100);
     }

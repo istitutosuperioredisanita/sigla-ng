@@ -1,26 +1,74 @@
-<div class="card shadow mt-2 p-3">
-    <h1 class="text-monospace text-center bg-white">Indice di Tempestività dei Pagamenti</h1>
-    <form class="form" role="form" [formGroup]="filterForm">
-        <div class="d-flex justify-content-center">
-            <div class="d-flex">
-                <span class="FormLabel required pr-2 pt-1">Esercizio</span>
-                <select id="esercizio" class="form-control" formControlName="esercizio" required>
-                    @for (esercizio of contextService.esercizi; track esercizio) {
-                        <option [ngValue]="esercizio">{{esercizio}}</option>
-                    }
-                </select>
+<ng-template #rt let-r="result" let-t="term">
+  <div class="w-100">
+    <span>{{r.first}} - {{r.second}}</span>
+  </div>
+</ng-template>
+@if(!dashboard) {
+    <div class="card shadow mt-2 p-3 jumbotron mb-1">
+        <h1 class="text-monospace text-center text-success bg-transparent" translate>dashboard.indice-tempestivita.title</h1>
+        <form class="form" role="form" [formGroup]="filterForm">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-auto mb-2 mb-md-0">
+                    <div class="d-flex">
+                        <span class="FormLabel required pr-2 pt-1" translate>dashboard.indice-tempestivita.esercizio</span>
+                        <select id="esercizio" class="form-control" formControlName="esercizio" required>
+                            @for (esercizio of contextService.esercizi; track esercizio) {
+                                <option [ngValue]="esercizio">{{esercizio}}</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-5">
+                    <div class="d-flex">
+                        <label for="uo" class="col-form-label pr-2 text-nowrap" translate>dashboard.indice-tempestivita.uo</label>
+                        <div class="flex-fill">
+                            <div class="input-group">
+                                <input
+                                    #uo
+                                    formControlName="uo"
+                                    [ngbTypeahead]="searchuo"
+                                    [resultTemplate]="rt"
+                                    [inputFormatter]="formatter"
+                                    [resultFormatter]="formatter"
+                                    [editable]="true"
+                                    class="form-control"
+                                    id="uo"
+                                    type="search"
+                                    placeholder="{{'global.form.filter.placeholder' | translate}}">
+                                <a class="input-group-addon btn text-primary" (click)="openTypeaheadUo()">
+                                    <i class="fa fa-caret-down"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </form>
-</div>
-<div class="card shadow mt-1 p-1">
+        </form>
+    </div>
+}
+<div class="card shadow p-1">
     <div class="row mx-0">
-        <div #chartdivTrimestre1 class="col-md-3 font-weight-bold text-monospace text-center" [style]="chartDivStyle">Primo Trimestre</div>
-        <div #chartdivTrimestre2 class="col-md-3 font-weight-bold text-monospace text-center" [style]="chartDivStyle">Secondo Trimestre</div>
-        <div #chartdivTrimestre3 class="col-md-3 font-weight-bold text-monospace text-center" [style]="chartDivStyle">Terzo Trimestre</div>
-        <div #chartdivTrimestre4 class="col-md-3 font-weight-bold text-monospace text-center" [style]="chartDivStyle">Quarto Trimestre</div>
+        <div #chartdivTrimestre1 [class]="chartDivClass" [style]="chartDivStyle">
+            <span class="h4" translate>dashboard.indice-tempestivita.trimestre.1</span>
+        </div>
+        <div #chartdivTrimestre2 [class]="chartDivClass" [style]="chartDivStyle">
+            <span class="h4" translate>dashboard.indice-tempestivita.trimestre.2</span>
+        </div>
+        <div #chartdivTrimestre3 [class]="chartDivClass" [style]="chartDivStyle">
+            <span class="h4" translate>dashboard.indice-tempestivita.trimestre.3</span>
+        </div>
+        <div #chartdivTrimestre4 [class]="chartDivClass" [style]="chartDivStyle">
+            <span class="h4" translate>dashboard.indice-tempestivita.trimestre.4</span>
+        </div>
     </div>
     <div class="d-flex justify-content-center mt-4">
-        <div #chartdivEsercizio class="w-100 font-weight-bold text-monospace text-center" style="height:50vh !important">Intero Anno</div>
+        <div #chartdivEsercizio class="w-100 font-weight-bold text-monospace text-center text-success" style="height:50vh !important">
+            @if(!dashboard) {
+                <span class="h4" translate>dashboard.indice-tempestivita.intero-anno</span>
+            } @else {
+                <span class="h3" translate>dashboard.indice-tempestivita.title</span>
+                <span class="ml-2 h3">{{filterForm?.controls?.esercizio?.value}}</span>
+            }
+        </div>
     </div>
 </div>
