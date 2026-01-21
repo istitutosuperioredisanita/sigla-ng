@@ -2,7 +2,7 @@ import './vendor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Injector, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgxWebstorageModule } from 'ngx-webstorage';
+import { provideNgxWebstorage, withLocalStorage, withNgxWebstorageConfig, withSessionStorage} from 'ngx-webstorage';
 import { NgxCnrUictSsoModule } from 'ngx-cnr-uict-sso';
 
 import { LoginService, SiglaSharedModule, StateStorageService, UserRouteAccessService } from './shared';
@@ -10,6 +10,7 @@ import { SiglaHomeModule } from './home/home.module';
 import { SiglaAccountModule } from './account/account.module';
 import { SiglaEntityModule } from './entities/entity.module';
 import { SiglaWorkspaceModule } from './workspace/workspace.module';
+import { SiglaDashboardModule } from './dashboard/dashboard.module';
 
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
 
@@ -45,12 +46,12 @@ import { EventManager } from './shared/auth/event-manager.service';
         BrowserModule,
         LayoutRoutingModule,
         FontAwesomeModule,
-        NgxWebstorageModule.forRoot(),
         SiglaSharedModule,
         SiglaHomeModule,
         SiglaAccountModule,
         SiglaEntityModule,
         SiglaWorkspaceModule,
+        SiglaDashboardModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
@@ -86,6 +87,11 @@ import { EventManager } from './shared/auth/event-manager.service';
         FooterComponent
     ],
     providers: [
+        provideNgxWebstorage(
+			withNgxWebstorageConfig({ separator: ':', caseSensitive: true }),
+			withLocalStorage(),
+			withSessionStorage()
+		),
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptor,

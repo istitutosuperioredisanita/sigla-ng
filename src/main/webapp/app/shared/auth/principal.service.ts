@@ -43,6 +43,14 @@ export class Principal {
         return false;
     }
 
+    hasOnlyApplicationRole(authority: string): boolean {
+        if (!this.authenticated || !this.userIdentity || !this.userIdentity.applicationRole) {
+            return false;
+        }
+        return this.userIdentity.applicationRole.indexOf(authority) !== -1 && 
+            this.userIdentity.applicationRole.length == 1;
+    }
+    
     hasAuthority(authority: string): Promise<boolean> {
         if (!this.authenticated) {
            return Promise.resolve(false);

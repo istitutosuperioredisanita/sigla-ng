@@ -6,6 +6,7 @@ export class Account {
     public credentialsNonExpired: boolean;
     public ldap: boolean;
     public abilitatoLdap: boolean;
+    public applicationRole: string[];
     public authorities: string[];
     public email: string;
     public firstName: string;

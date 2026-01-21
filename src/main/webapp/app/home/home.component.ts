@@ -137,6 +137,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
                         name: 'authenticationSuccess',
                         content: 'Sending Authentication Success'
                     });
+                    if (this.principal.hasOnlyApplicationRole('APPLICATION_ROLE_SUPER')) {
+                        this.router.navigate([SERVER_API_URL + 'dashboard']);
+                        return;                    
+                    }
                     this.principal.hasAnyAuthority(['ROLE_ADMIN', 'ROLE_SUPERUSER']).then((result) => {
                         if (!result) {
                             if (account.accountNonLocked && this.localStateStorageService.getUserContext(this.principal.getAccount().username).cds) {

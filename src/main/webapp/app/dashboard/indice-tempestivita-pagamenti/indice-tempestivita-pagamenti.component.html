@@ -1,0 +1,26 @@
+<div class="card shadow mt-2 p-3">
+    <h1 class="text-monospace text-center bg-white">Indice di Tempestività dei Pagamenti</h1>
+    <form class="form" role="form" [formGroup]="filterForm">
+        <div class="d-flex justify-content-center">
+            <div class="d-flex">
+                <span class="FormLabel required pr-2 pt-1">Esercizio</span>
+                <select id="esercizio" class="form-control" formControlName="esercizio" required>
+                    @for (esercizio of contextService.esercizi; track esercizio) {
+                        <option [ngValue]="esercizio">{{esercizio}}</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="card shadow mt-1 p-1">
+    <div class="row mx-0">
+        <div #chartdivTrimestre1 class="col-md-3 font-weight-bold text-monospace text-center" [style]="chartDivStyle">Primo Trimestre</div>
+        <div #chartdivTrimestre2 class="col-md-3 font-weight-bold text-monospace text-center" [style]="chartDivStyle">Secondo Trimestre</div>
+        <div #chartdivTrimestre3 class="col-md-3 font-weight-bold text-monospace text-center" [style]="chartDivStyle">Terzo Trimestre</div>
+        <div #chartdivTrimestre4 class="col-md-3 font-weight-bold text-monospace text-center" [style]="chartDivStyle">Quarto Trimestre</div>
+    </div>
+    <div class="d-flex justify-content-center mt-4">
+        <div #chartdivEsercizio class="w-100 font-weight-bold text-monospace text-center" style="height:50vh !important">Intero Anno</div>
+    </div>
+</div>

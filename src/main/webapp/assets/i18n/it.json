@@ -5,6 +5,7 @@
         "menu": {
             "home": "Home",
             "workspace": "SIGLA - Spazio di lavoro",
+            "dashboard": "SIGLA - Cruscotto",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entità",
@@ -18,7 +19,8 @@
                 "login": "Accesso",
                 "logout": "Esci",
                 "register": "Registrazione",
-                "changeuser": "Cambia utente"
+                "changeuser": "Cambia utente",
+                "dashboard": "Cruscotto"
             },
             "admin": {
                 "main": "Amministratore",
