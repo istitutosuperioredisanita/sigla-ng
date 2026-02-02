@@ -1,7 +1,23 @@
-<div class="row pt-2">
-    <div class="col-md-4">
-        <a [routerLink]="['/indice-tempestivita-pagamenti']" [queryParams]="{dashboard: false}">
-            <indice-tempestivita-pagamenti [dashboard]="true"></indice-tempestivita-pagamenti>
-        </a>
+<div class="container-fluid">
+    <div class="d-flex justify-content-center mt-4 text-primary-dark">
+        <h1 class="text-monospace font-weight-bold bg-transparent">Indicatori per la Performance</h1>
+    </div>
+    <div class="d-flex justify-content-center text-primary-dark">
+        <p class="text-monospace font-weight-bold">Indicatori di efficienza, sostenibilità e resilienza per la valutazione complessiva delle performance gestionali dell'amministrazione</p>
+    </div>
+    <acquisti-struttura [dashboard]="true"></acquisti-struttura>
+    <div class="my-4">
+        <div class="row pt-2 justify-content-md-center">
+            <div class="col-md-4">
+                <a [routerLink]="['/indice-tempestivita-pagamenti']" [queryParams]="{dashboard: false}">
+                    <indice-tempestivita-pagamenti [dashboard]="true"></indice-tempestivita-pagamenti>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a [routerLink]="['/acquisti-stato']" [queryParams]="{dashboard: false}">
+                    <acquisti-stato [dashboard]="true"></acquisti-stato>
+                </a>
+            </div>
+        </div>
     </div>
 </div>

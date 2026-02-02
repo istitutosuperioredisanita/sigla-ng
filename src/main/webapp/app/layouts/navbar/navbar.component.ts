@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { LanguageService, LanguageHelper, Principal, MultipleUserModalService, LoginService } from '../../shared';
 import { WorkspaceService } from '../../workspace/workspace.service';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../environments/environment';
-
+import { MenuService } from './menu.service';
+import { filter, map } from 'rxjs/operators';
 @Component({
     selector: 'jhi-navbar',
     templateUrl: './navbar.component.html',
@@ -25,16 +26,18 @@ export class NavbarComponent implements OnInit {
     modalRef: NgbModalRef;
     version: string;
     hidden: boolean;
-
+    
     constructor(
-        private loginService: LoginService,
-        private languageHelper: LanguageHelper,
-        private languageService: LanguageService,
-        private multipleUserModalService: MultipleUserModalService,
-        public principal: Principal,
-        private workspaceService: WorkspaceService,
-        public router: Router,
-        private translateService: TranslateService
+        protected menuService: MenuService,
+        protected activatedRoute: ActivatedRoute,
+        protected loginService: LoginService,
+        protected languageHelper: LanguageHelper,
+        protected languageService: LanguageService,
+        protected multipleUserModalService: MultipleUserModalService,
+        protected principal: Principal,
+        protected workspaceService: WorkspaceService,
+        protected router: Router,
+        protected translateService: TranslateService
     ) {
         this.isNavbarCollapsed = true;
         workspaceService.isMenuHidden().subscribe((hidden) => this.hidden = hidden);
@@ -58,6 +61,35 @@ export class NavbarComponent implements OnInit {
         this.workspaceService.version().subscribe((version) => {
             this.version = version;
         });
+        this.router.events.pipe(
+            filter(event => event instanceof NavigationEnd),
+            map(() => this.getMenuKeyFromRoute())
+        ).subscribe(menuKey => {
+            this.menuService.setMenu(menuKey);
+        });
+
+        // Imposta il menu al caricamento iniziale
+        const menuKey = this.getMenuKeyFromRoute();
+        if (menuKey) {
+            this.menuService.setMenu(menuKey);
+        }
+    }
+
+    private getMenuKeyFromRoute(): string | null {
+        let route = this.activatedRoute.root;        
+        // Naviga attraverso l'albero delle route
+        while (route.firstChild) {
+            route = route.firstChild;
+        }
+        // Cerca il data 'menu' risalendo l'albero
+        let currentRoute = route;
+        while (currentRoute) {
+            if (currentRoute.snapshot.data['menu']) {
+                return currentRoute.snapshot.data['menu'];
+            }
+            currentRoute = currentRoute.parent!;
+        }        
+        return null;
     }
 
     getLogo() {

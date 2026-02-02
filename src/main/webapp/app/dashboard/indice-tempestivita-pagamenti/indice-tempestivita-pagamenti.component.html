@@ -5,70 +5,104 @@
 </ng-template>
 @if(!dashboard) {
     <div class="card shadow mt-2 p-3 jumbotron mb-1">
-        <h1 class="text-monospace text-center text-success bg-transparent" translate>dashboard.indice-tempestivita.title</h1>
-        <form class="form" role="form" [formGroup]="filterForm">
-            <div class="row justify-content-center">
-                <div class="col-12 col-md-auto mb-2 mb-md-0">
-                    <div class="d-flex">
-                        <span class="FormLabel required pr-2 pt-1" translate>dashboard.indice-tempestivita.esercizio</span>
-                        <select id="esercizio" class="form-control" formControlName="esercizio" required>
-                            @for (esercizio of contextService.esercizi; track esercizio) {
-                                <option [ngValue]="esercizio">{{esercizio}}</option>
-                            }
-                        </select>
+        <h1 class="text-monospace text-center text-primary-dark bg-transparent" translate>dashboard.indice-tempestivita.title</h1>
+        @if(esercizi) {
+            <form class="form" role="form" [formGroup]="filterForm">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-auto mb-2 mb-md-0">
+                        <div class="d-flex">
+                            <span class="FormLabel required pr-2 pt-1" translate>dashboard.indice-tempestivita.esercizio</span>
+                            <select id="esercizio" class="form-control" formControlName="esercizio" required>
+                                @for (esercizio of esercizi; track esercizio) {
+                                    <option [ngValue]="esercizio">{{esercizio}}</option>
+                                }
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-5">
-                    <div class="d-flex">
-                        <label for="uo" class="col-form-label pr-2 text-nowrap" translate>dashboard.indice-tempestivita.uo</label>
-                        <div class="flex-fill">
-                            <div class="input-group">
-                                <input
-                                    #uo
-                                    formControlName="uo"
-                                    [ngbTypeahead]="searchuo"
-                                    [resultTemplate]="rt"
-                                    [inputFormatter]="formatter"
-                                    [resultFormatter]="formatter"
-                                    [editable]="true"
-                                    class="form-control"
-                                    id="uo"
-                                    type="search"
-                                    placeholder="{{'global.form.filter.placeholder' | translate}}">
-                                <a class="input-group-addon btn text-primary" (click)="openTypeaheadUo()">
-                                    <i class="fa fa-caret-down"></i>
-                                </a>
+                    <div class="col-12 col-md-6 col-lg-5">
+                        <div class="d-flex">
+                            <label for="uo" class="col-form-label pr-2 text-nowrap" translate>dashboard.indice-tempestivita.uo</label>
+                            <div class="flex-fill">
+                                <div class="input-group">
+                                    <input
+                                        #uo
+                                        formControlName="uo"
+                                        [ngbTypeahead]="searchuo"
+                                        [resultTemplate]="rt"
+                                        [inputFormatter]="formatter"
+                                        [resultFormatter]="formatter"
+                                        (selectItem)="onUoSelected($event)"
+                                        [editable]="true"
+                                        class="form-control"
+                                        id="uo"
+                                        type="search"
+                                        placeholder="{{'global.form.filter.placeholder' | translate}}">
+                                    <a class="input-group-addon btn text-primary" (click)="openTypeaheadUo()">
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        }
     </div>
 }
-<div class="card shadow p-1">
+<div [ngClass]="{'p-1 mb-4': !dashboard}">
+    @if (loadingChart()) {
+        <div class="h-100">
+            <div class="d-flex justify-content-center">
+                <div class="loading cursor-wait"></div>
+            </div>
+        </div>
+    }    
     <div class="row mx-0">
-        <div #chartdivTrimestre1 [class]="chartDivClass" [style]="chartDivStyle">
-            <span class="h4" translate>dashboard.indice-tempestivita.trimestre.1</span>
-        </div>
-        <div #chartdivTrimestre2 [class]="chartDivClass" [style]="chartDivStyle">
-            <span class="h4" translate>dashboard.indice-tempestivita.trimestre.2</span>
-        </div>
-        <div #chartdivTrimestre3 [class]="chartDivClass" [style]="chartDivStyle">
-            <span class="h4" translate>dashboard.indice-tempestivita.trimestre.3</span>
-        </div>
-        <div #chartdivTrimestre4 [class]="chartDivClass" [style]="chartDivStyle">
-            <span class="h4" translate>dashboard.indice-tempestivita.trimestre.4</span>
-        </div>
+        @for (trimestre of trimestri; track trimestre) {
+            <div [class]="chartDivClass">
+                <div class="card shadow">
+                    <div class="card-header">
+                        <span class="h4 text-primary-dark" translate>dashboard.indice-tempestivita.trimestre.{{trimestre}}</span>
+                    </div> 
+                    <div #chartTrimestre [attr.data-trimestre]="trimestre" [style]="chartDivStyle"></div>
+                </div>
+            </div>
+        }
     </div>
-    <div class="d-flex justify-content-center mt-4">
-        <div #chartdivEsercizio class="w-100 font-weight-bold text-monospace text-center text-success" style="height:50vh !important">
-            @if(!dashboard) {
-                <span class="h4" translate>dashboard.indice-tempestivita.intero-anno</span>
-            } @else {
-                <span class="h3" translate>dashboard.indice-tempestivita.title</span>
-                <span class="ml-2 h3">{{filterForm?.controls?.esercizio?.value}}</span>
-            }
+    <div class="d-flex justify-content-center my-4">
+        <div [ngClass]="{'col-md-6': !dashboard}" class="text-monospace text-center text-primary-dark w-100">
+            <div class="card shadow">
+                <div class="card-header">
+                    @if(!dashboard) {
+                        <span class="h4" translate>dashboard.indice-tempestivita.intero-anno</span>
+                    } @else {
+                        <span class="h3" translate>dashboard.indice-tempestivita.title</span>
+                        <span class="ml-2 h3">{{filterForm?.controls?.esercizio?.value}}</span>
+                    }
+                </div> 
+                <div #chartdivEsercizio class="w-100 font-weight-bold text-monospace text-center text-primary-dark" style="height:50vh !important"></div>
+            </div>
         </div>
+        @if(!dashboard) {
+            <div class="col-md-6">
+                <div class="card shadow" >
+                    <div class="card-header text-center">
+                        <span class="h4 text-primary-dark" translate>Significato Indicatori</span>
+                    </div> 
+                    <div class="card-body" style="height:50vh !important">
+                        <p>Indice di tempestività di pagamento:</p>
+                        <p>Il grafico generale rappresenta, a livello di Ente, l’indice annuale di tempestività di pagamento.</p>
+                        <p>Il calcolo dei giorni di pagamento viene effettuato confrontando la data di ricezione del singolo documento rispetto alla data di pagamento. Un documento deve essere pagato entro 30 giorni dalla sua ricezione (tranne alcune eccezioni). Rispettando questo termine l’indice sarà uguale a zero (risultato atteso per la normativa vigente RGS). Quanto più breve sarà il periodo intercorso tra la ricezione di un documento ed il suo pagamento, più l’indice di pagamento risulterà inferiore allo zero (migliore è la prestazione dell’ente in termini di velocità nei pagamenti).</p>
+                        <p>Se l’indice è maggiore di zero indica un ritardo nei pagamenti (tempi superiori ai 30 giorni consentiti), e più è positivo l’indice, più questo indica una peggiore velocità da parte dell’ente nel pagamento ai fornitori. I parametri per i quali può essere consultato l’indice, sono:</p>
+                        <ul>
+                            <li><b class="font-weight-bold">Esercizio:</b> la prima visualizzazione è riferita all’esercizio in corso. Entrando nel menu Statistiche/Indice di tempestività, può essere scelto un esercizio diverso.</li>
+                            <li><b class="font-weight-bold">Dettaglio:</b> Entrando nel menu Statistiche/Indice di tempestività  saranno disponibili le informazioni per <b class="font-weight-bold">Trimestre</b> e per l’<b class="font-weight-bold">intero anno</b>.</li>
+                            <li><b class="font-weight-bold">Struttura:</b> La consultazione è riferita all’intero Ente, ma indicando una specifica struttura (Unità Organizzativa), i dati per trimestre/intero anno, sono riferiti alla Struttura specifica.</li>
+                        </ul>
+                    </div>                    
+                </div>
+            </div>
+        }
     </div>
+
 </div>

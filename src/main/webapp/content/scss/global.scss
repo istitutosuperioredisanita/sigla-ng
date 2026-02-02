@@ -983,15 +983,21 @@ Logo styles
   }
 }
 @media(min-width: 992px) {
+  
   .display-inherit {
       display: inherit
   }
+  
   .dropdown-menu {
       min-width: 80px;
   }
+  
   #context-menu {
       padding-left: 7px;
       text-align: right;
+  }
+  
+  #context-menu > .dropdown-menu {
       min-width: 320px;
   }
 
@@ -1220,3 +1226,6 @@ Developement Ribbon
   pointer-events: none;
 }
 
+.text-primary-dark {
+  color: darken($primary, 15%) !important; // Scurisce del 15%
+}

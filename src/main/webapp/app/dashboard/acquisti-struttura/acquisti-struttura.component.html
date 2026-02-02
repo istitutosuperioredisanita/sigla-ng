@@ -1,0 +1,52 @@
+<!-- Modale per visualizzare il dettaglio stato acquisti -->
+<ng-template #modalStato let-modal>
+    <div class="modal-body p-1">
+        <acquisti-stato [dashboard]="true" [codiceUo]="selectedCodiceUo"></acquisti-stato>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-info" (click)="modal.close()">
+            <span class="h3" translate>global.form.close</span>
+            <i class="fa fa-2x fa-fw fa-close" aria-hidden="true"></i>
+        </button>
+    </div>
+</ng-template>
+@if(!dashboard) {
+    <div class="card shadow mt-2 p-3 jumbotron mb-1">
+        <h1 class="text-monospace text-center text-primary-dark bg-transparent" translate>dashboard.acquisti-struttura.title</h1>
+        <p class="text-monospace font-italic" translate>dashboard.acquisti-struttura.descrizione</p>
+        @if(esercizi) {
+            <form class="form" role="form" [formGroup]="filterForm">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-auto mb-2 mb-md-0">
+                        <div class="d-flex">
+                            <span class="FormLabel required pr-2 pt-1" translate>dashboard.acquisti-struttura.esercizio</span>
+                            <select id="esercizio" class="form-control" formControlName="esercizio" required>
+                                @for (esercizio of esercizi; track esercizio) {
+                                    <option [ngValue]="esercizio">{{esercizio}}</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        }
+    </div>
+}
+<div [ngClass]="{'card shadow p-1 mb-5': !dashboard}">
+    <div class="d-flex justify-content-center">
+        <div #chartdiv class="w-100 font-weight-bold text-monospace text-center text-primary-dark" [style]="chartDivStyle">
+            @if (loadingChart()) {
+                <div class="h-100">
+                    <div class="d-flex justify-content-center">
+                        <div class="loading cursor-wait position-relative"></div>
+                    </div>
+                </div>
+            } @else {
+                @if(dashboard) {
+                    <span class="h3" translate>dashboard.acquisti-struttura.title</span>
+                    <span class="ml-2 h3">{{filterForm?.controls?.esercizio?.value}}</span>
+                }
+            }
+        </div>
+    </div>
+</div>

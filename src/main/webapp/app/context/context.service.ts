@@ -7,7 +7,7 @@ import { Pair } from './pair.model';
 import { Preferiti } from '../context/preferiti.model';
 import { Messaggio } from '../context/messaggio.model';
 import { IndirizziMail } from './index';
-import { map, switchMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
 @Injectable()

@@ -5,7 +5,11 @@
         "menu": {
             "home": "Home",
             "workspace": "SIGLA - Spazio di lavoro",
-            "dashboard": "SIGLA - Cruscotto",
+            "statistics": "Statistiche", 
+            "dashboard": "Cruscotto",
+            "indice-tempestivita-pagamenti": "Indice Tempestività dei Pagamenti",
+            "acquisti-struttura": "Acquisti per Struttura",
+            "acquisti-stato": "Acquisti per Stato",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entità",
@@ -48,7 +52,8 @@
             "email": "Email",
             "email.placeholder": "Il tuo indirizzo email",
             "autocomplete.placeholder": "Digita per cercare...",
-            "filter.placeholder": "Inserire un valore per filtrare i risultati..."
+            "filter.placeholder": "Inserire un valore per filtrare i risultati...",
+            "close": "Chiudi"
         },
         "messages": {
             "info": {
@@ -158,6 +163,15 @@
                 "4": "Quarto Trimestre"
             },
             "intero-anno": "Intero Anno"
+        },
+        "acquisti-struttura": {
+            "title": "Acquisti per Struttura",
+            "esercizio": "Esercizio",
+            "descrizione": "Il grafico mostra l’organizzazione dell’Ente (Ente/CDS/UO) e per ogni struttura viene mostrato il numero di fatture passive ricevute nell’anno. La consultazione iniziale mostra i dati per l’anno corrente. Entrando nel menu Statistiche/Acquisti per struttura vengono mostrati i dati con la possibilità di modificare l’anno di riferimento, di espandere o comprimere la gerarchia dell’ente e di entrare nel dettaglio di una struttura per accedere ad un grafico specifico che riporta i dati di Fatturato/Registrato/Pagato nell’anno selezionato, per la struttura specifica."
+        },
+        "acquisti-stato": {
+            "title": "Acquisti per Stato degli ultimi quattro esercizi",
+            "descrizione": "Il grafico mostra ...."
         }
     },
     "login": {

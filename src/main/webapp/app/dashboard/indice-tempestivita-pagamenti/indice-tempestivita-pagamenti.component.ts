@@ -1,17 +1,19 @@
-import { Component, ElementRef, OnInit, OnDestroy, ViewChild, Input } from "@angular/core";
+import { Component, ElementRef, OnInit, OnDestroy, AfterViewInit, ViewChild, ViewChildren, QueryList, Input, signal } from "@angular/core";
 import { ContextService } from "app/context";
 import { IndiceTempestivitaPagamentiService } from "./indice-tempestivita-pagamenti.service";
 import { TranslateService } from "@ngx-translate/core";
 import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
-import { Observable ,  Subscription } from 'rxjs';
-import { map, debounceTime } from 'rxjs/operators';
+import { Observable ,  Subject } from 'rxjs';
+import { map, debounceTime, takeUntil} from 'rxjs/operators';
 import { Pair } from "../../context/pair.model";
 
 import * as am5 from '@amcharts/amcharts5';
 import * as am5radar from "@amcharts/amcharts5/radar";
 import * as am5xy from "@amcharts/amcharts5/xy";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
-import { NgbDropdown, NgbTypeaheadConfig } from "@ng-bootstrap/ng-bootstrap";
+import am5locales_it_IT from "@amcharts/amcharts5/locales/it_IT";
+
+import { NgbDropdown, NgbTypeaheadConfig, NgbTypeaheadSelectItemEvent } from "@ng-bootstrap/ng-bootstrap";
 import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
@@ -20,24 +22,26 @@ import { ActivatedRoute, Router } from "@angular/router";
     providers: [NgbDropdown, NgbTypeaheadConfig],
     standalone: false
 })
-export class IndiceTempestivitaPagamentiComponent implements OnInit, OnDestroy {
+export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() dashboard: boolean = false;
 
     protected filterForm: FormGroup;
 
-    @ViewChild('chartdivTrimestre1', { static: true }) chartdivTrimestre1: ElementRef;
-    @ViewChild('chartdivTrimestre2', { static: true }) chartdivTrimestre2: ElementRef;
-    @ViewChild('chartdivTrimestre3', { static: true }) chartdivTrimestre3: ElementRef;
-    @ViewChild('chartdivTrimestre4', { static: true }) chartdivTrimestre4: ElementRef;
-    @ViewChild('chartdivEsercizio', { static: true }) chartdivEsercizio: ElementRef;
+    @ViewChildren('chartTrimestre') chartTrimestri: QueryList<ElementRef>;
+    @ViewChild('chartdivEsercizio', { static: false }) chartdivEsercizio: ElementRef;
     
     chartDivStyle = 'height:30vh !important';
-    chartDivClass = 'col-md-3 font-weight-bold text-monospace text-center text-success';
+    chartDivClass = 'col-md-3 font-weight-bold text-monospace text-center';
 
     private roots: Map<string, am5.Root | null> = new Map();
     private chartRefs: Map<string, ElementRef> = new Map();
     @ViewChild('uo', {static : false}) uoInput: ElementRef;
     protected uoPairs: Pair[];
+    private destroy$ = new Subject<void>();
+    private lastValue: any = null;
+    esercizi: number[];
+    loadingChart = signal(false);
+    trimestri: string[] = ['1', '2', '3', '4'];
 
     constructor(
         protected route: ActivatedRoute,
@@ -55,8 +59,23 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, OnDestroy {
             if (params['dashboard'] !== undefined) {
                 this.dashboard = params['dashboard'] === 'true';
             }
-            
-            this.initializeComponent();
+            this.contextService.getEsercizi().subscribe((esercizi: number[]) => {            
+                this.esercizi = esercizi;
+                this.initializeComponent();
+            });
+        });
+    }
+
+    ngAfterViewInit(): void {
+        // Inizializza i riferimenti ai chart dopo che la vista è pronta
+        this.chartRefs.set('0', this.chartdivEsercizio);
+        
+        // Mappa i trimestri agli ElementRef usando l'attributo data-trimestre
+        this.chartTrimestri.forEach((chartRef: ElementRef) => {
+            const trimestre = chartRef.nativeElement.getAttribute('data-trimestre');
+            if (trimestre) {
+                this.chartRefs.set(trimestre, chartRef);
+            }
         });
     }
 
@@ -67,19 +86,25 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, OnDestroy {
             this.chartDivClass += ' d-none';
         }
 
-        this.chartRefs.set('0', this.chartdivEsercizio);
-        this.chartRefs.set('1', this.chartdivTrimestre1);
-        this.chartRefs.set('2', this.chartdivTrimestre2);
-        this.chartRefs.set('3', this.chartdivTrimestre3);
-        this.chartRefs.set('4', this.chartdivTrimestre4);
-
         this.filterForm = this.formBuilder.group({
-            esercizio: new FormControl(new Date().getFullYear()),
+            esercizio: new FormControl(Math.max(...this.esercizi)),
             uo: new FormControl()
         });
-
-        this.filterForm.valueChanges.subscribe((value: any) => {
-            this.callIndice(value?.esercizio, value?.uo?.first);
+        // Monitora i cambiamenti del campo 'uo'
+        this.filterForm.controls.uo?.valueChanges
+            .pipe(
+                debounceTime(300),
+                takeUntil(this.destroy$)
+            )
+            .subscribe(value => {
+                // Se il valore è vuoto/null e prima c'era qualcosa
+                if (!value && this.lastValue) {
+                    this.callIndice(this.filterForm?.controls?.esercizio?.value);
+                }
+                this.lastValue = value;
+            });
+        this.filterForm.controls.esercizio.valueChanges.subscribe((esercizio: any) => {
+            this.callIndice(esercizio, this.filterForm?.controls?.uo?.value?.first);
         });
 
         this.contextService.getUo().subscribe((result: Pair[]) => {
@@ -92,6 +117,11 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, OnDestroy {
         // Pulisci tutti i grafici quando il componente viene distrutto
         this.roots.forEach(root => this.disposeRoot(root));
         this.roots.clear();
+    }
+
+    onUoSelected(event: NgbTypeaheadSelectItemEvent) {  
+        console.log(event);  
+        this.callIndice(this.filterForm.controls.esercizio.value, event?.item?.first);
     }
 
     private disposeRoot(root: am5.Root | null): void {
@@ -141,6 +171,9 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, OnDestroy {
     }
 
     callIndice(esercizio: number, uo?: string): void {
+        setTimeout(() => {
+            this.loadingChart.set(true);
+        }, 0);
         this.indiceService.getIndice(esercizio, uo).subscribe((result: Map<string, number>) => {
             // Itera su tutti i possibili grafici (0=esercizio, 1-4=trimestri)
             ['0', '1', '2', '3', '4'].forEach(key => {
@@ -159,6 +192,9 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, OnDestroy {
                     this.roots.set(key, null);
                 }
             });
+            setTimeout(() => {
+                this.loadingChart.set(false);
+            }, 0);
         });
     }
 
@@ -168,7 +204,8 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, OnDestroy {
         root.setThemes([am5themes_Animated.new(root)]);
         root.container.children.clear();
         root.container.set("layout", root.verticalLayout);
-
+        root.locale = am5locales_it_IT;
+        
         const chartGauge = root.container.children.push(am5radar.RadarChart.new(root, {
             startAngle: 160,
             endAngle: 380
@@ -230,7 +267,6 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, OnDestroy {
         if (value < xAxis.get("min")) {
             xAxis.set("min", Math.floor(value / 10) * 10);
         }
-        axisDataItem.set("value", value);
 
         bullet.get("sprite").on("rotation", () => {
             const currentValue = axisDataItem.get("value");
@@ -288,6 +324,8 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, OnDestroy {
         // Trova i valori min e max dai tuoi bandsData
         const minValue = Math.min(...bandsData.map(b => b.lowScore)); // -30
         const maxValue = Math.max(...bandsData.map(b => b.highScore)); // 30
+        axisDataItem.set("value", 0);
+
         if (value > maxValue) {
             const axisRange = xAxis.createAxisRange(xAxis.makeDataItem({}));
 
@@ -316,7 +354,13 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, OnDestroy {
                 fillOpacity: 0.8
             });
         }
+        axisDataItem.animate({
+            key: "value",
+            to: value,
+            duration: 1500,
+            easing: am5.ease.inOut(am5.ease.cubic)
+        });
         // Animazione iniziale
-        chartGauge.appear(1000, 100);
+        chartGauge.appear(2000, 100);
     }
 }

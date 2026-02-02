@@ -1,0 +1,61 @@
+<ng-template #rt let-r="result" let-t="term">
+  <div class="w-100">
+    <span>{{r.first}} - {{r.second}}</span>
+  </div>
+</ng-template>
+@if(!dashboard) {
+    <div class="card shadow mt-2 p-3 jumbotron mb-1">
+        <h1 class="text-monospace text-center text-primary-dark bg-transparent" translate>dashboard.acquisti-stato.title</h1>
+        <p class="text-monospace font-italic" translate>dashboard.acquisti-stato.descrizione</p>
+        <form class="form" role="form" [formGroup]="filterForm">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-6 col-lg-5">
+                    <div class="d-flex">
+                        <label for="codice" class="col-form-label pr-2 text-nowrap" translate>dashboard.indice-tempestivita.uo</label>
+                        <div class="flex-fill">
+                            <div class="input-group">
+                                <input
+                                    #codice
+                                    formControlName="codice"
+                                    [ngbTypeahead]="searchuo"
+                                    [resultTemplate]="rt"
+                                    [inputFormatter]="formatter"
+                                    [resultFormatter]="formatter"
+                                    (selectItem)="onUoSelected($event)"
+                                    [editable]="true"
+                                    class="form-control"
+                                    id="codice"
+                                    type="search"
+                                    placeholder="{{'global.form.filter.placeholder' | translate}}">
+                                <a class="input-group-addon btn text-primary" (click)="openTypeaheadUo()">
+                                    <i class="fa fa-caret-down"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+}
+<div class="card shadow" [ngClass]="{'p-1 mb-5': !dashboard, 'my-4': dashboard && !codiceUo}">
+    @if(dashboard) {
+        <div class="card-header text-monospace text-center text-primary-dark w-100">
+            <span class="h3" translate>dashboard.acquisti-stato.title</span>
+            @if (codiceUo) {
+                <span class="h3"> della UO: {{codiceUo}}</span>
+            }
+        </div>
+    }
+    <div class="d-flex justify-content-center">
+        <div #chartdiv class="w-100 font-weight-bold text-monospace text-center text-primary-dark" [style]="dashboard?'height:50vh !important':'height:75vh !important'">
+            @if (loadingChart()) {
+                <div class="h-100">
+                    <div class="d-flex justify-content-center">
+                        <div class="loading cursor-wait position-relative"></div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -2,6 +2,10 @@
     window['env'] = window['env'] || {};
   
     // Environment variables
+    //window['env']['baseUrl'] = 'http://140.164.75.200:8080';
+    //window['env']['applicationContextUrl'] = 'http://140.164.75.200:8080/SIGLA';
+    //window['env']['apiUrl'] = 'http://140.164.75.200:8080/SIGLA/restapi';
+
     window['env']['baseUrl'] = 'http://localhost:8080';
     window['env']['applicationContextUrl'] = 'http://localhost:8080/SIGLA';
     window['env']['apiUrl'] = 'http://localhost:8080/SIGLA/restapi';
