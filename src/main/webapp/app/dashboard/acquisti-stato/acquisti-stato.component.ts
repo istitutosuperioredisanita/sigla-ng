@@ -208,14 +208,13 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
             }));
 
             series.columns.template.setAll({
-                tooltipText: "{" + countFieldName + "}" + " {name} per un Totale di {valueY}€",
+                tooltipText: "N. {" + countFieldName + "}" + " {name} per un Totale di {valueY}€",
                 width: am5.percent(90),
                 tooltipY: 0,
                 strokeOpacity: 0
             });
 
             series.data.setAll(data);
-
             series.appear();
 
             series.bullets.push(function () {

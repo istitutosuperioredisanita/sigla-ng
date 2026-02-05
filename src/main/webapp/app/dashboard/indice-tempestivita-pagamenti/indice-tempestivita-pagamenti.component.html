@@ -69,7 +69,7 @@
             </div>
         }
     </div>
-    <div class="d-flex justify-content-center my-4">
+    <div [ngClass]="{'d-flex justify-content-center': dashboard, 'row mx-0': !dashboard}" class="my-4">
         <div [ngClass]="{'col-md-6': !dashboard}" class="text-monospace text-center text-primary-dark w-100">
             <div class="card shadow">
                 <div class="card-header">
@@ -89,7 +89,7 @@
                     <div class="card-header text-center">
                         <span class="h4 text-primary-dark" translate>Significato Indicatori</span>
                     </div> 
-                    <div class="card-body" style="height:50vh !important">
+                    <div class="card-body overflow-auto" style="height:50vh !important">
                         <p>Indice di tempestività di pagamento:</p>
                         <p>Il grafico generale rappresenta, a livello di Ente, l’indice annuale di tempestività di pagamento.</p>
                         <p>Il calcolo dei giorni di pagamento viene effettuato confrontando la data di ricezione del singolo documento rispetto alla data di pagamento. Un documento deve essere pagato entro 30 giorni dalla sua ricezione (tranne alcune eccezioni). Rispettando questo termine l’indice sarà uguale a zero (risultato atteso per la normativa vigente RGS). Quanto più breve sarà il periodo intercorso tra la ricezione di un documento ed il suo pagamento, più l’indice di pagamento risulterà inferiore allo zero (migliore è la prestazione dell’ente in termini di velocità nei pagamenti).</p>

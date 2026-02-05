@@ -16,7 +16,7 @@
   -->
 
 <nav class="navbar navbar-expand-md jh-navbar">
-    <div class="d-flex">
+    <div class="d-flex w-100">
         <a *ngIf="router.url === '/workspace'" (click)="setHidden(!hidden)" class="text-white text-center pt-2" data-action="toggle-sidebar">
             <i [ngClass]="{'d-none': hidden}" class="fa fa-fw fa-3x fa-close fa-tree-size" aria-hidden="true"></i>
             <i [ngClass]="{'d-none': !hidden}" class="fa fa-fw fa-3x fa-bars fa-tree-size" aria-hidden="true"></i>
@@ -29,7 +29,7 @@
         <a href="https://istitutosuperioredisanita.github.io/sigla-main/CHANGELOG.html" target="_help" placement="bottom" ngbTooltip="Info di versione" class="align-items-end d-none d-md-flex">
             <i class="fa fa-fw fa-info-circle text-white pb-1" aria-hidden="true"></i>
         </a>
-        <div class="d-flex justify-content-end">
+        <div class="d-flex justify-content-end ml-auto">
             <div class="sso-user-menu-toggler jh-navbar-toggler d-lg-none float-right">
                 <ngx-cnr-uict-sso-apps-menu *ngIf="ssoAppsMenuDisplay && isAuthenticated()" [account]="principal.userIdentity" [buttonSize]="'32px'" [iconSize]="'20px'"></ngx-cnr-uict-sso-apps-menu>
             </div>

@@ -173,6 +173,10 @@ export class AcquistiStrutturaComponent implements OnInit, OnDestroy {
             fill: am5.color(0xffffff)
         });
 
+        series.nodes.template.setAll({
+            tooltipText: "{name}\nNumero: {secondaryValue}\nValore Totale: {value}€"
+        });
+
         series.get("colors").setAll({
             step: 2
         });
