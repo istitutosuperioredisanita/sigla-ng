@@ -261,3 +261,26 @@
     white-space: nowrap;
     width: 1px;
   }
+
+td > input.form-control + input.form-control,
+td > input.form-control + .input-group-searchtool,
+td > input.form-control ~ .input-group-searchtool {
+    display: inline-flex;
+    vertical-align: middle;
+}
+
+td:has(> input.form-control + input.form-control) {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+td:has(> input.form-control + input.form-control) input.form-control:first-of-type {
+    width: auto;
+    flex-shrink: 0;
+}
+
+td:has(> input.form-control + input.form-control) input.form-control:last-of-type {
+    flex: 1;
+    min-width: 0;
+}

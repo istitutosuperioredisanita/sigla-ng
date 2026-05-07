@@ -25,21 +25,21 @@ import { ActivatedRoute, Router } from "@angular/router";
 export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() dashboard: boolean = false;
 
-    protected filterForm: FormGroup;
+    protected filterForm!: FormGroup;
 
-    @ViewChildren('chartTrimestre') chartTrimestri: QueryList<ElementRef>;
-    @ViewChild('chartdivEsercizio', { static: false }) chartdivEsercizio: ElementRef;
+    @ViewChildren('chartTrimestre') chartTrimestri!: QueryList<ElementRef>;
+    @ViewChild('chartdivEsercizio', { static: false }) chartdivEsercizio!: ElementRef;
     
     chartDivStyle = 'height:30vh !important';
     chartDivClass = 'col-md-3 font-weight-bold text-monospace text-center';
 
     private roots: Map<string, am5.Root | null> = new Map();
     private chartRefs: Map<string, ElementRef> = new Map();
-    @ViewChild('uo', {static : false}) uoInput: ElementRef;
-    protected uoPairs: Pair[];
+    @ViewChild('uo', {static : false}) uoInput!: ElementRef;
+    protected uoPairs!: Pair[];
     private destroy$ = new Subject<void>();
     private lastValue: any = null;
-    esercizi: number[];
+    esercizi!: number[];
     loadingChart = signal(false);
     trimestri: string[] = ['1', '2', '3', '4'];
 
