@@ -6,10 +6,25 @@ import { NgbDropdown, NgbModal, NgbTypeaheadConfig } from "@ng-bootstrap/ng-boot
 import { ActivatedRoute, Router } from "@angular/router";
 import { AcquistiStrutturaService } from "./acquisti-struttura.service";
 
-import * as am5 from '@amcharts/amcharts5';
-import * as am5hierarchy from "@amcharts/amcharts5/hierarchy";
-import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
-import am5locales_it_IT from "@amcharts/amcharts5/locales/it_IT";
+import * as echarts from 'echarts';
+
+// Struttura interna per nodi e link del grafo
+interface GraphNode {
+    id: string;
+    name: string;
+    fullName: string;
+    value: number;
+    secondaryValue: number;
+    symbolSize: number;
+    isLeaf: boolean;
+    itemStyle: { color: string; borderColor: string; borderWidth: number };
+    label: { show: boolean; fontSize: number; color: string };
+}
+
+interface GraphLink {
+    source: string;
+    target: string;
+}
 
 @Component({
     selector: 'acquisti-struttura',
@@ -30,16 +45,18 @@ import am5locales_it_IT from "@amcharts/amcharts5/locales/it_IT";
 export class AcquistiStrutturaComponent implements OnInit, OnDestroy {
     @Input() dashboard: boolean = false;
 
-    protected filterForm: FormGroup;
+    protected filterForm!: FormGroup;
 
-    @ViewChild('chartdiv', { static: true }) chartdiv: ElementRef;    
-    @ViewChild('modalStato', { static: true }) modalStato: ElementRef;
+    @ViewChild('chartdiv', { static: true }) chartdiv!: ElementRef;
+    @ViewChild('modalStato', { static: true }) modalStato!: ElementRef;
 
-    root: am5.Root;
+    chartInstance: echarts.ECharts | null = null;
     chartDivStyle = "height:75vh !important";
-    esercizi: number[];
+    esercizi!: number[];
     loadingChart = signal(false);
-    selectedCodiceUo: string; // Per passare il codice alla modale
+    selectedCodiceUo!: string;
+
+    private resizeListener!: () => void;
 
     constructor(
         protected route: ActivatedRoute,
@@ -48,16 +65,14 @@ export class AcquistiStrutturaComponent implements OnInit, OnDestroy {
         protected contextService: ContextService,
         protected acquistiStrutturaService: AcquistiStrutturaService,
         protected translateService: TranslateService,
-        protected modalService: NgbModal 
+        protected modalService: NgbModal
     ) {}
 
     ngOnInit(): void {
-        // Sottoscrivi ai queryParams per reagire ai cambiamenti
         this.route.queryParams.subscribe(params => {
-            // Se c'è il parametro, usalo, altrimenti usa l'@Input
             if (params['dashboard'] !== undefined) {
                 this.dashboard = params['dashboard'] === 'true';
-            }            
+            }
             this.initializeComponent();
         });
     }
@@ -72,31 +87,34 @@ export class AcquistiStrutturaComponent implements OnInit, OnDestroy {
                 this.callStruttura(esercizio);
             });
             this.callStruttura(this.filterForm.controls.esercizio.value);
-
         });
     }
 
     ngOnDestroy(): void {
-        if (this.root) {
-            this.root.dispose();
+        if (this.chartInstance) {
+            this.chartInstance.dispose();
+            this.chartInstance = null;
+        }
+        if (this.resizeListener) {
+            window.removeEventListener('resize', this.resizeListener);
         }
     }
 
-    private initializeRoot(): am5.Root {
-        if (this.root) {
-            this.root.dispose();
+    private initializeChart(): echarts.ECharts {
+        if (this.chartInstance) {
+            this.chartInstance.dispose();
         }
-        this.root = am5.Root.new(this.chartdiv.nativeElement); 
-        return this.root;
+        this.chartInstance = echarts.init(this.chartdiv.nativeElement);
+        return this.chartInstance;
     }
 
     callStruttura(esercizio: number): void {
         setTimeout(() => {
-            this.root?.container?.children?.clear();
             this.loadingChart.set(true);
         }, 0);
         this.acquistiStrutturaService.getIndice(esercizio).subscribe((result: any) => {
-            this.loadChart(this.initializeRoot(), result);
+            const chart = this.initializeChart();
+            this.loadChart(chart, result);
             setTimeout(() => {
                 this.loadingChart.set(false);
             }, 0);
@@ -105,97 +123,193 @@ export class AcquistiStrutturaComponent implements OnInit, OnDestroy {
 
     openModalStato(codiceUo: string): void {
         this.selectedCodiceUo = codiceUo;
-        this.modalService.open(this.modalStato, { 
+        this.modalService.open(this.modalStato, {
             size: 'xl',
-            centered: true, 
+            centered: true,
             backdrop: 'static',
             windowClass: 'modal-lower-zindex'
         });
     }
 
-    private loadChart(root: am5.Root, data: any): void {
-        console.log('Caricamento grafico con valore:', data);
-        // Imposta zoom iniziale
-        root.container.set("scale", 2); // 1.5x zoom
-        root.locale = am5locales_it_IT;
-        root.setThemes([
-            am5themes_Animated.new(root)
-        ]);
+    /**
+     * Visita l'albero e raccoglie tutti i valori per calcolare min/max
+     * prima di costruire i nodi (necessario per normalizzare i raggi).
+     */
+    private collectAllValues(node: any, values: number[]): void {
+        if (node.value != null && node.value > 0) {
+            values.push(node.value);
+        }
+        if (node.children) {
+            node.children.forEach((child: any) => this.collectAllValues(child, values));
+        }
+    }
 
-        let container = root.container.children.push(am5.Container.new(root, {
-            width: am5.percent(100),
-            height: am5.percent(100),
-            layout: root.verticalLayout
-        }));
+    private flattenToGraph(
+        node: any,
+        nodes: GraphNode[],
+        links: GraphLink[],
+        minVal: number,
+        maxVal: number,
+        minRadius: number,
+        maxRadius: number
+    ): void {
+        const isLeaf = !node.children || node.children.length === 0;
+        const id = node.key || node.name;
+        const v = node.value ?? 0;
 
-        let series = container.children.push(am5hierarchy.ForceDirected.new(root, {
-            singleBranchOnly: false,
-            downDepth: 2,
-            topDepth: 0,
-            initialDepth: 2,
-            valueField: "value",
-            categoryField: "name",
-            childDataField: "children",
-            idField: "name",
-            linkWithField: "linkWith",
-            manyBodyStrength: -10,
-            centerStrength: 0.8,
-            minRadius: 10,   // dimensione minima dei nodi
-        }));
+        // Calcolo raggio proporzionale al valore
+        let size: number;
+        if (maxVal === minVal || v <= 0) {
+            size = (minRadius + maxRadius) / 2;
+        } else {
+            size = minRadius + ((v - minVal) / (maxVal - minVal)) * (maxRadius - minRadius);
+        }
 
-        series.nodes.template.events.on("click", (ev) => {
-            const dataItem = ev.target.dataItem;
-            const nodeData: any = dataItem.dataContext;
-            
-            // Verifica se è un nodo terminale
-            if (!nodeData.children || nodeData.children.length === 0) {
-                console.log("Nodo terminale cliccato:", nodeData);
-                // Apri la modale passando il codice (key)
-                this.openModalStato(nodeData.key);
-            }
+        nodes.push({
+            id,
+            name: id,
+            fullName: node.name,
+            value: v,
+            secondaryValue: node.secondaryValue ?? 0,
+            symbolSize: size,
+            isLeaf,
+            itemStyle: isLeaf
+                ? { color: '#5470c6', borderColor: '#fff', borderWidth: 2 }
+                : { color: '#91cc75', borderColor: '#fff', borderWidth: 2 },
+            label: {
+                show: true,
+                fontSize: 12,
+                color: '#000',
+            },
         });
-        
-        series.nodes.template.adapters.add("cursorOverStyle", function(cursor, target) {
-            const dataItem = target.dataItem;
-            if (dataItem && dataItem.dataContext) {
-                const nodeData: any = dataItem.dataContext;
-                if (!nodeData.children || nodeData.children.length === 0) {
-                return "pointer";
+
+        if (!isLeaf) {
+            for (const child of node.children) {
+                const childId = child.key || child.name;
+                links.push({ source: id, target: childId });
+                this.flattenToGraph(child, nodes, links, minVal, maxVal, minRadius, maxRadius);
+            }
+        }
+    }
+
+    private loadChart(chart: echarts.ECharts, data: any): void {
+        console.log('Caricamento grafico ECharts force-directed con valore:', data);
+
+        // Prima passata: calcola min/max per normalizzare i raggi
+        const allValues: number[] = [];
+        this.collectAllValues(data, allValues);
+        const minVal = allValues.length ? Math.min(...allValues) : 0;
+        const maxVal = allValues.length ? Math.max(...allValues) : 1;
+        const minRadius = 5;
+        const maxRadius = 230;
+
+        // Seconda passata: costruisce nodi e link
+        const nodes: GraphNode[] = [];
+        const links: GraphLink[] = [];
+        this.flattenToGraph(data, nodes, links, minVal, maxVal, minRadius, maxRadius);
+
+        const option: echarts.EChartsOption = {
+            toolbox: {
+                feature: {
+                    saveAsImage: {
+                    title: 'Salva immagine',
+                    name: `acquisti_per_struttura`
+                    }
                 }
+            },
+            tooltip: {
+                trigger: 'item',
+                axisPointer: { type: 'shadow' },
+                textStyle: { align: 'left' },
+                formatter: (params: any) => {
+                    if (params.dataType === 'edge') return '';
+                    const d = params.data as GraphNode;
+                    return [
+                        `<strong>${d.fullName || d.name}</strong>`,
+                        `Codice: ${d.name}`,
+                        `Numero di Acquisti: ${d.secondaryValue ?? '-'}`,
+                        `Valore Totale: ${d.value != null ? d.value.toLocaleString('it-IT') + ' €' : '-'}`,
+                    ].join('<br/>');
+                }
+            },
+            legend: [{
+                data: [
+                    { name: 'Centro Di Spesa', icon: 'circle', itemStyle: { color: '#91cc75' } },
+                    { name: 'Unità Operativa', icon: 'circle', itemStyle: { color: '#5470c6' } },
+                ],
+                top: 10,
+                right: 35,
+                textStyle: { fontSize: 12 }
+            }],
+            series: [
+                {
+                    type: 'graph',
+                    layout: 'force',
+                    data: nodes.map(n => ({
+                        ...n,
+                        // La categoria guida la voce di legenda
+                        category: n.isLeaf ? 1 : 0,
+                    })),
+                    links,
+                    categories: [
+                        { name: 'Centro Di Spesa' },
+                        { name: 'Unità Operativa' },
+                    ],
+                    roam: true,           // pan + zoom con mouse/touch
+                    draggable: true,      // nodi trascinabili
+                    label: {
+                        show: true,
+                        position: 'right',
+                        formatter: '{b}',
+                        fontSize: 11,
+                    },
+                    force: {
+                        repulsion: 300,        // forza di repulsione tra nodi (≈ manyBodyStrength)
+                        gravity: 0.1,          // attrazione verso il centro (≈ centerStrength)
+                        edgeLength: [80, 200], // lunghezza minima e massima dei link
+                        layoutAnimation: true,
+                    },
+                    lineStyle: {
+                        color: 'source',
+                        curveness: 0.1,
+                        opacity: 0.6,
+                        width: 1.5,
+                    },
+                    emphasis: {
+                        focus: 'adjacency',   // evidenzia nodo + vicini al mouseover
+                        lineStyle: { width: 3 },
+                    },
+                    animationDuration: 1000,
+                    animationEasingUpdate: 'quinticInOut',
+                }
+            ]
+        };
+
+        chart.setOption(option);
+
+        // Click: apre modale solo per nodi foglia (UO terminali)
+        chart.on('click', (params: any) => {
+            if (params.dataType !== 'node') return;
+            const nodeData = params.data as GraphNode;
+            if (nodeData.isLeaf) {
+                console.log('Nodo terminale cliccato:', nodeData);
+                this.openModalStato(nodeData.name);
             }
-            return "default";
-        });        
-
-        // Configurazione della label per mostrare il codice
-        series.labels.template.setAll({
-            text: "{key}",
-            fontSize: 12,
-            fill: am5.color(0xffffff)
         });
 
-        series.nodes.template.setAll({
-            tooltipText: "{name}\nNumero: {secondaryValue}\nValore Totale: {value}€"
+        // Cursore pointer sui nodi foglia, default sugli altri
+        chart.on('mouseover', (params: any) => {
+            if (params.dataType !== 'node') return;
+            const nodeData = params.data as GraphNode;
+            (chart as any).getZr().setCursorStyle(nodeData.isLeaf ? 'pointer' : 'default');
         });
 
-        series.get("colors").setAll({
-            step: 2
+        chart.on('mouseout', () => {
+            (chart as any).getZr().setCursorStyle('default');
         });
-        
-        series.links.template.set("strength", 0.5);
-        series.data.setAll([data]);
-        series.set("selectedDataItem", series.dataItems[0]);
 
-        series.events.once("datavalidated", () => {
-            // Attendi che il layout sia completato
-            setTimeout(() => {
-                const zoomLevel = 2;
-                root.container.setAll({
-                    scale: zoomLevel,
-                    x: root.container.width() * (1 - zoomLevel) / 2,
-                    y: root.container.height() * (1 - zoomLevel) / 2
-                });
-            }, 100);
-        });
-        series.appear(1000, 100);
+        // Resize automatico — listener salvato per poterlo rimuovere in ngOnDestroy
+        this.resizeListener = () => chart.resize();
+        window.addEventListener('resize', this.resizeListener);
     }
 }

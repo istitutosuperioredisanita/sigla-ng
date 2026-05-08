@@ -171,7 +171,7 @@
         },
         "acquisti-stato": {
             "title": "Acquisti per Stato degli ultimi quattro esercizi",
-            "descrizione": "Il grafico mostra ...."
+            "descrizione": "Il grafico mostra l'andamento degli acquisti per stato (Ricevute, Registrate, Pagate)\nnei quattro esercizi più recenti, con gli importi totali in euro per ciascuna categoria."
         }
     },
     "login": {

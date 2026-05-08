@@ -17,6 +17,7 @@ import { AcquistiStrutturaComponent } from './acquisti-struttura/acquisti-strutt
 import { AcquistiStrutturaService } from './acquisti-struttura/acquisti-struttura.service';
 import { AcquistiStatoComponent } from './acquisti-stato/acquisti-stato.component';
 import { AcquistiStatoService } from './acquisti-stato/acquisti-stato.service';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
     imports: [
@@ -39,6 +40,7 @@ import { AcquistiStatoService } from './acquisti-stato/acquisti-stato.service';
                 deps: [HttpClient]
             }
         }),
+        NgxEchartsModule.forChild()
     ],
     declarations: [
         DashBoardComponent,

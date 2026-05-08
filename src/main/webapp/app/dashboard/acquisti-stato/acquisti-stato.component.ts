@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, OnDestroy, ViewChild, Input, signal } from "@angular/core";
+import { Component, OnInit, OnDestroy, Input, signal } from "@angular/core";
 import { ContextService } from "app/context";
 import { TranslateService } from "@ngx-translate/core";
 import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
@@ -6,238 +6,234 @@ import { NgbDropdown, NgbTypeaheadConfig, NgbTypeaheadSelectItemEvent } from "@n
 import { ActivatedRoute, Router } from "@angular/router";
 import { AcquistiStatoService } from "./acquisti-stato.service";
 import { Observable, Subject } from 'rxjs';
-import { map, debounceTime, takeUntil} from 'rxjs/operators';
+import { map, debounceTime, takeUntil } from 'rxjs/operators';
 import { Pair } from "../../context/pair.model";
-
-import * as am5 from '@amcharts/amcharts5';
-import * as am5xy from "@amcharts/amcharts5/xy";
-import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
-import am5locales_it_IT from "@amcharts/amcharts5/locales/it_IT";
+import { EChartsOption } from "echarts";
 
 @Component({
-    selector: 'acquisti-stato',
-    templateUrl: './acquisti-stato.component.html',
-    providers: [NgbDropdown, NgbTypeaheadConfig],
-    standalone: false
+  selector: 'acquisti-stato',
+  templateUrl: './acquisti-stato.component.html',
+  providers: [NgbDropdown, NgbTypeaheadConfig],
+  standalone: false
 })
 export class AcquistiStatoComponent implements OnInit, OnDestroy {
-    @Input() dashboard: boolean = false;
-    @Input() codiceUo: string;
+  @Input() dashboard: boolean = false;
+  @Input() codiceUo: string;
 
-    protected filterForm: FormGroup;
+  protected filterForm: FormGroup;
 
-    @ViewChild('chartdiv', { static: true }) chartdiv: ElementRef;    
-    root: am5.Root;
-    esercizi: number[];
-    loadingChart = signal(false);
-    private lastValue: any = null;
-    private destroy$ = new Subject<void>();
-    protected uoPairs: Pair[];
-    @ViewChild('codice', {static : false}) codiceInput: ElementRef;
+  protected chartOptions: EChartsOption = {};
 
-    constructor(
-        protected route: ActivatedRoute,
-        protected router: Router,
-        protected formBuilder: FormBuilder,
-        protected contextService: ContextService,
-        protected acquistiStatoService: AcquistiStatoService,
-        protected translateService: TranslateService
-    ) {}
+  esercizi: number[];
+  loadingChart = signal(false);
+  private lastValue: any = null;
+  private destroy$ = new Subject<void>();
+  protected uoPairs: Pair[];
 
-    ngOnInit(): void {
-        // Sottoscrivi ai queryParams per reagire ai cambiamenti
-        this.route.queryParams.subscribe(params => {
-            // Se c'è il parametro, usalo, altrimenti usa l'@Input
-            if (params['dashboard'] !== undefined) {
-                this.dashboard = params['dashboard'] === 'true';
-            }            
-            this.initializeComponent();
-        });
+  constructor(
+    protected route: ActivatedRoute,
+    protected router: Router,
+    protected formBuilder: FormBuilder,
+    protected contextService: ContextService,
+    protected acquistiStatoService: AcquistiStatoService,
+    protected translateService: TranslateService
+  ) {}
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      if (params['dashboard'] !== undefined) {
+        this.dashboard = params['dashboard'] === 'true';
+      }
+      this.initializeComponent();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private initializeComponent(): void {
+    this.filterForm = this.formBuilder.group({
+      codice: new FormControl(this.codiceUo)
+    });
+
+    this.filterForm.controls['codice']?.valueChanges.pipe(
+      debounceTime(300),
+      takeUntil(this.destroy$)
+    ).subscribe(value => {
+      if (!value && this.lastValue) {
+        this.callStato();
+      }
+      this.lastValue = value;
+    });
+
+    this.contextService.getUo().subscribe((result: Pair[]) => {
+      this.uoPairs = result;
+    });
+
+    this.callStato(this.codiceUo || this.filterForm.controls['codice'].value);
+  }
+
+  onUoSelected(event: NgbTypeaheadSelectItemEvent) {
+    this.callStato(event?.item?.first);
+  }
+
+  searchuo = (text$: Observable<string>) =>
+    text$.pipe(debounceTime(200)).pipe(
+      map((term: string) => this.filterPair(term, this.uoPairs, 'uo').slice(0, 200))
+    );
+
+  filterPair(term: string, pairs: Pair[], type: string): Pair[] {
+    if (term === '') return pairs;
+    return pairs.filter(v => new RegExp(term, 'gi').test(v.first + ' - ' + v.second));
+  }
+
+  formatter = (pair: Pair) => pair.first + ' - ' + pair.second;
+  formatterFirst = (pair: Pair) => pair.first;
+
+  openTypeaheadUo() {
+    const input = document.getElementById('codice') as HTMLInputElement;
+    if (input) {
+      input.value = '';
+      input.dispatchEvent(this.createNewEvent('input'));
     }
+  }
 
-    private initializeComponent(): void {
-        this.filterForm = this.formBuilder.group({
-            codice: new FormControl(this.codiceUo),
-        });
-        // Monitora i cambiamenti del campo 'uo'
-        this.filterForm.controls.codice?.valueChanges
-            .pipe(
-                debounceTime(300),
-                takeUntil(this.destroy$)
-            )
-            .subscribe(value => {
-                // Se il valore è vuoto/null e prima c'era qualcosa
-                if (!value && this.lastValue) {
-                    this.callStato();
+  createNewEvent(eventName: string): Event {
+    if (typeof Event === 'function') return new Event(eventName);
+    const event = document.createEvent('Event');
+    event.initEvent(eventName, true, true);
+    return event;
+  }
+
+  callStato(codice?: string): void {
+    this.loadingChart.set(true);
+    this.acquistiStatoService.getIndice(codice).subscribe((result: any[]) => {
+      const data = result?.slice(-4).map(item => ({
+        ...item,
+        riepilogo_stato_esercizio: String(item.riepilogo_stato_esercizio)
+      }));
+      this.loadChart(data);
+      this.loadingChart.set(false);
+    });
+  }
+
+  private loadChart(data: any[]): void {
+    const categories = data.map(d => d.riepilogo_stato_esercizio);
+
+    const formatEur = (v: number) =>
+      v != null ? v.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '€' : '-';
+
+    const series: any[] = [
+      {
+        label: 'RICEVUTE',
+        valueField: 'riepilogo_stato_importo_ricevute',
+        countField: 'riepilogo_stato_num_ricevute'
+      },
+      {
+        label: 'REGISTRATE',
+        valueField: 'riepilogo_stato_importo_registrate',
+        countField: 'riepilogo_stato_num_registrate'
+      },
+      {
+        label: 'PAGATE',
+        valueField: 'riepilogo_stato_importo_pagate',
+        countField: 'riepilogo_stato_num_pagate'
+      }
+    ].map(s => ({
+      name: s.label,
+      type: 'bar',
+      barMaxWidth: '30%',
+      label: {
+        show: true,
+        position: 'insideBottom',
+        rotate: 90,
+        align: 'left',
+        verticalAlign: 'middle',
+        formatter: (params: any) => formatEur(params.value),
+        fontSize: 11,
+        color: '#fff'
+      },
+      tooltip: {
+        valueFormatter: (value: number, dataIndex: number) => {
+          const row = data[dataIndex];
+          const count = row?.[s.countField];
+          return `N. ${count} ${s.label} — Totale: ${formatEur(value)}`;
+        }
+      },
+      data: data.map(d => d[s.valueField] ?? 0),
+      animationDuration: 1000
+    }));
+
+    this.chartOptions = {
+        toolbox: {
+            feature: {
+                saveAsImage: {
+                title: 'Salva immagine',
+                name: `acquisti_per_stato`
                 }
-                this.lastValue = value;
-            });
-        this.contextService.getUo().subscribe((result: Pair[]) => {
-            this.uoPairs = result;
-        });
-        this.callStato(this.codiceUo || this.filterForm.controls.codice.value);
-    }
-
-    ngOnDestroy(): void {
-        if (this.root) {
-            this.root.dispose();
+            }
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: { type: 'shadow' },
+            textStyle: { align: 'left' },
+            formatter: (params: any) => {
+            const year = params[0]?.axisValue;
+            const row = data.find(d => d.riepilogo_stato_esercizio === year);
+            if (!row) return '';
+            return [
+                `<b>${year}</b>`,
+                ...params.map(p => {
+                const s = [
+                    { label: 'RICEVUTE',   countField: 'riepilogo_stato_num_ricevute'    },
+                    { label: 'REGISTRATE', countField: 'riepilogo_stato_num_registrate'  },
+                    { label: 'PAGATE',     countField: 'riepilogo_stato_num_pagate'      }
+                ].find(x => x.label === p.seriesName);
+                const count = s ? row[s.countField] : '-';
+                return `${p.marker} ${p.seriesName}: N. ${count} — ${formatEur(p.value)}`;
+                })
+            ].join('<br/>');
         }
-    }
-
-    onUoSelected(event: NgbTypeaheadSelectItemEvent) {  
-        this.callStato(event?.item?.first);
-    }
-
-    searchuo = (text$: Observable<string>) =>
-        text$
-        .pipe(debounceTime(200))
-        .pipe(map((term: string) => this.filterPair(term, this.uoPairs, 'uo')
-        .slice(0, 200)));
-
-    filterPair(term: string, pairs: Pair[], type: string): Pair[] {
-        if (term === '') {
-            return pairs;
-        } else {
-            return pairs.filter((v) => new RegExp(term, 'gi').test(v.first + ' - ' + v.second));
+      },
+      legend: {
+        bottom: 0,
+        data: ['RICEVUTE', 'REGISTRATE', 'PAGATE']
+      },
+      title: {
+        subtext: this.translateService.instant('dashboard.acquisti-stato.descrizione'),
+        left: 'center',
+        subtextStyle: {
+          fontSize: 12,
+          color: '#555',
+          fontStyle: 'italic',
+          align: 'center'
         }
-    }
-
-    formatter = (pair: Pair) => pair.first + ' - ' + pair.second;
-    formatterFirst = (pair: Pair) => pair.first;
-
-    openTypeaheadUo() {
-        this.codiceInput.nativeElement.value = '';
-        this.codiceInput.nativeElement.dispatchEvent(this.createNewEvent('input'));
-    }
-
-    createNewEvent(eventName) {
-        let event;
-        if (typeof(Event) === 'function') {
-            event = new Event(eventName);
-        } else {
-            event = document.createEvent('Event');
-            event.initEvent(eventName, true, true);
+      },
+      grid: {
+        left: '3%',
+        right: '3%',
+        bottom: '10%',
+        top: '22%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        data: categories,
+        axisLabel: {
+          fontSize: 13,
+          fontWeight: 'bold'
         }
-        return event;
-    }
-
-    private initializeRoot(): am5.Root {
-        if (this.root) {
-            this.root.dispose();
+      },
+      yAxis: {
+        type: 'value',
+        axisLabel: {
+          formatter: (v: number) => v.toLocaleString('it-IT') + '€'
         }
-        this.root = am5.Root.new(this.chartdiv.nativeElement); 
-        return this.root;
-    }
+      },
+      series
+    };
 
-    callStato(codice?: string): void {
-        setTimeout(() => {
-            this.root?.container?.children?.clear();
-            this.loadingChart.set(true);
-        }, 0);
-        this.acquistiStatoService.getIndice(codice).subscribe((result: any[]) => {
-            this.loadChart(this.initializeRoot(), result?.slice(-4));
-            setTimeout(() => {
-                this.loadingChart.set(false);
-            }, 0);
-        });
-    }
-
-    
-    private loadChart(root: am5.Root, chartData: any): void {
-        console.log('Caricamento grafico con valore:', chartData);
-        // Converti gli esercizi in stringhe
-        let data = chartData.map(item => ({
-            ...item,
-            riepilogo_stato_esercizio: String(item.riepilogo_stato_esercizio)
-        }));
-
-        root.setThemes([
-            am5themes_Animated.new(root)
-        ]);
-        root.locale = am5locales_it_IT;
-
-        let chart = root.container.children.push(am5xy.XYChart.new(root, {
-            panX: false,
-            panY: false,
-            paddingLeft: 0,
-            wheelX: "panX",
-            wheelY: "zoomX",
-            layout: root.verticalLayout
-        }));
-
-        let legend = chart.children.push(
-            am5.Legend.new(root, {
-                centerX: am5.p50,
-                x: am5.p50
-            })
-        );
-
-        let xRenderer = am5xy.AxisRendererX.new(root, {
-            cellStartLocation: 0.1,
-            cellEndLocation: 0.9,
-            minorGridEnabled: true
-        })
-
-        // Per l'asse X (anni) - rimuovi il separatore delle migliaia
-        let xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
-            categoryField: "riepilogo_stato_esercizio",
-            renderer: xRenderer,
-            tooltip: am5.Tooltip.new(root, {})
-        }));
-
-        xRenderer.labels.template.setAll({
-            text: "{category}"  // Mostra la categoria come stringa semplice
-        });
-
-        xAxis.data.setAll(data);
-
-        let yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
-            renderer: am5xy.AxisRendererY.new(root, {
-                strokeOpacity: 0.1
-            }),
-            numberFormat: "#,###€"  // Formatta con separatore migliaia e simbolo €
-        }));
-
-        function makeSeries(name, fieldName, countFieldName) {
-            let series = chart.series.push(am5xy.ColumnSeries.new(root, {
-                name: name,
-                xAxis: xAxis,
-                yAxis: yAxis,
-                valueYField: fieldName,
-                categoryXField: "riepilogo_stato_esercizio"
-            }));
-
-            series.columns.template.setAll({
-                tooltipText: "N. {" + countFieldName + "}" + " {name} per un Totale di {valueY}€",
-                width: am5.percent(90),
-                tooltipY: 0,
-                strokeOpacity: 0
-            });
-
-            series.data.setAll(data);
-            series.appear();
-
-            series.bullets.push(function () {
-                return am5.Bullet.new(root, {
-                    locationY: 0,
-                    sprite: am5.Label.new(root, {
-                        text: "{valueY}€",
-                        fill: root.interfaceColors.get("alternativeText"),
-                        centerY: 0,
-                        centerX: am5.p50,
-                        populateText: true
-                    })
-                });
-            });
-
-            legend.data.push(series);
-        }
-
-        makeSeries("RICEVUTE", "riepilogo_stato_importo_ricevute", "riepilogo_stato_num_ricevute");
-        makeSeries("REGISTRATE", "riepilogo_stato_importo_registrate", "riepilogo_stato_num_registrate");
-        makeSeries("PAGATE", "riepilogo_stato_importo_pagate", "riepilogo_stato_num_pagate");
-
-        chart.appear(1000, 100);
-
-    }
+  }
 }

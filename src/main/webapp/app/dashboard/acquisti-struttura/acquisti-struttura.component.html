@@ -10,6 +10,7 @@
         </button>
     </div>
 </ng-template>
+
 @if(!dashboard) {
     <div class="card shadow mt-2 p-3 jumbotron mb-1">
         <h1 class="text-monospace text-center text-primary-dark bg-transparent" translate>dashboard.acquisti-struttura.title</h1>
@@ -32,6 +33,7 @@
         }
     </div>
 }
+
 <div [ngClass]="{'card shadow p-1 mb-5': !dashboard}">
     <div class="d-flex justify-content-center">
         <div #chartdiv class="w-100 font-weight-bold text-monospace text-center text-primary-dark" [style]="chartDivStyle">

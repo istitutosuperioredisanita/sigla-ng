@@ -40,6 +40,7 @@ import { AuthModule, LogLevel, OidcSecurityService } from 'angular-auth-oidc-cli
 import { environment } from '../environments/environment';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { EventManager } from './shared/auth/event-manager.service';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
     imports: [
@@ -76,7 +77,7 @@ import { EventManager } from './shared/auth/event-manager.service';
               logLevel: LogLevel.None,
             },
           }),
-        // jhipster-needle-angular-add-module JHipster will add new module here
+        NgxEchartsModule.forRoot({ echarts: () => import('echarts') })
     ],
     declarations: [
         JhiMainComponent,

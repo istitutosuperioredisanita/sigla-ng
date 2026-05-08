@@ -3,15 +3,13 @@ import { ContextService } from "app/context";
 import { IndiceTempestivitaPagamentiService } from "./indice-tempestivita-pagamenti.service";
 import { TranslateService } from "@ngx-translate/core";
 import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
-import { Observable ,  Subject } from 'rxjs';
-import { map, debounceTime, takeUntil} from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, debounceTime, takeUntil } from 'rxjs/operators';
 import { Pair } from "../../context/pair.model";
 
-import * as am5 from '@amcharts/amcharts5';
-import * as am5radar from "@amcharts/amcharts5/radar";
-import * as am5xy from "@amcharts/amcharts5/xy";
-import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
-import am5locales_it_IT from "@amcharts/amcharts5/locales/it_IT";
+// Apache ECharts
+import * as echarts from 'echarts';
+import { ECharts, EChartsOption } from 'echarts';
 
 import { NgbDropdown, NgbTypeaheadConfig, NgbTypeaheadSelectItemEvent } from "@ng-bootstrap/ng-bootstrap";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -29,13 +27,15 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
 
     @ViewChildren('chartTrimestre') chartTrimestri!: QueryList<ElementRef>;
     @ViewChild('chartdivEsercizio', { static: false }) chartdivEsercizio!: ElementRef;
-    
+
     chartDivStyle = 'height:30vh !important';
     chartDivClass = 'col-md-3 font-weight-bold text-monospace text-center';
 
-    private roots: Map<string, am5.Root | null> = new Map();
+    // Mappa delle istanze ECharts (chiave: '0'=esercizio, '1'-'4'=trimestri)
+    private chartInstances: Map<string, ECharts | null> = new Map();
     private chartRefs: Map<string, ElementRef> = new Map();
-    @ViewChild('uo', {static : false}) uoInput!: ElementRef;
+
+    @ViewChild('uo', { static: false }) uoInput!: ElementRef;
     protected uoPairs!: Pair[];
     private destroy$ = new Subject<void>();
     private lastValue: any = null;
@@ -53,13 +53,11 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
     ) {}
 
     ngOnInit(): void {
-        // Sottoscrivi ai queryParams per reagire ai cambiamenti
         this.route.queryParams.subscribe(params => {
-            // Se c'è il parametro, usalo, altrimenti usa l'@Input
             if (params['dashboard'] !== undefined) {
                 this.dashboard = params['dashboard'] === 'true';
             }
-            this.contextService.getEsercizi().subscribe((esercizi: number[]) => {            
+            this.contextService.getEsercizi().subscribe((esercizi: number[]) => {
                 this.esercizi = esercizi;
                 this.initializeComponent();
             });
@@ -67,10 +65,8 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
     }
 
     ngAfterViewInit(): void {
-        // Inizializza i riferimenti ai chart dopo che la vista è pronta
         this.chartRefs.set('0', this.chartdivEsercizio);
-        
-        // Mappa i trimestri agli ElementRef usando l'attributo data-trimestre
+
         this.chartTrimestri.forEach((chartRef: ElementRef) => {
             const trimestre = chartRef.nativeElement.getAttribute('data-trimestre');
             if (trimestre) {
@@ -80,7 +76,6 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
     }
 
     private initializeComponent(): void {
-        // Resetta la classe se necessario
         this.chartDivClass = 'col-md-3 font-weight-bold text-monospace text-center text-success';
         if (this.dashboard) {
             this.chartDivClass += ' d-none';
@@ -90,19 +85,19 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
             esercizio: new FormControl(Math.max(...this.esercizi)),
             uo: new FormControl()
         });
-        // Monitora i cambiamenti del campo 'uo'
+
         this.filterForm.controls.uo?.valueChanges
             .pipe(
                 debounceTime(300),
                 takeUntil(this.destroy$)
             )
             .subscribe(value => {
-                // Se il valore è vuoto/null e prima c'era qualcosa
                 if (!value && this.lastValue) {
                     this.callIndice(this.filterForm?.controls?.esercizio?.value);
                 }
                 this.lastValue = value;
             });
+
         this.filterForm.controls.esercizio.valueChanges.subscribe((esercizio: any) => {
             this.callIndice(esercizio, this.filterForm?.controls?.uo?.value?.first);
         });
@@ -110,38 +105,36 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
         this.contextService.getUo().subscribe((result: Pair[]) => {
             this.uoPairs = result;
         });
+
         this.callIndice(this.filterForm.controls['esercizio'].value);
     }
 
     ngOnDestroy(): void {
-        // Pulisci tutti i grafici quando il componente viene distrutto
-        this.roots.forEach(root => this.disposeRoot(root));
-        this.roots.clear();
+        this.chartInstances.forEach(instance => this.disposeChart(instance));
+        this.chartInstances.clear();
     }
 
-    onUoSelected(event: NgbTypeaheadSelectItemEvent) {  
-        console.log(event);  
+    onUoSelected(event: NgbTypeaheadSelectItemEvent) {
+        console.log(event);
         this.callIndice(this.filterForm.controls.esercizio.value, event?.item?.first);
     }
 
-    private disposeRoot(root: am5.Root | null): void {
-        if (root) {
-            root.dispose();
+    private disposeChart(instance: ECharts | null): void {
+        if (instance && !instance.isDisposed()) {
+            instance.dispose();
         }
     }
 
-    private initializeRoot(element: ElementRef, currentRoot: am5.Root | null): am5.Root {
-        if (currentRoot) {
-            currentRoot.dispose();
-        }
-        return am5.Root.new(element.nativeElement);
+    private initializeChart(element: ElementRef, currentInstance: ECharts | null): ECharts {
+        this.disposeChart(currentInstance);
+        return echarts.init(element.nativeElement);
     }
 
     searchuo = (text$: Observable<string>) =>
         text$
-        .pipe(debounceTime(200))
-        .pipe(map((term: string) => this.filterPair(term, this.uoPairs, 'uo')
-        .slice(0, 200)));
+            .pipe(debounceTime(200))
+            .pipe(map((term: string) => this.filterPair(term, this.uoPairs, 'uo')
+                .slice(0, 200)));
 
     filterPair(term: string, pairs: Pair[], type: string): Pair[] {
         if (term === '') {
@@ -159,208 +152,186 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
         this.uoInput.nativeElement.dispatchEvent(this.createNewEvent('input'));
     }
 
-    createNewEvent(eventName) {
-        let event;
-        if (typeof(Event) === 'function') {
-            event = new Event(eventName);
+    createNewEvent(eventName: string): Event {
+        if (typeof Event === 'function') {
+            return new Event(eventName);
         } else {
-            event = document.createEvent('Event');
+            const event = document.createEvent('Event');
             event.initEvent(eventName, true, true);
+            return event;
         }
-        return event;
     }
 
     callIndice(esercizio: number, uo?: string): void {
         setTimeout(() => {
             this.loadingChart.set(true);
         }, 0);
+
         this.indiceService.getIndice(esercizio, uo).subscribe((result: Map<string, number>) => {
-            // Itera su tutti i possibili grafici (0=esercizio, 1-4=trimestri)
             ['0', '1', '2', '3', '4'].forEach(key => {
                 const chartRef = this.chartRefs.get(key);
-                
+                const uoSuffix = uo ? `_${uo}` : '';
+                const title = key === '0'
+                    ? `indice_tempestivita_${esercizio}${uoSuffix}`
+                    : `indice_tempestivita_${esercizio}_T${key}${uoSuffix}`;
                 if (result[key] && chartRef?.nativeElement) {
-                    // Crea o ricrea il root e carica il grafico
-                    const existingRoot = this.roots.get(key);
-                    const newRoot = this.initializeRoot(chartRef, existingRoot);
-                    this.roots.set(key, newRoot);
-                    this.loadChart(newRoot, result[key]);
+                    const existingInstance = this.chartInstances.get(key) ?? null;
+                    const newInstance = this.initializeChart(chartRef, existingInstance);
+                    this.chartInstances.set(key, newInstance);
+                    this.loadChart(newInstance, result[key], title);
                 } else {
-                    // Disponi il root se esiste ma non ci sono dati
-                    const existingRoot = this.roots.get(key);
-                    this.disposeRoot(existingRoot);
-                    this.roots.set(key, null);
+                    const existingInstance = this.chartInstances.get(key) ?? null;
+                    this.disposeChart(existingInstance);
+                    this.chartInstances.set(key, null);
                 }
             });
+
             setTimeout(() => {
                 this.loadingChart.set(false);
             }, 0);
         });
     }
 
-    private loadChart(root: am5.Root, value: number): void {
+    private loadChart(chartInstance: ECharts, value: number, title: string): void {
         console.log('Caricamento grafico con valore:', value);
 
-        root.setThemes([am5themes_Animated.new(root)]);
-        root.container.children.clear();
-        root.container.set("layout", root.verticalLayout);
-        root.locale = am5locales_it_IT;
-        
-        const chartGauge = root.container.children.push(am5radar.RadarChart.new(root, {
-            startAngle: 160,
-            endAngle: 380
-        }));
+        // Calcola min/max dinamici in base al valore, allineati a multipli di 10
+        const defaultMin = -30;
+        const defaultMax = 30;
+        const axisMin = value < defaultMin ? Math.floor(value / 10) * 10 : defaultMin;
+        const axisMax = value > defaultMax ? Math.ceil(value / 10) * 10 : defaultMax;
 
-        const axisRenderer = am5radar.AxisRendererCircular.new(root, {
-            innerRadius: -40,
-            minGridDistance: 50
-        });
-
-        axisRenderer.grid.template.setAll({
-            stroke: root.interfaceColors.get("background"),
-            visible: true,
-            strokeOpacity: 0.8
-        });
-
-        axisRenderer.ticks.template.setAll({
-            visible: true,
-            strokeOpacity: 1,
-        });
-
-        axisRenderer.labels.template.setAll({
-            fontSize: 15,
-            visible: true
-        });
-
-        const xAxis = chartGauge.xAxes.push(am5xy.ValueAxis.new(root, {
-            maxDeviation: 0,
-            min: -30,
-            max: 30,
-            strictMinMax: false,
-            renderer: axisRenderer
-        }));
-
-        const axisDataItem = xAxis.makeDataItem({});
-
-        const clockHand = am5radar.ClockHand.new(root, {
-            pinRadius: am5.percent(20),
-            radius: am5.percent(100),
-            bottomWidth: 40
-        });
-
-        const bullet = axisDataItem.set("bullet", am5xy.AxisBullet.new(root, {
-            sprite: clockHand
-        }));
-
-        xAxis.createAxisRange(axisDataItem);
-
-        const label = chartGauge.radarContainer.children.push(am5.Label.new(root, {
-            fill: am5.color(0xffffff),
-            centerX: am5.percent(50),
-            textAlign: "center",
-            centerY: am5.percent(50),
-            fontSize: "1.2em"
-        }));
-        if (value > xAxis.get("max")) {
-            xAxis.set("max", Math.ceil(value / 10) * 10);
-        }
-        if (value < xAxis.get("min")) {
-            xAxis.set("min", Math.floor(value / 10) * 10);
-        }
-
-        bullet.get("sprite").on("rotation", () => {
-            const currentValue = axisDataItem.get("value");
-            let fill = am5.color(0x000000);
-
-            xAxis.axisRanges.each((axisRange) => {
-                if (currentValue >= axisRange.get("value") && currentValue <= axisRange.get("endValue")) {
-                    fill = axisRange.get("axisFill").get("fill");
-                }
-            });
-
-            label.set("text", currentValue.toFixed(2));
-
-            clockHand.pin.animate({
-                key: "fill",
-                to: fill,
-                duration: 500,
-                easing: am5.ease.out(am5.ease.cubic)
-            });
-
-            clockHand.hand.animate({
-                key: "fill",
-                to: fill,
-                duration: 500,
-                easing: am5.ease.out(am5.ease.cubic)
-            });
-        });
-
-        chartGauge.bulletsContainer.set("mask", undefined);
-
-        // Definizione delle bande colorate
         const bandsData = [
-            { color: "#ee1f25", lowScore: 20, highScore: 30 },
-            { color: "#f04922", lowScore: 10, highScore: 20 },
-            { color: "#fdae19", lowScore: 0, highScore: 10 },
-            { color: "#b0d136", lowScore: -10, highScore: 0 },
-            { color: "#54b947", lowScore: -20, highScore: -10 },
-            { color: "#0f9747", lowScore: -30, highScore: -20 }
+            { color: '#0f9747', lowScore: -30, highScore: -20 },
+            { color: '#54b947', lowScore: -20, highScore: -10 },
+            { color: '#b0d136', lowScore: -10, highScore: 0 },
+            { color: '#fdae19', lowScore: 0,   highScore: 10 },
+            { color: '#f04922', lowScore: 10,  highScore: 20 },
+            { color: '#ee1f25', lowScore: 20,  highScore: 30 }
         ];
 
-        am5.array.each(bandsData, (data) => {
-            const axisRange = xAxis.createAxisRange(xAxis.makeDataItem({}));
-
-            axisRange.setAll({
-                value: data.lowScore,
-                endValue: data.highScore
-            });
-
-            axisRange.get("axisFill").setAll({
-                visible: true,
-                fill: am5.color(data.color),
-                fillOpacity: 0.8
-            });
-        });
-        // Trova i valori min e max dai tuoi bandsData
-        const minValue = Math.min(...bandsData.map(b => b.lowScore)); // -30
-        const maxValue = Math.max(...bandsData.map(b => b.highScore)); // 30
-        axisDataItem.set("value", 0);
-
-        if (value > maxValue) {
-            const axisRange = xAxis.createAxisRange(xAxis.makeDataItem({}));
-
-            axisRange.setAll({
-                value: maxValue,
-                endValue: Math.ceil(value / 10) * 10
-            });
-
-            axisRange.get("axisFill").setAll({
-                visible: true,
-                fill: am5.color(0x000000),
-                fillOpacity: 0.8
-            });
+        // Estendi le bande se il valore supera il range standard
+        const extendedBands = [...bandsData];
+        if (value > defaultMax) {
+            extendedBands.push({ color: '#000000', lowScore: defaultMax, highScore: axisMax });
         }
-        if (value < minValue) {
-            const axisRange = xAxis.createAxisRange(xAxis.makeDataItem({}));
-
-            axisRange.setAll({
-                value: Math.floor(value / 10) * 10,
-                endValue: minValue
-            });
-
-            axisRange.get("axisFill").setAll({
-                visible: true,
-                fill: am5.color('#007bff'),
-                fillOpacity: 0.8
-            });
+        if (value < defaultMin) {
+            extendedBands.push({ color: '#007bff', lowScore: axisMin, highScore: defaultMin });
         }
-        axisDataItem.animate({
-            key: "value",
-            to: value,
-            duration: 1500,
-            easing: am5.ease.inOut(am5.ease.cubic)
+
+        // Converti le bande in axisLine colorSegments per ECharts gauge
+        // ECharts vuole valori normalizzati [0, 1] sull'asse
+        const totalRange = axisMax - axisMin;
+        const colorSegments: [number, string][] = extendedBands
+            .sort((a, b) => a.lowScore - b.lowScore)
+            .map(band => [
+                (band.highScore - axisMin) / totalRange,
+                band.color
+            ]);
+
+        // Normalizza il valore per il pointer (ECharts gauge usa i valori reali con min/max)
+        const option: EChartsOption = {
+            toolbox: {
+                feature: {
+                    saveAsImage: {
+                    title: 'Salva immagine',
+                    name: `indicatore_${title}`
+                    }
+                }
+            },
+            series: [
+                {
+                    type: 'gauge',
+                    startAngle: 200,
+                    endAngle: -20,
+                    min: axisMin,
+                    max: axisMax,
+                    splitNumber: (axisMax - axisMin) / 10,
+                    radius: this.dashboard ? '100%':'120%',
+                    center: ['50%', '70%'],
+                    axisLine: {
+                        lineStyle: {
+                            width: 40,
+                            color: colorSegments
+                        }
+                    },
+                    anchor: {
+                        show: true,
+                        showAbove: true,
+                        size: 25,
+                        itemStyle: {
+                            color: '#4e6fce',
+                            borderColor: '#fff',
+                            borderWidth: 3
+                        }
+                    },
+                    pointer: {
+                        length: '70%',
+                        width: 12,
+                        itemStyle: {
+                            color: 'auto'
+                        }
+                    },
+                    axisTick: {
+                        length: 12,
+                        lineStyle: {
+                            color: 'auto',
+                            width: 2
+                        }
+                    },
+                    splitLine: {
+                        length: 20,
+                        lineStyle: {
+                            color: 'auto',
+                            width: 3
+                        }
+                    },
+                    axisLabel: {
+                        color: '#464646',
+                        fontSize: 14,
+                        distance: -50,
+                        formatter: (val: number) => val.toString()
+                    },
+                    title: {
+                        show: false
+                    },
+                    detail: {
+                        valueAnimation: true,
+                        formatter: (val: number) => val.toFixed(2),
+                        color: '#fff',
+                        fontSize: 18,
+                        fontWeight: 'bold',
+                        offsetCenter: [0, '35%'],
+                        backgroundColor: 'inherit',
+                        borderRadius: 4,
+                        padding: [4, 8]
+                    },
+                    data: [
+                        {
+                            value: axisMin,
+                            name: ''
+                        }
+                    ],
+                    animationDuration: 0
+                }
+            ]
+        };
+
+        chartInstance.setOption(option);
+        setTimeout(() => {
+            chartInstance.setOption({
+                series: [
+                    {
+                        data: [{ value: value, name: '' }],
+                        animationDuration: 1500,
+                        animationEasingUpdate: 'cubicInOut'
+                    }
+                ]
+            });
+        }, 100);
+        const resizeObserver = new ResizeObserver(() => {
+            chartInstance.resize();
         });
-        // Animazione iniziale
-        chartGauge.appear(2000, 100);
+        resizeObserver.observe(chartInstance.getDom());
     }
 }

@@ -65,14 +65,14 @@
         <ul class="navbar-nav ml-auto">
             @for (item of menuService.menuItems$ | async; track item) {
                 @if(item.child) {
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle h5" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                    <li ngbDropdown class="nav-item dropdown pointer">
+                        <a class="nav-link dropdown-toggle h5" ngbDropdownToggle href="javascript:void(0);" role="button">
                             <i class="fa fa-fw {{ item.icon }}" aria-hidden="true"></i>
                             <span translate>{{ item.label }}</span>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-right">
+                        <ul class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
                             <li *ngFor="let child of item.child" class="nav-item">
-                                <a class="dropdown-item text-primary-dark h5" [routerLink]="child.route">
+                                <a class="dropdown-item text-primary-dark h5" [routerLink]="child.route" (click)="collapseNavbar()">
                                     <i class="fa fa-fw {{ child.icon }}" aria-hidden="true"></i>
                                     <span translate>{{ child.label }}</span>
                                 </a>
@@ -81,7 +81,7 @@
                     </li>
                 } @else {
                     <li class="nav-item">
-                        <a class="nav-link h5" [routerLink]="item.route">
+                        <a class="nav-link h5" [routerLink]="item.route" (click)="collapseNavbar()">
                             <i class="fa fa-fw {{ item.icon }}" aria-hidden="true"></i>
                             <span translate>{{ item.label }}</span>
                         </a>

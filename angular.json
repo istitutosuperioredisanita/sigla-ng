@@ -30,7 +30,10 @@
             "stylePreprocessorOptions": {
               "includePaths": [
                 "node_modules"
-              ]
+              ],
+              "sass": {
+                "silenceDeprecations": ["import", "global-builtin", "color-functions"]
+              }
             },
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
