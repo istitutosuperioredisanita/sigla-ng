@@ -56,7 +56,7 @@ export class WorkspaceService {
 
     version(): Observable<string> {
         return this.http.get(environment.apiUrl + '/version').pipe(map((res: any) => {
-            return res['Specification-Version'];
+            return res['Implementation-Version'];
         }));
     }
 
