@@ -112,6 +112,11 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         }
     }
 
+    @HostListener('window:unload')
+    onUnload() {
+        navigator.sendBeacon(`${environment.applicationContextUrl}/restapi/session/destroy`);
+    }
+    
     ngOnInit() {
         if (this.principal.isAuthenticated()) {
             this.principal.identity().then((account) => {
