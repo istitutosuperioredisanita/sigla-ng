@@ -6,6 +6,7 @@ import { AutoLoginAllRoutesGuard } from 'angular-auth-oidc-client';
 import { IndiceTempestivitaPagamentiComponent } from './indice-tempestivita-pagamenti/indice-tempestivita-pagamenti.component';
 import { AcquistiStrutturaComponent } from './acquisti-struttura/acquisti-struttura.component';
 import { AcquistiStatoComponent } from './acquisti-stato/acquisti-stato.component';
+import { FondiFunzionamentoComponent } from './progetti/fondi-funzionamento.component';
 
 export const DASHBOARD_ROUTE: Route = {
     path: 'dashboard',
@@ -47,6 +48,40 @@ export const ACQUISTI_STATO_ROUTE: Route = {
         authorities: ['APPLICATION_ROLE_SUPER'],
         pageTitle: 'global.menu.acquisti-stato',
         menu: 'dashboard'
+    },
+    canActivate: ((environment.oidc.enable  === 'true') ? true : false) ? [AutoLoginAllRoutesGuard] : [UserRouteAccessService],
+};
+
+export const FONDI_FUNZIONAMENTO_UO: Route = {
+    path: 'progetti/fondi-funzionamento/uo',
+    component: FondiFunzionamentoComponent,
+    data: {
+        authorities: ['APPLICATION_ROLE_SUPER'],
+        pageTitle: 'global.menu.progetti.fondi-funzionamento',
+        menu: 'dashboard',
+        dimensione: 'uo'
+    },
+    canActivate: ((environment.oidc.enable  === 'true') ? true : false) ? [AutoLoginAllRoutesGuard] : [UserRouteAccessService],
+};
+export const FONDI_FUNZIONAMENTO_TIPO_FINANZIAMENTO: Route = {
+    path: 'progetti/fondi-funzionamento/tipo-finanziamento',
+    component: FondiFunzionamentoComponent,
+    data: {
+        authorities: ['APPLICATION_ROLE_SUPER'],
+        pageTitle: 'global.menu.progetti.fondi-funzionamento',
+        menu: 'dashboard',
+        dimensione: 'tipo-finanziamento'
+    },
+    canActivate: ((environment.oidc.enable  === 'true') ? true : false) ? [AutoLoginAllRoutesGuard] : [UserRouteAccessService],
+};
+export const FONDI_FUNZIONAMENTO_ENTE_FINANZIATORE: Route = {
+    path: 'progetti/fondi-funzionamento/ente-finanziatore',
+    component: FondiFunzionamentoComponent,
+    data: {
+        authorities: ['APPLICATION_ROLE_SUPER'],
+        pageTitle: 'global.menu.progetti.fondi-funzionamento',
+        menu: 'dashboard',
+        dimensione: 'ente-finanziatore'
     },
     canActivate: ((environment.oidc.enable  === 'true') ? true : false) ? [AutoLoginAllRoutesGuard] : [UserRouteAccessService],
 };

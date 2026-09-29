@@ -14,7 +14,32 @@
   ~     You should have received a copy of the GNU Affero General Public License
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
-
+<ng-template #menuItems let-items let-dd="dd">
+    @for (child of items; track child.label) {
+        @if (child.child) {
+            <li class="nav-item dropdown-submenu">
+                <a class="dropdown-item dropdown-toggle text-primary-dark"
+                   href="javascript:void(0);"
+                   (click)="toggleSubmenu(child, items, $event)">
+                    <i class="fa fa-fw {{ child.icon }}" aria-hidden="true"></i>
+                    <span translate class="pl-1 text-monospace">{{ child.label }}</span>
+                </a>
+                <ul class="dropdown-menu submenu" [class.show]="isSubmenuOpen(child)">
+                    <ng-container *ngTemplateOutlet="menuItems; context: { $implicit: child.child, dd: dd }"></ng-container>
+                </ul>
+            </li>
+        } @else {
+            <li class="nav-item">
+                <a class="dropdown-item text-primary-dark"
+                   [routerLink]="child.route"
+                   (click)="dd.close(); collapseNavbar()">
+                    <i class="fa fa-fw {{ child.icon }}" aria-hidden="true"></i>
+                    <span translate class="pl-1 text-monospace">{{ child.label }}</span>
+                </a>
+            </li>
+        }
+    }
+</ng-template>
 <nav class="navbar navbar-expand-md jh-navbar">
     <div class="d-flex w-100">
         <a *ngIf="router.url === '/workspace'" (click)="setHidden(!hidden)" class="text-white text-center pt-2" data-action="toggle-sidebar">
@@ -41,6 +66,10 @@
                     (logoutCallback)="logout()">
                     <div class="dropdown-divider"></div>
                     <div class="list-group">
+                        <a *jhiHasAnyAuthority="'APPLICATION_ROLE_SUPER'" class="list-group-item list-group-item-action border-0" [routerLink]="['/dashboard']" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-bar-chart-o" aria-hidden="true"></i>
+                            <span translate>global.menu.account.dashboard</span>
+                        </a>
                         <a class="list-group-item list-group-item-action border-0" routerLink="settings" routerLinkActive="active" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-wrench" aria-hidden="true"></i>
                             <span translate>global.menu.account.settings</span>
@@ -65,25 +94,22 @@
         <ul class="navbar-nav ml-auto">
             @for (item of menuService.menuItems$ | async; track item) {
                 @if(item.child) {
-                    <li ngbDropdown class="nav-item dropdown pointer">
+                    <li ngbDropdown #dd="ngbDropdown" autoClose="outside"
+                        (openChange)="!$event && closeSubmenus()"
+                        class="nav-item dropdown pointer">
                         <a class="nav-link dropdown-toggle h5" ngbDropdownToggle href="javascript:void(0);" role="button">
                             <i class="fa fa-fw {{ item.icon }}" aria-hidden="true"></i>
-                            <span translate>{{ item.label }}</span>
+                            <span translate class="text-monospace">{{ item.label }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
-                            <li *ngFor="let child of item.child" class="nav-item">
-                                <a class="dropdown-item text-primary-dark h5" [routerLink]="child.route" (click)="collapseNavbar()">
-                                    <i class="fa fa-fw {{ child.icon }}" aria-hidden="true"></i>
-                                    <span translate>{{ child.label }}</span>
-                                </a>
-                            </li>
+                            <ng-container *ngTemplateOutlet="menuItems; context: { $implicit: item.child, dd: dd }"></ng-container>
                         </ul>
                     </li>
                 } @else {
                     <li class="nav-item">
                         <a class="nav-link h5" [routerLink]="item.route" (click)="collapseNavbar()">
                             <i class="fa fa-fw {{ item.icon }}" aria-hidden="true"></i>
-                            <span translate>{{ item.label }}</span>
+                            <span translate >{{ item.label }}</span>
                         </a>
                     </li>
                 }

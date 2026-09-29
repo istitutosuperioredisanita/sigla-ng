@@ -10,6 +10,14 @@
             "indice-tempestivita-pagamenti": "Indice Tempestività dei Pagamenti",
             "acquisti-struttura": "Acquisti per Struttura",
             "acquisti-stato": "Acquisti per Stato",
+            "progetti": {
+                "title": "Progetti",
+                "fondi-funzionamento": {
+                    "uo": "Trend Fondi di Funzionamento per UO",
+                    "tipo-finanziamento": "Trend Fondi di Funzionamento per Tipo",
+                    "ente-finanziatore": "Trend Fondi di Funzionamento per Ente Finanziatore"
+                }
+            },
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entità",

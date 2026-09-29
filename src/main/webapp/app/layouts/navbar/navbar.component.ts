@@ -10,7 +10,61 @@ import { filter, map } from 'rxjs/operators';
 @Component({
     selector: 'jhi-navbar',
     templateUrl: './navbar.component.html',
-    standalone: false
+    standalone: false,
+    styles: [`
+        .dropdown-submenu { position: relative; }
+
+        /* caret: freccia a sinistra, prima del testo */
+        .dropdown-submenu > .dropdown-toggle {
+            display: flex;
+            align-items: center;
+        }
+        .dropdown-submenu > .dropdown-toggle::after {
+            order: -1;
+            margin: 0 .5rem 0 0;
+            vertical-align: 0;
+            border-top: .3em solid transparent;
+            border-bottom: .3em solid transparent;
+            border-right: .3em solid;
+            border-left: 0;
+        }
+
+        .dropdown-submenu > .submenu {
+            top: -.5rem;          /* allinea alla voce, compensando il padding del menu */
+            right: 100%;
+            left: auto;
+            margin: 0;
+        }
+
+        /* desktop: apertura all'hover */
+        @media (min-width: 768px) {
+            .dropdown-submenu:hover > .submenu { display: block; }
+        }
+
+        /* mobile: sottomenu indentato, apertura al click */
+        @media (max-width: 767.98px) {
+            .dropdown-submenu > .dropdown-toggle::after {
+                order: 0;
+                margin: 0 0 0 .5rem;
+                border-top: .3em solid;
+                border-bottom: 0;
+                border-right: .3em solid transparent;
+                border-left: .3em solid transparent;
+            }
+            .dropdown-submenu > .submenu {
+                position: static;
+                float: none;
+                border: 0;
+                box-shadow: none;
+                padding-left: 1rem;
+            }
+        }
+
+        .dropdown-submenu > .submenu::before,
+        .dropdown-submenu > .submenu::after {
+            display: none;
+        }        
+    `]    
 })
 export class NavbarComponent implements OnInit {
 
@@ -26,7 +80,8 @@ export class NavbarComponent implements OnInit {
     modalRef: NgbModalRef;
     version: string;
     hidden: boolean;
-    
+    private openSubmenus = new Set<string>();
+
     constructor(
         protected menuService: MenuService,
         protected activatedRoute: ActivatedRoute,
@@ -90,6 +145,27 @@ export class NavbarComponent implements OnInit {
             currentRoute = currentRoute.parent!;
         }        
         return null;
+    }
+
+    toggleSubmenu(item: any, siblings: any[], event: Event) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (window.innerWidth >= 768) {
+            return; // su desktop gestisce l'hover via CSS
+        }
+        const wasOpen = this.openSubmenus.has(item.label);
+        siblings.forEach(s => this.openSubmenus.delete(s.label));
+        if (!wasOpen) {
+            this.openSubmenus.add(item.label);
+        }
+    }
+
+    isSubmenuOpen(item: any): boolean {
+        return this.openSubmenus.has(item.label);
+    }
+
+    closeSubmenus() {
+        this.openSubmenus.clear();
     }
 
     getLogo() {

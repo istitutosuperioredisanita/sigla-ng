@@ -5,7 +5,9 @@
     <div class="d-flex justify-content-center text-primary-dark">
         <p class="text-monospace font-weight-bold">Indicatori di efficienza, sostenibilità e resilienza per la valutazione complessiva delle performance gestionali dell'amministrazione</p>
     </div>
-    <acquisti-struttura [dashboard]="true"></acquisti-struttura>
+    <a [routerLink]="['/progetti/fondi-funzionamento']" [queryParams]="{dashboard: false}">
+        <fondi-funzionamento [dashboard]="true"></fondi-funzionamento>
+    </a>
     <div class="my-4">
         <div class="row pt-2 justify-content-md-center">
             <div class="col-md-4">

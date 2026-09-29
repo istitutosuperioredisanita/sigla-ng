@@ -1,0 +1,133 @@
+@if (!dashboard) {
+  <div class="card shadow mt-2 p-3 jumbotron mb-1">
+    @if (esercizi.length) {
+      <form class="form" role="form" [formGroup]="filterForm">
+        <div class="row justify-content-center">
+          <div class="col-12 col-md-auto">
+            <div class="d-flex">
+              <span class="FormLabel required pr-2 pt-1" translate>dashboard.indice-tempestivita.esercizio</span>
+              <select id="esercizio" class="form-control" formControlName="esercizio" required>
+                @for (esercizio of esercizi; track esercizio) {
+                  <option [ngValue]="esercizio">{{esercizio}}</option>
+                }
+              </select>
+            </div>
+          </div>
+        </div>
+      </form>
+    }
+  </div>
+}
+
+<div class="card shadow p-1 mb-5">
+  @if (filtroCorrente && !dashboard) {
+    <div class="card-header d-flex align-items-center">
+      <a class="btn btn-link text-primary p-0" href="javascript:void(0);" (click)="torna()">
+        <i class="fa fa-fw fa-arrow-left" aria-hidden="true"></i> Torna a {{labelDimensione(dimensioneCorrente)}}
+      </a>
+    </div>
+  }
+  <div class="d-flex justify-content-center">
+    <div class="w-100 font-weight-bold text-monospace text-center text-primary-dark"
+         [style]="dashboard ? 'height:50vh !important' : 'height:75vh !important'">
+      @if (loadingChart()) {
+        <div class="h-100">
+          <div class="d-flex justify-content-center">
+            <div class="loading cursor-wait position-relative"></div>
+          </div>
+        </div>
+      }
+      <div [style.height]="dashboard ? '50vh' : '75vh'"
+           [style.display]="loadingChart() ? 'none' : 'block'"
+           style="width: 100%"
+           echarts
+           [options]="chartOptions"
+           (chartClick)="onChartClick($event)">
+      </div>
+    </div>
+  </div>
+
+  <!-- Legenda: codice e descrizione (gruppo o progetto) -->
+  @if (!loadingChart() && legenda.length) {
+    <div class="px-3 pb-3 mt-3">
+      <div class="d-flex justify-content-center mb-2 small">
+        <span class="mr-4">
+          <i class="fa fa-square" [style.color]="coloreUtilizzato"></i> Importo utilizzato
+        </span>
+        <span>
+          <i class="fa fa-square" [style.color]="coloreAssegnato"></i> Importo assegnato (totale barra)
+        </span>
+      </div>
+      @if(!dashboard) {
+        <div class="row small">
+          @for (voce of legenda; track voce.codice) {
+            <div class="col-12 col-md-6 col-xl-4 mb-1">
+              <b>{{voce.codice}}</b> - {{voce.descrizione}}
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>
+
+<ng-template #dettaglioModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title text-primary-dark">
+      Dettaglio spese progetto
+      @if (dettaglioProgetto) {
+        <span class="font-weight-bold">{{dettaglioProgetto.codice}}</span> - {{dettaglioProgetto.descrizione}}
+      }
+    </h4>
+    <button type="button" class="close" aria-label="Chiudi" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    @if (loadingDettaglio()) {
+      <div class="d-flex justify-content-center py-5">
+        <div class="loading cursor-wait"></div>
+      </div>
+    } @else if (!dettaglio.length) {
+      <p class="text-center text-muted my-4">Nessuna voce di spesa disponibile.</p>
+    } @else {
+      <div class="table-responsive">
+        <table class="table table-sm table-striped table-bordered table-hover mb-0">
+          <thead class="thead-light">
+            <tr>
+              <th rowspan="2" class="align-middle">Codice</th>
+              <th rowspan="2" class="align-middle">Descrizione</th>
+              <th colspan="3" class="text-center text-primary-dark">Quote finanziate</th>
+              <th colspan="3" class="text-center text-primary-dark">Quote cofinanziate</th>
+            </tr>
+            <tr>
+              <th class="text-right">Stanziata</th>
+              <th class="text-right">Utilizzata</th>
+              <th class="text-right">Pagata</th>
+              <th class="text-right">Stanziata</th>
+              <th class="text-right">Utilizzata</th>
+              <th class="text-right">Pagata</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (voce of dettaglio; track voce.codice) {
+              <tr>
+                <td>{{voce.codice}}</td>
+                <td>{{voce.descrizione}}</td>
+                <td class="text-right">{{formatEur(voce.imAssestatoSpesaFinanziato)}}</td>
+                <td class="text-right">{{formatEur(voce.imUtilizzatoSpesaFinanziato)}}</td>
+                <td class="text-right">{{formatEur(voce.imPagatoSpesaFinanziato)}}</td>
+                <td class="text-right">{{formatEur(voce.imAssestatoSpesaCofinanziato)}}</td>
+                <td class="text-right">{{formatEur(voce.imUtilizzatoSpesaCofinanziato)}}</td>
+                <td class="text-right">{{formatEur(voce.imPagatoSpesaCofinanziato)}}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Chiudi</button>
+  </div>
+</ng-template>

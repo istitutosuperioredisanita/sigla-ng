@@ -2,7 +2,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SiglaSharedModule, UserRouteAccessService } from '../shared';
 
-import { ACQUISTI_STATO_ROUTE, ACQUISTI_STRUTTURA_ROUTE, DASHBOARD_ROUTE, DashBoardComponent, INDICE_TEMPESTIVITA_PAGAMENTI_ROUTE} from './index';
+import { ACQUISTI_STATO_ROUTE, ACQUISTI_STRUTTURA_ROUTE, DASHBOARD_ROUTE, DashBoardComponent, FONDI_FUNZIONAMENTO_ENTE_FINANZIATORE, FONDI_FUNZIONAMENTO_TIPO_FINANZIAMENTO, FONDI_FUNZIONAMENTO_UO, INDICE_TEMPESTIVITA_PAGAMENTI_ROUTE} from './index';
 
 import { TreeModule, TreeDraggedElement } from '@ali-hm/angular-tree-component';
 import { AngularSplitModule } from 'angular-split';
@@ -17,6 +17,11 @@ import { AcquistiStrutturaComponent } from './acquisti-struttura/acquisti-strutt
 import { AcquistiStrutturaService } from './acquisti-struttura/acquisti-struttura.service';
 import { AcquistiStatoComponent } from './acquisti-stato/acquisti-stato.component';
 import { AcquistiStatoService } from './acquisti-stato/acquisti-stato.service';
+import { FondiFunzionamentoComponent } from './progetti/fondi-funzionamento.component';
+import { FondiFunzionamentoService } from './progetti/fondi-funzionamento.service';
+
+
+
 import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
@@ -29,7 +34,10 @@ import { NgxEchartsModule } from 'ngx-echarts';
             DASHBOARD_ROUTE, 
             INDICE_TEMPESTIVITA_PAGAMENTI_ROUTE, 
             ACQUISTI_STRUTTURA_ROUTE,
-            ACQUISTI_STATO_ROUTE
+            ACQUISTI_STATO_ROUTE,
+            FONDI_FUNZIONAMENTO_UO,
+            FONDI_FUNZIONAMENTO_TIPO_FINANZIAMENTO,
+            FONDI_FUNZIONAMENTO_ENTE_FINANZIATORE
         ], { useHash: true }),
         TreeModule,
         AngularSplitModule,
@@ -47,11 +55,14 @@ import { NgxEchartsModule } from 'ngx-echarts';
         IndiceTempestivitaPagamentiComponent,
         AcquistiStrutturaComponent,
         AcquistiStatoComponent,
+        FondiFunzionamentoComponent,
     ],
     providers: [
         IndiceTempestivitaPagamentiService,
         AcquistiStrutturaService,
         AcquistiStatoService,
+        FondiFunzionamentoService,
+
         UserRouteAccessService,
         TreeDraggedElement
     ],

@@ -1229,3 +1229,10 @@ Developement Ribbon
 .text-primary-dark {
   color: darken($primary, 15%) !important; // Scurisce del 15%
 }
+
+ngb-modal-backdrop.modal-backdrop {
+  z-index: 1040 !important; /* sotto la finestra */
+}
+ngb-modal-window.modal {
+  z-index: 1050 !important; /* sopra il backdrop */
+}

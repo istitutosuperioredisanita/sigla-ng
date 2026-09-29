@@ -13,6 +13,8 @@ import { ECharts, EChartsOption } from 'echarts';
 
 import { NgbDropdown, NgbTypeaheadConfig, NgbTypeaheadSelectItemEvent } from "@ng-bootstrap/ng-bootstrap";
 import { ActivatedRoute, Router } from "@angular/router";
+import { LocalStateStorageService } from '../../shared/auth/local-storage.service';
+import { Principal } from '../../shared/auth/principal.service';
 
 @Component({
     selector: 'indice-tempestivita-pagamenti',
@@ -49,7 +51,9 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
         protected formBuilder: FormBuilder,
         protected contextService: ContextService,
         protected indiceService: IndiceTempestivitaPagamentiService,
-        protected translateService: TranslateService
+        protected translateService: TranslateService,
+        private localStateStorageService: LocalStateStorageService,
+        private principal: Principal,
     ) {}
 
     ngOnInit(): void {
@@ -59,7 +63,13 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
             }
             this.contextService.getEsercizi().subscribe((esercizi: number[]) => {
                 this.esercizi = esercizi;
-                this.initializeComponent();
+                this.principal.getIdentyAccount(false).then((account) => {
+                    const userContext = this.localStateStorageService.getUserContext(account.username);
+                    this.contextService.getEsercizi().subscribe((esercizi: number[]) => {
+                        this.esercizi = esercizi;
+                        this.initializeComponent(userContext?.esercizio);
+                    });
+                });
             });
         });
     }
@@ -75,14 +85,14 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
         });
     }
 
-    private initializeComponent(): void {
+    private initializeComponent(esercizio?: number): void {
         this.chartDivClass = 'col-md-3 font-weight-bold text-monospace text-center text-success';
         if (this.dashboard) {
             this.chartDivClass += ' d-none';
         }
 
         this.filterForm = this.formBuilder.group({
-            esercizio: new FormControl(Math.max(...this.esercizi)),
+            esercizio: new FormControl(esercizio || Math.max(...this.esercizi)),
             uo: new FormControl()
         });
 
