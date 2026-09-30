@@ -1,10 +1,11 @@
-import { Component, OnInit, OnDestroy, OnChanges, SimpleChanges, Input, ViewChild, TemplateRef, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, OnChanges, SimpleChanges, Input, ViewChild, ElementRef, TemplateRef, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { Subject, combineLatest } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { NgbModal, NgbModalRef, NgbTypeaheadSelectItemEvent } from '@ng-bootstrap/ng-bootstrap';
+import { Observable, Subject, combineLatest } from 'rxjs';
+import { debounceTime, map, takeUntil } from 'rxjs/operators';
 import { ContextService } from 'app/context';
+import { Pair } from '../../context/pair.model';
 import { EChartsOption } from 'echarts';
 import { DettaglioVoceSpesa, DimensioneFondo, FondiFunzionamentoService } from './fondi-funzionamento.service';
 import { LocalStateStorageService } from '../../shared/auth/local-storage.service';
@@ -27,7 +28,7 @@ interface FiltroFondo {
 const COLORE_UTILIZZATO = '#516fdb'; // blu
 const COLORE_ASSEGNATO = '#b6d635';  // verde
 
-/** Etichette e icone dei raggruppamenti disponibili a livello 1 */
+/** Etichette dei raggruppamenti disponibili (per i testi del componente) */
 const DIMENSIONI: { valore: DimensioneFondo; label: string }[] = [
   { valore: 'uo', label: 'Unità Organizzativa' },
   { valore: 'tipo-finanziamento', label: 'Tipo Finanziamento' },
@@ -62,6 +63,14 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
   protected dimensioneCorrente: DimensioneFondo = 'uo';
   /** Filtro di drill-down attivo (livello 2), se presente */
   protected filtroCorrente?: FiltroFondo;
+
+  /** Filtro UO aggiuntivo, selezionabile solo quando dimensioneCorrente !== 'uo' */
+  @ViewChild('uoFiltroInput', { static: false }) uoFiltroInput!: ElementRef;
+  protected uoPairs: Pair[] = [];
+  private filtroUoCorrente?: string;
+  private lastValueUo: any = null;
+  /** true mentre il click sul caret forza l'apertura della tendina (non è una cancellazione voluta dall'utente) */
+  private aperturaTypeahead = false;
 
   private destroy$ = new Subject<void>();
 
@@ -144,28 +153,93 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
 
   private initializeComponent(annoIniziale?: number): void {
     this.filterForm = this.formBuilder.group({
-      esercizio: new FormControl(annoIniziale ?? Math.max(...this.esercizi))
+      esercizio: new FormControl(annoIniziale ?? Math.max(...this.esercizi)),
+      uoFiltro: new FormControl()
     });
 
     this.filterForm.controls['esercizio'].valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe((esercizio: number) => this.loadData(esercizio));
 
+    // filtro UO aggiuntivo (solo per tipoFinanziamento/enteFinanziatore)
+    this.filterForm.controls['uoFiltro'].valueChanges
+      .pipe(debounceTime(300), takeUntil(this.destroy$))
+      .subscribe(value => {
+        if (this.aperturaTypeahead) {
+          // svuotamento provocato dal click sul caret per aprire la tendina: non è una cancellazione
+          this.aperturaTypeahead = false;
+          this.lastValueUo = value;
+          return;
+        }
+        if (!value && this.lastValueUo) {
+          this.filtroUoCorrente = undefined;
+          this.loadData(this.filterForm.controls['esercizio'].value);
+        }
+        this.lastValueUo = value;
+      });
+
+    if (this.dimensioneCorrente !== 'uo') {
+      this.contextService.getUo().subscribe((result: Pair[]) => {
+        this.uoPairs = result;
+      });
+    }
+
     this.loadData(this.filterForm.controls['esercizio'].value);
+  }
+
+  onUoSelected(event: NgbTypeaheadSelectItemEvent): void {
+    this.aperturaTypeahead = false;
+    this.filtroUoCorrente = event?.item?.first;
+    this.loadData(this.filterForm.controls['esercizio'].value);
+  }
+
+  searchuo = (text$: Observable<string>) =>
+    text$.pipe(debounceTime(200)).pipe(
+      map((term: string) => this.filterPair(term, this.uoPairs).slice(0, 200))
+    );
+
+  private filterPair(term: string, pairs: Pair[]): Pair[] {
+    if (term === '') {
+      return pairs;
+    }
+    return pairs.filter(v => new RegExp(term, 'gi').test(v.first + ' - ' + v.second));
+  }
+
+  formatter = (pair: Pair) => pair.first + ' - ' + pair.second;
+  formatterFirst = (pair: Pair) => pair.first;
+
+  openTypeaheadUo(): void {
+    if (this.uoFiltroInput) {
+      this.aperturaTypeahead = true;
+      this.uoFiltroInput.nativeElement.value = '';
+      this.uoFiltroInput.nativeElement.dispatchEvent(this.createNewEvent('input'));
+    }
+  }
+
+  private createNewEvent(eventName: string): Event {
+    if (typeof Event === 'function') {
+      return new Event(eventName);
+    }
+    const event = document.createEvent('Event');
+    event.initEvent(eventName, true, true);
+    return event;
   }
 
   private loadData(anno: number): void {
     this.anno = anno;
     this.loadingChart.set(true);
     this.fondiService
-      .getFondi(anno, this.dimensioneCorrente, this.filtroCorrente?.valore)
+      .getFondi(anno, this.dimensioneCorrente, this.filtroCorrente?.valore, this.filtroUoCorrente)
       .subscribe({
         next: (result: any[]) => {
           // normalizzazione e ordinamento per importo assegnato decrescente
           const data: VoceFondo[] = (result ?? [])
             .map(r => ({
-              codice: r.codiceProgetto ?? r.codice,
-              descrizione: (r.descrizioneProgetto ?? r.descrizione ?? '').trim(),
+              // supporta i diversi nomi di campo usati dai vari endpoint:
+              // UO -> codiceUnita/descrizioneUnita, progetti -> codiceProgetto/descrizioneProgetto,
+              // eventuali altri raggruppamenti -> codice/descrizione generici
+              codice: r.codiceProgetto ?? r.codiceUnita ?? r.codice,
+              descrizione: (r.descrizioneProgetto ?? r.descrizioneUnita ?? r.descrizione ?? '').trim(),
               importoFinanziato: r.importoFinanziato ?? 0,
               importoUtilizzato: r.importoUtilizzato ?? 0
             }))
@@ -267,9 +341,12 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
       itemStyle: { borderRadius: [6, 6, 0, 0] }
     }));
 
-    const suffisso = this.filtroCorrente
+    let suffisso = this.filtroCorrente
       ? ` - ${this.labelDimensione(this.filtroCorrente.dimensione)} ${this.filtroCorrente.valore}`
       : ` (per ${this.labelDimensione(this.dimensioneCorrente)})`;
+    if (this.filtroUoCorrente) {
+      suffisso += ` - UO ${this.filtroUoCorrente}`;
+    }
 
     this.chartOptions = {
       title: {
@@ -281,7 +358,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
         feature: {
           saveAsImage: {
             title: 'Salva immagine',
-            name: `fondi_funzionamento_${this.anno}${this.filtroCorrente ? '_' + this.filtroCorrente.valore : ''}`
+            name: `fondi_funzionamento_${this.anno}${this.filtroCorrente ? '_' + this.filtroCorrente.valore : ''}${this.filtroUoCorrente ? '_' + this.filtroUoCorrente : ''}`
           }
         }
       },

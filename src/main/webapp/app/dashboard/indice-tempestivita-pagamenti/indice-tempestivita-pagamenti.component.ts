@@ -41,6 +41,8 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
     protected uoPairs!: Pair[];
     private destroy$ = new Subject<void>();
     private lastValue: any = null;
+    /** true mentre il click sul caret forza l'apertura della tendina (non è una cancellazione voluta dall'utente) */
+    private aperturaTypeahead = false;
     esercizi!: number[];
     loadingChart = signal(false);
     trimestri: string[] = ['1', '2', '3', '4'];
@@ -90,7 +92,6 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
         if (this.dashboard) {
             this.chartDivClass += ' d-none';
         }
-
         this.filterForm = this.formBuilder.group({
             esercizio: new FormControl(esercizio || Math.max(...this.esercizi)),
             uo: new FormControl()
@@ -102,6 +103,12 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
                 takeUntil(this.destroy$)
             )
             .subscribe(value => {
+                if (this.aperturaTypeahead) {
+                    // svuotamento provocato dal click sul caret per aprire la tendina: non è una cancellazione
+                    this.aperturaTypeahead = false;
+                    this.lastValue = value;
+                    return;
+                }
                 if (!value && this.lastValue) {
                     this.callIndice(this.filterForm?.controls?.esercizio?.value);
                 }
@@ -125,7 +132,7 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
     }
 
     onUoSelected(event: NgbTypeaheadSelectItemEvent) {
-        console.log(event);
+        this.aperturaTypeahead = false;
         this.callIndice(this.filterForm.controls.esercizio.value, event?.item?.first);
     }
 
@@ -158,6 +165,7 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
     formatterFirst = (pair: Pair) => pair.first;
 
     openTypeaheadUo() {
+        this.aperturaTypeahead = true;
         this.uoInput.nativeElement.value = '';
         this.uoInput.nativeElement.dispatchEvent(this.createNewEvent('input'));
     }

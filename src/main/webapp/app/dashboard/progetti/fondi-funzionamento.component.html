@@ -1,9 +1,15 @@
+<ng-template #rt let-r="result" let-t="term">
+  <div class="w-100">
+    <span>{{r.first}} - {{r.second}}</span>
+  </div>
+</ng-template>
+
 @if (!dashboard) {
   <div class="card shadow mt-2 p-3 jumbotron mb-1">
     @if (esercizi.length) {
       <form class="form" role="form" [formGroup]="filterForm">
         <div class="row justify-content-center">
-          <div class="col-12 col-md-auto">
+          <div class="col-12 col-md-auto mb-2 mb-md-0">
             <div class="d-flex">
               <span class="FormLabel required pr-2 pt-1" translate>dashboard.indice-tempestivita.esercizio</span>
               <select id="esercizio" class="form-control" formControlName="esercizio" required>
@@ -13,6 +19,33 @@
               </select>
             </div>
           </div>
+          @if (dimensioneCorrente !== 'uo') {
+            <div class="col-12 col-md-6 col-lg-5">
+              <div class="d-flex">
+                <label for="uoFiltro" class="col-form-label pr-2 text-nowrap" translate>dashboard.indice-tempestivita.uo</label>
+                <div class="flex-fill">
+                  <div class="input-group">
+                    <input
+                      #uoFiltroInput
+                      formControlName="uoFiltro"
+                      [ngbTypeahead]="searchuo"
+                      [resultTemplate]="rt"
+                      [inputFormatter]="formatter"
+                      [resultFormatter]="formatter"
+                      (selectItem)="onUoSelected($event)"
+                      [editable]="true"
+                      class="form-control"
+                      id="uoFiltro"
+                      type="search"
+                      placeholder="{{'global.form.filter.placeholder' | translate}}">
+                    <a class="input-group-addon btn text-primary" (click)="openTypeaheadUo()">
+                      <i class="fa fa-caret-down"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
         </div>
       </form>
     }
@@ -92,7 +125,7 @@
       <p class="text-center text-muted my-4">Nessuna voce di spesa disponibile.</p>
     } @else {
       <div class="table-responsive">
-        <table class="table table-sm table-striped table-bordered table-hover mb-0">
+        <table class="table table-sm table-striped table-bordered mb-0">
           <thead class="thead-light">
             <tr>
               <th rowspan="2" class="align-middle">Codice</th>

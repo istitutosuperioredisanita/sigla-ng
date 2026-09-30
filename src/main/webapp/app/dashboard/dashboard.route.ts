@@ -57,7 +57,7 @@ export const FONDI_FUNZIONAMENTO_UO: Route = {
     component: FondiFunzionamentoComponent,
     data: {
         authorities: ['APPLICATION_ROLE_SUPER'],
-        pageTitle: 'global.menu.progetti.fondi-funzionamento',
+        pageTitle: 'global.menu.progetti.fondi-funzionamento.uo',
         menu: 'dashboard',
         dimensione: 'uo'
     },
@@ -68,7 +68,7 @@ export const FONDI_FUNZIONAMENTO_TIPO_FINANZIAMENTO: Route = {
     component: FondiFunzionamentoComponent,
     data: {
         authorities: ['APPLICATION_ROLE_SUPER'],
-        pageTitle: 'global.menu.progetti.fondi-funzionamento',
+        pageTitle: 'global.menu.progetti.fondi-funzionamento.tipo-finanziamento',
         menu: 'dashboard',
         dimensione: 'tipo-finanziamento'
     },
@@ -79,7 +79,7 @@ export const FONDI_FUNZIONAMENTO_ENTE_FINANZIATORE: Route = {
     component: FondiFunzionamentoComponent,
     data: {
         authorities: ['APPLICATION_ROLE_SUPER'],
-        pageTitle: 'global.menu.progetti.fondi-funzionamento',
+        pageTitle: 'global.menu.progetti.fondi-funzionamento.ente-finanziatore',
         menu: 'dashboard',
         dimensione: 'ente-finanziatore'
     },

@@ -27,6 +27,8 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
   esercizi: number[];
   loadingChart = signal(false);
   private lastValue: any = null;
+  /** true mentre il click sul caret forza l'apertura della tendina (non è una cancellazione voluta dall'utente) */
+  private aperturaTypeahead = false;
   private destroy$ = new Subject<void>();
   protected uoPairs: Pair[];
 
@@ -62,6 +64,12 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
       debounceTime(300),
       takeUntil(this.destroy$)
     ).subscribe(value => {
+      if (this.aperturaTypeahead) {
+        // svuotamento provocato dal click sul caret per aprire la tendina: non è una cancellazione
+        this.aperturaTypeahead = false;
+        this.lastValue = value;
+        return;
+      }
       if (!value && this.lastValue) {
         this.callStato();
       }
@@ -76,6 +84,7 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
   }
 
   onUoSelected(event: NgbTypeaheadSelectItemEvent) {
+    this.aperturaTypeahead = false;
     this.callStato(event?.item?.first);
   }
 
@@ -95,6 +104,7 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
   openTypeaheadUo() {
     const input = document.getElementById('codice') as HTMLInputElement;
     if (input) {
+      this.aperturaTypeahead = true;
       input.value = '';
       input.dispatchEvent(this.createNewEvent('input'));
     }

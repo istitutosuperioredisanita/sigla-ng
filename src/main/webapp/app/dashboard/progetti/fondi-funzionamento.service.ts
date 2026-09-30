@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -13,12 +13,20 @@ const SEGMENTO_DIMENSIONE: Record<DimensioneFondo, string> = {
   'ente-finanziatore': 'ente-finanziatore'
 };
 
-/** Riga restituita dall'elenco di livello 1 (per UO / Tipo Finanziamento / Ente Finanziatore) */
+/**
+ * Riga restituita dall'elenco di livello 1 (per UO / Tipo Finanziamento / Ente Finanziatore).
+ * I nomi dei campi codice/descrizione variano a seconda della dimensione:
+ * - UO: codiceUnita / descrizioneUnita
+ * - Tipo Finanziamento / Ente Finanziatore: da confermare, ipotizzati codice / descrizione
+ * Il componente normalizza tutte le varianti in fase di mapping.
+ */
 export interface FondiPerGruppo {
-  descrizione: string;
+  descrizione?: string;
+  descrizioneUnita?: string;
+  codice?: string;
+  codiceUnita?: string;
   importoFinanziato: number;
   importoUtilizzato: number;
-  codice: string;
 }
 
 /** Riga restituita dal drill-down sui progetti di un gruppo */
@@ -55,19 +63,31 @@ export class FondiFunzionamentoService {
    * Livello 2 (valore presente): progetti del gruppo selezionato.
    *   NB: schema non ancora confermato per tipoFinanziamento/enteFinanziatore;
    *   qui ipotizzato come /{anno}/{valore} sullo stesso schema già in uso per 'uo'.
+   *
+   * uoFiltro: filtro aggiuntivo per UO, applicabile solo quando la
+   * dimensione è tipoFinanziamento/enteFinanziatore (per 'uo' è ridondante).
+   *   NB: nome del query param non confermato, ipotizzato `uo`.
    */
   getFondi(
     anno: number,
     dimensione: DimensioneFondo,
-    valore?: string
+    valore?: string,
+    uoFiltro?: string
   ): Observable<(FondiPerGruppo | FondiPerProgetto)[]> {
-    let url = `/progetto/fondi-funzionamento/${dimensione}/${anno}`;
+    const segmento = SEGMENTO_DIMENSIONE[dimensione];
+    let url = `/progetto/fondi-funzionamento/${segmento}/${anno}`;
     if (valore) {
       url += `/${valore}`;
     }
+
+    let httpParams = new HttpParams();
+    if (uoFiltro && dimensione !== 'uo') {
+      httpParams = httpParams.set('uo', uoFiltro);
+    }
+
     return this.http.get<(FondiPerGruppo | FondiPerProgetto)[]>(
       environment.apiUrl + url,
-      { withCredentials: true }
+      { params: httpParams, withCredentials: true }
     );
   }
 

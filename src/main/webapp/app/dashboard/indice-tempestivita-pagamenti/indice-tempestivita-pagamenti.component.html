@@ -6,7 +6,7 @@
 @if(!dashboard) {
     <div class="card shadow mt-2 p-3 jumbotron mb-1">
         <h1 class="text-monospace text-center text-primary-dark bg-transparent" translate>dashboard.indice-tempestivita.title</h1>
-        @if(esercizi) {
+        @if(esercizi && filterForm) {
             <form class="form" role="form" [formGroup]="filterForm">
                 <div class="row justify-content-center">
                     <div class="col-12 col-md-auto mb-2 mb-md-0">
