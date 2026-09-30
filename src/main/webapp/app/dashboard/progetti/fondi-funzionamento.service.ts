@@ -49,6 +49,13 @@ export interface DettaglioVoceSpesa {
   imPagatoSpesaCofinanziato: number;
 }
 
+/** Voce del piano economico: raggruppa più elementi voce */
+export interface VocePiano {
+  codice: string;
+  descrizione: string;
+  elementiVoce: string[];
+}
+
 @Injectable()
 export class FondiFunzionamentoService {
 
@@ -91,10 +98,29 @@ export class FondiFunzionamentoService {
     );
   }
 
-  getDettaglioProgetto(anno: number, codiceProgetto: string): Observable<DettaglioVoceSpesa[]> {
-    return this.http.get<DettaglioVoceSpesa[]>(
-      environment.apiUrl + `/progetto/fondi-funzionamento/${anno}/codice/${codiceProgetto}`,
+  // dentro FondiFunzionamentoService
+
+  getVociPiano(anno: number, codiceProgetto: string): Observable<VocePiano[]> {
+    return this.http.get<VocePiano[]>(
+      environment.apiUrl + `/progetto/piano-economico/${anno}/codice/${codiceProgetto}`,
       { withCredentials: true }
     );
   }
+
+  getDettaglioProgetto(
+    anno: number,
+    codiceProgetto: string,
+    elementiVoce?: string[]
+  ): Observable<DettaglioVoceSpesa[]> {
+    let params = new HttpParams();
+    if (elementiVoce?.length) {
+      // NB: nome del param e formato non confermati, ipotizzato `elementiVoce` separato da virgole
+      params = params.set('elementiVoce', elementiVoce.join(','));
+    }
+    return this.http.get<DettaglioVoceSpesa[]>(
+      environment.apiUrl + `/progetto/fondi-funzionamento/${anno}/codice/${codiceProgetto}`,
+      { params, withCredentials: true }
+    );
+  }
+
 }

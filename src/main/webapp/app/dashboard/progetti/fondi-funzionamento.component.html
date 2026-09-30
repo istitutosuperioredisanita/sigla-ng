@@ -117,6 +117,17 @@
     </button>
   </div>
   <div class="modal-body">
+    <div class="form-group row align-items-center">
+      <label for="vocePiano" class="col-form-label col-auto">Voce del Piano</label>
+      <div class="col-12 col-md-6">
+        <select id="vocePiano" class="form-control" [formControl]="voceControl">
+          <option [ngValue]="null">Tutte</option>
+          @for (voce of vociPiano; track voce.codice) {
+            <option [ngValue]="voce">{{voce.codice}} - {{voce.descrizione}}</option>
+          }
+        </select>
+      </div>
+    </div>    
     @if (loadingDettaglio()) {
       <div class="d-flex justify-content-center py-5">
         <div class="loading cursor-wait"></div>

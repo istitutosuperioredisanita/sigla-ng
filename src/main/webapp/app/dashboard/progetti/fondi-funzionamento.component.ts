@@ -2,12 +2,12 @@ import { Component, OnInit, OnDestroy, OnChanges, SimpleChanges, Input, ViewChil
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalRef, NgbTypeaheadSelectItemEvent } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, Subject, combineLatest } from 'rxjs';
+import { Observable, Subject, Subscription, combineLatest } from 'rxjs';
 import { debounceTime, map, takeUntil } from 'rxjs/operators';
 import { ContextService } from 'app/context';
 import { Pair } from '../../context/pair.model';
 import { EChartsOption } from 'echarts';
-import { DettaglioVoceSpesa, DimensioneFondo, FondiFunzionamentoService } from './fondi-funzionamento.service';
+import { DettaglioVoceSpesa, DimensioneFondo, FondiFunzionamentoService, VocePiano } from './fondi-funzionamento.service';
 import { LocalStateStorageService } from '../../shared/auth/local-storage.service';
 import { Principal } from '../../shared/auth/principal.service';
 
@@ -87,6 +87,10 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
 
   loadingChart = signal(false);
 
+  protected vociPiano: VocePiano[] = [];
+  protected voceControl = new FormControl<VocePiano | null>(null);
+  private dettaglioSub?: Subscription;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -99,6 +103,14 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
   ) {}
 
   ngOnInit(): void {
+    this.voceControl.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(voce => {
+        if (this.dettaglioProgetto) {
+          this.caricaDettaglio(this.dettaglioProgetto.codice, voce?.elementiVoce);
+        }
+      });
+
     combineLatest([this.route.data, this.route.queryParams])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([data, params]) => {
@@ -277,27 +289,41 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
   }
 
   private apriDettaglioProgetto(progetto: VoceFondo): void {
-    // evita backdrop doppi se una modale è già aperta (es. doppio click sulla barra impilata)
     this.modalRef?.close();
 
     this.dettaglioProgetto = progetto;
     this.dettaglio = [];
-    this.loadingDettaglio.set(true);
+    this.vociPiano = [];
+    this.voceControl.setValue(null, { emitEvent: false });
+
     this.modalRef = this.modalService.open(this.dettaglioModalTpl, {
       size: 'xl',
       scrollable: true,
       container: 'body'
     });
-    // evita "Uncaught (in promise)" quando la modale viene chiusa/dismissata
     this.modalRef.result.catch(() => {});
 
-    this.fondiService.getDettaglioProgetto(this.anno, progetto.codice).subscribe({
-      next: (result) => {
-        this.dettaglio = result ?? [];
-        this.loadingDettaglio.set(false);
-      },
-      error: () => this.loadingDettaglio.set(false)
+    this.fondiService.getVociPiano(this.anno, progetto.codice).subscribe({
+      next: (voci) => (this.vociPiano = voci ?? []),
+      error: () => (this.vociPiano = [])
     });
+
+    this.caricaDettaglio(progetto.codice);
+  }
+
+  private caricaDettaglio(codiceProgetto: string, elementiVoce?: string[]): void {
+    // annulla la chiamata precedente per evitare risposte fuori ordine
+    this.dettaglioSub?.unsubscribe();
+    this.loadingDettaglio.set(true);
+    this.dettaglioSub = this.fondiService
+      .getDettaglioProgetto(this.anno, codiceProgetto, elementiVoce)
+      .subscribe({
+        next: (result) => {
+          this.dettaglio = result ?? [];
+          this.loadingDettaglio.set(false);
+        },
+        error: () => this.loadingDettaglio.set(false)
+      });
   }
 
   chiudiDettaglio(): void {
