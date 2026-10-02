@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, OnDestroy, AfterViewInit, ViewChild, ViewChildren, QueryList, Input, signal } from "@angular/core";
+import { Component, ElementRef, OnInit, OnDestroy, AfterViewInit, ViewChild, ViewChildren, QueryList, Input, Output, EventEmitter, signal } from "@angular/core";
 import { ContextService } from "app/context";
 import { IndiceTempestivitaPagamentiService } from "./indice-tempestivita-pagamenti.service";
 import { TranslateService } from "@ngx-translate/core";
@@ -24,6 +24,8 @@ import { Principal } from '../../shared/auth/principal.service';
 })
 export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() dashboard: boolean = false;
+    /** Emesso a ogni fine caricamento dati (anche in caso di errore): la dashboard lo usa per mostrare il componente solo quando è pronto */
+    @Output() caricato = new EventEmitter<void>();
 
     protected filterForm!: FormGroup;
 
@@ -185,7 +187,8 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
             this.loadingChart.set(true);
         }, 0);
 
-        this.indiceService.getIndice(esercizio, uo).subscribe((result: Map<string, number>) => {
+        this.indiceService.getIndice(esercizio, uo).subscribe({
+          next: (result: Map<string, number>) => {
             ['0', '1', '2', '3', '4'].forEach(key => {
                 const chartRef = this.chartRefs.get(key);
                 const uoSuffix = uo ? `_${uo}` : '';
@@ -206,7 +209,13 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
 
             setTimeout(() => {
                 this.loadingChart.set(false);
+                this.caricato.emit();
             }, 0);
+          },
+          error: () => {
+            this.loadingChart.set(false);
+            this.caricato.emit();
+          }
         });
     }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, OnChanges, SimpleChanges, Input, ViewChild, ElementRef, TemplateRef, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, OnChanges, SimpleChanges, Input, Output, EventEmitter, ViewChild, ElementRef, TemplateRef, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalRef, NgbTypeaheadSelectItemEvent } from '@ng-bootstrap/ng-bootstrap';
@@ -29,6 +29,12 @@ interface FiltroFondo {
 const COLORE_UTILIZZATO = '#516fdb'; // blu
 const COLORE_ASSEGNATO = '#b6d635';  // verde
 
+/** Colori delle fette della torta (neutri, per non confonderli con blu/verde delle barre) */
+const COLORI_TORTA = ['#4e79a7', '#f28e2b', '#b07aa1', '#e15759', '#76b7b2', '#edc948', '#9c755f', '#bab0ac'];
+
+/** Numero di voci mostrate all'apertura del grafico 'elemento-voce' (le altre si raggiungono con lo slider) */
+const VOCI_VISIBILI_INIZIALI = 25;
+
 /** Icona Font Awesome 4.7 "file-image-o" (f1c5) come tracciato SVG, per il salva-immagine della toolbox */
 const ICONA_IMMAGINE = 'path://M1468 380Q1496 408 1516 456T1536 544V1696Q1536 1736 1508 1764T1440 1792H96Q56 1792 28 1764T0 1696V96Q0 56 28 28T96 0H992Q1032 0 1080 20T1156 68ZM1024 136V512H1400Q1390 483 1378 471L1065 158Q1053 146 1024 136ZM1408 1664V640H992Q952 640 924 612T896 544V128H128V1664H1408ZM1280 1216V1536H256V1344L448 1152 576 1280 960 896ZM448 1024Q368 1024 312 968T256 832 312 696 448 640 584 696 640 832 584 968 448 1024Z';
 
@@ -38,6 +44,7 @@ const ICONA_EXCEL = 'path://M1468 380Q1496 408 1516 456T1536 544V1696Q1536 1736 
 /** Etichette dei raggruppamenti disponibili (per i testi del componente) */
 const DIMENSIONI: { valore: DimensioneFondo; label: string }[] = [
   { valore: 'uo', label: 'Unità Organizzativa' },
+  { valore: 'elemento-voce', label: 'Voce' },
   { valore: 'tipo-progetto', label: 'Tipo Progetto' },
   { valore: 'tipo-finanziamento', label: 'Tipo Finanziamento' },
   { valore: 'ente-finanziatore', label: 'Ente Finanziatore' }
@@ -61,6 +68,8 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
   @Input() valore?: string;
   /** @deprecated alias di `valore` con dimensione 'uo', mantenuto per retrocompatibilità */
   @Input() uo?: string;
+  /** Emesso a ogni fine caricamento dati (anche in caso di errore): la dashboard lo usa per mostrare il componente solo quando è pronto */
+  @Output() caricato = new EventEmitter<void>();
 
   protected filterForm!: FormGroup;
   esercizi: number[] = [];
@@ -71,6 +80,11 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
   protected dimensioneCorrente: DimensioneFondo = 'uo';
   /** Filtro di drill-down attivo (livello 2), se presente */
   protected filtroCorrente?: FiltroFondo;
+  /**
+   * Voce (elemento-voce) fissata, solo per la dimensione 'uo': arriva dal click su una voce
+   * nel grafico 'elemento-voce' e restringe gli importi di ogni UO a quella voce
+   */
+  protected voceFissa?: string;
 
   /** Filtro UO aggiuntivo, selezionabile solo quando dimensioneCorrente !== 'uo' */
   @ViewChild('uoFiltroInput', { static: false }) uoFiltroInput!: ElementRef;
@@ -91,6 +105,8 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
 
   protected chartOptions: EChartsOption = {};
   protected legenda: VoceFondo[] = [];
+  /** true quando il grafico mostrato è una torta (la legenda blu/verde delle barre non si applica) */
+  protected tortaAttiva = false;
 
   @ViewChild('dettaglioModal') dettaglioModalTpl!: TemplateRef<any>;
   private modalRef?: NgbModalRef;
@@ -144,6 +160,9 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
         this.filtroCorrente = valoreFiltro
           ? { dimensione: this.dimensioneCorrente, valore: valoreFiltro }
           : undefined;
+
+        // voce fissata (query param 'voce'): significativa solo per la dimensione 'uo'
+        this.voceFissa = this.dimensioneCorrente === 'uo' ? (params['voce'] ?? undefined) : undefined;
 
         const annoParam = params['anno'] ? Number(params['anno']) : undefined;
 
@@ -231,10 +250,11 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     if (this.dimensioneCorrente === 'uo') {
       const caricaConCds = (cds: Pair[]) => {
         this.cdsPairs = cds ?? [];
-        // default: primo CDS della lista, solo al livello 1
-        // (con un drill-down da URL la UO scelta potrebbe appartenere a un altro CDS)
+        // default: primo CDS della lista, solo al livello 1 e senza voce fissata
+        // (con un drill-down da URL la UO scelta potrebbe appartenere a un altro CDS;
+        // con una voce fissata si vogliono vedere tutte le UO che hanno speso su quella voce)
         const primo = this.cdsPairs[0];
-        if (primo && !this.filtroCorrente) {
+        if (primo && !this.filtroCorrente && !this.voceFissa) {
           this.filtroCdsCorrente = primo.first;
           this.lastValueCds = primo;
           // emitEvent: false evita che la valueChanges del CDS lanci un'altra loadData
@@ -316,7 +336,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     this.anno = anno;
     this.loadingChart.set(true);
     this.fondiService
-      .getFondi(anno, this.dimensioneCorrente, this.filtroCorrente?.valore, this.filtroUoCorrente, this.filtroCdsCorrente)
+      .getFondi(anno, this.dimensioneCorrente, this.filtroCorrente?.valore, this.filtroUoCorrente, this.filtroCdsCorrente, this.voceFissa)
       .subscribe({
         next: (result: any[]) => {
           // normalizzazione e ordinamento per importo assegnato decrescente
@@ -334,8 +354,12 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
           this.legenda = data;
           this.loadChart(data);
           this.loadingChart.set(false);
+          this.caricato.emit();
         },
-        error: () => this.loadingChart.set(false)
+        error: () => {
+          this.loadingChart.set(false);
+          this.caricato.emit();
+        }
       });
   }
 
@@ -354,6 +378,11 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     }
     if (this.filtroCorrente) {
       this.apriDettaglioProgetto(voce);
+    } else if (this.dimensioneCorrente === 'elemento-voce') {
+      // click su una voce: apre il grafico per UO con la voce fissata
+      this.router.navigate(['/progetti/fondi-funzionamento/uo'], {
+        queryParams: { voce: voce.codice, anno: this.anno }
+      });
     } else {
       this.router.navigate([], {
         relativeTo: this.route,
@@ -412,12 +441,26 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     this.modalRef?.close();
   }
 
+  /** Etichetta del "torna a": con un drill-down attivo si torna al livello della dimensione corrente,
+   *  altrimenti (solo voce fissata) si torna al grafico per Voce */
+  protected get labelTorna(): string {
+    return this.labelDimensione(this.filtroCorrente ? this.dimensioneCorrente : 'elemento-voce');
+  }
+
   torna(): void {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { valore: null, uo: null },
-      queryParamsHandling: 'merge'
-    });
+    if (this.filtroCorrente) {
+      // livello 2 -> livello 1 (la voce fissata, se presente, resta nei queryParams)
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { valore: null, uo: null },
+        queryParamsHandling: 'merge'
+      });
+    } else if (this.voceFissa) {
+      // grafico UO con voce fissata -> grafico per Voce
+      this.router.navigate(['/progetti/fondi-funzionamento/elemento-voce'], {
+        queryParams: { anno: this.anno }
+      });
+    }
   }
 
   protected formatEur(v: number): string {
@@ -428,6 +471,78 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
 
   protected labelDimensione(dimensione: DimensioneFondo): string {
     return this.dimensioni.find(d => d.valore === dimensione)?.label ?? dimensione;
+  }
+
+  /** Toolbox comune a barre e torta: salva immagine (blu) e scarica CSV (verde) */
+  private toolbox(data: VoceFondo[], nomeFile: string) {
+    return {
+      feature: {
+        saveAsImage: {
+          title: 'Salva immagine',
+          name: nomeFile,
+          icon: ICONA_IMMAGINE,
+          iconStyle: { color: '#2c6fbb', borderWidth: 0 },          // blu
+          emphasis: { iconStyle: { color: '#1f5291', borderWidth: 0 } } // blu più scuro al passaggio del mouse
+        },
+        myScaricaCsv: {
+          show: true,
+          title: 'Scarica CSV',
+          icon: ICONA_EXCEL,
+          // il glifo è un'icona piena: riempimento al posto del solo contorno delle altre icone
+          iconStyle: { color: '#217346', borderWidth: 0 },          // verde Excel
+          emphasis: { iconStyle: { color: '#185c37', borderWidth: 0 } }, // verde più scuro al passaggio del mouse
+          onclick: () => this.scaricaCsv(data, nomeFile)
+        }
+      }
+    };
+  }
+
+  /** Torta sull'importo assegnato, usata da 'tipo-finanziamento' al primo livello (poche voci) */
+  private opzioniTorta(data: VoceFondo[], suffisso: string, nomeFile: string): EChartsOption {
+    return {
+      color: COLORI_TORTA,
+      title: {
+        text: this.translateService.instant(`global.menu.progetti.fondi-funzionamento.${this.dimensioneCorrente}`),
+        subtext: `Anno ${this.anno}${suffisso}`,
+        left: 'center'
+      },
+      toolbox: this.toolbox(data, nomeFile),
+      tooltip: {
+        trigger: 'item',
+        textStyle: { align: 'left' },
+        confine: true,
+        formatter: (params: any) => {
+          const row = data[params?.dataIndex];
+          if (!row) return '';
+          const residuoVal = row.importoFinanziato - row.importoUtilizzato;
+          const perc = row.importoFinanziato
+            ? ((row.importoUtilizzato / row.importoFinanziato) * 100).toFixed(1)
+            : '0';
+          return [
+            `<b>${row.codice}</b>`,
+            `<div style="max-width:320px;white-space:normal">${row.descrizione}</div>`,
+            `Assegnato: ${this.formatEur(row.importoFinanziato)} (${params.percent}% del totale)`,
+            `Utilizzato: ${this.formatEur(row.importoUtilizzato)} (${perc}%)`,
+            `Residuo: ${this.formatEur(residuoVal)}`
+          ].join('<br/>');
+        }
+      },
+      // la legenda codice/descrizione è resa in HTML sotto il grafico
+      legend: { show: false },
+      series: [
+        {
+          name: 'Importo assegnato',
+          type: 'pie',
+          radius: '60%',
+          center: ['50%', '58%'],
+          cursor: this.filtroCorrente ? 'default' : 'pointer',
+          data: data.map(d => ({ name: d.codice, value: d.importoFinanziato })),
+          label: { formatter: (p: any) => `${p.name}\n${p.percent}%`, fontSize: 12 },
+          emphasis: { itemStyle: { shadowBlur: 10, shadowColor: 'rgba(0,0,0,0.3)' } },
+          animationDuration: 1000
+        }
+      ]
+    };
   }
 
   /** Esporta in CSV i dati mostrati nel grafico (separatore ';', UTF-8 con BOM, per Excel in italiano) */
@@ -459,8 +574,14 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
   private loadChart(data: VoceFondo[]): void {
     const categories = data.map(d => d.codice);
 
-    // per 'tipo-progetto' gli assi sono invertiti: categorie sulle ordinate, importi sulle ascisse
-    const orizzontale = this.dimensioneCorrente === 'tipo-progetto';
+    // per 'tipo-progetto' e 'elemento-voce' gli assi sono invertiti: categorie sulle ordinate, importi sulle ascisse
+    const orizzontale = this.dimensioneCorrente === 'tipo-progetto' || this.dimensioneCorrente === 'elemento-voce';
+    // 'elemento-voce' ha molte voci: all'apertura si vedono solo le prime N (già ordinate per importo), il resto con lo slider
+    const finestra = this.dimensioneCorrente === 'elemento-voce' && data.length > VOCI_VISIBILI_INIZIALI
+      ? { startValue: 0, endValue: VOCI_VISIBILI_INIZIALI - 1 }
+      : {};
+    // solo 'tipo-progetto' ha le barre affiancate (utilizzato / assegnato); le altre dimensioni sono impilate
+    const affiancate = this.dimensioneCorrente === 'tipo-progetto';
     const raggioCima = orizzontale ? [0, 6, 6, 0] : [6, 6, 0, 0];
 
     // blu = utilizzato (base della barra)
@@ -476,7 +597,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     // verde = residuo se le barre sono impilate (totale impilato = importo assegnato);
     // con barre affiancate ('tipo-progetto') = importo assegnato intero
     const residuo = data.map(d => ({
-      value: orizzontale ? d.importoFinanziato : Math.max(d.importoFinanziato - d.importoUtilizzato, 0),
+      value: affiancate ? d.importoFinanziato : Math.max(d.importoFinanziato - d.importoUtilizzato, 0),
       itemStyle: { borderRadius: raggioCima }
     }));
 
@@ -489,8 +610,18 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     if (this.filtroCdsCorrente) {
       suffisso += ` - CDS ${this.filtroCdsCorrente}`;
     }
+    if (this.voceFissa) {
+      suffisso += ` - Voce ${this.voceFissa}`;
+    }
 
-    const nomeFile = `fondi_funzionamento_${this.anno}${this.filtroCorrente ? '_' + this.filtroCorrente.valore : ''}${this.filtroUoCorrente ? '_' + this.filtroUoCorrente : ''}${this.filtroCdsCorrente ? '_' + this.filtroCdsCorrente : ''}`;
+    const nomeFile = `fondi_funzionamento_${this.anno}${this.filtroCorrente ? '_' + this.filtroCorrente.valore : ''}${this.filtroUoCorrente ? '_' + this.filtroUoCorrente : ''}${this.filtroCdsCorrente ? '_' + this.filtroCdsCorrente : ''}${this.voceFissa ? '_voce_' + this.voceFissa : ''}`;
+
+    // 'tipo-finanziamento' al primo livello (nessun filtro attivo): torta; al secondo livello restano le barre dei progetti
+    this.tortaAttiva = this.dimensioneCorrente === 'tipo-finanziamento' && !this.filtroCorrente;
+    if (this.tortaAttiva) {
+      this.chartOptions = this.opzioniTorta(data, suffisso, nomeFile);
+      return;
+    }
 
     // asse delle categorie (codici) e asse degli importi; la loro posizione dipende da `orizzontale`
     const asseCategorie = {
@@ -514,26 +645,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
         subtext: `Anno ${this.anno}${suffisso}`,
         left: 'center'
       },
-      toolbox: {
-        feature: {
-          saveAsImage: {
-            title: 'Salva immagine',
-            name: nomeFile,
-            icon: ICONA_IMMAGINE,
-            iconStyle: { color: '#2c6fbb', borderWidth: 0 },          // blu
-            emphasis: { iconStyle: { color: '#1f5291', borderWidth: 0 } } // blu più scuro al passaggio del mouse
-          },
-          myScaricaCsv: {
-            show: true,
-            title: 'Scarica CSV',
-            icon: ICONA_EXCEL,
-            // il glifo è un'icona piena: riempimento al posto del solo contorno delle altre icone
-            iconStyle: { color: '#217346', borderWidth: 0 },          // verde Excel
-            emphasis: { iconStyle: { color: '#185c37', borderWidth: 0 } }, // verde più scuro al passaggio del mouse
-            onclick: () => this.scaricaCsv(data, nomeFile)
-          }
-        }
-      },
+      toolbox: this.toolbox(data, nomeFile),
       tooltip: {
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
@@ -563,12 +675,12 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
         : { left: '3%', right: '3%', bottom: '8%', top: '18%', containLabel: true },
       dataZoom: orizzontale
         ? [
-            { type: 'inside', yAxisIndex: 0 },
-            { type: 'slider', yAxisIndex: 0, width: 18, right: 0 }
+            { type: 'inside', yAxisIndex: 0, ...finestra },
+            { type: 'slider', yAxisIndex: 0, width: 38, right: 0, ...finestra }
           ]
         : [
             { type: 'inside' },
-            { type: 'slider', height: 18, bottom: 0 }
+            { type: 'slider', height: 38, bottom: 0 }
           ],
       xAxis: orizzontale ? asseImporti : asseCategorie,
       yAxis: orizzontale ? asseCategorie : asseImporti,
@@ -586,7 +698,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
         {
           name: 'Importo assegnato (residuo)',
           type: 'bar',
-          stack: this.dimensioneCorrente === 'tipo-progetto' ? 'fondi2' : 'fondi',
+          stack: affiancate ? 'fondi2' : 'fondi',
           barMaxWidth: 28,
           cursor: this.filtroCorrente ? 'default' : 'pointer',
           itemStyle: { color: COLORE_ASSEGNATO },

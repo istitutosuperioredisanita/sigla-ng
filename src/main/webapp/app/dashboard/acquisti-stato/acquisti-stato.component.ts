@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, signal } from "@angular/core";
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, signal } from "@angular/core";
 import { ContextService } from "app/context";
 import { TranslateService } from "@ngx-translate/core";
 import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
@@ -19,6 +19,8 @@ import { EChartsOption } from "echarts";
 export class AcquistiStatoComponent implements OnInit, OnDestroy {
   @Input() dashboard: boolean = false;
   @Input() codiceUo: string;
+  /** Emesso a ogni fine caricamento dati (anche in caso di errore): la dashboard lo usa per mostrare il componente solo quando è pronto */
+  @Output() caricato = new EventEmitter<void>();
 
   protected filterForm: FormGroup;
 
@@ -119,13 +121,20 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
 
   callStato(codice?: string): void {
     this.loadingChart.set(true);
-    this.acquistiStatoService.getIndice(codice).subscribe((result: any[]) => {
-      const data = result?.slice(-4).map(item => ({
-        ...item,
-        riepilogo_stato_esercizio: String(item.riepilogo_stato_esercizio)
-      }));
-      this.loadChart(data);
-      this.loadingChart.set(false);
+    this.acquistiStatoService.getIndice(codice).subscribe({
+      next: (result: any[]) => {
+        const data = result?.slice(-4).map(item => ({
+          ...item,
+          riepilogo_stato_esercizio: String(item.riepilogo_stato_esercizio)
+        }));
+        this.loadChart(data);
+        this.loadingChart.set(false);
+        this.caricato.emit();
+      },
+      error: () => {
+        this.loadingChart.set(false);
+        this.caricato.emit();
+      }
     });
   }
 

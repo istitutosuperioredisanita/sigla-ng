@@ -85,6 +85,17 @@ export const FONDI_FUNZIONAMENTO_TIPO_PROGETTO: Route = {
     },
     canActivate: ((environment.oidc.enable  === 'true') ? true : false) ? [AutoLoginAllRoutesGuard] : [UserRouteAccessService],
 };
+export const FONDI_FUNZIONAMENTO_ELEMENTO_VOCE: Route = {
+    path: 'progetti/fondi-funzionamento/elemento-voce',
+    component: FondiFunzionamentoComponent,
+    data: {
+        authorities: ['APPLICATION_ROLE_SUPER'],
+        pageTitle: 'global.menu.progetti.fondi-funzionamento.elemento-voce',
+        menu: 'dashboard',
+        dimensione: 'elemento-voce'
+    },
+    canActivate: ((environment.oidc.enable  === 'true') ? true : false) ? [AutoLoginAllRoutesGuard] : [UserRouteAccessService],
+};
 
 export const FONDI_FUNZIONAMENTO_ENTE_FINANZIATORE: Route = {
     path: 'progetti/fondi-funzionamento/ente-finanziatore',

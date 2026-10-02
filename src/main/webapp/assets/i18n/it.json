@@ -15,6 +15,7 @@
                 "fondi-funzionamento": {
                     "uo": "Trend Fondi di Funzionamento per UO",
                     "tipo-progetto": "Progetti per Tipo",
+                    "elemento-voce": "Progetti per Voce",
                     "tipo-finanziamento": "Progetti per Tipo Finanziamento",
                     "ente-finanziatore": "Progetti per Ente Finanziatore"
                 }

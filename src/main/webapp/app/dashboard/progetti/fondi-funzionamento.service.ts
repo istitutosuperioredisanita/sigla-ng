@@ -4,11 +4,12 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 /** Assi di raggruppamento disponibili a livello 1 (elenco) */
-export type DimensioneFondo = 'uo' | 'tipo-progetto' | 'tipo-finanziamento' | 'ente-finanziatore';
+export type DimensioneFondo = 'uo' | 'elemento-voce' | 'tipo-progetto' | 'tipo-finanziamento' | 'ente-finanziatore';
 
 /** Segmento URL kebab-case per ciascuna dimensione */
 const SEGMENTO_DIMENSIONE: Record<DimensioneFondo, string> = {
   uo: 'uo',
+  'elemento-voce': 'elemento-voce',
   'tipo-progetto': 'tipo-progetto',
   'tipo-finanziamento': 'tipo-finanziamento',
   'ente-finanziatore': 'ente-finanziatore'
@@ -81,7 +82,8 @@ export class FondiFunzionamentoService {
     dimensione: DimensioneFondo,
     valore?: string,
     uoFiltro?: string,
-    cdsFiltro?: string
+    cdsFiltro?: string,
+    voce?: string
   ): Observable<(FondiPerGruppo | FondiPerProgetto)[]> {
     const segmento = SEGMENTO_DIMENSIONE[dimensione];
     let url = `/progetto/fondi-funzionamento/${segmento}/${anno}`;
@@ -97,6 +99,10 @@ export class FondiFunzionamentoService {
     // NB: nome del query param non confermato, ipotizzato `cds`
     if (cdsFiltro && dimensione === 'uo') {
       httpParams = httpParams.set('cds', cdsFiltro);
+    }
+
+    if (voce && dimensione === 'uo') {
+      httpParams = httpParams.set('voce', voce);
     }
 
     return this.http.get<(FondiPerGruppo | FondiPerProgetto)[]>(

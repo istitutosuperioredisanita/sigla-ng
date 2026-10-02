@@ -1,23 +1,38 @@
 <div class="container-fluid">
     <div class="d-flex justify-content-center mt-4 text-primary-dark">
-        <h1 class="text-monospace font-weight-bold bg-transparent">Indicatori per la Performance</h1>
+        <h1 class="text-monospace font-weight-bold bg-transparent">Cruscotto indici di analisi dell’Attività Amministrativa</h1>
     </div>
     <div class="d-flex justify-content-center text-primary-dark">
         <p class="text-monospace font-weight-bold">Indicatori di efficienza, sostenibilità e resilienza per la valutazione complessiva delle performance gestionali dell'amministrazione</p>
     </div>
-    <a [routerLink]="['/progetti/fondi-funzionamento/uo']" [queryParams]="{dashboard: false}">
-        <fondi-funzionamento [dashboard]="true"></fondi-funzionamento>
+    <a class="d-block" [routerLink]="['/progetti/fondi-funzionamento/uo']" [queryParams]="{dashboard: false}"
+       [class.in-caricamento]="!pronti().has('uo')" [class.comparsa]="pronti().has('uo')">
+        <fondi-funzionamento [dashboard]="true" (caricato)="segnaPronto('uo')"></fondi-funzionamento>
     </a>
-    <div class="my-4">
+    <a class="d-block" [routerLink]="['/progetti/fondi-funzionamento/elemento-voce']" [queryParams]="{dashboard: false}"
+       [class.in-caricamento]="!pronti().has('elemento-voce')" [class.comparsa]="pronti().has('elemento-voce')">
+        <fondi-funzionamento [dashboard]="true" dimensione="elemento-voce" (caricato)="segnaPronto('elemento-voce')"></fondi-funzionamento>
+    </a>
+    <div class="my-4" [class.in-caricamento]="!pronti().has('tipo-finanziamento') && !pronti().has('indice') && !pronti().has('acquisti')">
         <div class="row pt-2 justify-content-md-center">
             <div class="col-md-4">
-                <a [routerLink]="['/indice-tempestivita-pagamenti']" [queryParams]="{dashboard: false}">
-                    <indice-tempestivita-pagamenti [dashboard]="true"></indice-tempestivita-pagamenti>
+                <div class="card my-4"
+                     [class.in-caricamento]="!pronti().has('tipo-finanziamento')" [class.comparsa]="pronti().has('tipo-finanziamento')">
+                    <a [routerLink]="['/progetti/fondi-funzionamento/tipo-finanziamento']" [queryParams]="{dashboard: false}">
+                        <fondi-funzionamento [dashboard]="true" dimensione="tipo-finanziamento" (caricato)="segnaPronto('tipo-finanziamento')"></fondi-funzionamento>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <a class="d-block" [routerLink]="['/indice-tempestivita-pagamenti']" [queryParams]="{dashboard: false}"
+                   [class.in-caricamento]="!pronti().has('indice')" [class.comparsa]="pronti().has('indice')">
+                    <indice-tempestivita-pagamenti [dashboard]="true" (caricato)="segnaPronto('indice')"></indice-tempestivita-pagamenti>
                 </a>
             </div>
             <div class="col-md-4">
-                <a [routerLink]="['/acquisti-stato']" [queryParams]="{dashboard: false}">
-                    <acquisti-stato [dashboard]="true"></acquisti-stato>
+                <a class="d-block" [routerLink]="['/acquisti-stato']" [queryParams]="{dashboard: false}"
+                   [class.in-caricamento]="!pronti().has('acquisti')" [class.comparsa]="pronti().has('acquisti')">
+                    <acquisti-stato [dashboard]="true" (caricato)="segnaPronto('acquisti')"></acquisti-stato>
                 </a>
             </div>
         </div>

@@ -80,10 +80,10 @@
 }
 
 <div class="card shadow p-1 mb-5">
-  @if (filtroCorrente && !dashboard) {
+  @if ((filtroCorrente || voceFissa)  && !dashboard) {
     <div class="card-header d-flex align-items-center">
       <a class="btn btn-link text-primary p-0" href="javascript:void(0);" (click)="torna()">
-        <i class="fa fa-fw fa-arrow-left" aria-hidden="true"></i> Torna a {{labelDimensione(dimensioneCorrente)}}
+        <i class="fa fa-fw fa-arrow-left" aria-hidden="true"></i> Torna a {{labelTorna}}
       </a>
     </div>
   }
