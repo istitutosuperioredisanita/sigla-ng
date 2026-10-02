@@ -10,6 +10,7 @@ import { EChartsOption } from 'echarts';
 import { DettaglioVoceSpesa, DimensioneFondo, FondiFunzionamentoService, VocePiano } from './fondi-funzionamento.service';
 import { LocalStateStorageService } from '../../shared/auth/local-storage.service';
 import { Principal } from '../../shared/auth/principal.service';
+import { TranslateService } from '@ngx-translate/core';
 
 /** Forma comune usata dal grafico, indipendente dall'endpoint chiamato */
 interface VoceFondo {
@@ -28,9 +29,16 @@ interface FiltroFondo {
 const COLORE_UTILIZZATO = '#516fdb'; // blu
 const COLORE_ASSEGNATO = '#b6d635';  // verde
 
+/** Icona Font Awesome 4.7 "file-image-o" (f1c5) come tracciato SVG, per il salva-immagine della toolbox */
+const ICONA_IMMAGINE = 'path://M1468 380Q1496 408 1516 456T1536 544V1696Q1536 1736 1508 1764T1440 1792H96Q56 1792 28 1764T0 1696V96Q0 56 28 28T96 0H992Q1032 0 1080 20T1156 68ZM1024 136V512H1400Q1390 483 1378 471L1065 158Q1053 146 1024 136ZM1408 1664V640H992Q952 640 924 612T896 544V128H128V1664H1408ZM1280 1216V1536H256V1344L448 1152 576 1280 960 896ZM448 1024Q368 1024 312 968T256 832 312 696 448 640 584 696 640 832 584 968 448 1024Z';
+
+/** Icona Font Awesome 4.7 "file-excel-o" (f1c3) come tracciato SVG, per la toolbox del grafico */
+const ICONA_EXCEL = 'path://M1468 380Q1496 408 1516 456T1536 544V1696Q1536 1736 1508 1764T1440 1792H96Q56 1792 28 1764T0 1696V96Q0 56 28 28T96 0H992Q1032 0 1080 20T1156 68ZM1024 136V512H1400Q1390 483 1378 471L1065 158Q1053 146 1024 136ZM1408 1664V640H992Q952 640 924 612T896 544V128H128V1664H1408ZM429 1430V1536H710V1430H635L738 1269Q743 1262 748 1252.5T755.5 1239 759 1235H761Q762 1239 766 1245 768 1249 770.5 1252.5T776.5 1260.5 783 1269L890 1430H814V1536H1105V1430H1037L845 1157 1040 875H1107V768H828V875H902L799 1034Q795 1041 789 1050.5T780 1064L778 1067H776Q775 1063 771 1057 765 1046 754 1034L648 875H724V768H434V875H502L691 1147 497 1430H429Z';
+
 /** Etichette dei raggruppamenti disponibili (per i testi del componente) */
 const DIMENSIONI: { valore: DimensioneFondo; label: string }[] = [
   { valore: 'uo', label: 'Unità Organizzativa' },
+  { valore: 'tipo-progetto', label: 'Tipo Progetto' },
   { valore: 'tipo-finanziamento', label: 'Tipo Finanziamento' },
   { valore: 'ente-finanziatore', label: 'Ente Finanziatore' }
 ];
@@ -72,6 +80,13 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
   /** true mentre il click sul caret forza l'apertura della tendina (non è una cancellazione voluta dall'utente) */
   private aperturaTypeahead = false;
 
+  /** Filtro CDS aggiuntivo, selezionabile solo quando dimensioneCorrente === 'uo' */
+  @ViewChild('cdsFiltroInput', { static: false }) cdsFiltroInput!: ElementRef;
+  protected cdsPairs: Pair[] = [];
+  private filtroCdsCorrente?: string;
+  private lastValueCds: any = null;
+  private aperturaTypeaheadCds = false;
+
   private destroy$ = new Subject<void>();
 
   protected chartOptions: EChartsOption = {};
@@ -87,6 +102,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
 
   loadingChart = signal(false);
 
+  /** Select "Voce del Piano" nella modale di dettaglio */
   protected vociPiano: VocePiano[] = [];
   protected voceControl = new FormControl<VocePiano | null>(null);
   private dettaglioSub?: Subscription;
@@ -100,9 +116,11 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     private modalService: NgbModal,
     private localStateStorageService: LocalStateStorageService,
     private principal: Principal,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
+    // unico punto di caricamento del dettaglio: sottoscritto una volta sola
     this.voceControl.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe(voce => {
@@ -159,6 +177,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
   }
 
   ngOnDestroy(): void {
+    this.dettaglioSub?.unsubscribe();
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -166,7 +185,8 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
   private initializeComponent(annoIniziale?: number): void {
     this.filterForm = this.formBuilder.group({
       esercizio: new FormControl(annoIniziale ?? Math.max(...this.esercizi)),
-      uoFiltro: new FormControl()
+      uoFiltro: new FormControl(),
+      cdsFiltro: new FormControl()
     });
 
     this.filterForm.controls['esercizio'].valueChanges
@@ -190,13 +210,49 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
         this.lastValueUo = value;
       });
 
-    if (this.dimensioneCorrente !== 'uo') {
+    // filtro CDS aggiuntivo (solo per dimensione 'uo')
+    this.filterForm.controls['cdsFiltro'].valueChanges
+      .pipe(debounceTime(300), takeUntil(this.destroy$))
+      .subscribe(value => {
+        if (this.aperturaTypeaheadCds) {
+          this.aperturaTypeaheadCds = false;
+          this.lastValueCds = value;
+          return;
+        }
+        if (!value && this.lastValueCds) {
+          this.filtroCdsCorrente = undefined;
+          this.loadData(this.filterForm.controls['esercizio'].value);
+        }
+        this.lastValueCds = value;
+      });
+
+    const esercizio = this.filterForm.controls['esercizio'].value;
+
+    if (this.dimensioneCorrente === 'uo') {
+      const caricaConCds = (cds: Pair[]) => {
+        this.cdsPairs = cds ?? [];
+        // default: primo CDS della lista, solo al livello 1
+        // (con un drill-down da URL la UO scelta potrebbe appartenere a un altro CDS)
+        const primo = this.cdsPairs[0];
+        if (primo && !this.filtroCorrente) {
+          this.filtroCdsCorrente = primo.first;
+          this.lastValueCds = primo;
+          // emitEvent: false evita che la valueChanges del CDS lanci un'altra loadData
+          this.filterForm.controls['cdsFiltro'].setValue(primo, { emitEvent: false });
+        }
+        this.loadData(esercizio);
+      };
+
+      this.contextService.getCds().subscribe({
+        next: caricaConCds,
+        error: () => caricaConCds([])
+      });
+    } else {
       this.contextService.getUo().subscribe((result: Pair[]) => {
         this.uoPairs = result;
       });
+      this.loadData(esercizio);
     }
-
-    this.loadData(this.filterForm.controls['esercizio'].value);
   }
 
   onUoSelected(event: NgbTypeaheadSelectItemEvent): void {
@@ -205,9 +261,20 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     this.loadData(this.filterForm.controls['esercizio'].value);
   }
 
+  onCdsSelected(event: NgbTypeaheadSelectItemEvent): void {
+    this.aperturaTypeaheadCds = false;
+    this.filtroCdsCorrente = event?.item?.first;
+    this.loadData(this.filterForm.controls['esercizio'].value);
+  }
+
   searchuo = (text$: Observable<string>) =>
     text$.pipe(debounceTime(200)).pipe(
       map((term: string) => this.filterPair(term, this.uoPairs).slice(0, 200))
+    );
+
+  searchcds = (text$: Observable<string>) =>
+    text$.pipe(debounceTime(200)).pipe(
+      map((term: string) => this.filterPair(term, this.cdsPairs).slice(0, 200))
     );
 
   private filterPair(term: string, pairs: Pair[]): Pair[] {
@@ -228,6 +295,14 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     }
   }
 
+  openTypeaheadCds(): void {
+    if (this.cdsFiltroInput) {
+      this.aperturaTypeaheadCds = true;
+      this.cdsFiltroInput.nativeElement.value = '';
+      this.cdsFiltroInput.nativeElement.dispatchEvent(this.createNewEvent('input'));
+    }
+  }
+
   private createNewEvent(eventName: string): Event {
     if (typeof Event === 'function') {
       return new Event(eventName);
@@ -241,7 +316,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     this.anno = anno;
     this.loadingChart.set(true);
     this.fondiService
-      .getFondi(anno, this.dimensioneCorrente, this.filtroCorrente?.valore, this.filtroUoCorrente)
+      .getFondi(anno, this.dimensioneCorrente, this.filtroCorrente?.valore, this.filtroUoCorrente, this.filtroCdsCorrente)
       .subscribe({
         next: (result: any[]) => {
           // normalizzazione e ordinamento per importo assegnato decrescente
@@ -303,12 +378,19 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     });
     this.modalRef.result.catch(() => {});
 
-    this.fondiService.getVociPiano(this.anno, progetto.codice).subscribe({
-      next: (voci) => (this.vociPiano = voci ?? []),
-      error: () => (this.vociPiano = [])
-    });
+    // evita il flash di "Nessuna voce di spesa disponibile" mentre arriva il piano
+    this.loadingDettaglio.set(true);
 
-    this.caricaDettaglio(progetto.codice);
+    this.fondiService.getVociPiano(this.anno, progetto.codice).subscribe({
+      next: (voci) => {
+        this.vociPiano = voci ?? [];
+        this.caricaDettaglio(progetto.codice);
+      },
+      error: () => {
+        this.vociPiano = [];
+        this.caricaDettaglio(progetto.codice);
+      }
+    });
   }
 
   private caricaDettaglio(codiceProgetto: string, elementiVoce?: string[]): void {
@@ -348,8 +430,38 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     return this.dimensioni.find(d => d.valore === dimensione)?.label ?? dimensione;
   }
 
+  /** Esporta in CSV i dati mostrati nel grafico (separatore ';', UTF-8 con BOM, per Excel in italiano) */
+  private scaricaCsv(data: VoceFondo[], nomeFile: string): void {
+    const num = (v: number) => (v ?? 0).toFixed(2).replace('.', ',');
+    const testo = (v: string) => `"${(v ?? '').replace(/"/g, '""')}"`;
+
+    const righe = [
+      ['Codice', 'Descrizione', 'Importo assegnato', 'Importo utilizzato', 'Residuo', '% utilizzo'].join(';'),
+      ...data.map(d => [
+        testo(d.codice),
+        testo(d.descrizione),
+        num(d.importoFinanziato),
+        num(d.importoUtilizzato),
+        num(d.importoFinanziato - d.importoUtilizzato),
+        d.importoFinanziato ? ((d.importoUtilizzato / d.importoFinanziato) * 100).toFixed(1).replace('.', ',') : '0'
+      ].join(';'))
+    ];
+
+    const blob = new Blob(['\uFEFF' + righe.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${nomeFile}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
   private loadChart(data: VoceFondo[]): void {
     const categories = data.map(d => d.codice);
+
+    // per 'tipo-progetto' gli assi sono invertiti: categorie sulle ordinate, importi sulle ascisse
+    const orizzontale = this.dimensioneCorrente === 'tipo-progetto';
+    const raggioCima = orizzontale ? [0, 6, 6, 0] : [6, 6, 0, 0];
 
     // blu = utilizzato (base della barra)
     const utilizzato = data.map(d => {
@@ -357,14 +469,15 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
       return {
         value: d.importoUtilizzato,
         // se non c'è residuo la parte blu è anche la cima della barra
-        itemStyle: { borderRadius: residuo > 0 ? 0 : [6, 6, 0, 0] }
+        itemStyle: { borderRadius: residuo > 0 ? 0 : raggioCima }
       };
     });
 
-    // verde = residuo, così che il totale impilato = importo assegnato
+    // verde = residuo se le barre sono impilate (totale impilato = importo assegnato);
+    // con barre affiancate ('tipo-progetto') = importo assegnato intero
     const residuo = data.map(d => ({
-      value: Math.max(d.importoFinanziato - d.importoUtilizzato, 0),
-      itemStyle: { borderRadius: [6, 6, 0, 0] }
+      value: orizzontale ? d.importoFinanziato : Math.max(d.importoFinanziato - d.importoUtilizzato, 0),
+      itemStyle: { borderRadius: raggioCima }
     }));
 
     let suffisso = this.filtroCorrente
@@ -373,10 +486,31 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     if (this.filtroUoCorrente) {
       suffisso += ` - UO ${this.filtroUoCorrente}`;
     }
+    if (this.filtroCdsCorrente) {
+      suffisso += ` - CDS ${this.filtroCdsCorrente}`;
+    }
+
+    const nomeFile = `fondi_funzionamento_${this.anno}${this.filtroCorrente ? '_' + this.filtroCorrente.valore : ''}${this.filtroUoCorrente ? '_' + this.filtroUoCorrente : ''}${this.filtroCdsCorrente ? '_' + this.filtroCdsCorrente : ''}`;
+
+    // asse delle categorie (codici) e asse degli importi; la loro posizione dipende da `orizzontale`
+    const asseCategorie = {
+      type: 'category' as const,
+      data: categories,
+      // inverse: la prima categoria (importo maggiore) resta in alto
+      inverse: orizzontale,
+      axisLabel: orizzontale ? { fontSize: 11 } : { fontSize: 11, rotate: 60 }
+    };
+    const asseImporti = {
+      type: 'value' as const,
+      axisLabel: {
+        formatter: (v: number) =>
+          v >= 1e6 ? (v / 1e6).toLocaleString('it-IT') + ' M€' : v.toLocaleString('it-IT') + '€'
+      }
+    };
 
     this.chartOptions = {
       title: {
-        text: 'Trend fondi di funzionamento',
+        text: this.translateService.instant(`global.menu.progetti.fondi-funzionamento.${this.dimensioneCorrente}`),
         subtext: `Anno ${this.anno}${suffisso}`,
         left: 'center'
       },
@@ -384,7 +518,19 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
         feature: {
           saveAsImage: {
             title: 'Salva immagine',
-            name: `fondi_funzionamento_${this.anno}${this.filtroCorrente ? '_' + this.filtroCorrente.valore : ''}${this.filtroUoCorrente ? '_' + this.filtroUoCorrente : ''}`
+            name: nomeFile,
+            icon: ICONA_IMMAGINE,
+            iconStyle: { color: '#2c6fbb', borderWidth: 0 },          // blu
+            emphasis: { iconStyle: { color: '#1f5291', borderWidth: 0 } } // blu più scuro al passaggio del mouse
+          },
+          myScaricaCsv: {
+            show: true,
+            title: 'Scarica CSV',
+            icon: ICONA_EXCEL,
+            // il glifo è un'icona piena: riempimento al posto del solo contorno delle altre icone
+            iconStyle: { color: '#217346', borderWidth: 0 },          // verde Excel
+            emphasis: { iconStyle: { color: '#185c37', borderWidth: 0 } }, // verde più scuro al passaggio del mouse
+            onclick: () => this.scaricaCsv(data, nomeFile)
           }
         }
       },
@@ -412,23 +558,20 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
       },
       // la legenda codice/descrizione è resa in HTML sotto il grafico
       legend: { show: false },
-      grid: { left: '3%', right: '3%', bottom: '8%', top: '18%', containLabel: true },
-      dataZoom: [
-        { type: 'inside' },
-        { type: 'slider', height: 18, bottom: 0 }
-      ],
-      xAxis: {
-        type: 'category',
-        data: categories,
-        axisLabel: { fontSize: 11, rotate: 60 }
-      },
-      yAxis: {
-        type: 'value',
-        axisLabel: {
-          formatter: (v: number) =>
-            v >= 1e6 ? (v / 1e6).toLocaleString('it-IT') + ' M€' : v.toLocaleString('it-IT') + '€'
-        }
-      },
+      grid: orizzontale
+        ? { left: '3%', right: '8%', bottom: '3%', top: '18%', containLabel: true }
+        : { left: '3%', right: '3%', bottom: '8%', top: '18%', containLabel: true },
+      dataZoom: orizzontale
+        ? [
+            { type: 'inside', yAxisIndex: 0 },
+            { type: 'slider', yAxisIndex: 0, width: 18, right: 0 }
+          ]
+        : [
+            { type: 'inside' },
+            { type: 'slider', height: 18, bottom: 0 }
+          ],
+      xAxis: orizzontale ? asseImporti : asseCategorie,
+      yAxis: orizzontale ? asseCategorie : asseImporti,
       series: [
         {
           name: 'Importo utilizzato',
@@ -443,7 +586,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
         {
           name: 'Importo assegnato (residuo)',
           type: 'bar',
-          stack: 'fondi',
+          stack: this.dimensioneCorrente === 'tipo-progetto' ? 'fondi2' : 'fondi',
           barMaxWidth: 28,
           cursor: this.filtroCorrente ? 'default' : 'pointer',
           itemStyle: { color: COLORE_ASSEGNATO },

@@ -46,6 +46,33 @@
               </div>
             </div>
           }
+          @if (dimensioneCorrente === 'uo' && !filtroCorrente?.valore) {
+            <div class="col-12 col-md-6 col-lg-5">
+              <div class="d-flex">
+                <label for="cdsFiltro" class="col-form-label pr-2 text-nowrap">Centro di Spesa</label>
+                <div class="flex-fill">
+                  <div class="input-group">
+                    <input
+                      #cdsFiltroInput
+                      formControlName="cdsFiltro"
+                      [ngbTypeahead]="searchcds"
+                      [resultTemplate]="rt"
+                      [inputFormatter]="formatter"
+                      [resultFormatter]="formatter"
+                      (selectItem)="onCdsSelected($event)"
+                      [editable]="true"
+                      class="form-control"
+                      id="cdsFiltro"
+                      type="search"
+                      placeholder="{{'global.form.filter.placeholder' | translate}}">
+                    <a class="input-group-addon btn text-primary" (click)="openTypeaheadCds()">
+                      <i class="fa fa-caret-down"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
         </div>
       </form>
     }
@@ -136,7 +163,7 @@
       <p class="text-center text-muted my-4">Nessuna voce di spesa disponibile.</p>
     } @else {
       <div class="table-responsive">
-        <table class="table table-sm table-striped table-bordered mb-0">
+        <table class="table table-sm table-striped table-hover table-bordered mb-0">
           <thead class="thead-light">
             <tr>
               <th rowspan="2" class="align-middle">Codice</th>

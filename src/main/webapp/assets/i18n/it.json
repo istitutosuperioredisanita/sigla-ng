@@ -14,8 +14,9 @@
                 "title": "Progetti",
                 "fondi-funzionamento": {
                     "uo": "Trend Fondi di Funzionamento per UO",
-                    "tipo-finanziamento": "Trend Fondi di Funzionamento per Tipo",
-                    "ente-finanziatore": "Trend Fondi di Funzionamento per Ente Finanziatore"
+                    "tipo-progetto": "Progetti per Tipo",
+                    "tipo-finanziamento": "Progetti per Tipo Finanziamento",
+                    "ente-finanziatore": "Progetti per Ente Finanziatore"
                 }
             },
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",

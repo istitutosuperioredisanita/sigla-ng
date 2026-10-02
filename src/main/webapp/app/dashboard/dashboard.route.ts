@@ -74,6 +74,18 @@ export const FONDI_FUNZIONAMENTO_TIPO_FINANZIAMENTO: Route = {
     },
     canActivate: ((environment.oidc.enable  === 'true') ? true : false) ? [AutoLoginAllRoutesGuard] : [UserRouteAccessService],
 };
+export const FONDI_FUNZIONAMENTO_TIPO_PROGETTO: Route = {
+    path: 'progetti/fondi-funzionamento/tipo-progetto',
+    component: FondiFunzionamentoComponent,
+    data: {
+        authorities: ['APPLICATION_ROLE_SUPER'],
+        pageTitle: 'global.menu.progetti.fondi-funzionamento.tipo-progetto',
+        menu: 'dashboard',
+        dimensione: 'tipo-progetto'
+    },
+    canActivate: ((environment.oidc.enable  === 'true') ? true : false) ? [AutoLoginAllRoutesGuard] : [UserRouteAccessService],
+};
+
 export const FONDI_FUNZIONAMENTO_ENTE_FINANZIATORE: Route = {
     path: 'progetti/fondi-funzionamento/ente-finanziatore',
     component: FondiFunzionamentoComponent,

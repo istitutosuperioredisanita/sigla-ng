@@ -2,7 +2,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SiglaSharedModule, UserRouteAccessService } from '../shared';
 
-import { ACQUISTI_STATO_ROUTE, ACQUISTI_STRUTTURA_ROUTE, DASHBOARD_ROUTE, DashBoardComponent, FONDI_FUNZIONAMENTO_ENTE_FINANZIATORE, FONDI_FUNZIONAMENTO_TIPO_FINANZIAMENTO, FONDI_FUNZIONAMENTO_UO, INDICE_TEMPESTIVITA_PAGAMENTI_ROUTE} from './index';
+import { ACQUISTI_STATO_ROUTE, ACQUISTI_STRUTTURA_ROUTE, DASHBOARD_ROUTE, DashBoardComponent, FONDI_FUNZIONAMENTO_ENTE_FINANZIATORE, FONDI_FUNZIONAMENTO_TIPO_FINANZIAMENTO, FONDI_FUNZIONAMENTO_TIPO_PROGETTO, FONDI_FUNZIONAMENTO_UO, INDICE_TEMPESTIVITA_PAGAMENTI_ROUTE} from './index';
 
 import { TreeModule, TreeDraggedElement } from '@ali-hm/angular-tree-component';
 import { AngularSplitModule } from 'angular-split';
@@ -36,6 +36,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
             ACQUISTI_STRUTTURA_ROUTE,
             ACQUISTI_STATO_ROUTE,
             FONDI_FUNZIONAMENTO_UO,
+            FONDI_FUNZIONAMENTO_TIPO_PROGETTO,
             FONDI_FUNZIONAMENTO_TIPO_FINANZIAMENTO,
             FONDI_FUNZIONAMENTO_ENTE_FINANZIATORE
         ], { useHash: true }),
