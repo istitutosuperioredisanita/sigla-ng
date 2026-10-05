@@ -6,7 +6,7 @@ import { Observable, Subject, Subscription, combineLatest } from 'rxjs';
 import { debounceTime, map, takeUntil } from 'rxjs/operators';
 import { ContextService } from 'app/context';
 import { Pair } from '../../context/pair.model';
-import { EChartsOption } from 'echarts';
+import { EChartsOption, ECharts } from 'echarts';
 import { DettaglioVoceSpesa, DimensioneFondo, FondiFunzionamentoService, VocePiano } from './fondi-funzionamento.service';
 import { LocalStateStorageService } from '../../shared/auth/local-storage.service';
 import { Principal } from '../../shared/auth/principal.service';
@@ -104,6 +104,16 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
   private destroy$ = new Subject<void>();
 
   protected chartOptions: EChartsOption = {};
+  /** Istanza ECharts, usata per evidenziare una barra via dispatchAction */
+  private chartInstance?: ECharts;
+  /** Indice della barra attualmente evidenziata dal filtro 'Voce' */
+  private indiceEvidenziato?: number;
+
+  /** Filtro Voce (solo dimensione 'elemento-voce'): typeahead che evidenzia la barra scelta */
+  @ViewChild('voceFiltroInput', { static: false }) voceFiltroInput!: ElementRef;
+  protected vocePairs: Pair[] = [];
+  private lastValueVoce: any = null;
+  private aperturaTypeaheadVoce = false;
   protected legenda: VoceFondo[] = [];
   /** true quando il grafico mostrato è una torta (la legenda blu/verde delle barre non si applica) */
   protected tortaAttiva = false;
@@ -205,12 +215,30 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     this.filterForm = this.formBuilder.group({
       esercizio: new FormControl(annoIniziale ?? Math.max(...this.esercizi)),
       uoFiltro: new FormControl(),
-      cdsFiltro: new FormControl()
+      cdsFiltro: new FormControl(),
+      voceFiltro: new FormControl<string | null>(null)
     });
 
     this.filterForm.controls['esercizio'].valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe((esercizio: number) => this.loadData(esercizio));
+
+    // filtro Voce (solo dimensione 'elemento-voce'): la scelta dalla tendina è gestita da onVoceSelected,
+    // qui si intercetta solo lo svuotamento del campo per spegnere l'highlight
+    this.filterForm.controls['voceFiltro'].valueChanges
+      .pipe(debounceTime(300), takeUntil(this.destroy$))
+      .subscribe(value => {
+        if (this.aperturaTypeaheadVoce) {
+          // svuotamento provocato dal click sul caret per aprire la tendina: non è una cancellazione
+          this.aperturaTypeaheadVoce = false;
+          this.lastValueVoce = value;
+          return;
+        }
+        if (!value && this.lastValueVoce) {
+          this.evidenziaVoce(null);
+        }
+        this.lastValueVoce = value;
+      });
 
     // filtro UO aggiuntivo (solo per tipoFinanziamento/enteFinanziatore)
     this.filterForm.controls['uoFiltro'].valueChanges
@@ -287,9 +315,86 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     this.loadData(this.filterForm.controls['esercizio'].value);
   }
 
+  onVoceSelected(event: NgbTypeaheadSelectItemEvent): void {
+    this.aperturaTypeaheadVoce = false;
+    this.evidenziaVoce(event?.item?.first ?? null);
+  }
+
+  onChartInit(chart: ECharts): void {
+    this.chartInstance = chart;
+  }
+
+  /** Evidenzia la barra della voce scelta nella select (o spegne l'highlight se null) */
+  private evidenziaVoce(codice: string | null): void {
+    const chart = this.chartInstance;
+    if (!chart) {
+      return;
+    }
+
+    // spegne l'highlight precedente
+    if (this.indiceEvidenziato !== undefined) {
+      chart.dispatchAction({ type: 'downplay', seriesIndex: [0, 1], dataIndex: this.indiceEvidenziato });
+      chart.dispatchAction({ type: 'hideTip' });
+      this.indiceEvidenziato = undefined;
+    }
+    if (!codice) {
+      return;
+    }
+
+    const idx = this.legenda.findIndex(v => v.codice === codice);
+    if (idx < 0) {
+      return;
+    }
+
+    const haScrollato = this.scorriFinoA(idx);
+    const highlight = () => {
+      chart.dispatchAction({ type: 'highlight', seriesIndex: [0, 1], dataIndex: idx });
+      // tooltip sulla barra selezionata (stesso contenuto del passaggio del mouse)
+      chart.dispatchAction({ type: 'showTip', seriesIndex: 0, dataIndex: idx });
+      this.indiceEvidenziato = idx;
+    };
+    // se lo zoom ridisegna le barre, highlight e tooltip vanno applicati dopo
+    if (haScrollato) {
+      setTimeout(highlight, 0);
+    } else {
+      highlight();
+    }
+  }
+
+  /** Se la barra è fuori dalla finestra dello slider, sposta la finestra centrandola sulla barra. Ritorna true se ha scrollato. */
+  private scorriFinoA(idx: number): boolean {
+    const chart = this.chartInstance;
+    if (!chart) {
+      return false;
+    }
+    const n = this.legenda.length;
+    const dz: any = (chart.getOption() as any)?.dataZoom?.[0];
+    const start = Number(dz?.startValue ?? 0);
+    const end = Number(dz?.endValue ?? n - 1);
+    if (idx >= start && idx <= end) {
+      return false;
+    }
+    const size = end - start;
+    const newStart = Math.max(0, Math.min(idx - Math.floor(size / 2), n - 1 - size));
+    const finestra = { startValue: newStart, endValue: newStart + size };
+    chart.dispatchAction({
+      type: 'dataZoom',
+      batch: [
+        { dataZoomIndex: 0, ...finestra }, // inside
+        { dataZoomIndex: 1, ...finestra }  // slider
+      ]
+    });
+    return true;
+  }
+
   searchuo = (text$: Observable<string>) =>
     text$.pipe(debounceTime(200)).pipe(
       map((term: string) => this.filterPair(term, this.uoPairs).slice(0, 200))
+    );
+
+  searchvoce = (text$: Observable<string>) =>
+    text$.pipe(debounceTime(200)).pipe(
+      map((term: string) => this.filterPair(term, this.vocePairs).slice(0, 200))
     );
 
   searchcds = (text$: Observable<string>) =>
@@ -323,6 +428,14 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     }
   }
 
+  openTypeaheadVoce(): void {
+    if (this.voceFiltroInput) {
+      this.aperturaTypeaheadVoce = true;
+      this.voceFiltroInput.nativeElement.value = '';
+      this.voceFiltroInput.nativeElement.dispatchEvent(this.createNewEvent('input'));
+    }
+  }
+
   private createNewEvent(eventName: string): Event {
     if (typeof Event === 'function') {
       return new Event(eventName);
@@ -351,7 +464,12 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
               importoUtilizzato: r.importoUtilizzato ?? 0
             }))
             .sort((a, b) => b.importoFinanziato - a.importoFinanziato);
+          // il nuovo setOption azzera l'highlight: riallinea anche la select
+          this.indiceEvidenziato = undefined;
+          this.lastValueVoce = null;
+          this.filterForm.controls['voceFiltro'].setValue(null, { emitEvent: false });
           this.legenda = data;
+          this.vocePairs = data.map(d => ({ first: d.codice, second: d.descrizione } as Pair));
           this.loadChart(data);
           this.loadingChart.set(false);
           this.caricato.emit();
@@ -583,6 +701,10 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     // solo 'tipo-progetto' ha le barre affiancate (utilizzato / assegnato); le altre dimensioni sono impilate
     const affiancate = this.dimensioneCorrente === 'tipo-progetto';
     const raggioCima = orizzontale ? [0, 6, 6, 0] : [6, 6, 0, 0];
+    // stile della barra evidenziata (select 'Voce'): solo per 'elemento-voce'
+    const emphasis = this.dimensioneCorrente === 'elemento-voce'
+      ? { itemStyle: { shadowBlur: 12, shadowColor: 'rgba(0,0,0,0.5)', borderColor: '#d9534f', borderWidth: 2 } }
+      : undefined;
 
     // blu = utilizzato (base della barra)
     const utilizzato = data.map(d => {
@@ -692,6 +814,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
           barMaxWidth: 28,
           cursor: this.filtroCorrente ? 'default' : 'pointer',
           itemStyle: { color: COLORE_UTILIZZATO },
+          emphasis,
           data: utilizzato,
           animationDuration: 1000
         },
@@ -702,6 +825,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
           barMaxWidth: 28,
           cursor: this.filtroCorrente ? 'default' : 'pointer',
           itemStyle: { color: COLORE_ASSEGNATO },
+          emphasis,
           data: residuo,
           animationDuration: 1000
         }

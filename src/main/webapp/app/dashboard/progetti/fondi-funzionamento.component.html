@@ -73,6 +73,33 @@
               </div>
             </div>
           }
+          @if (dimensioneCorrente === 'elemento-voce') {
+            <div class="col-12 col-md-6 col-lg-5">
+              <div class="d-flex">
+                <label for="voceFiltro" class="col-form-label pr-2 text-nowrap">Voce</label>
+                <div class="flex-fill">
+                  <div class="input-group">
+                    <input
+                      #voceFiltroInput
+                      formControlName="voceFiltro"
+                      [ngbTypeahead]="searchvoce"
+                      [resultTemplate]="rt"
+                      [inputFormatter]="formatter"
+                      [resultFormatter]="formatter"
+                      (selectItem)="onVoceSelected($event)"
+                      [editable]="true"
+                      class="form-control"
+                      id="voceFiltro"
+                      type="search"
+                      placeholder="{{'global.form.filter.placeholder' | translate}}">
+                    <a class="input-group-addon btn text-primary" (click)="openTypeaheadVoce()">
+                      <i class="fa fa-caret-down"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
         </div>
       </form>
     }
@@ -102,6 +129,7 @@
            style="width: 100%"
            echarts
            [options]="chartOptions"
+           (chartInit)="onChartInit($event)"
            (chartClick)="onChartClick($event)">
       </div>
     </div>
