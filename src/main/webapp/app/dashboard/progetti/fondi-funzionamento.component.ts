@@ -85,6 +85,8 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
    * nel grafico 'elemento-voce' e restringe gli importi di ogni UO a quella voce
    */
   protected voceFissa?: string;
+  /** Descrizione della voce fissata (arriva dal query param 'descrizioneVoce'), mostrata accanto al codice */
+  protected descrizioneVoceFissa?: string;
 
   /** Filtro UO aggiuntivo, selezionabile solo quando dimensioneCorrente !== 'uo' */
   @ViewChild('uoFiltroInput', { static: false }) uoFiltroInput!: ElementRef;
@@ -173,6 +175,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
 
         // voce fissata (query param 'voce'): significativa solo per la dimensione 'uo'
         this.voceFissa = this.dimensioneCorrente === 'uo' ? (params['voce'] ?? undefined) : undefined;
+        this.descrizioneVoceFissa = this.voceFissa ? (params['descrizioneVoce'] ?? undefined) : undefined;
 
         const annoParam = params['anno'] ? Number(params['anno']) : undefined;
 
@@ -499,7 +502,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     } else if (this.dimensioneCorrente === 'elemento-voce') {
       // click su una voce: apre il grafico per UO con la voce fissata
       this.router.navigate(['/progetti/fondi-funzionamento/uo'], {
-        queryParams: { voce: voce.codice, anno: this.anno }
+        queryParams: { voce: voce.codice, descrizioneVoce: voce.descrizione, anno: this.anno }
       });
     } else {
       this.router.navigate([], {
@@ -733,7 +736,10 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
       suffisso += ` - CDS ${this.filtroCdsCorrente}`;
     }
     if (this.voceFissa) {
-      suffisso += ` - Voce ${this.voceFissa}`;
+      // voce su una riga a parte, in grassetto (stile rich 'voce'), seguita dalla descrizione;
+      // le graffe sono sintassi rich text di ECharts: si tolgono dalla descrizione
+      const desc = this.descrizioneVoceFissa?.replace(/[{}]/g, '');
+      suffisso += `\n{voce|Voce ${this.voceFissa}${desc ? ' - ' + desc : ''}}`;
     }
 
     const nomeFile = `fondi_funzionamento_${this.anno}${this.filtroCorrente ? '_' + this.filtroCorrente.valore : ''}${this.filtroUoCorrente ? '_' + this.filtroUoCorrente : ''}${this.filtroCdsCorrente ? '_' + this.filtroCdsCorrente : ''}${this.voceFissa ? '_voce_' + this.voceFissa : ''}`;
@@ -761,10 +767,14 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
       }
     };
 
+    // con la voce fissata il sottotitolo occupa una riga in più: più spazio sopra il grafico
+    const topGrid = this.voceFissa ? '24%' : '18%';
+
     this.chartOptions = {
       title: {
         text: this.translateService.instant(`global.menu.progetti.fondi-funzionamento.${this.dimensioneCorrente}`),
         subtext: `Anno ${this.anno}${suffisso}`,
+        subtextStyle: { rich: { voce: { fontWeight: 'bold', color: '#333' } } },
         left: 'center'
       },
       toolbox: this.toolbox(data, nomeFile),
@@ -793,8 +803,8 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
       // la legenda codice/descrizione è resa in HTML sotto il grafico
       legend: { show: false },
       grid: orizzontale
-        ? { left: '3%', right: '8%', bottom: '3%', top: '18%', containLabel: true }
-        : { left: '3%', right: '3%', bottom: '8%', top: '18%', containLabel: true },
+        ? { left: '3%', right: '8%', bottom: '3%', top: topGrid, containLabel: true }
+        : { left: '3%', right: '3%', bottom: '8%', top: topGrid, containLabel: true },
       dataZoom: orizzontale
         ? [
             { type: 'inside', yAxisIndex: 0, ...finestra },
