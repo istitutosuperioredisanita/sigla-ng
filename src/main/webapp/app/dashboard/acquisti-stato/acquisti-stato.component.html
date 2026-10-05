@@ -40,14 +40,7 @@
 }
 
 <div class="card shadow" [ngClass]="{'p-1 mb-5': !dashboard, 'my-4': dashboard && !codiceUo}">
-  @if(dashboard) {
-    <div class="card-header text-monospace text-center text-primary-dark w-100">
-      <span class="h3" translate>dashboard.acquisti-stato.title</span>
-      @if (codiceUo) {
-        <span class="h3"> della UO: {{codiceUo}}</span>
-      }
-    </div>
-  }
+  <!-- il titolo (con eventuale UO) è nel grafico (option.title) -->
   <div class="d-flex justify-content-center">
     <div class="w-100 font-weight-bold text-monospace text-center text-primary-dark"
          [style]="dashboard ? 'height:50vh !important' : 'height:75vh !important'">

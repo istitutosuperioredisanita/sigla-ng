@@ -56,14 +56,12 @@
                 <div class="loading cursor-wait"></div>
             </div>
         </div>
-    }    
+    }
     <div class="row mx-0">
         @for (trimestre of trimestri; track trimestre) {
             <div [class]="chartDivClass">
-                <div class="card shadow">
-                    <div class="card-header">
-                        <span class="h4 text-primary-dark" translate>dashboard.indice-tempestivita.trimestre.{{trimestre}}</span>
-                    </div> 
+                <div class="card shadow pb-2">
+                    <!-- il titolo del trimestre è nel grafico (option.title) -->
                     <div #chartTrimestre [attr.data-trimestre]="trimestre" [style]="chartDivStyle"></div>
                 </div>
             </div>
@@ -72,14 +70,7 @@
     <div [ngClass]="{'d-flex justify-content-center': dashboard, 'row mx-0': !dashboard}" class="my-4">
         <div [ngClass]="{'col-md-6': !dashboard}" class="text-monospace text-center text-primary-dark w-100">
             <div class="card shadow">
-                <div class="card-header">
-                    @if(!dashboard) {
-                        <span class="h4" translate>dashboard.indice-tempestivita.intero-anno</span>
-                    } @else {
-                        <span class="h3" translate>dashboard.indice-tempestivita.title</span>
-                        <span class="ml-2 h3">{{filterForm?.controls?.esercizio?.value}}</span>
-                    }
-                </div> 
+                <!-- il titolo (intero anno / indice + esercizio) è nel grafico (option.title) -->
                 <div #chartdivEsercizio class="w-100 font-weight-bold text-monospace text-center text-primary-dark" style="height:50vh !important"></div>
             </div>
         </div>
@@ -88,7 +79,7 @@
                 <div class="card shadow" >
                     <div class="card-header text-center">
                         <span class="h4 text-primary-dark" translate>Significato Indicatori</span>
-                    </div> 
+                    </div>
                     <div class="card-body overflow-auto" style="height:50vh !important">
                         <p>Indice di tempestività di pagamento:</p>
                         <p>Il grafico generale rappresenta, a livello di Ente, l'indice annuale di tempestività di pagamento.</p>
@@ -99,7 +90,7 @@
                             <li><b class="font-weight-bold">Dettaglio:</b> Entrando nel menu Statistiche/Indice di tempestività  saranno disponibili le informazioni per <b class="font-weight-bold">Trimestre</b> e per l'<b class="font-weight-bold">intero anno</b>.</li>
                             <li><b class="font-weight-bold">Struttura:</b> La consultazione è riferita all'intero Ente, ma indicando una specifica struttura (Unità Organizzativa), i dati per trimestre/intero anno, sono riferiti alla Struttura specifica.</li>
                         </ul>
-                    </div>                    
+                    </div>
                 </div>
             </div>
         }

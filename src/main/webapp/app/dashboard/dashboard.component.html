@@ -5,7 +5,7 @@
     <div class="d-flex justify-content-center text-primary-dark">
         <p class="text-monospace font-weight-bold">Indicatori di efficienza, sostenibilità e resilienza per la valutazione complessiva delle performance gestionali dell'amministrazione</p>
     </div>
-    <a class="d-block mb-4" [routerLink]="['/progetti/fondi-funzionamento/uo']" [queryParams]="{dashboard: false}"
+    <a class="d-block" [routerLink]="['/progetti/fondi-funzionamento/uo']" [queryParams]="{dashboard: false}"
        [class.in-caricamento]="!pronti().has('uo')" [class.comparsa]="pronti().has('uo')">
         <fondi-funzionamento [dashboard]="true" (caricato)="segnaPronto('uo')"></fondi-funzionamento>
     </a>
@@ -16,12 +16,10 @@
     <div class="my-4" [class.in-caricamento]="!pronti().has('tipo-finanziamento') && !pronti().has('indice') && !pronti().has('acquisti')">
         <div class="row pt-2 justify-content-md-center">
             <div class="col-md-4">
-                <div class="card my-4"
-                     [class.in-caricamento]="!pronti().has('tipo-finanziamento')" [class.comparsa]="pronti().has('tipo-finanziamento')">
-                    <a [routerLink]="['/progetti/fondi-funzionamento/tipo-finanziamento']" [queryParams]="{dashboard: false}">
-                        <fondi-funzionamento [dashboard]="true" dimensione="tipo-finanziamento" (caricato)="segnaPronto('tipo-finanziamento')"></fondi-funzionamento>
-                    </a>
-                </div>
+                <a class="d-block" [routerLink]="['/progetti/fondi-funzionamento/tipo-finanziamento']" [queryParams]="{dashboard: false}"
+                    [class.in-caricamento]="!pronti().has('tipo-finanziamento')" [class.comparsa]="pronti().has('tipo-finanziamento')">
+                    <fondi-funzionamento [dashboard]="true" dimensione="tipo-finanziamento" (caricato)="segnaPronto('tipo-finanziamento')"></fondi-funzionamento>
+                </a>
             </div>
             <div class="col-md-4">
                 <a class="d-block" [routerLink]="['/indice-tempestivita-pagamenti']" [queryParams]="{dashboard: false}"

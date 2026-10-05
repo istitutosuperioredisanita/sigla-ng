@@ -16,6 +16,12 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { LocalStateStorageService } from '../../shared/auth/local-storage.service';
 import { Principal } from '../../shared/auth/principal.service';
 
+/** Icona Font Awesome 4.7 "file-image-o" (f1c5) come tracciato SVG, per il salva-immagine della toolbox */
+const ICONA_IMMAGINE = 'path://M1468 380Q1496 408 1516 456T1536 544V1696Q1536 1736 1508 1764T1440 1792H96Q56 1792 28 1764T0 1696V96Q0 56 28 28T96 0H992Q1032 0 1080 20T1156 68ZM1024 136V512H1400Q1390 483 1378 471L1065 158Q1053 146 1024 136ZM1408 1664V640H992Q952 640 924 612T896 544V128H128V1664H1408ZM1280 1216V1536H256V1344L448 1152 576 1280 960 896ZM448 1024Q368 1024 312 968T256 832 312 696 448 640 584 696 640 832 584 968 448 1024Z';
+
+/** Icona Font Awesome 4.7 "file-excel-o" (f1c3) come tracciato SVG, per la toolbox del grafico */
+const ICONA_EXCEL = 'path://M1468 380Q1496 408 1516 456T1536 544V1696Q1536 1736 1508 1764T1440 1792H96Q56 1792 28 1764T0 1696V96Q0 56 28 28T96 0H992Q1032 0 1080 20T1156 68ZM1024 136V512H1400Q1390 483 1378 471L1065 158Q1053 146 1024 136ZM1408 1664V640H992Q952 640 924 612T896 544V128H128V1664H1408ZM429 1430V1536H710V1430H635L738 1269Q743 1262 748 1252.5T755.5 1239 759 1235H761Q762 1239 766 1245 768 1249 770.5 1252.5T776.5 1260.5 783 1269L890 1430H814V1536H1105V1430H1037L845 1157 1040 875H1107V768H828V875H902L799 1034Q795 1041 789 1050.5T780 1064L778 1067H776Q775 1063 771 1057 765 1046 754 1034L648 875H724V768H434V875H502L691 1147 497 1430H429Z';
+
 @Component({
     selector: 'indice-tempestivita-pagamenti',
     templateUrl: './indice-tempestivita-pagamenti.component.html',
@@ -48,6 +54,11 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
     esercizi!: number[];
     loadingChart = signal(false);
     trimestri: string[] = ['1', '2', '3', '4'];
+
+    /** Ultimo risultato caricato, usato per l'estrazione CSV */
+    private lastResult: Record<string, number> | null = null;
+    private lastEsercizio!: number;
+    private lastUo?: string;
 
     constructor(
         protected route: ActivatedRoute,
@@ -117,9 +128,11 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
                 this.lastValue = value;
             });
 
-        this.filterForm.controls.esercizio.valueChanges.subscribe((esercizio: any) => {
-            this.callIndice(esercizio, this.filterForm?.controls?.uo?.value?.first);
-        });
+        this.filterForm.controls.esercizio.valueChanges
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((esercizio: any) => {
+                this.callIndice(esercizio, this.filterForm?.controls?.uo?.value?.first);
+            });
 
         this.contextService.getUo().subscribe((result: Pair[]) => {
             this.uoPairs = result;
@@ -129,6 +142,8 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
     }
 
     ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
         this.chartInstances.forEach(instance => this.disposeChart(instance));
         this.chartInstances.clear();
     }
@@ -189,17 +204,19 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
 
         this.indiceService.getIndice(esercizio, uo).subscribe({
           next: (result: Map<string, number>) => {
+            this.lastResult = result as unknown as Record<string, number>;
+            this.lastEsercizio = esercizio;
+            this.lastUo = uo;
+
             ['0', '1', '2', '3', '4'].forEach(key => {
                 const chartRef = this.chartRefs.get(key);
-                const uoSuffix = uo ? `_${uo}` : '';
-                const title = key === '0'
-                    ? `indice_tempestivita_${esercizio}${uoSuffix}`
-                    : `indice_tempestivita_${esercizio}_T${key}${uoSuffix}`;
-                if (result[key] && chartRef?.nativeElement) {
+                const nomeFile = this.nomeFile(key, esercizio, uo);
+                // != null: il valore 0 è il risultato atteso dalla normativa e va disegnato
+                if (result[key] != null && chartRef?.nativeElement) {
                     const existingInstance = this.chartInstances.get(key) ?? null;
                     const newInstance = this.initializeChart(chartRef, existingInstance);
                     this.chartInstances.set(key, newInstance);
-                    this.loadChart(newInstance, result[key], title);
+                    this.loadChart(newInstance, result[key], nomeFile, this.titoloGrafico(key, esercizio));
                 } else {
                     const existingInstance = this.chartInstances.get(key) ?? null;
                     this.disposeChart(existingInstance);
@@ -219,9 +236,74 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
         });
     }
 
-    private loadChart(chartInstance: ECharts, value: number, title: string): void {
-        console.log('Caricamento grafico con valore:', value);
+    private nomeFile(key: string, esercizio: number, uo?: string): string {
+        const uoSuffix = uo ? `_${uo}` : '';
+        return key === '0'
+            ? `indice_tempestivita_${esercizio}${uoSuffix}`
+            : `indice_tempestivita_${esercizio}_T${key}${uoSuffix}`;
+    }
 
+    /** Titolo mostrato dentro il grafico */
+    private titoloGrafico(key: string, esercizio: number): string {
+        if (key !== '0') {
+            return this.translateService.instant(`dashboard.indice-tempestivita.trimestre.${key}`);
+        }
+        return this.dashboard
+            ? `${this.translateService.instant('dashboard.indice-tempestivita.title')} ${esercizio}`
+            : this.translateService.instant('dashboard.indice-tempestivita.intero-anno');
+    }
+
+    private toolbox(nomeFile: string) {
+        return {
+            feature: {
+                saveAsImage: {
+                    title: 'Salva immagine',
+                    name: nomeFile,
+                    icon: ICONA_IMMAGINE,
+                    iconStyle: { color: '#2c6fbb', borderWidth: 0 },
+                    emphasis: { iconStyle: { color: '#1f5291', borderWidth: 0 } }
+                },
+                myScaricaCsv: {
+                    show: true,
+                    title: 'Scarica CSV',
+                    icon: ICONA_EXCEL,
+                    iconStyle: { color: '#217346', borderWidth: 0 },
+                    emphasis: { iconStyle: { color: '#185c37', borderWidth: 0 } },
+                    onclick: () => this.scaricaCsv()
+                }
+            }
+        };
+    }
+
+    /** Esporta in CSV l'indice di tutti i periodi (separatore ';', UTF-8 con BOM, per Excel in italiano) */
+    private scaricaCsv(): void {
+        if (!this.lastResult) { return; }
+        const num = (v: number) => (v ?? 0).toFixed(2).replace('.', ',');
+        const testo = (v: string) => `"${(v ?? '').replace(/"/g, '""')}"`;
+
+        const righe = [
+            ['Esercizio', 'UO', 'Periodo', 'Indice di tempestività'].join(';'),
+            ...['1', '2', '3', '4', '0']
+                .filter(key => this.lastResult![key] != null)
+                .map(key => [
+                    this.lastEsercizio,
+                    testo(this.lastUo ?? 'Ente'),
+                    testo(this.titoloGrafico(key, this.lastEsercizio)),
+                    num(this.lastResult![key])
+                ].join(';'))
+        ];
+
+        const nomeFile = `indice_tempestivita_${this.lastEsercizio}${this.lastUo ? '_' + this.lastUo : ''}`;
+        const blob = new Blob(['\uFEFF' + righe.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${nomeFile}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    private loadChart(chartInstance: ECharts, value: number, nomeFile: string, chartTitle: string): void {
         // Calcola min/max dinamici in base al valore, allineati a multipli di 10
         const defaultMin = -30;
         const defaultMax = 30;
@@ -256,16 +338,14 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
                 band.color
             ]);
 
-        // Normalizza il valore per il pointer (ECharts gauge usa i valori reali con min/max)
         const option: EChartsOption = {
-            toolbox: {
-                feature: {
-                    saveAsImage: {
-                    title: 'Salva immagine',
-                    name: `indicatore_${title}`
-                    }
-                }
+            title: {
+                text: chartTitle,
+                left: 'center',
+                top: 8,
+                textStyle: { fontSize: this.dashboard ? 20 : 16, fontWeight: 'bold' }
             },
+            toolbox: this.toolbox(nomeFile),
             series: [
                 {
                     type: 'gauge',
@@ -274,8 +354,9 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
                     min: axisMin,
                     max: axisMax,
                     splitNumber: (axisMax - axisMin) / 10,
-                    radius: this.dashboard ? '100%':'120%',
-                    center: ['50%', '70%'],
+                    // raggio e centro ridotti rispetto a prima per lasciare spazio al titolo in alto
+                    radius: this.dashboard ? '95%' : '110%',
+                    center: ['50%', '74%'],
                     axisLine: {
                         lineStyle: {
                             width: 40,

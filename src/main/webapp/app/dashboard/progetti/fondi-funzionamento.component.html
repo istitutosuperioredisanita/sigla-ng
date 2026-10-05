@@ -79,7 +79,7 @@
   </div>
 }
 
-<div class="card shadow p-1">
+<div class="card shadow p-1 my-4">
   @if ((filtroCorrente || voceFissa)  && !dashboard) {
     <div class="card-header d-flex align-items-center">
       <a class="btn btn-link text-primary p-0" href="javascript:void(0);" (click)="torna()">
@@ -108,7 +108,7 @@
   </div>
 
   <!-- Legenda: codice e descrizione (gruppo o progetto) -->
-  @if (!loadingChart() && legenda.length) {
+  @if (!loadingChart() && legenda.length && !(dashboard && tortaAttiva)) {
     <div class="px-3 pb-3 mt-3">
       @if(!tortaAttiva) {
         <div class="d-flex justify-content-center mb-2 small">
