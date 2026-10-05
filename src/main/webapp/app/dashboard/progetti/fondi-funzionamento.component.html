@@ -79,7 +79,7 @@
   </div>
 }
 
-<div class="card shadow p-1 mb-5">
+<div class="card shadow p-1">
   @if ((filtroCorrente || voceFissa)  && !dashboard) {
     <div class="card-header d-flex align-items-center">
       <a class="btn btn-link text-primary p-0" href="javascript:void(0);" (click)="torna()">
@@ -110,14 +110,16 @@
   <!-- Legenda: codice e descrizione (gruppo o progetto) -->
   @if (!loadingChart() && legenda.length) {
     <div class="px-3 pb-3 mt-3">
-      <div class="d-flex justify-content-center mb-2 small">
-        <span class="mr-4">
-          <i class="fa fa-square" [style.color]="coloreUtilizzato"></i> Importo utilizzato
-        </span>
-        <span>
-          <i class="fa fa-square" [style.color]="coloreAssegnato"></i> Importo assegnato (totale barra)
-        </span>
-      </div>
+      @if(!tortaAttiva) {
+        <div class="d-flex justify-content-center mb-2 small">
+          <span class="mr-4">
+            <i class="fa fa-square" [style.color]="coloreUtilizzato"></i> Importo utilizzato
+          </span>
+          <span>
+            <i class="fa fa-square" [style.color]="coloreAssegnato"></i> Importo assegnato (totale barra)
+          </span>
+        </div>
+      }
       @if(!dashboard) {
         <div class="row small">
           @for (voce of legenda; track voce.codice) {

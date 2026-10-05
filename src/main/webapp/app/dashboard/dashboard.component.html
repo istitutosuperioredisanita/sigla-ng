@@ -5,7 +5,7 @@
     <div class="d-flex justify-content-center text-primary-dark">
         <p class="text-monospace font-weight-bold">Indicatori di efficienza, sostenibilità e resilienza per la valutazione complessiva delle performance gestionali dell'amministrazione</p>
     </div>
-    <a class="d-block" [routerLink]="['/progetti/fondi-funzionamento/uo']" [queryParams]="{dashboard: false}"
+    <a class="d-block mb-4" [routerLink]="['/progetti/fondi-funzionamento/uo']" [queryParams]="{dashboard: false}"
        [class.in-caricamento]="!pronti().has('uo')" [class.comparsa]="pronti().has('uo')">
         <fondi-funzionamento [dashboard]="true" (caricato)="segnaPronto('uo')"></fondi-funzionamento>
     </a>
