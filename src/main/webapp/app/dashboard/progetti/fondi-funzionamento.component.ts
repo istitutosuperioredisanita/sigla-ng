@@ -320,7 +320,17 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
 
   onVoceSelected(event: NgbTypeaheadSelectItemEvent): void {
     this.aperturaTypeaheadVoce = false;
-    this.evidenziaVoce(event?.item?.first ?? null);
+    const codice: string | null = event?.item?.first ?? null;
+    const idx = this.legenda.findIndex(v => v.codice === codice);
+
+    if (idx >= 0 && !this.dashboard) {
+      // la scelta dalla tendina equivale al click sulla barra della voce
+      // (grafico per UO con voce fissata, oppure modale di dettaglio se c'è un filtro attivo)
+      this.onChartClick({ dataIndex: idx });
+    } else {
+      // in dashboard il click è disattivato: resta solo l'evidenziazione della barra
+      this.evidenziaVoce(codice);
+    }
   }
 
   onChartInit(chart: ECharts): void {
@@ -739,7 +749,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
       // voce su una riga a parte, in grassetto (stile rich 'voce'), seguita dalla descrizione;
       // le graffe sono sintassi rich text di ECharts: si tolgono dalla descrizione
       const desc = this.descrizioneVoceFissa?.replace(/[{}]/g, '');
-      suffisso += `\n{voce|Voce ${this.voceFissa}${desc ? ' - ' + desc : ''}}`;
+      suffisso += `\n{voce|Voce ${this.voceFissa}}${desc ? ' - ' + desc : ''}`;
     }
 
     const nomeFile = `fondi_funzionamento_${this.anno}${this.filtroCorrente ? '_' + this.filtroCorrente.valore : ''}${this.filtroUoCorrente ? '_' + this.filtroUoCorrente : ''}${this.filtroCdsCorrente ? '_' + this.filtroCdsCorrente : ''}${this.voceFissa ? '_voce_' + this.voceFissa : ''}`;
