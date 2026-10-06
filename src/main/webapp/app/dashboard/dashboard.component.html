@@ -5,9 +5,72 @@
     <div class="d-flex justify-content-center text-primary-dark">
         <p class="text-monospace font-weight-bold">Indicatori di efficienza, sostenibilità e resilienza per la valutazione complessiva delle performance gestionali dell'amministrazione</p>
     </div>
+
+    <div class="row my-4">
+        <div class="col-md mb-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body py-3">
+                    <div class="text-muted small">Assegnato {{ esercizio() }}</div>
+                    <div class="h3 font-weight-bold mb-0">{{ mln(assegnato()) }}</div>
+                    @if (deltaAssegnato() != null) {
+                        <div class="small text-muted">{{ segno(deltaAssegnato()!) }}{{ pct(deltaAssegnato(), 1) }} vs {{ esercizio()! - 1 }}</div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md mb-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body py-3">
+                    <div class="text-muted small">Utilizzato {{ esercizio() }}</div>
+                    <div class="h3 font-weight-bold mb-0">{{ mln(utilizzato()) }}</div>
+                    <div class="small text-muted">{{ pct(percUtilizzo(), 0) }} dell'assegnato</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md mb-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body py-3">
+                    <div class="text-muted small">Tempestività pagamenti</div>
+                    <div class="h3 font-weight-bold mb-0"
+                         [class.text-success]="indiceCorrente() != null && indiceCorrente()! <= 0"
+                         [class.text-danger]="indiceCorrente() != null && indiceCorrente()! > 0">{{ giorni(indiceCorrente()) }}</div>
+                    @if (deltaIndice() != null) {
+                        <div class="small"
+                             [class.text-success]="deltaIndice()! <= 0"
+                             [class.text-danger]="deltaIndice()! > 0">{{ segno(deltaIndice()!) }}{{ giorni(deltaIndice()) }} vs {{ esercizio()! - 1 }}</div>
+                    } @else {
+                        <div class="small text-muted">negativo = in anticipo sul termine</div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md mb-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body py-3">
+                    <div class="text-muted small">UO sotto soglia</div>
+                    @if (uoSottoSoglia(); as u) {
+                        <div class="h3 font-weight-bold mb-0" [class.text-warning]="u.sotto > 0">{{ u.sotto }} su {{ u.totale }}</div>
+                        <div class="small text-muted">utilizzo sotto il {{ sogliaPercentuale }}%@if (u.cds) { · CDS {{ u.cds }} }</div>
+                    } @else {
+                        <div class="h3 font-weight-bold mb-0">…</div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md mb-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body py-3">
+                    <div class="text-muted small">Pagato {{ pagato()?.esercizio }}</div>
+                    <div class="h3 font-weight-bold mb-0">{{ mln(pagato()?.importo) }}</div>
+                    <div class="small text-muted">dato parziale al {{ oggi | date:'dd/MM/yyyy' }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <a class="d-block" [routerLink]="['/progetti/fondi-funzionamento/uo']" [queryParams]="{dashboard: false}"
        [class.in-caricamento]="!pronti().has('uo')" [class.comparsa]="pronti().has('uo')">
-        <fondi-funzionamento [dashboard]="true" (caricato)="segnaPronto('uo')"></fondi-funzionamento>
+        <fondi-funzionamento [dashboard]="true" (caricato)="segnaPronto('uo')" (datiCaricati)="onUo($event)"></fondi-funzionamento>
     </a>
     <a class="d-block" [routerLink]="['/progetti/fondi-funzionamento/elemento-voce']" [queryParams]="{dashboard: false}"
        [class.in-caricamento]="!pronti().has('elemento-voce')" [class.comparsa]="pronti().has('elemento-voce')">
@@ -18,19 +81,19 @@
             <div class="col-md-4">
                 <a class="d-block" [routerLink]="['/progetti/fondi-funzionamento/tipo-finanziamento']" [queryParams]="{dashboard: false}"
                     [class.in-caricamento]="!pronti().has('tipo-finanziamento')" [class.comparsa]="pronti().has('tipo-finanziamento')">
-                    <fondi-funzionamento [dashboard]="true" dimensione="tipo-finanziamento" (caricato)="segnaPronto('tipo-finanziamento')"></fondi-funzionamento>
+                    <fondi-funzionamento [dashboard]="true" dimensione="tipo-finanziamento" (caricato)="segnaPronto('tipo-finanziamento')" (datiCaricati)="onTipoFinanziamento($event)"></fondi-funzionamento>
                 </a>
             </div>
             <div class="col-md-4">
                 <a class="d-block" [routerLink]="['/indice-tempestivita-pagamenti']" [queryParams]="{dashboard: false}"
                    [class.in-caricamento]="!pronti().has('indice')" [class.comparsa]="pronti().has('indice')">
-                    <indice-tempestivita-pagamenti [dashboard]="true" (caricato)="segnaPronto('indice')"></indice-tempestivita-pagamenti>
+                    <indice-tempestivita-pagamenti [dashboard]="true" (caricato)="segnaPronto('indice')" (datiCaricati)="onIndice($event)"></indice-tempestivita-pagamenti>
                 </a>
             </div>
             <div class="col-md-4">
                 <a class="d-block" [routerLink]="['/acquisti-stato']" [queryParams]="{dashboard: false}"
                    [class.in-caricamento]="!pronti().has('acquisti')" [class.comparsa]="pronti().has('acquisti')">
-                    <acquisti-stato [dashboard]="true" (caricato)="segnaPronto('acquisti')"></acquisti-stato>
+                    <acquisti-stato [dashboard]="true" (caricato)="segnaPronto('acquisti')" (datiCaricati)="onAcquisti($event)"></acquisti-stato>
                 </a>
             </div>
         </div>

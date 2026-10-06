@@ -27,6 +27,7 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
   @Input() codiceUo: string;
   /** Emesso a ogni fine caricamento dati (anche in caso di errore): la dashboard lo usa per mostrare il componente solo quando è pronto */
   @Output() caricato = new EventEmitter<void>();
+  @Output() datiCaricati = new EventEmitter<any[]>();
 
   protected filterForm: FormGroup;
 
@@ -141,6 +142,7 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
         this.lastData = data;
         this.loadChart(data);
         this.loadingChart.set(false);
+        this.datiCaricati.emit(data);
         this.caricato.emit();
       },
       error: () => {

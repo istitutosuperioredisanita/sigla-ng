@@ -19,6 +19,12 @@ interface VoceFondo {
   importoFinanziato: number;
   importoUtilizzato: number;
 }
+export interface DatiFondi {
+  anno: number;
+  dimensione: DimensioneFondo;
+  cds?: string;
+  voci: VoceFondo[];
+}
 
 /** Filtro di drill-down attivo (livello 2): dimensione + valore scelto */
 interface FiltroFondo {
@@ -70,6 +76,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
   @Input() uo?: string;
   /** Emesso a ogni fine caricamento dati (anche in caso di errore): la dashboard lo usa per mostrare il componente solo quando è pronto */
   @Output() caricato = new EventEmitter<void>();
+  @Output() datiCaricati = new EventEmitter<DatiFondi>();
 
   protected filterForm!: FormGroup;
   esercizi: number[] = [];
@@ -485,6 +492,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
           this.vocePairs = data.map(d => ({ first: d.codice, second: d.descrizione } as Pair));
           this.loadChart(data);
           this.loadingChart.set(false);
+          this.datiCaricati.emit({ anno, dimensione: this.dimensioneCorrente, cds: this.filtroCdsCorrente, voci: data });
           this.caricato.emit();
         },
         error: () => {
@@ -749,7 +757,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
       // voce su una riga a parte, in grassetto (stile rich 'voce'), seguita dalla descrizione;
       // le graffe sono sintassi rich text di ECharts: si tolgono dalla descrizione
       const desc = this.descrizioneVoceFissa?.replace(/[{}]/g, '');
-      suffisso += `\n{voce|Voce ${this.voceFissa}}${desc ? ' - ' + desc : ''}`;
+      suffisso += `\n{voce|Voce ${this.voceFissa}${desc ? ' - ' + desc : ''}}`;
     }
 
     const nomeFile = `fondi_funzionamento_${this.anno}${this.filtroCorrente ? '_' + this.filtroCorrente.valore : ''}${this.filtroUoCorrente ? '_' + this.filtroUoCorrente : ''}${this.filtroCdsCorrente ? '_' + this.filtroCdsCorrente : ''}${this.voceFissa ? '_voce_' + this.voceFissa : ''}`;

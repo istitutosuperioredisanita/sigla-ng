@@ -22,6 +22,8 @@ const ICONA_IMMAGINE = 'path://M1468 380Q1496 408 1516 456T1536 544V1696Q1536 17
 /** Icona Font Awesome 4.7 "file-excel-o" (f1c3) come tracciato SVG, per la toolbox del grafico */
 const ICONA_EXCEL = 'path://M1468 380Q1496 408 1516 456T1536 544V1696Q1536 1736 1508 1764T1440 1792H96Q56 1792 28 1764T0 1696V96Q0 56 28 28T96 0H992Q1032 0 1080 20T1156 68ZM1024 136V512H1400Q1390 483 1378 471L1065 158Q1053 146 1024 136ZM1408 1664V640H992Q952 640 924 612T896 544V128H128V1664H1408ZM429 1430V1536H710V1430H635L738 1269Q743 1262 748 1252.5T755.5 1239 759 1235H761Q762 1239 766 1245 768 1249 770.5 1252.5T776.5 1260.5 783 1269L890 1430H814V1536H1105V1430H1037L845 1157 1040 875H1107V768H828V875H902L799 1034Q795 1041 789 1050.5T780 1064L778 1067H776Q775 1063 771 1057 765 1046 754 1034L648 875H724V768H434V875H502L691 1147 497 1430H429Z';
 
+export interface DatiIndice { esercizio: number; uo?: string; indice: number | null; }
+
 @Component({
     selector: 'indice-tempestivita-pagamenti',
     templateUrl: './indice-tempestivita-pagamenti.component.html',
@@ -32,6 +34,7 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
     @Input() dashboard: boolean = false;
     /** Emesso a ogni fine caricamento dati (anche in caso di errore): la dashboard lo usa per mostrare il componente solo quando è pronto */
     @Output() caricato = new EventEmitter<void>();
+    @Output() datiCaricati = new EventEmitter<DatiIndice>();
 
     protected filterForm!: FormGroup;
 
@@ -223,7 +226,7 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
                     this.chartInstances.set(key, null);
                 }
             });
-
+            this.datiCaricati.emit({ esercizio, uo, indice: result['0'] ?? null });
             setTimeout(() => {
                 this.loadingChart.set(false);
                 this.caricato.emit();
