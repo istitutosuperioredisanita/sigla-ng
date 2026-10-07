@@ -888,6 +888,30 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     // con la voce fissata il sottotitolo occupa una riga in più: più spazio sopra il grafico
     const topGrid = this.voceFissa ? '24%' : '18%';
 
+    const serieUtilizzato: any = {
+      name: 'Importo utilizzato',
+      type: 'bar',
+      stack: 'fondi',
+      barMaxWidth: 28,
+      cursor: this.filtroCorrente ? 'default' : 'pointer',
+      itemStyle: { color: COLORE_UTILIZZATO },
+      emphasis,
+      data: utilizzato,
+      animationDuration: 1000
+    };
+    // impilate: è la parte residuo sopra l'utilizzato; affiancate: è l'importo assegnato intero in una barra a parte
+    const serieAssegnato: any = {
+      name: affiancate ? 'Importo assegnato' : 'Importo assegnato (residuo)',
+      type: 'bar',
+      stack: affiancate ? 'fondi2' : 'fondi',
+      barMaxWidth: 28,
+      cursor: this.filtroCorrente ? 'default' : 'pointer',
+      itemStyle: { color: COLORE_ASSEGNATO },
+      emphasis,
+      data: residuo,
+      animationDuration: 1000
+    };
+
     this.chartOptions = {
       title: {
         text: this.translateService.instant(`global.menu.progetti.fondi-funzionamento.${this.dimensioneCorrente}`),
@@ -934,30 +958,8 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
           ],
       xAxis: orizzontale ? asseImporti : asseCategorie,
       yAxis: orizzontale ? asseCategorie : asseImporti,
-      series: [
-        {
-          name: 'Importo utilizzato',
-          type: 'bar',
-          stack: 'fondi',
-          barMaxWidth: 28,
-          cursor: this.filtroCorrente ? 'default' : 'pointer',
-          itemStyle: { color: COLORE_UTILIZZATO },
-          emphasis,
-          data: utilizzato,
-          animationDuration: 1000
-        },
-        {
-          name: 'Importo assegnato (residuo)',
-          type: 'bar',
-          stack: affiancate ? 'fondi2' : 'fondi',
-          barMaxWidth: 28,
-          cursor: this.filtroCorrente ? 'default' : 'pointer',
-          itemStyle: { color: COLORE_ASSEGNATO },
-          emphasis,
-          data: residuo,
-          animationDuration: 1000
-        }
-      ]
+      // barre impilate: utilizzato (base) + residuo; barre affiancate: prima assegnato, poi utilizzato
+      series: affiancate ? [serieAssegnato, serieUtilizzato] : [serieUtilizzato, serieAssegnato]
     };
   }
 }
