@@ -18,6 +18,7 @@ import { map, debounceTime } from 'rxjs/operators';
 
 export class ContextComponent implements OnInit, OnDestroy {
     @Input() isNavbar: boolean;
+    @Input() onlyEsercizio: boolean = false;
     @ViewChild('contextDrop', {static : true}) contextDrop;
 
     @ViewChild('cds', {static : false}) cdsInput: ElementRef;
@@ -144,6 +145,7 @@ export class ContextComponent implements OnInit, OnDestroy {
                 content: 'reopenView'
             });
             this.eventManager.broadcast('onRefreshTodo');
+            this.eventManager.broadcast('onRefreshDashboard');
         });
     }
 

@@ -60,42 +60,43 @@
         <div class="col-md mb-3">
             <div class="card h-100 shadow-sm">
                 <div class="card-body py-3">
-                    <div class="text-muted small">Pagato {{ pagato()?.esercizio }}</div>
+                    <div class="text-muted small">Fatture pagate {{ pagato()?.esercizio }}</div>
                     <div class="h3 font-weight-bold mb-0">{{ mln(pagato()?.importo) }}</div>
                     <div class="small text-muted">dato parziale al {{ oggi | date:'dd/MM/yyyy' }}</div>
                 </div>
             </div>
         </div>
     </div>
-
-    <a class="d-block" [routerLink]="['/progetti/fondi-funzionamento/uo']" [queryParams]="{dashboard: false}"
-       [class.in-caricamento]="!pronti().has('uo')" [class.comparsa]="pronti().has('uo')">
-        <fondi-funzionamento [dashboard]="true" (caricato)="segnaPronto('uo')" (datiCaricati)="onUo($event)"></fondi-funzionamento>
-    </a>
-    <a class="d-block" [routerLink]="['/progetti/fondi-funzionamento/elemento-voce']" [queryParams]="{dashboard: false}"
-       [class.in-caricamento]="!pronti().has('elemento-voce')" [class.comparsa]="pronti().has('elemento-voce')">
-        <fondi-funzionamento [dashboard]="true" dimensione="elemento-voce" (caricato)="segnaPronto('elemento-voce')"></fondi-funzionamento>
-    </a>
-    <div class="my-4" [class.in-caricamento]="!pronti().has('tipo-finanziamento') && !pronti().has('indice') && !pronti().has('acquisti')">
-        <div class="row pt-2 justify-content-md-center">
-            <div class="col-md-4">
-                <a class="d-block" [routerLink]="['/progetti/fondi-funzionamento/tipo-finanziamento']" [queryParams]="{dashboard: false}"
-                    [class.in-caricamento]="!pronti().has('tipo-finanziamento')" [class.comparsa]="pronti().has('tipo-finanziamento')">
-                    <fondi-funzionamento [dashboard]="true" dimensione="tipo-finanziamento" (caricato)="segnaPronto('tipo-finanziamento')" (datiCaricati)="onTipoFinanziamento($event)"></fondi-funzionamento>
-                </a>
-            </div>
-            <div class="col-md-4">
-                <a class="d-block" [routerLink]="['/indice-tempestivita-pagamenti']" [queryParams]="{dashboard: false}"
-                   [class.in-caricamento]="!pronti().has('indice')" [class.comparsa]="pronti().has('indice')">
-                    <indice-tempestivita-pagamenti [dashboard]="true" (caricato)="segnaPronto('indice')" (datiCaricati)="onIndice($event)"></indice-tempestivita-pagamenti>
-                </a>
-            </div>
-            <div class="col-md-4">
-                <a class="d-block" [routerLink]="['/acquisti-stato']" [queryParams]="{dashboard: false}"
-                   [class.in-caricamento]="!pronti().has('acquisti')" [class.comparsa]="pronti().has('acquisti')">
-                    <acquisti-stato [dashboard]="true" (caricato)="segnaPronto('acquisti')" (datiCaricati)="onAcquisti($event)"></acquisti-stato>
-                </a>
+    @for (k of [chiaveRicarica()]; track k) {
+        <a class="d-block" [routerLink]="['/progetti/fondi-funzionamento/uo']" [queryParams]="{dashboard: false}"
+        [class.in-caricamento]="!pronti().has('uo')" [class.comparsa]="pronti().has('uo')">
+            <fondi-funzionamento [dashboard]="true" (caricato)="segnaPronto('uo')" (datiCaricati)="onUo($event)"></fondi-funzionamento>
+        </a>
+        <a class="d-block" [routerLink]="['/progetti/fondi-funzionamento/elemento-voce']" [queryParams]="{dashboard: false}"
+        [class.in-caricamento]="!pronti().has('elemento-voce')" [class.comparsa]="pronti().has('elemento-voce')">
+            <fondi-funzionamento [dashboard]="true" dimensione="elemento-voce" (caricato)="segnaPronto('elemento-voce')"></fondi-funzionamento>
+        </a>
+        <div class="my-4" [class.in-caricamento]="!pronti().has('tipo-finanziamento') && !pronti().has('indice') && !pronti().has('acquisti')">
+            <div class="row pt-2 justify-content-md-center">
+                <div class="col-md-4">
+                    <a class="d-block" [routerLink]="['/progetti/fondi-funzionamento/tipo-finanziamento']" [queryParams]="{dashboard: false}"
+                        [class.in-caricamento]="!pronti().has('tipo-finanziamento')" [class.comparsa]="pronti().has('tipo-finanziamento')">
+                        <fondi-funzionamento [dashboard]="true" dimensione="tipo-finanziamento" (caricato)="segnaPronto('tipo-finanziamento')" (datiCaricati)="onTipoFinanziamento($event)"></fondi-funzionamento>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a class="d-block" [routerLink]="['/indice-tempestivita-pagamenti']" [queryParams]="{dashboard: false}"
+                    [class.in-caricamento]="!pronti().has('indice')" [class.comparsa]="pronti().has('indice')">
+                        <indice-tempestivita-pagamenti [dashboard]="true" (caricato)="segnaPronto('indice')" (datiCaricati)="onIndice($event)"></indice-tempestivita-pagamenti>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a class="d-block" [routerLink]="['/acquisti-stato']" [queryParams]="{dashboard: false}"
+                    [class.in-caricamento]="!pronti().has('acquisti')" [class.comparsa]="pronti().has('acquisti')">
+                        <acquisti-stato [dashboard]="true" (caricato)="segnaPronto('acquisti')" (datiCaricati)="onAcquisti($event)"></acquisti-stato>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
+    }
 </div>

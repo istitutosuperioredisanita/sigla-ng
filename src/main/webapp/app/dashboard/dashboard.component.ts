@@ -1,9 +1,11 @@
-import { Component, OnInit, computed, signal } from "@angular/core";
+import { Component, OnDestroy, OnInit, computed, signal } from "@angular/core";
 // Adatta i percorsi alla posizione reale del componente dashboard
 import { FondiFunzionamentoService } from "./progetti/fondi-funzionamento.service";
 import { DatiFondi } from "./progetti/fondi-funzionamento.component";
 import { DatiIndice } from "./indice-tempestivita-pagamenti/indice-tempestivita-pagamenti.component";
 import { IndiceTempestivitaPagamentiService } from "./indice-tempestivita-pagamenti/indice-tempestivita-pagamenti.service";
+import { EventManager } from '../shared/auth/event-manager.service';
+import { Subscription } from 'rxjs';
 
 /** Una UO è "sotto soglia" se ha utilizzato meno di questa quota dell'assegnato */
 const SOGLIA_UTILIZZO_BASSO = 0.30;
@@ -31,13 +33,38 @@ const somma = (righe: any[] | undefined, campo: string): number =>
         }
     `
 })
-export class DashBoardComponent implements OnInit {
+export class DashBoardComponent implements OnInit, OnDestroy {
     constructor(
         private fondiService: FondiFunzionamentoService,
-        private indiceService: IndiceTempestivitaPagamentiService
+        private indiceService: IndiceTempestivitaPagamentiService,
+        private eventManager: EventManager,
     ) {}
+    private refreshSub?: Subscription;
+    /** Cambia a ogni ricarica: serve a distruggere e ricreare i widget */
+    protected chiaveRicarica = signal(0);
+    
+    ngOnInit(): void {
+        this.refreshSub = this.eventManager.subscribe('onRefreshDashboard', () => this.ricarica());
+    }
 
-    ngOnInit(): void {}
+    ngOnDestroy(): void {
+        this.refreshSub?.unsubscribe();
+    }
+
+    private ricarica(): void {
+        // i widget tornano nascosti finché non hanno ricaricato i dati
+        this.pronti.set(new Set());
+        // i KPI tornano a "…" invece di mostrare i valori del vecchio esercizio
+        this.tipoFin.set(undefined);
+        this.perUo.set(undefined);
+        this.indice.set(undefined);
+        this.acquisti.set([]);
+        this.assegnatoPrec.set(undefined);
+        this.indicePrec.set(undefined);
+        // forza la ricreazione dei widget
+        this.chiaveRicarica.update(k => k + 1);
+    }
+
     protected pronti = signal<ReadonlySet<string>>(new Set());
     protected segnaPronto(chiave: string): void {
         this.pronti.update(s => new Set(s).add(chiave));

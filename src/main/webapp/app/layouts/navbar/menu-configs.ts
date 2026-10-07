@@ -12,8 +12,8 @@ export const MENU_CONFIGS = {
               icon: 'fa-cubes',
               child: [
                 { label: 'global.menu.progetti.fondi-funzionamento.uo', route: '/progetti/fondi-funzionamento/uo', icon: 'fa-bar-chart' },
-                { label: 'global.menu.progetti.fondi-funzionamento.tipo-progetto', route: '/progetti/fondi-funzionamento/tipo-progetto', icon: 'fa-bar-chart' },
                 { label: 'global.menu.progetti.fondi-funzionamento.elemento-voce', route: '/progetti/fondi-funzionamento/elemento-voce', icon: 'fa-area-chart' },
+                { label: 'global.menu.progetti.fondi-funzionamento.tipo-progetto', route: '/progetti/fondi-funzionamento/tipo-progetto', icon: 'fa-bar-chart' },
                 { label: 'global.menu.progetti.fondi-funzionamento.tipo-finanziamento', route: '/progetti/fondi-funzionamento/tipo-finanziamento', icon: 'fa-pie-chart' },
                 { label: 'global.menu.progetti.fondi-funzionamento.ente-finanziatore', route: '/progetti/fondi-funzionamento/ente-finanziatore', icon: 'fa-line-chart' }
               ]

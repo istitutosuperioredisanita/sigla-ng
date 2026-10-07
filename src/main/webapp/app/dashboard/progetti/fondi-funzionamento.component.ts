@@ -11,6 +11,7 @@ import { DettaglioVoceSpesa, DimensioneFondo, FondiFunzionamentoService, VocePia
 import { LocalStateStorageService } from '../../shared/auth/local-storage.service';
 import { Principal } from '../../shared/auth/principal.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Helpers } from '../../shared/helpers/helpers';
 
 /** Forma comune usata dal grafico, indipendente dall'endpoint chiamato */
 interface VoceFondo {
@@ -636,13 +637,107 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     };
   }
 
-  /** Torta sull'importo assegnato, usata da 'tipo-finanziamento' al primo livello (poche voci) */
+  /** Torta sull'importo assegnato, usata da 'tipo-finanziamento' al primo livello (poche voci).
+   *  L'ampiezza di ogni fetta è l'importo assegnato (colore scuro, raggio pieno); all'interno, con lo stesso
+   *  angolo ma raggio minore, la parte a colore chiaro è il "di cui utilizzato" (area proporzionale al
+   *  rapporto utilizzato/assegnato). Disegnata con una serie 'custom' perché la torta standard non
+   *  permette raggi diversi per fetta con angoli fissi. */
   private opzioniTorta(data: VoceFondo[], suffisso: string, nomeFile: string): EChartsOption {
+    const totaleAssegnato = data.reduce((somma, d) => somma + d.importoFinanziato, 0);
+    const percUtilizzo = (d: VoceFondo) =>
+      d.importoFinanziato ? ((d.importoUtilizzato / d.importoFinanziato) * 100).toFixed(1) : '0';
+    const percTotale = (d: VoceFondo) =>
+      totaleAssegnato ? ((d.importoFinanziato / totaleAssegnato) * 100).toFixed(1) : '0';
+
+    // angoli di ogni fetta in radianti, a partire dalle ore 12 in senso orario
+    const inizio = -Math.PI / 2;
+    let cumulato = 0;
+    const angoli = data.map(d => {
+      const start = inizio + (totaleAssegnato ? (cumulato / totaleAssegnato) * 2 * Math.PI : 0);
+      cumulato += d.importoFinanziato;
+      const end = inizio + (totaleAssegnato ? (cumulato / totaleAssegnato) * 2 * Math.PI : 0);
+      return { start, end };
+    });
+
+    // versione chiara di un colore esadecimale (mescolato con il bianco), opaca per coprire la fetta sotto
+    const schiarisci = (hex: string, quota = 0.6): string => {
+      const n = parseInt(hex.replace('#', ''), 16);
+      const mix = (c: number) => Math.round(c + (255 - c) * quota);
+      return `rgb(${mix((n >> 16) & 255)},${mix((n >> 8) & 255)},${mix(n & 255)})`;
+    };
+
+    const renderItem: any = (params: any, api: any) => {
+      const i = params.dataIndex;
+      const d = data[i];
+      const ang = angoli[i];
+      if (!d || !ang || ang.end - ang.start <= 0) {
+        return { type: 'group', children: [] };
+      }
+      const colore = COLORI_TORTA[i % COLORI_TORTA.length];
+      const cx = api.getWidth() * 0.5;
+      const cy = api.getHeight() * 0.58;
+      const raggio = Math.min(api.getWidth(), api.getHeight()) * 0.3;
+      // raggio dell'utilizzato: l'area è proporzionale a utilizzato/assegnato
+      const rapporto = d.importoFinanziato
+        ? Math.min(Math.max(d.importoUtilizzato, 0) / d.importoFinanziato, 1)
+        : 0;
+      const raggioUtilizzato = raggio * Math.sqrt(rapporto);
+      const cursor = this.filtroCorrente ? 'default' : 'pointer';
+      const evidenza = { style: { shadowBlur: 10, shadowColor: 'rgba(0,0,0,0.3)' } };
+
+      // etichetta all'esterno della fetta, con una linea a gomito
+      const mid = (ang.start + ang.end) / 2;
+      const cos = Math.cos(mid);
+      const sin = Math.sin(mid);
+      const lato = cos >= 0 ? 1 : -1;
+      const gomito = [cx + cos * (raggio + 12), cy + sin * (raggio + 12)];
+      const fine = [gomito[0] + lato * 12, gomito[1]];
+
+      return {
+        type: 'group',
+        children: [
+          {
+            type: 'sector',
+            shape: { cx, cy, r0: 0, r: raggio, startAngle: ang.start, endAngle: ang.end },
+            style: { fill: colore, stroke: '#fff', lineWidth: 1 },
+            emphasis: evidenza,
+            cursor
+          },
+          {
+            type: 'sector',
+            shape: { cx, cy, r0: 0, r: raggioUtilizzato, startAngle: ang.start, endAngle: ang.end },
+            style: { fill: schiarisci(colore), stroke: '#fff', lineWidth: 1 },
+            emphasis: evidenza,
+            cursor
+          },
+          {
+            type: 'polyline',
+            shape: { points: [[cx + cos * raggio, cy + sin * raggio], gomito, fine] },
+            style: { stroke: colore, fill: 'none', lineWidth: 1 },
+            silent: true
+          },
+          {
+            type: 'text',
+            style: {
+              x: fine[0] + lato * 4,
+              y: fine[1],
+              text: `${d.codice}\n${percTotale(d)}%\nutil. ${percUtilizzo(d)}%`,
+              textAlign: lato > 0 ? 'left' : 'right',
+              textVerticalAlign: 'middle',
+              fontSize: 12,
+              fill: '#333'
+            },
+            silent: true
+          }
+        ]
+      };
+    };
+
     return {
       color: COLORI_TORTA,
       title: {
         text: this.translateService.instant(`global.menu.progetti.fondi-funzionamento.${this.dimensioneCorrente}`),
-        subtext: `Anno ${this.anno}${suffisso}`,
+        subtext: `Anno ${this.anno}${suffisso}\nFetta scura = importo assegnato · settore chiaro (raggio minore) = di cui utilizzato`,
         left: 'center'
       },
       toolbox: this.toolbox(data, nomeFile),
@@ -654,14 +749,11 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
           const row = data[params?.dataIndex];
           if (!row) return '';
           const residuoVal = row.importoFinanziato - row.importoUtilizzato;
-          const perc = row.importoFinanziato
-            ? ((row.importoUtilizzato / row.importoFinanziato) * 100).toFixed(1)
-            : '0';
           return [
             `<b>${row.codice}</b>`,
             `<div style="max-width:320px;white-space:normal">${row.descrizione}</div>`,
-            `Assegnato: ${this.formatEur(row.importoFinanziato)} (${params.percent}% del totale)`,
-            `Utilizzato: ${this.formatEur(row.importoUtilizzato)} (${perc}%)`,
+            `Assegnato: ${this.formatEur(row.importoFinanziato)} (${percTotale(row)}% del totale)`,
+            `di cui utilizzato: ${this.formatEur(row.importoUtilizzato)} (${percUtilizzo(row)}%)`,
             `Residuo: ${this.formatEur(residuoVal)}`
           ].join('<br/>');
         }
@@ -671,15 +763,12 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
       series: [
         {
           name: 'Importo assegnato',
-          type: 'pie',
-          radius: '60%',
-          center: ['50%', '58%'],
-          cursor: this.filtroCorrente ? 'default' : 'pointer',
-          data: data.map(d => ({ name: d.codice, value: d.importoFinanziato })),
-          label: { formatter: (p: any) => `${p.name}\n${p.percent}%`, fontSize: 12 },
-          emphasis: { itemStyle: { shadowBlur: 10, shadowColor: 'rgba(0,0,0,0.3)' } },
+          type: 'custom',
+          coordinateSystem: 'none',
+          renderItem,
+          data: data.map((d, i) => [i, d.importoFinanziato]),
           animationDuration: 1000
-        }
+        } as any
       ]
     };
   }
@@ -710,17 +799,28 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     URL.revokeObjectURL(url);
   }
 
+  get etichettaDimensione() {
+    if (this.dimensioneCorrente === 'elemento-voce' || this.voceFissa)
+      return `stanziato`;
+    else
+      return `assegnato`;
+  }
+
+  get etichettaImporto() {
+    return `Importo ${this.etichettaDimensione} (totale barra)`;
+  }
+
   private loadChart(data: VoceFondo[]): void {
     const categories = data.map(d => d.codice);
 
     // per 'tipo-progetto' e 'elemento-voce' gli assi sono invertiti: categorie sulle ordinate, importi sulle ascisse
-    const orizzontale = this.dimensioneCorrente === 'tipo-progetto' || this.dimensioneCorrente === 'elemento-voce';
+    const orizzontale = this.dimensioneCorrente === 'tipo-progetto' || this.dimensioneCorrente === 'elemento-voce'|| this.dimensioneCorrente === 'ente-finanziatore';
     // 'elemento-voce' ha molte voci: all'apertura si vedono solo le prime N (già ordinate per importo), il resto con lo slider
-    const finestra = this.dimensioneCorrente === 'elemento-voce' && data.length > VOCI_VISIBILI_INIZIALI
+    const finestra = (this.dimensioneCorrente === 'elemento-voce'|| this.dimensioneCorrente === 'ente-finanziatore') && data.length > VOCI_VISIBILI_INIZIALI
       ? { startValue: 0, endValue: VOCI_VISIBILI_INIZIALI - 1 }
       : {};
     // solo 'tipo-progetto' ha le barre affiancate (utilizzato / assegnato); le altre dimensioni sono impilate
-    const affiancate = this.dimensioneCorrente === 'tipo-progetto';
+    const affiancate = this.dimensioneCorrente === 'tipo-progetto' || (this.dimensioneCorrente === 'uo' && this.filtroCorrente);
     const raggioCima = orizzontale ? [0, 6, 6, 0] : [6, 6, 0, 0];
     // stile della barra evidenziata (select 'Voce'): solo per 'elemento-voce'
     const emphasis = this.dimensioneCorrente === 'elemento-voce'
@@ -760,7 +860,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
       suffisso += `\n{voce|Voce ${this.voceFissa}${desc ? ' - ' + desc : ''}}`;
     }
 
-    const nomeFile = `fondi_funzionamento_${this.anno}${this.filtroCorrente ? '_' + this.filtroCorrente.valore : ''}${this.filtroUoCorrente ? '_' + this.filtroUoCorrente : ''}${this.filtroCdsCorrente ? '_' + this.filtroCdsCorrente : ''}${this.voceFissa ? '_voce_' + this.voceFissa : ''}`;
+    const nomeFile = `fondi_funzionamento_${this.anno}_${this.dimensioneCorrente}${this.filtroCorrente ? '_' + this.filtroCorrente.valore : ''}${this.filtroUoCorrente ? '_' + this.filtroUoCorrente : ''}${this.filtroCdsCorrente ? '_' + this.filtroCdsCorrente : ''}${this.voceFissa ? '_voce_' + this.voceFissa : ''}`;
 
     // 'tipo-finanziamento' al primo livello (nessun filtro attivo): torta; al secondo livello restano le barre dei progetti
     this.tortaAttiva = this.dimensioneCorrente === 'tipo-finanziamento' && !this.filtroCorrente;
@@ -812,7 +912,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
           return [
             `<b>${row.codice}</b>`,
             `<div style="max-width:320px;white-space:normal">${row.descrizione}</div>`,
-            `<span style="color:${COLORE_ASSEGNATO}">●</span> Assegnato: ${this.formatEur(row.importoFinanziato)}`,
+            `<span style="color:${COLORE_ASSEGNATO}">●</span> ${Helpers.capitalizeWord(this.etichettaDimensione)}: ${this.formatEur(row.importoFinanziato)}`,
             `<span style="color:${COLORE_UTILIZZATO}">●</span> Utilizzato: ${this.formatEur(row.importoUtilizzato)} (${perc}%)`,
             `Residuo: ${this.formatEur(residuoVal)}`
           ].join('<br/>');
