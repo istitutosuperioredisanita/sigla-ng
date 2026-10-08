@@ -11,43 +11,35 @@
     </div>
 </ng-template>
 
-@if(!dashboard) {
-    <div class="card shadow mt-2 p-3 jumbotron mb-1">
-        <h1 class="text-monospace text-center text-primary-dark bg-transparent" translate>dashboard.acquisti-struttura.title</h1>
-        <p class="text-monospace font-italic" translate>dashboard.acquisti-struttura.descrizione</p>
-        @if(esercizi) {
-            <form class="form" role="form" [formGroup]="filterForm">
-                <div class="row justify-content-center">
-                    <div class="col-12 col-md-auto mb-2 mb-md-0">
-                        <div class="d-flex">
-                            <span class="FormLabel required pr-2 pt-1" translate>dashboard.acquisti-struttura.esercizio</span>
-                            <select id="esercizio" class="form-control" formControlName="esercizio" required>
-                                @for (esercizio of esercizi; track esercizio) {
-                                    <option [ngValue]="esercizio">{{esercizio}}</option>
-                                }
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        }
-    </div>
-}
+<div class="card shadow mt-3" [ngClass]="dashboard ? 'mb-3' : 'mb-5'">
 
-<div [ngClass]="{'card shadow p-1 mb-5': !dashboard}">
+    @if(!dashboard) {
+        <div class="card-header bg-white d-flex flex-wrap align-items-center justify-content-between">
+            <div class="mr-3 my-1">
+                <h1 class="h4 mb-0 text-monospace text-primary-dark bg-transparent" translate>dashboard.acquisti-struttura.title</h1>
+                <p class="small text-monospace font-italic text-muted mb-0 mt-1" translate>dashboard.acquisti-struttura.descrizione</p>
+            </div>
+            @if(esercizi) {
+                <form class="form-inline flex-wrap my-1" role="form" [formGroup]="filterForm">
+                    <label for="esercizio" class="text-muted mr-2 mb-0" translate>dashboard.acquisti-struttura.esercizio</label>
+                    <select id="esercizio" class="form-control" style="width:auto" formControlName="esercizio">
+                        @for (esercizio of esercizi; track esercizio) {
+                            <option [ngValue]="esercizio">{{esercizio}}</option>
+                        }
+                    </select>
+                </form>
+            }
+        </div>
+    }
+
     <div class="d-flex justify-content-center">
-        <div #chartdiv class="w-100 font-weight-bold text-monospace text-center text-primary-dark" [style]="chartDivStyle">
+        <div #chartdiv class="w-100 font-weight-bold text-monospace text-center text-primary-dark mb-2" [style]="chartDivStyle">
             @if (loadingChart()) {
                 <div class="h-100">
                     <div class="d-flex justify-content-center">
                         <div class="loading cursor-wait position-relative"></div>
                     </div>
                 </div>
-            } @else {
-                @if(dashboard) {
-                    <span class="h3" translate>dashboard.acquisti-struttura.title</span>
-                    <span class="ml-2 h3">{{filterForm?.controls?.esercizio?.value}}</span>
-                }
             }
         </div>
     </div>

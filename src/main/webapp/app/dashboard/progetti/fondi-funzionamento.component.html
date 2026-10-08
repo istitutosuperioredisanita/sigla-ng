@@ -4,116 +4,108 @@
   </div>
 </ng-template>
 
-@if (!dashboard) {
-  <div class="card shadow mt-2 p-3 jumbotron mb-1">
-    @if (esercizi.length) {
-      <form class="form" role="form" [formGroup]="filterForm">
-        <div class="row justify-content-center">
-          <div class="col-12 col-md-auto mb-2 mb-md-0">
-            <div class="d-flex">
-              <span class="FormLabel required pr-2 pt-1" translate>dashboard.indice-tempestivita.esercizio</span>
-              <select id="esercizio" class="form-control" formControlName="esercizio" required>
-                @for (esercizio of esercizi; track esercizio) {
-                  <option [ngValue]="esercizio">{{esercizio}}</option>
-                }
-              </select>
-            </div>
-          </div>
-          @if (dimensioneCorrente !== 'uo') {
-            <div class="col-12 col-md-6 col-lg-5">
-              <div class="d-flex">
-                <label for="uoFiltro" class="col-form-label pr-2 text-nowrap" translate>dashboard.indice-tempestivita.uo</label>
-                <div class="flex-fill">
-                  <div class="input-group">
-                    <input
-                      #uoFiltroInput
-                      formControlName="uoFiltro"
-                      [ngbTypeahead]="searchuo"
-                      [resultTemplate]="rt"
-                      [inputFormatter]="formatter"
-                      [resultFormatter]="formatter"
-                      (selectItem)="onUoSelected($event)"
-                      [editable]="true"
-                      class="form-control"
-                      id="uoFiltro"
-                      type="search"
-                      placeholder="{{'global.form.filter.placeholder' | translate}}">
-                    <a class="input-group-addon btn text-primary" (click)="openTypeaheadUo()">
-                      <i class="fa fa-caret-down"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          }
-          @if (dimensioneCorrente === 'uo' && !filtroCorrente?.valore) {
-            <div class="col-12 col-md-6 col-lg-5">
-              <div class="d-flex">
-                <label for="cdsFiltro" class="col-form-label pr-2 text-nowrap">Centro di Spesa</label>
-                <div class="flex-fill">
-                  <div class="input-group">
-                    <input
-                      #cdsFiltroInput
-                      formControlName="cdsFiltro"
-                      [ngbTypeahead]="searchcds"
-                      [resultTemplate]="rt"
-                      [inputFormatter]="formatter"
-                      [resultFormatter]="formatter"
-                      (selectItem)="onCdsSelected($event)"
-                      [editable]="true"
-                      class="form-control"
-                      id="cdsFiltro"
-                      type="search"
-                      placeholder="{{'global.form.filter.placeholder' | translate}}">
-                    <a class="input-group-addon btn text-primary" (click)="openTypeaheadCds()">
-                      <i class="fa fa-caret-down"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          }
-          @if (dimensioneCorrente === 'elemento-voce') {
-            <div class="col-12 col-md-6 col-lg-5">
-              <div class="d-flex">
-                <label for="voceFiltro" class="col-form-label pr-2 text-nowrap">Voce</label>
-                <div class="flex-fill">
-                  <div class="input-group">
-                    <input
-                      #voceFiltroInput
-                      formControlName="voceFiltro"
-                      [ngbTypeahead]="searchvoce"
-                      [resultTemplate]="rt"
-                      [inputFormatter]="formatter"
-                      [resultFormatter]="formatter"
-                      (selectItem)="onVoceSelected($event)"
-                      [editable]="true"
-                      class="form-control"
-                      id="voceFiltro"
-                      type="search"
-                      placeholder="{{'global.form.filter.placeholder' | translate}}">
-                    <a class="input-group-addon btn text-primary" (click)="openTypeaheadVoce()">
-                      <i class="fa fa-caret-down"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          }
-        </div>
-      </form>
-    }
-  </div>
-}
+<div class="card shadow my-3">
 
-<div class="card shadow p-1 my-4">
-  @if ((filtroCorrente || voceFissa)  && !dashboard) {
-    <div class="card-header d-flex align-items-center">
-      <a class="btn btn-link text-primary p-0" href="javascript:void(0);" (click)="torna()">
-        <i class="fa fa-fw fa-arrow-left" aria-hidden="true"></i> Torna a {{labelTorna}}
-      </a>
+  <!-- Header: navigazione a sinistra, filtri a destra (nascosto in dashboard) -->
+  @if (!dashboard) {
+    <div class="card-header bg-white d-flex flex-wrap align-items-center justify-content-between">
+
+      <div class="mr-3 my-1">
+        @if (filtroCorrente || voceFissa) {
+          <a class="btn btn-link text-primary p-0" href="javascript:void(0);" (click)="torna()">
+            <i class="fa fa-fw fa-arrow-left" aria-hidden="true"></i> Torna a {{labelTorna}}
+          </a>
+        }
+      </div>
+
+      @if (esercizi.length) {
+        <form class="form-inline flex-wrap my-1" role="form" [formGroup]="filterForm">
+
+          <label for="esercizio" class="text-muted mr-2 mb-0" translate>dashboard.indice-tempestivita.esercizio</label>
+          <select id="esercizio" class="form-control mr-3" style="width:auto"
+                  formControlName="esercizio">
+            @for (esercizio of esercizi; track esercizio) {
+              <option [ngValue]="esercizio">{{esercizio}}</option>
+            }
+          </select>
+
+          @if (dimensioneCorrente !== 'uo') {
+            <label for="uoFiltro" class="text-muted mr-2 mb-0" translate>dashboard.indice-tempestivita.uo</label>
+            <div class="input-group" style="min-width:320px">
+              <input
+                #uoFiltroInput
+                formControlName="uoFiltro"
+                [ngbTypeahead]="searchuo"
+                [resultTemplate]="rt"
+                [inputFormatter]="formatter"
+                [resultFormatter]="formatter"
+                (selectItem)="onUoSelected($event)"
+                [editable]="true"
+                class="form-control"
+                id="uoFiltro"
+                type="search"
+                placeholder="{{'global.form.filter.placeholder' | translate}}">
+              <div class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary" aria-label="Mostra elenco" (click)="openTypeaheadUo()">
+                  <i class="fa fa-caret-down"></i>
+                </button>
+              </div>
+            </div>
+          }
+
+          @if (dimensioneCorrente === 'uo' && !filtroCorrente?.valore) {
+            <label for="cdsFiltro" class="text-muted mr-2 mb-0">Centro di Spesa</label>
+            <div class="input-group" style="min-width:320px">
+              <input
+                #cdsFiltroInput
+                formControlName="cdsFiltro"
+                [ngbTypeahead]="searchcds"
+                [resultTemplate]="rt"
+                [inputFormatter]="formatter"
+                [resultFormatter]="formatter"
+                (selectItem)="onCdsSelected($event)"
+                [editable]="true"
+                class="form-control"
+                id="cdsFiltro"
+                type="search"
+                placeholder="{{'global.form.filter.placeholder' | translate}}">
+              <div class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary" aria-label="Mostra elenco" (click)="openTypeaheadCds()">
+                  <i class="fa fa-caret-down"></i>
+                </button>
+              </div>
+            </div>
+          }
+
+          @if (dimensioneCorrente === 'elemento-voce') {
+            <label for="voceFiltro" class="text-muted ml-3 mr-2 mb-0">Voce</label>
+            <div class="input-group" style="min-width:320px">
+              <input
+                #voceFiltroInput
+                formControlName="voceFiltro"
+                [ngbTypeahead]="searchvoce"
+                [resultTemplate]="rt"
+                [inputFormatter]="formatter"
+                [resultFormatter]="formatter"
+                (selectItem)="onVoceSelected($event)"
+                [editable]="true"
+                class="form-control"
+                id="voceFiltro"
+                type="search"
+                placeholder="{{'global.form.filter.placeholder' | translate}}">
+              <div class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary" aria-label="Mostra elenco" (click)="openTypeaheadVoce()">
+                  <i class="fa fa-caret-down"></i>
+                </button>
+              </div>
+            </div>
+          }
+        </form>
+      }
     </div>
   }
+
+  <!-- Grafico -->
   <div class="d-flex justify-content-center">
     <div class="w-100 font-weight-bold text-monospace text-center text-primary-dark"
          [style]="dashboard ? 'height:50vh !important' : 'height:75vh !important'">
@@ -138,7 +130,7 @@
   <!-- Legenda: codice e descrizione (gruppo o progetto) -->
   @if (!loadingChart() && legenda.length && !(dashboard && tortaAttiva)) {
     <div class="px-3 pb-3 mt-3">
-      @if(!tortaAttiva) {
+      @if (!tortaAttiva) {
         <div class="d-flex justify-content-center mb-2 small">
           <span class="mr-4">
             <i class="fa fa-square" [style.color]="coloreAssegnato"></i> {{etichettaImporto}}
@@ -148,7 +140,7 @@
           </span>
         </div>
       }
-      @if(!dashboard) {
+      @if (!dashboard) {
         <div class="row small">
           @for (voce of legenda; track voce.codice) {
             <div class="col-12 col-md-6 col-xl-4 mb-1">
@@ -184,7 +176,7 @@
           }
         </select>
       </div>
-    </div>    
+    </div>
     @if (loadingDettaglio()) {
       <div class="d-flex justify-content-center py-5">
         <div class="loading cursor-wait"></div>

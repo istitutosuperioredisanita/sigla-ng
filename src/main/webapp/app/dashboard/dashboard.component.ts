@@ -59,6 +59,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
         this.perUo.set(undefined);
         this.indice.set(undefined);
         this.acquisti.set([]);
+        this.acquistiStruttura.set([]);
         this.assegnatoPrec.set(undefined);
         this.indicePrec.set(undefined);
         // forza la ricreazione dei widget
@@ -78,6 +79,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     private perUo = signal<DatiFondi | undefined>(undefined);
     private indice = signal<DatiIndice | undefined>(undefined);
     private acquisti = signal<any[]>([]);
+    private acquistiStruttura = signal<any[]>([]);
     // ---- anno precedente (per i delta) -------------------------------------------
     private assegnatoPrec = signal<number | undefined>(undefined);
     private indicePrec = signal<number | null | undefined>(undefined);
@@ -91,6 +93,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
     }
     protected onUo(d: DatiFondi): void { this.perUo.set(d); }
     protected onAcquisti(d: any[]): void { this.acquisti.set(d ?? []); }
+    protected onAcquistiStruttura(d: any[]): void { this.acquistiStruttura.set(d ?? []); }
     protected onIndice(d: DatiIndice): void {
         this.indice.set(d);
         this.indiceService.getIndice(d.esercizio - 1, d.uo).subscribe({

@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, OnDestroy, ViewChild, Input, signal, ViewEncapsulation } from "@angular/core";
+import { Component, ElementRef, EventEmitter, OnInit, OnDestroy, Output, ViewChild, Input, signal, ViewEncapsulation } from "@angular/core";
 import { ContextService } from "app/context";
 import { TranslateService } from "@ngx-translate/core";
 import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
@@ -60,6 +60,8 @@ interface SunburstNode {
 })
 export class AcquistiStrutturaComponent implements OnInit, OnDestroy {
     @Input() dashboard: boolean = false;
+    @Output() caricato = new EventEmitter<void>();
+    @Output() datiCaricati = new EventEmitter<any[]>();
 
     protected filterForm!: FormGroup;
 
@@ -97,6 +99,8 @@ export class AcquistiStrutturaComponent implements OnInit, OnDestroy {
             if (params['dashboard'] !== undefined) {
                 this.dashboard = params['dashboard'] === 'true';
             }
+            // in dashboard stessa altezza degli altri grafici (50vh)
+            this.chartDivStyle = this.dashboard ? "height:50vh !important" : "height:75vh !important";
             this.principal.getIdentyAccount(false).then((account) => {
                 const userContext = this.localStateStorageService.getUserContext(account.username);
                 this.initializeComponent(userContext?.esercizio);
@@ -151,8 +155,10 @@ export class AcquistiStrutturaComponent implements OnInit, OnDestroy {
         this.acquistiStrutturaService.getIndice(esercizio).subscribe((result: any) => {
             const chart = this.initializeChart();
             this.loadChart(chart, result);
+            this.datiCaricati.emit(this.collectRows(result));
             setTimeout(() => {
                 this.loadingChart.set(false);
+                this.caricato.emit();
             }, 0);
         });
     }
@@ -255,7 +261,7 @@ export class AcquistiStrutturaComponent implements OnInit, OnDestroy {
     }
 
     /** Legenda grafica della scala colore (gradiente basso -> alto importo medio) */
-    private buildColorLegend(min: number, max: number): any {
+    private buildColorLegend(min: number, max: number, top: number = 8): any {
         const stops = this.AVG_COLORS.map((color, i) => ({
             offset: i / (this.AVG_COLORS.length - 1),
             color
@@ -263,7 +269,7 @@ export class AcquistiStrutturaComponent implements OnInit, OnDestroy {
         return [{
             type: 'group',
             left: 'center',
-            top: 8,
+            top,
             silent: true,
             children: [
                 {
@@ -314,7 +320,16 @@ export class AcquistiStrutturaComponent implements OnInit, OnDestroy {
         const esercizio = this.filterForm?.controls?.esercizio?.value;
         const fileName = `acquisti_per_struttura_${esercizio ?? ''}`;
 
+        // In dashboard il titolo sta nel grafico (come negli altri componenti);
+        // a pagina intera c'è già nell'header della card
+        const titolo: echarts.EChartsOption['title'] = this.dashboard ? {
+            text: `${this.translateService.instant('dashboard.acquisti-struttura.title')} ${esercizio ?? ''}`,
+            subtext: 'Ampiezza = importo totale · colore = importo medio per acquisto',
+            left: 'center'
+        } : undefined;
+
         const option: echarts.EChartsOption = {
+            title: titolo,
             toolbox: {
                 feature: {
                     saveAsImage: {
@@ -334,7 +349,7 @@ export class AcquistiStrutturaComponent implements OnInit, OnDestroy {
                     }
                 }
             },
-            graphic: this.buildColorLegend(min, max),
+            graphic: this.buildColorLegend(min, max, this.dashboard ? 62 : 8),
             tooltip: {
                 trigger: 'item',
                 textStyle: { align: 'left' },
@@ -353,8 +368,8 @@ export class AcquistiStrutturaComponent implements OnInit, OnDestroy {
             series: [
                 {
                     type: 'sunburst',
-                    center: ['50%', '55%'],
-                    radius: ['8%', '90%'],
+                    center: ['50%', this.dashboard ? '62%' : '55%'],
+                    radius: ['8%', this.dashboard ? '76%' : '90%'],
                     data: nodes as any,
                     // click su un centro di spesa: zoom sui suoi figli; click al centro: torna indietro
                     nodeClick: 'rootToNode',
@@ -368,7 +383,7 @@ export class AcquistiStrutturaComponent implements OnInit, OnDestroy {
                     },
                     levels: [
                         {},
-                        // Livello 1: centri di spesa
+                        // Livello 1: centri di spesaacquisti
                         {
                             itemStyle: { borderWidth: 2 },
                             label: { rotate: 'tangential', fontSize: 12, fontWeight: 'bold' }

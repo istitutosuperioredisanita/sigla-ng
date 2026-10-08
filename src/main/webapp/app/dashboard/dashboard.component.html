@@ -78,19 +78,29 @@
         </a>
         <div class="my-4" [class.in-caricamento]="!pronti().has('tipo-finanziamento') && !pronti().has('indice') && !pronti().has('acquisti')">
             <div class="row pt-2 justify-content-md-center">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <a class="d-block" [routerLink]="['/progetti/fondi-funzionamento/tipo-finanziamento']" [queryParams]="{dashboard: false}"
                         [class.in-caricamento]="!pronti().has('tipo-finanziamento')" [class.comparsa]="pronti().has('tipo-finanziamento')">
                         <fondi-funzionamento [dashboard]="true" dimensione="tipo-finanziamento" (caricato)="segnaPronto('tipo-finanziamento')" (datiCaricati)="onTipoFinanziamento($event)"></fondi-funzionamento>
                     </a>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
+                    <a class="d-block" [routerLink]="['/acquisti-struttura']" [queryParams]="{dashboard: false}"
+                    [class.in-caricamento]="!pronti().has('acquisti-struttura')" [class.comparsa]="pronti().has('acquisti-struttura')">
+                        <acquisti-struttura [dashboard]="true" (caricato)="segnaPronto('acquisti-struttura')" (datiCaricati)="onAcquistiStruttura($event)"></acquisti-struttura>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="my-4">
+            <div class="row pt-2 justify-content-md-center">
+                <div class="col-md-6">
                     <a class="d-block" [routerLink]="['/indice-tempestivita-pagamenti']" [queryParams]="{dashboard: false}"
                     [class.in-caricamento]="!pronti().has('indice')" [class.comparsa]="pronti().has('indice')">
                         <indice-tempestivita-pagamenti [dashboard]="true" (caricato)="segnaPronto('indice')" (datiCaricati)="onIndice($event)"></indice-tempestivita-pagamenti>
                     </a>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <a class="d-block" [routerLink]="['/acquisti-stato']" [queryParams]="{dashboard: false}"
                     [class.in-caricamento]="!pronti().has('acquisti')" [class.comparsa]="pronti().has('acquisti')">
                         <acquisti-stato [dashboard]="true" (caricato)="segnaPronto('acquisti')" (datiCaricati)="onAcquisti($event)"></acquisti-stato>
