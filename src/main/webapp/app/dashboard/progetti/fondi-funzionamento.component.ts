@@ -27,6 +27,13 @@ export interface DatiFondi {
   voci: VoceFondo[];
 }
 
+/** Elemento della breadcrumb: se ha `azione` è cliccabile, altrimenti è un livello non navigabile (o quello corrente) */
+interface BreadcrumbItem {
+  label: string;
+  title?: string;
+  azione?: () => void;
+}
+
 /** Filtro di drill-down attivo (livello 2): dimensione + valore scelto */
 interface FiltroFondo {
   dimensione: DimensioneFondo;
@@ -597,10 +604,38 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
       });
     } else if (this.voceFissa) {
       // grafico UO con voce fissata -> grafico per Voce
-      this.router.navigate(['/progetti/fondi-funzionamento/elemento-voce'], {
-        queryParams: { anno: this.anno }
-      });
+      this.vaiAElementoVoce();
     }
+  }
+
+  private vaiAElementoVoce(): void {
+    this.router.navigate(['/progetti/fondi-funzionamento/elemento-voce'], {
+      queryParams: { anno: this.anno }
+    });
+  }
+
+  /**
+   * Percorso di navigazione corrente, ad es.:
+   *   Fondi di funzionamento / Voce / 05.01 / Unità Organizzativa / 000.044
+   * Gli elementi con `azione` riportano a quel livello; l'ultimo è la pagina corrente.
+   */
+  protected get breadcrumb(): BreadcrumbItem[] {
+    const percorso: BreadcrumbItem[] = [{ label: 'Fondi di funzionamento' }];
+
+    if (this.voceFissa) {
+      percorso.push({ label: this.labelDimensione('elemento-voce'), azione: () => this.vaiAElementoVoce() });
+      percorso.push({ label: this.voceFissa, title: this.descrizioneVoceFissa });
+    }
+
+    percorso.push({
+      label: this.labelDimensione(this.dimensioneCorrente),
+      azione: this.filtroCorrente ? () => this.torna() : undefined
+    });
+
+    if (this.filtroCorrente) {
+      percorso.push({ label: this.filtroCorrente.valore });
+    }
+    return percorso;
   }
 
   protected formatEur(v: number): string {

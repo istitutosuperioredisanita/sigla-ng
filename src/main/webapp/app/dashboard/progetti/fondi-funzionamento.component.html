@@ -10,13 +10,26 @@
   @if (!dashboard) {
     <div class="card-header bg-white d-flex flex-wrap align-items-center justify-content-between">
 
-      <div class="mr-3 my-1">
-        @if (filtroCorrente || voceFissa) {
-          <a class="btn btn-link text-primary p-0" href="javascript:void(0);" (click)="torna()">
-            <i class="fa fa-fw fa-arrow-left" aria-hidden="true"></i> Torna a {{labelTorna}}
-          </a>
-        }
-      </div>
+      <nav aria-label="breadcrumb" class="mr-3 my-1">
+        <ol class="list-unstyled d-flex flex-wrap align-items-center mb-0 p-0">
+          @for (voce of breadcrumb; track $index) {
+            @if (!$first) {
+              <li class="text-muted mx-2" aria-hidden="true"><i class="fa fa-angle-right"></i></li>
+            }
+            @if (voce.azione) {
+              <li>
+                <a href="javascript:void(0);" class="text-primary" (click)="voce.azione()">{{voce.label}}</a>
+              </li>
+            } @else {
+              <li [class.text-muted]="$first"
+                  [class.text-dark]="!$first"
+                  [class.font-weight-bold]="$last"
+                  [attr.aria-current]="$last ? 'page' : null"
+                  [attr.title]="voce.title">{{voce.label}}</li>
+            }
+          }
+        </ol>
+      </nav>
 
       @if (esercizi.length) {
         <form class="form-inline flex-wrap my-1" role="form" [formGroup]="filterForm">
@@ -107,17 +120,18 @@
 
   <!-- Grafico -->
   <div class="d-flex justify-content-center">
-    <div class="w-100 font-weight-bold text-monospace text-center text-primary-dark"
+    <div class="w-100 position-relative font-weight-bold text-monospace text-center text-primary-dark"
          [style]="dashboard ? 'height:50vh !important' : 'height:75vh !important'">
       @if (loadingChart()) {
-        <div class="h-100">
+        <!-- spinner sovrapposto: il grafico resta nel layout, così ECharts misura sempre la dimensione reale -->
+        <div class="position-absolute w-100 h-100" style="top:0; left:0; z-index:1">
           <div class="d-flex justify-content-center">
             <div class="loading cursor-wait position-relative"></div>
           </div>
         </div>
       }
       <div [style.height]="dashboard ? '50vh' : '75vh'"
-           [style.display]="loadingChart() ? 'none' : 'block'"
+           [style.visibility]="loadingChart() ? 'hidden' : 'visible'"
            style="width: 100%"
            echarts
            [options]="chartOptions"
