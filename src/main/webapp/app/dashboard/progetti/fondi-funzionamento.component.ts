@@ -854,8 +854,8 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     const finestra = (this.dimensioneCorrente === 'elemento-voce'|| this.dimensioneCorrente === 'ente-finanziatore') && data.length > VOCI_VISIBILI_INIZIALI
       ? { startValue: 0, endValue: VOCI_VISIBILI_INIZIALI - 1 }
       : {};
-    // solo 'tipo-progetto' ha le barre affiancate (utilizzato / assegnato); le altre dimensioni sono impilate
-    const affiancate = this.dimensioneCorrente === 'tipo-progetto' || (this.dimensioneCorrente === 'uo' && this.filtroCorrente);
+    // solo 'tipo-progetto' ha le barre affiancate (utilizzato / assegnato); le altre dimensioni sono impilate    
+    const affiancate = this.dimensioneCorrente === 'tipo-progetto' || (this.dimensioneCorrente === 'uo' && this.voceFissa);
     const raggioCima = orizzontale ? [0, 6, 6, 0] : [6, 6, 0, 0];
     // stile della barra evidenziata (select 'Voce'): solo per 'elemento-voce'
     const emphasis = this.dimensioneCorrente === 'elemento-voce'
