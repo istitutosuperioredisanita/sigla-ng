@@ -9,6 +9,11 @@ import { Observable, Subject } from 'rxjs';
 import { map, debounceTime, takeUntil } from 'rxjs/operators';
 import { Pair } from "../../context/pair.model";
 import { EChartsOption } from "echarts";
+import { LocalStateStorageService } from '../../shared/auth/local-storage.service';
+import { Principal } from '../../shared/auth/principal.service';
+
+/** Numero di esercizi mostrati nel grafico */
+const NUM_ESERCIZI = 4;
 
 /** Icona Font Awesome 4.7 "file-image-o" (f1c5) come tracciato SVG, per il salva-immagine della toolbox */
 const ICONA_IMMAGINE = 'path://M1468 380Q1496 408 1516 456T1536 544V1696Q1536 1736 1508 1764T1440 1792H96Q56 1792 28 1764T0 1696V96Q0 56 28 28T96 0H992Q1032 0 1080 20T1156 68ZM1024 136V512H1400Q1390 483 1378 471L1065 158Q1053 146 1024 136ZM1408 1664V640H992Q952 640 924 612T896 544V128H128V1664H1408ZM1280 1216V1536H256V1344L448 1152 576 1280 960 896ZM448 1024Q368 1024 312 968T256 832 312 696 448 640 584 696 640 832 584 968 448 1024Z';
@@ -23,27 +28,29 @@ const ICONA_EXCEL = 'path://M1468 380Q1496 408 1516 456T1536 544V1696Q1536 1736 
   standalone: false
 })
 export class AcquistiStatoComponent implements OnInit, OnDestroy {
-  @Input() dashboard: boolean = false;
-  @Input() codiceUo: string;
+  @Input() dashboard!: boolean;
+  @Input() codiceUo!: string;
   /** Emesso a ogni fine caricamento dati (anche in caso di errore): la dashboard lo usa per mostrare il componente solo quando è pronto */
   @Output() caricato = new EventEmitter<void>();
   @Output() datiCaricati = new EventEmitter<any[]>();
 
-  protected filterForm: FormGroup;
+  protected filterForm!: FormGroup;
 
   protected chartOptions: EChartsOption = {};
 
-  esercizi: number[];
+  esercizi!: number[];
   loadingChart = signal(false);
   private lastValue: any = null;
   /** true mentre il click sul caret forza l'apertura della tendina (non è una cancellazione voluta dall'utente) */
   private aperturaTypeahead = false;
   private destroy$ = new Subject<void>();
-  protected uoPairs: Pair[];
+  protected uoPairs!: Pair[];
 
   /** Ultimi dati caricati e UO corrente, usati per titolo e CSV */
   private lastData: any[] = [];
   private codiceCorrente?: string;
+  /** Esercizio del contesto utente: se valorizzato, il grafico mostra gli ultimi esercizi fino a questo */
+  private esercizio?: number;
 
   constructor(
     protected route: ActivatedRoute,
@@ -51,15 +58,22 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
     protected formBuilder: FormBuilder,
     protected contextService: ContextService,
     protected acquistiStatoService: AcquistiStatoService,
-    protected translateService: TranslateService
+    protected translateService: TranslateService,
+    private localStateStorageService: LocalStateStorageService,
+    private principal: Principal,
   ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      if (params['dashboard'] !== undefined) {
+      if (this.dashboard == undefined  && params['dashboard'] !== undefined) {
         this.dashboard = params['dashboard'] === 'true';
       }
-      this.initializeComponent();
+      this.principal.getIdentyAccount(false).then((account) => {
+          const userContext = this.localStateStorageService.getUserContext(account.username);
+          this.esercizio = userContext?.esercizio;
+          this.initializeComponent();
+        });
+
     });
   }
 
@@ -135,10 +149,7 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
     this.loadingChart.set(true);
     this.acquistiStatoService.getIndice(codice).subscribe({
       next: (result: any[]) => {
-        const data = result?.slice(-4).map(item => ({
-          ...item,
-          riepilogo_stato_esercizio: String(item.riepilogo_stato_esercizio)
-        })) ?? [];
+        const data = this.ultimiEsercizi(result);
         this.lastData = data;
         this.loadChart(data);
         this.loadingChart.set(false);
@@ -150,6 +161,24 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
         this.caricato.emit();
       }
     });
+  }
+
+  /**
+   * Restituisce gli ultimi NUM_ESERCIZI esercizi: se l'esercizio del contesto è valorizzato
+   * si parte da quello (considerando solo gli esercizi fino a esso), altrimenti dagli ultimi disponibili.
+   */
+  private ultimiEsercizi(result: any[] | null | undefined): any[] {
+    const esercizioContesto = this.esercizio ? Number(this.esercizio) : null;
+
+    return (result ?? [])
+      .filter(item => esercizioContesto == null
+        || Number(item.riepilogo_stato_esercizio) <= esercizioContesto)
+      .sort((a, b) => Number(a.riepilogo_stato_esercizio) - Number(b.riepilogo_stato_esercizio))
+      .slice(-NUM_ESERCIZI)
+      .map(item => ({
+        ...item,
+        riepilogo_stato_esercizio: String(item.riepilogo_stato_esercizio)
+      }));
   }
 
   private nomeFile(): string {

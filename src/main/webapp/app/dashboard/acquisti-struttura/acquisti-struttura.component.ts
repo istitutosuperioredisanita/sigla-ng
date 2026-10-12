@@ -74,8 +74,8 @@ export class AcquistiStrutturaComponent implements OnInit, OnDestroy {
     loadingChart = signal(false);
     selectedCodiceUo!: string;
 
-    // Scala colore importo medio: basso -> alto
-    private readonly AVG_COLORS = ['#91cc75', '#fac858', '#ee6666'];
+    // Scala colore importo medio: basso -> alto (blu -> rosso)
+    private readonly AVG_COLORS = ['#313695', '#4575b4', '#74add1', '#abd9e9', '#fee090', '#fdae61', '#f46d43', '#d73027'];
     // Colore per i nodi senza acquisti (importo medio non calcolabile)
     private readonly NO_DATA_COLOR = '#cccccc';
 

@@ -1,12 +1,12 @@
 <!-- Modale per visualizzare il dettaglio stato acquisti -->
 <ng-template #modalStato let-modal>
     <div class="modal-body p-1">
-        <acquisti-stato [dashboard]="true" [codiceUo]="selectedCodiceUo"></acquisti-stato>
+        <acquisti-stato dashboard="true" [codiceUo]="selectedCodiceUo"></acquisti-stato>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-info" (click)="modal.close()">
-            <span class="h3" translate>global.form.close</span>
-            <i class="fa fa-2x fa-fw fa-close" aria-hidden="true"></i>
+    <div class="modal-footer py-2">
+        <button type="button" class="btn btn-sm btn-outline-secondary" (click)="modal.close()">
+            <span translate>global.form.close</span>
+            <i class="fa fa-fw fa-close ms-1" aria-hidden="true"></i>
         </button>
     </div>
 </ng-template>
@@ -15,12 +15,11 @@
 
     @if(!dashboard) {
         <div class="card-header bg-white d-flex flex-wrap align-items-center justify-content-between">
-            <div class="mr-3 my-1">
+            <div class="my-1">
                 <h1 class="h4 mb-0 text-monospace text-primary-dark bg-transparent" translate>dashboard.acquisti-struttura.title</h1>
-                <p class="small text-monospace font-italic text-muted mb-0 mt-1" translate>dashboard.acquisti-struttura.descrizione</p>
             </div>
             @if(esercizi) {
-                <form class="form-inline flex-wrap my-1" role="form" [formGroup]="filterForm">
+                <form class="form-inline flex-wrap my-1 ms-auto" role="form" [formGroup]="filterForm">
                     <label for="esercizio" class="text-muted mr-2 mb-0" translate>dashboard.acquisti-struttura.esercizio</label>
                     <select id="esercizio" class="form-control" style="width:auto" formControlName="esercizio">
                         @for (esercizio of esercizi; track esercizio) {
@@ -29,6 +28,7 @@
                     </select>
                 </form>
             }
+            <p class="small text-monospace font-italic text-muted mb-0 mt-1" translate>dashboard.acquisti-struttura.descrizione</p>
         </div>
     }
 
