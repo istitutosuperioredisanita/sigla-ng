@@ -20,4 +20,6 @@
     window['env']['oidc.redirectUrl'] = 'http://localhost:9000';
     window['env']['oidc.clientId'] = 'angular-public';
     window['env']['oidc.postLogoutRedirectUri'] = 'https://apps.cnr.it';
+    window['env']['help.base.url'] = 'https://istitutosuperioredisanita.github.io/sigla-main';
+
   })(this);

@@ -80,6 +80,7 @@ export class NavbarComponent implements OnInit {
     modalRef: NgbModalRef;
     version: string;
     hidden: boolean;
+    helpBaseURL: string;
     private openSubmenus = new Set<string>();
 
     constructor(
@@ -101,6 +102,7 @@ export class NavbarComponent implements OnInit {
     ngOnInit() {
         this.translateService.setDefaultLang('it');
         this.oidcEnabled = (environment.oidc.enable  === 'true') ? true : false;
+        this.helpBaseURL = environment.helpBaseURL;
         this.languageHelper.getAll().then((languages) => {
             this.languages = languages;
         });

@@ -9,6 +9,7 @@ import { AcquistiStrutturaService } from "./acquisti-struttura.service";
 import * as echarts from 'echarts';
 import { LocalStateStorageService } from "../../shared/auth/local-storage.service";
 import { Principal } from "../../shared/auth/principal.service";
+import { helpToolboxFeature } from "../../shared/helpers/help-toolbox";
 
 
 /** Icona Font Awesome 4.7 "file-image-o" (f1c5) come tracciato SVG, per il salva-immagine della toolbox */
@@ -332,6 +333,7 @@ export class AcquistiStrutturaComponent implements OnInit, OnDestroy {
             title: titolo,
             toolbox: {
                 feature: {
+                    myHelp: this.dashboard ? {} : helpToolboxFeature(this.router),
                     saveAsImage: {
                         title: 'Salva immagine',
                         name: fileName,

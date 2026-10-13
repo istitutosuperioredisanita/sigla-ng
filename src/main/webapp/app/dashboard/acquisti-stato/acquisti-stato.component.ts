@@ -11,6 +11,7 @@ import { Pair } from "../../context/pair.model";
 import { EChartsOption } from "echarts";
 import { LocalStateStorageService } from '../../shared/auth/local-storage.service';
 import { Principal } from '../../shared/auth/principal.service';
+import { helpToolboxFeature } from '../../shared/helpers/help-toolbox';
 
 /** Numero di esercizi mostrati nel grafico */
 const NUM_ESERCIZI = 4;
@@ -188,6 +189,7 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
   private toolbox() {
     return {
       feature: {
+        myHelp: this.dashboard ? {} : helpToolboxFeature(this.router),
         saveAsImage: {
           title: 'Salva immagine',
           name: this.nomeFile(),

@@ -16,4 +16,7 @@
     window['env']['oidc.redirectUrl'] = '${OIDC_REDIRECTURL}';
     window['env']['oidc.clientId'] = '${OIDC_CLIENTID}';
     window['env']['oidc.postLogoutRedirectUri'] = '${OIDC_POSTLOGOUTREDIRECTURL}';
+
+    window['env']['help.base.url'] = '${HELP_BASE_URL}';
+
 })(this);

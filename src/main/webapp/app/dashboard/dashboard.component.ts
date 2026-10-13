@@ -6,6 +6,8 @@ import { DatiIndice } from "./indice-tempestivita-pagamenti/indice-tempestivita-
 import { IndiceTempestivitaPagamentiService } from "./indice-tempestivita-pagamenti/indice-tempestivita-pagamenti.service";
 import { EventManager } from '../shared/auth/event-manager.service';
 import { Subscription } from 'rxjs';
+import { helpUrl } from '../shared/helpers/help-toolbox';
+import { Router } from "@angular/router";
 
 /** Una UO è "sotto soglia" se ha utilizzato meno di questa quota dell'assegnato */
 const SOGLIA_UTILIZZO_BASSO = 0.30;
@@ -38,6 +40,7 @@ export class DashBoardComponent implements OnInit, OnDestroy {
         private fondiService: FondiFunzionamentoService,
         private indiceService: IndiceTempestivitaPagamentiService,
         private eventManager: EventManager,
+        private router: Router,
     ) {}
     private refreshSub?: Subscription;
     /** Cambia a ogni ricarica: serve a distruggere e ricreare i widget */
@@ -161,4 +164,6 @@ export class DashBoardComponent implements OnInit, OnDestroy {
         return v == null ? '…' : v.toLocaleString('it-IT', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' gg';
     }
     protected segno(v: number): string { return v > 0 ? '+' : ''; }
+
+    protected helpHref(): string { return helpUrl(this.router); }
 }

@@ -15,6 +15,7 @@ import { NgbDropdown, NgbTypeaheadConfig, NgbTypeaheadSelectItemEvent } from "@n
 import { ActivatedRoute, Router } from "@angular/router";
 import { LocalStateStorageService } from '../../shared/auth/local-storage.service';
 import { Principal } from '../../shared/auth/principal.service';
+import { helpToolboxFeature } from "../../shared/helpers/help-toolbox";
 
 /** Icona Font Awesome 4.7 "file-image-o" (f1c5) come tracciato SVG, per il salva-immagine della toolbox */
 const ICONA_IMMAGINE = 'path://M1468 380Q1496 408 1516 456T1536 544V1696Q1536 1736 1508 1764T1440 1792H96Q56 1792 28 1764T0 1696V96Q0 56 28 28T96 0H992Q1032 0 1080 20T1156 68ZM1024 136V512H1400Q1390 483 1378 471L1065 158Q1053 146 1024 136ZM1408 1664V640H992Q952 640 924 612T896 544V128H128V1664H1408ZM1280 1216V1536H256V1344L448 1152 576 1280 960 896ZM448 1024Q368 1024 312 968T256 832 312 696 448 640 584 696 640 832 584 968 448 1024Z';
@@ -259,6 +260,7 @@ export class IndiceTempestivitaPagamentiComponent implements OnInit, AfterViewIn
     private toolbox(nomeFile: string) {
         return {
             feature: {
+                myHelp: this.dashboard ? {} : helpToolboxFeature(this.router),
                 saveAsImage: {
                     title: 'Salva immagine',
                     name: nomeFile,

@@ -8,6 +8,7 @@ export const environment = {
   instituteAcronym: window['env']['instituteAcronym'],
   ssoAppsMenuDisplay: window['env']['ssoAppsMenuDisplay'] || 'false',
   ribbon: window['env']['ribbon'],
+  helpBaseURL: window['env']['help.base.url'] || '/',
   oidc: {
     enable: window['env']['oidc.enable'] || 'false',
     authority: window['env']['oidc.authority'],

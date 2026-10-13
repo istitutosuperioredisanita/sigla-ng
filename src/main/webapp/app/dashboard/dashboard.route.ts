@@ -20,7 +20,7 @@ export const DASHBOARD_ROUTE: Route = {
 };
 
 export const INDICE_TEMPESTIVITA_PAGAMENTI_ROUTE: Route = {
-    path: 'indice-tempestivita-pagamenti',
+    path: 'dashboard/indice-tempestivita-pagamenti',
     component: IndiceTempestivitaPagamentiComponent,
     data: {
         authorities: ['APPLICATION_ROLE_SUPER'],
@@ -31,7 +31,7 @@ export const INDICE_TEMPESTIVITA_PAGAMENTI_ROUTE: Route = {
 };
 
 export const ACQUISTI_STRUTTURA_ROUTE: Route = {
-    path: 'acquisti-struttura',
+    path: 'dashboard/acquisti-struttura',
     component: AcquistiStrutturaComponent,
     data: {
         authorities: ['APPLICATION_ROLE_SUPER'],
@@ -42,7 +42,7 @@ export const ACQUISTI_STRUTTURA_ROUTE: Route = {
 };
 
 export const ACQUISTI_STATO_ROUTE: Route = {
-    path: 'acquisti-stato',
+    path: 'dashboard/acquisti-stato',
     component: AcquistiStatoComponent,
     data: {
         authorities: ['APPLICATION_ROLE_SUPER'],
@@ -53,7 +53,7 @@ export const ACQUISTI_STATO_ROUTE: Route = {
 };
 
 export const FONDI_FUNZIONAMENTO_UO: Route = {
-    path: 'progetti/fondi-funzionamento/uo',
+    path: 'dashboard/fondi-funzionamento/uo',
     component: FondiFunzionamentoComponent,
     data: {
         authorities: ['APPLICATION_ROLE_SUPER'],
@@ -64,7 +64,7 @@ export const FONDI_FUNZIONAMENTO_UO: Route = {
     canActivate: ((environment.oidc.enable  === 'true') ? true : false) ? [AutoLoginAllRoutesGuard] : [UserRouteAccessService],
 };
 export const FONDI_FUNZIONAMENTO_TIPO_FINANZIAMENTO: Route = {
-    path: 'progetti/fondi-funzionamento/tipo-finanziamento',
+    path: 'dashboard/fondi-funzionamento/tipo-finanziamento',
     component: FondiFunzionamentoComponent,
     data: {
         authorities: ['APPLICATION_ROLE_SUPER'],
@@ -75,7 +75,7 @@ export const FONDI_FUNZIONAMENTO_TIPO_FINANZIAMENTO: Route = {
     canActivate: ((environment.oidc.enable  === 'true') ? true : false) ? [AutoLoginAllRoutesGuard] : [UserRouteAccessService],
 };
 export const FONDI_FUNZIONAMENTO_TIPO_PROGETTO: Route = {
-    path: 'progetti/fondi-funzionamento/tipo-progetto',
+    path: 'dashboard/fondi-funzionamento/tipo-progetto',
     component: FondiFunzionamentoComponent,
     data: {
         authorities: ['APPLICATION_ROLE_SUPER'],
@@ -86,7 +86,7 @@ export const FONDI_FUNZIONAMENTO_TIPO_PROGETTO: Route = {
     canActivate: ((environment.oidc.enable  === 'true') ? true : false) ? [AutoLoginAllRoutesGuard] : [UserRouteAccessService],
 };
 export const FONDI_FUNZIONAMENTO_ELEMENTO_VOCE: Route = {
-    path: 'progetti/fondi-funzionamento/elemento-voce',
+    path: 'dashboard/fondi-funzionamento/elemento-voce',
     component: FondiFunzionamentoComponent,
     data: {
         authorities: ['APPLICATION_ROLE_SUPER'],
@@ -98,7 +98,7 @@ export const FONDI_FUNZIONAMENTO_ELEMENTO_VOCE: Route = {
 };
 
 export const FONDI_FUNZIONAMENTO_ENTE_FINANZIATORE: Route = {
-    path: 'progetti/fondi-funzionamento/ente-finanziatore',
+    path: 'dashboard/fondi-funzionamento/ente-finanziatore',
     component: FondiFunzionamentoComponent,
     data: {
         authorities: ['APPLICATION_ROLE_SUPER'],

@@ -12,6 +12,7 @@ import { LocalStateStorageService } from '../../shared/auth/local-storage.servic
 import { Principal } from '../../shared/auth/principal.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Helpers } from '../../shared/helpers/helpers';
+import { helpToolboxFeature } from '../../shared/helpers/help-toolbox';
 
 /** Forma comune usata dal grafico, indipendente dall'endpoint chiamato */
 interface VoceFondo {
@@ -652,6 +653,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
   private toolbox(data: VoceFondo[], nomeFile: string) {
     return {
       feature: {
+        myHelp: this.dashboard ? {} : helpToolboxFeature(this.router),
         saveAsImage: {
           title: 'Salva immagine',
           name: nomeFile,

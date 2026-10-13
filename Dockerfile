@@ -42,7 +42,7 @@ ENV OIDC_AUTHORITY=http://dockerwebtest02.si.cnr.it:8110/auth/realms/cnr/.well-k
 ENV OIDC_CLIENTID=angular-public
 ENV OIDC_REDIRECTURL=
 ENV OIDC_POSTLOGOUTREDIRECTURL=https://apps.cnr.it
-
+ENV HELP_BASE_URL=https://istitutosuperioredisanita.github.io/sigla-main
 
 # When the container starts, replace the env.js with values from environment variables
 CMD ["/bin/sh",  "-c",  "envsubst < /usr/share/nginx/html/content/env.template.js > /usr/share/nginx/html/content/env.js && exec nginx -g 'daemon off;'"]
