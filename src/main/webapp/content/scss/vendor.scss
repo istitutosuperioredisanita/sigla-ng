@@ -1,6 +1,17 @@
 /* after changing this file run 'yarn run webpack:build' */
 $breadcrumb-divider: quote(">");
 
+// 1. Importa prima le funzioni e le variabili di Bootstrap
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+
+// 2. Aggiungi i nuovi livelli alla mappa $spacers esistente di Bootstrap
+$spacers: map-merge($spacers, (
+  6: ($spacer * 4), // Esempio: 4rem (64px di default)
+  7: ($spacer * 5), // Esempio: 5rem (80px di default)
+  8: ($spacer * 6)  // Esempio: 6rem (96px di default)
+));
+
 @import 'bootstrap/scss/bootstrap.scss';
 @import 'font-awesome-animation/dist/font-awesome-animation.min.css';
 @import 'flatpickr/dist/flatpickr.min.css';

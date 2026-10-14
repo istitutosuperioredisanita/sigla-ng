@@ -110,5 +110,11 @@
                 </div>
             </div>
         </div>
+        <div class="mb-4">
+            <a class="d-block" [routerLink]="['/dashboard/cespiti-struttura']" [queryParams]="{dashboard: false}"
+            [class.in-caricamento]="!pronti().has('cespiti-struttura')" [class.comparsa]="pronti().has('cespiti-struttura')">
+                <cespiti-struttura [dashboard]="true" (caricato)="segnaPronto('cespiti-struttura')"></cespiti-struttura>
+            </a>
+        </div>
     }
 </div>
