@@ -18,9 +18,10 @@ export const MENU_CONFIGS = {
                 { label: 'global.menu.progetti.fondi-funzionamento.ente-finanziatore', route: '/dashboard/fondi-funzionamento/ente-finanziatore', icon: 'fa-line-chart' }
               ]
             },
-            { label: 'global.menu.indice-tempestivita-pagamenti', route: 'dashboard/indice-tempestivita-pagamenti', icon: 'fa-dashboard' },
-            { label: 'global.menu.acquisti-struttura', route: 'dashboard/acquisti-struttura', icon: 'fa-area-chart' },
-            { label: 'global.menu.acquisti-stato', route: 'dashboard/acquisti-stato', icon: 'fa-bar-chart' }
+            { label: 'global.menu.indice-tempestivita-pagamenti', route: '/dashboard/indice-tempestivita-pagamenti', icon: 'fa-dashboard' },
+            { label: 'global.menu.acquisti-struttura', route: '/dashboard/acquisti-struttura', icon: 'fa-area-chart' },
+            { label: 'global.menu.acquisti-stato', route: '/dashboard/acquisti-stato', icon: 'fa-bar-chart' },
+            { label: 'global.menu.cespiti-struttura', route: '/dashboard/cespiti-struttura', icon: 'fa-area-chart' }
         ]        
     }
   ]

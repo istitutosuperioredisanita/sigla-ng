@@ -1,0 +1,116 @@
+<ng-template #rt let-r="result" let-t="term">
+  <div class="w-100">
+    <span>{{r.first}} - {{r.second}}</span>
+  </div>
+</ng-template>
+
+<div class="card shadow my-3">
+
+  <!-- Header: navigazione a sinistra, filtri a destra (nascosto in dashboard) -->
+  @if (!dashboard) {
+    <div class="card-header bg-white d-flex flex-wrap align-items-center justify-content-between">
+
+      <nav aria-label="breadcrumb" class="mr-3 my-1">
+        <ol class="list-unstyled d-flex flex-wrap align-items-center mb-0 p-0">
+          @for (voce of breadcrumb; track $index) {
+            @if (!$first) {
+              <li class="text-muted mx-2" aria-hidden="true"><i class="fa fa-angle-right"></i></li>
+            }
+            @if (voce.azione) {
+              <li>
+                <a href="javascript:void(0);" class="text-primary" (click)="voce.azione()">{{voce.label}}</a>
+              </li>
+            } @else {
+              <li [class.text-muted]="$first"
+                  [class.text-dark]="!$first"
+                  [class.font-weight-bold]="$last"
+                  [attr.aria-current]="$last ? 'page' : null"
+                  [attr.title]="voce.title">{{voce.label}}</li>
+            }
+          }
+        </ol>
+      </nav>
+
+      @if (esercizi.length) {
+        <form class="form-inline flex-wrap my-1" role="form" [formGroup]="filterForm">
+
+          <label for="esercizio" class="text-muted mr-2 mb-0" translate>dashboard.indice-tempestivita.esercizio</label>
+          <select id="esercizio" class="form-control mr-3" style="width:auto"
+                  formControlName="esercizio">
+            @for (esercizio of esercizi; track esercizio) {
+              <option [ngValue]="esercizio">{{esercizio}}</option>
+            }
+          </select>
+
+          <label for="cdsFiltro" class="text-muted mr-2 mb-0">Centro di Spesa</label>
+          <div class="input-group" style="min-width:320px">
+            <input
+              #cdsFiltroInput
+              formControlName="cdsFiltro"
+              [ngbTypeahead]="searchcds"
+              [resultTemplate]="rt"
+              [inputFormatter]="formatter"
+              [resultFormatter]="formatter"
+              (selectItem)="onCdsSelected($event)"
+              [editable]="true"
+              class="form-control"
+              id="cdsFiltro"
+              type="search"
+              placeholder="{{'global.form.filter.placeholder' | translate}}">
+            <div class="input-group-append">
+              <button type="button" class="btn btn-outline-secondary" aria-label="Mostra elenco" (click)="openTypeaheadCds()">
+                <i class="fa fa-caret-down"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      }
+    </div>
+  }
+
+  <!-- Grafico -->
+  <div class="d-flex justify-content-center">
+    <div class="w-100 position-relative font-weight-bold text-monospace text-center text-primary-dark"
+         [style]="dashboard ? 'height:50vh !important' : 'height:75vh !important'">
+      @if (loadingChart()) {
+        <!-- spinner sovrapposto: il grafico resta nel layout, così ECharts misura sempre la dimensione reale -->
+        <div class="position-absolute w-100 h-100" style="top:0; left:0; z-index:1">
+          <div class="d-flex justify-content-center">
+            <div class="loading cursor-wait position-relative"></div>
+          </div>
+        </div>
+      }
+      <div [style.height]="dashboard ? '50vh' : '75vh'"
+           [style.visibility]="loadingChart() ? 'hidden' : 'visible'"
+           style="width: 100%"
+           echarts
+           [options]="chartOptions"
+           (chartInit)="onChartInit($event)"
+           (chartClick)="onChartClick($event)">
+      </div>
+    </div>
+  </div>
+
+  <!-- Legenda: serie (barre/linea) e, fuori dalla dashboard, codice e descrizione di ogni struttura -->
+  @if (!loadingChart() && legenda.length) {
+    <div class="px-3 pb-3 mt-3">
+      <div class="d-flex justify-content-center mb-2 small">
+        <span class="mr-4">
+          <i class="fa fa-square" [style.color]="coloreBeni"></i> Numero beni (asse sinistro)
+        </span>
+        <span>
+          <i class="fa fa-circle" [style.color]="coloreValore"></i> Valore totale (asse destro)
+        </span>
+      </div>
+      @if (!dashboard) {
+        <div class="row small">
+          @for (voce of legenda; track voce.codice) {
+            <div class="col-12 col-md-6 col-xl-4 mb-1">
+              <b>{{voce.codice}}</b> - {{voce.descrizione}}
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

@@ -7,6 +7,7 @@ import { IndiceTempestivitaPagamentiComponent } from './indice-tempestivita-paga
 import { AcquistiStrutturaComponent } from './acquisti-struttura/acquisti-struttura.component';
 import { AcquistiStatoComponent } from './acquisti-stato/acquisti-stato.component';
 import { FondiFunzionamentoComponent } from './progetti/fondi-funzionamento.component';
+import { CespitiStrutturaComponent } from './cespiti/cespiti-struttura.component';
 
 export const DASHBOARD_ROUTE: Route = {
     path: 'dashboard',
@@ -105,6 +106,17 @@ export const FONDI_FUNZIONAMENTO_ENTE_FINANZIATORE: Route = {
         pageTitle: 'global.menu.progetti.fondi-funzionamento.ente-finanziatore',
         menu: 'dashboard',
         dimensione: 'ente-finanziatore'
+    },
+    canActivate: ((environment.oidc.enable  === 'true') ? true : false) ? [AutoLoginAllRoutesGuard] : [UserRouteAccessService],
+};
+
+export const INVENTARIO_STRUTTURA: Route = {
+    path: 'dashboard/cespiti-struttura',
+    component: CespitiStrutturaComponent,
+    data: {
+        authorities: ['APPLICATION_ROLE_SUPER'],
+        pageTitle: 'global.menu.cespiti-struttura',
+        menu: 'dashboard'
     },
     canActivate: ((environment.oidc.enable  === 'true') ? true : false) ? [AutoLoginAllRoutesGuard] : [UserRouteAccessService],
 };
