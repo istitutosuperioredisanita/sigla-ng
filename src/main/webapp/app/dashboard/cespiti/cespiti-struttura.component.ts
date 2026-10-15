@@ -400,7 +400,8 @@ export class CespitiStrutturaComponent implements OnInit, OnDestroy {
 
   /** Grafico misto: barre = numero beni (asse sinistro), linea = valore totale in € (asse destro) */
   private loadChart(data: VoceInventario[]): void {
-    const categories = data.map(d => d.codice);
+    // a livello categoria il codice non va mostrato: sull'asse X c'è la sola descrizione
+    const categories = this.uoFissa ? data.map(d => '') : data.map(d => d.codice);
     const finestra = data.length > VOCI_VISIBILI_INIZIALI
       ? { startValue: 0, endValue: VOCI_VISIBILI_INIZIALI - 1 }
       : {};
@@ -429,8 +430,7 @@ export class CespitiStrutturaComponent implements OnInit, OnDestroy {
           const row = data[params[0]?.dataIndex];
           if (!row) return '';
           return [
-            `<b>${row.codice}</b>`,
-            `<div style="max-width:320px;white-space:normal">${row.descrizione}</div>`,
+            `<b>${row.codice}</b><br/><div style="max-width:320px;white-space:normal">${row.descrizione}</div>`,
             `<span style="color:${COLORE_BENI}">■</span> Numero beni: ${this.formatNum(row.numeroBeni)}`,
             `<span style="color:${COLORE_VALORE}">●</span> Valore totale: ${this.formatEur(row.valore)}`
           ].join('<br/>');
@@ -446,7 +446,9 @@ export class CespitiStrutturaComponent implements OnInit, OnDestroy {
       xAxis: {
         type: 'category',
         data: categories,
-        axisLabel: { fontSize: 11, rotate: 60 }
+        axisLabel: this.uoFissa
+          ? { fontSize: 11, rotate: 60, width: 140, overflow: 'truncate' }
+          : { fontSize: 11, rotate: 60 }
       },
       // doppio asse Y: indice 0 = quantità (sx), indice 1 = valore economico (dx, senza griglia per non sovrapporla)
       yAxis: [
