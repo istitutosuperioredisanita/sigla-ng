@@ -78,7 +78,7 @@
         [class.in-caricamento]="!pronti().has('elemento-voce')" [class.comparsa]="pronti().has('elemento-voce')">
             <fondi-funzionamento [dashboard]="true" dimensione="elemento-voce" (caricato)="segnaPronto('elemento-voce')"></fondi-funzionamento>
         </a>
-        <div class="my-4" [class.in-caricamento]="!pronti().has('tipo-finanziamento') && !pronti().has('indice') && !pronti().has('acquisti')">
+        <div class="my-4" [class.in-caricamento]="!pronti().has('uo')" [class.comparsa]="pronti().has('uo')">
             <div class="row pt-2 justify-content-md-center">
                 <div class="col-md-6">
                     <a class="d-block" [routerLink]="['/dashboard/fondi-funzionamento/tipo-finanziamento']" [queryParams]="{dashboard: false}"
@@ -94,7 +94,7 @@
                 </div>
             </div>
         </div>
-        <div class="my-4">
+        <div class="my-4" [class.in-caricamento]="!pronti().has('uo')" [class.comparsa]="pronti().has('uo')">
             <div class="row pt-2 justify-content-md-center">
                 <div class="col-md-6">
                     <a class="d-block" [routerLink]="['/dashboard/indice-tempestivita-pagamenti']" [queryParams]="{dashboard: false}"
@@ -110,7 +110,7 @@
                 </div>
             </div>
         </div>
-        <div class="mb-4">
+        <div class="mb-4" [class.in-caricamento]="!pronti().has('uo')" [class.comparsa]="pronti().has('uo')">
             <a class="d-block" [routerLink]="['/dashboard/cespiti-struttura']" [queryParams]="{dashboard: false}"
             [class.in-caricamento]="!pronti().has('cespiti-struttura')" [class.comparsa]="pronti().has('cespiti-struttura')">
                 <cespiti-struttura [dashboard]="true" (caricato)="segnaPronto('cespiti-struttura')"></cespiti-struttura>

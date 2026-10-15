@@ -123,21 +123,23 @@
     <div class="w-100 position-relative font-weight-bold text-monospace text-center text-primary-dark"
          [style]="dashboard ? 'height:50vh !important' : 'height:75vh !important'">
       @if (loadingChart()) {
-        <!-- spinner sovrapposto: il grafico resta nel layout, così ECharts misura sempre la dimensione reale -->
+        <!-- spinner sovrapposto: il contenitore ha altezza fissa, quindi il layout non salta -->
         <div class="position-absolute w-100 h-100" style="top:0; left:0; z-index:1">
           <div class="d-flex justify-content-center">
             <div class="loading cursor-wait position-relative"></div>
           </div>
         </div>
       }
-      <div [style.height]="dashboard ? '50vh' : '75vh'"
-           [style.visibility]="loadingChart() ? 'hidden' : 'visible'"
-           style="width: 100%"
-           echarts
-           [options]="chartOptions"
-           (chartInit)="onChartInit($event)"
-           (chartClick)="onChartClick($event)">
-      </div>
+      <!-- il grafico esiste solo a caricamento finito: ogni caricamento parte da un canvas nuovo, senza residui del grafico precedente -->
+      @if (!loadingChart()) {
+        <div [style.height]="dashboard ? '50vh' : '75vh'"
+             style="width: 100%"
+             echarts
+             [options]="chartOptions"
+             (chartInit)="onChartInit($event)"
+             (chartClick)="onChartClick($event)">
+        </div>
+      }
     </div>
   </div>
 
@@ -150,7 +152,7 @@
             <i class="fa fa-square" [style.color]="coloreAssegnato"></i> {{etichettaImporto}}
           </span>
           <span>
-            <i class="fa fa-square" [style.color]="coloreUtilizzato"></i> Importo utilizzato
+            <i class="fa fa-square" [style.color]="coloreUtilizzato"></i> {{etichettaImporto2}}
           </span>
         </div>
       }

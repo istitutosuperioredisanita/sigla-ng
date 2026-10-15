@@ -144,7 +144,11 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
   protected readonly coloreUtilizzato = COLORE_UTILIZZATO;
   protected readonly coloreAssegnato = COLORE_ASSEGNATO;
 
-  loadingChart = signal(false);
+  /** parte a true: finché non arrivano i primi dati il grafico non deve comparire */
+  loadingChart = signal(true);
+
+  /** richiesta dati in corso: annullata a ogni nuovo caricamento per evitare risposte fuori ordine */
+  private dataSub?: Subscription;
 
   /** Select "Voce del Piano" nella modale di dettaglio */
   protected vociPiano: VocePiano[] = [];
@@ -226,6 +230,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
 
   ngOnDestroy(): void {
     this.dettaglioSub?.unsubscribe();
+    this.dataSub?.unsubscribe();
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -477,7 +482,11 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
   private loadData(anno: number): void {
     this.anno = anno;
     this.loadingChart.set(true);
-    this.fondiService
+    // elimina subito il grafico precedente: sotto lo spinner non deve restare nulla da mostrare
+    this.chartOptions = {};
+    this.indiceEvidenziato = undefined;
+    this.dataSub?.unsubscribe();
+    this.dataSub = this.fondiService
       .getFondi(anno, this.dimensioneCorrente, this.filtroCorrente?.valore, this.filtroUoCorrente, this.filtroCdsCorrente, this.voceFissa)
       .subscribe({
         next: (result: any[]) => {
@@ -610,7 +619,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
   }
 
   private vaiAElementoVoce(): void {
-    this.router.navigate(['/progetti/fondi-funzionamento/elemento-voce'], {
+    this.router.navigate(['/dashboard/fondi-funzionamento/elemento-voce'], {
       queryParams: { anno: this.anno }
     });
   }
@@ -836,15 +845,26 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     URL.revokeObjectURL(url);
   }
 
-  get etichettaDimensione() {
+  get etichettaDimensione1() {
     if (this.dimensioneCorrente === 'elemento-voce' || this.voceFissa)
       return `stanziato`;
     else
       return `assegnato`;
   }
 
+  get etichettaDimensione2() {
+    if (this.dimensioneCorrente === 'elemento-voce' || this.voceFissa)
+      return `utilizzato`;
+    else
+      return `stanziato`;
+  }
+
   get etichettaImporto() {
-    return `Importo ${this.etichettaDimensione} (totale barra)`;
+    return `Importo ${this.etichettaDimensione1} (totale barra)`;
+  }
+
+  get etichettaImporto2() {
+    return `Importo ${this.etichettaDimensione2}`;
   }
 
   private loadChart(data: VoceFondo[]): void {
@@ -853,7 +873,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     // per 'tipo-progetto' e 'elemento-voce' gli assi sono invertiti: categorie sulle ordinate, importi sulle ascisse
     const orizzontale = this.dimensioneCorrente === 'tipo-progetto' || this.dimensioneCorrente === 'elemento-voce'|| this.dimensioneCorrente === 'ente-finanziatore';
     // 'elemento-voce' ha molte voci: all'apertura si vedono solo le prime N (già ordinate per importo), il resto con lo slider
-    const finestra = (this.dimensioneCorrente === 'elemento-voce'|| this.dimensioneCorrente === 'ente-finanziatore') && data.length > VOCI_VISIBILI_INIZIALI
+    const finestra = data.length > VOCI_VISIBILI_INIZIALI
       ? { startValue: 0, endValue: VOCI_VISIBILI_INIZIALI - 1 }
       : {};
     // solo 'tipo-progetto' ha le barre affiancate (utilizzato / assegnato); le altre dimensioni sono impilate    
@@ -926,7 +946,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     const topGrid = this.voceFissa ? '24%' : '18%';
 
     const serieUtilizzato: any = {
-      name: 'Importo utilizzato',
+      name: 'Importo {{this.etichettaDimensione2}}',
       type: 'bar',
       stack: 'fondi',
       barMaxWidth: 28,
@@ -938,7 +958,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     };
     // impilate: è la parte residuo sopra l'utilizzato; affiancate: è l'importo assegnato intero in una barra a parte
     const serieAssegnato: any = {
-      name: affiancate ? 'Importo assegnato' : 'Importo assegnato (residuo)',
+      name: affiancate ? 'Importo {{this.etichettaDimensione1}}' : 'Importo {{this.etichettaDimensione1}} (residuo)',
       type: 'bar',
       stack: affiancate ? 'fondi2' : 'fondi',
       barMaxWidth: 28,
@@ -973,8 +993,8 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
           return [
             `<b>${row.codice}</b>`,
             `<div style="max-width:320px;white-space:normal">${row.descrizione}</div>`,
-            `<span style="color:${COLORE_ASSEGNATO}">●</span> ${Helpers.capitalizeWord(this.etichettaDimensione)}: ${this.formatEur(row.importoFinanziato)}`,
-            `<span style="color:${COLORE_UTILIZZATO}">●</span> Utilizzato: ${this.formatEur(row.importoUtilizzato)} (${perc}%)`,
+            `<span style="color:${COLORE_ASSEGNATO}">●</span> ${Helpers.capitalizeWord(this.etichettaDimensione1)}: ${this.formatEur(row.importoFinanziato)}`,
+            `<span style="color:${COLORE_UTILIZZATO}">●</span> ${Helpers.capitalizeWord(this.etichettaDimensione2)}: ${this.formatEur(row.importoUtilizzato)} (${perc}%)`,
             `Residuo: ${this.formatEur(residuoVal)}`
           ].join('<br/>');
         }
