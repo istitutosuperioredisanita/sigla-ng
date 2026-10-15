@@ -528,7 +528,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
       this.apriDettaglioProgetto(voce);
     } else if (this.dimensioneCorrente === 'elemento-voce') {
       // click su una voce: apre il grafico per UO con la voce fissata
-      this.router.navigate(['/progetti/fondi-funzionamento/uo'], {
+      this.router.navigate(['/dashboard/fondi-funzionamento/uo'], {
         queryParams: { voce: voce.codice, descrizioneVoce: voce.descrizione, anno: this.anno }
       });
     } else {
