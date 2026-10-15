@@ -87,7 +87,8 @@ export class CespitiStrutturaComponent implements OnInit, OnDestroy {
   protected readonly coloreBeni = COLORE_BENI;
   protected readonly coloreValore = COLORE_VALORE;
 
-  loadingChart = signal(false);
+  /** parte a true: finché non arrivano i primi dati il grafico non deve comparire */
+  loadingChart = signal(true);
 
   constructor(
     private route: ActivatedRoute,
@@ -276,6 +277,8 @@ export class CespitiStrutturaComponent implements OnInit, OnDestroy {
     this.dataSub?.unsubscribe();
     this.anno = anno;
     this.loadingChart.set(true);
+    // elimina subito il grafico precedente: sotto lo spinner non deve restare nulla da mostrare
+    this.chartOptions = {};
     const livelloCds = !this.cdsFisso;
     const livelloUo = !!this.cdsFisso && !this.uoFissa;
     const richiesta$ = this.uoFissa
