@@ -5,7 +5,7 @@ import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { NgbDropdown, NgbTypeaheadConfig, NgbTypeaheadSelectItemEvent } from "@ng-bootstrap/ng-bootstrap";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AcquistiStatoService } from "./acquisti-stato.service";
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { map, debounceTime, takeUntil } from 'rxjs/operators';
 import { Pair } from "../../context/pair.model";
 import { EChartsOption } from "echarts";
@@ -41,7 +41,10 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
 
   /** Esercizi disponibili per il filtro, dal ContextService come nelle altre componenti */
   esercizi!: number[];
-  loadingChart = signal(false);
+  /** parte a true: finché non arrivano i primi dati il grafico non deve comparire */
+  loadingChart = signal(true);
+  /** richiesta dati in corso: annullata a ogni nuovo caricamento per evitare risposte fuori ordine */
+  private dataSub?: Subscription;
   /** Risposta completa del servizio per la UO corrente: cambiando esercizio si ricalcola il grafico senza nuova chiamata */
   private rawData: any[] = [];
   private lastValue: any = null;
@@ -84,6 +87,7 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.dataSub?.unsubscribe();
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -166,7 +170,10 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
   callStato(codice?: string): void {
     this.codiceCorrente = codice;
     this.loadingChart.set(true);
-    this.acquistiStatoService.getIndice(codice).subscribe({
+    // elimina subito il grafico precedente: sotto lo spinner non deve restare nulla da mostrare
+    this.chartOptions = {};
+    this.dataSub?.unsubscribe();
+    this.dataSub = this.acquistiStatoService.getIndice(codice).subscribe({
       next: (result: any[]) => {
         this.rawData = result ?? [];
         this.aggiornaGrafico();

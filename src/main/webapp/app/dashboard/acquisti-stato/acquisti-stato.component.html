@@ -53,12 +53,14 @@
           </div>
         </div>
       }
-      <div [style.height]="dashboard ? '50vh' : '75vh'"
-           [style.display]="loadingChart() ? 'none' : 'block'"
-           style="width: 100%"
-           echarts
-           [options]="chartOptions">
-      </div>
+      <!-- il grafico esiste solo a caricamento finito: ogni caricamento parte da un canvas nuovo, senza residui del grafico precedente -->
+      @if (!loadingChart()) {
+        <div [style.height]="dashboard ? '50vh' : '75vh'"
+             style="width: 100%"
+             echarts
+             [options]="chartOptions">
+        </div>
+      }
     </div>
   </div>
 </div>
