@@ -39,8 +39,11 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
 
   protected chartOptions: EChartsOption = {};
 
+  /** Esercizi disponibili per il filtro, dal ContextService come nelle altre componenti */
   esercizi!: number[];
   loadingChart = signal(false);
+  /** Risposta completa del servizio per la UO corrente: cambiando esercizio si ricalcola il grafico senza nuova chiamata */
+  private rawData: any[] = [];
   private lastValue: any = null;
   /** true mentre il click sul caret forza l'apertura della tendina (non è una cancellazione voluta dall'utente) */
   private aperturaTypeahead = false;
@@ -69,12 +72,14 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
       if (this.dashboard == undefined  && params['dashboard'] !== undefined) {
         this.dashboard = params['dashboard'] === 'true';
       }
-      this.principal.getIdentyAccount(false).then((account) => {
+      this.contextService.getEsercizi().subscribe((esercizi: number[]) => {
+        this.esercizi = esercizi;
+        this.principal.getIdentyAccount(false).then((account) => {
           const userContext = this.localStateStorageService.getUserContext(account.username);
           this.esercizio = userContext?.esercizio;
           this.initializeComponent();
         });
-
+      });
     });
   }
 
@@ -84,8 +89,21 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
   }
 
   private initializeComponent(): void {
+    // esercizio del contesto utente, altrimenti il più recente tra quelli disponibili
+    this.esercizio = this.esercizio
+      ? Number(this.esercizio)
+      : (this.esercizi?.length ? Math.max(...this.esercizi) : undefined);
+
     this.filterForm = this.formBuilder.group({
-      codice: new FormControl(this.codiceUo)
+      codice: new FormControl(this.codiceUo),
+      esercizio: new FormControl(this.esercizio)
+    });
+
+    this.filterForm.controls['esercizio'].valueChanges.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(value => {
+      this.esercizio = value ? Number(value) : undefined;
+      this.aggiornaGrafico();
     });
 
     this.filterForm.controls['codice']?.valueChanges.pipe(
@@ -150,11 +168,9 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
     this.loadingChart.set(true);
     this.acquistiStatoService.getIndice(codice).subscribe({
       next: (result: any[]) => {
-        const data = this.ultimiEsercizi(result);
-        this.lastData = data;
-        this.loadChart(data);
+        this.rawData = result ?? [];
+        this.aggiornaGrafico();
         this.loadingChart.set(false);
-        this.datiCaricati.emit(data);
         this.caricato.emit();
       },
       error: () => {
@@ -162,6 +178,14 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
         this.caricato.emit();
       }
     });
+  }
+
+  /** Ricalcola dati e grafico a partire dall'ultima risposta del servizio e dall'esercizio selezionato */
+  private aggiornaGrafico(): void {
+    const data = this.ultimiEsercizi(this.rawData);
+    this.lastData = data;
+    this.loadChart(data);
+    this.datiCaricati.emit(data);
   }
 
   /**
@@ -219,13 +243,15 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
       ['Esercizio', 'UO',
         'N. ricevute', 'Importo ricevute',
         'N. registrate', 'Importo registrate',
-        'N. pagate', 'Importo pagate'].join(';'),
+        'N. pagate', 'Importo pagate',
+        'N. stornate', 'Importo stornate'].join(';'),
       ...this.lastData.map(d => [
         testo(d.riepilogo_stato_esercizio),
         testo(this.codiceCorrente ?? 'Ente'),
         d.riepilogo_stato_num_ricevute ?? 0,   num(d.riepilogo_stato_importo_ricevute),
         d.riepilogo_stato_num_registrate ?? 0, num(d.riepilogo_stato_importo_registrate),
-        d.riepilogo_stato_num_pagate ?? 0,     num(d.riepilogo_stato_importo_pagate)
+        d.riepilogo_stato_num_pagate ?? 0,     num(d.riepilogo_stato_importo_pagate),
+        d.riepilogo_stato_num_stornate ?? 0,     num(d.riepilogo_stato_importo_stornate)
       ].join(';'))
     ];
 
@@ -244,6 +270,17 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
     const formatEur = (v: number) =>
       v != null ? v.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '€' : '-';
 
+    /** Importo abbreviato per le etichette sulle barre: 504,2 mila € / 3,97 mln € (il tooltip e il CSV mostrano l'importo completo) */
+    const formatEurBreve = (v: number) => {
+      if (v == null) { return '-'; }
+      const n = (x: number, d: number) =>
+        x.toLocaleString('it-IT', { minimumFractionDigits: 0, maximumFractionDigits: d });
+      const abs = Math.abs(v);
+      if (abs >= 1_000_000) { return `${n(v / 1_000_000, 2)} Mln €`; }
+      if (abs >= 1_000) { return `${n(v / 1_000, 1)} mila €`; }
+      return `${n(v, 0)} €`;
+    };
+
     const series: any[] = [
       {
         label: 'RICEVUTE',
@@ -259,6 +296,11 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
         label: 'PAGATE',
         valueField: 'riepilogo_stato_importo_pagate',
         countField: 'riepilogo_stato_num_pagate'
+      },
+      {
+        label: 'STORNATE',
+        valueField: 'riepilogo_stato_importo_stornate',
+        countField: 'riepilogo_stato_num_stornate'
       }
     ].map(s => ({
       name: s.label,
@@ -266,13 +308,16 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
       barMaxWidth: '30%',
       label: {
         show: true,
-        position: 'insideBottom',
-        rotate: 90,
-        align: 'left',
-        verticalAlign: 'middle',
-        formatter: (params: any) => formatEur(params.value),
-        fontSize: 11,
-        color: '#fff'
+        // fuori dalla barra (sopra), orizzontale e in grassetto: leggibile anche con barre basse o strette
+        position: 'top',
+        rotate: 0,
+        align: 'center',
+        verticalAlign: 'bottom',
+        distance: 4,
+        formatter: (params: any) => formatEurBreve(params.value),
+        fontSize: 12,
+        fontWeight: 'bold',
+        color: '#333'
       },
       tooltip: {
         valueFormatter: (value: number, dataIndex: number) => {
@@ -315,7 +360,8 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
               const s = [
                 { label: 'RICEVUTE',   countField: 'riepilogo_stato_num_ricevute'    },
                 { label: 'REGISTRATE', countField: 'riepilogo_stato_num_registrate'  },
-                { label: 'PAGATE',     countField: 'riepilogo_stato_num_pagate'      }
+                { label: 'PAGATE',     countField: 'riepilogo_stato_num_pagate'      },
+                { label: 'STORNATE',   countField: 'riepilogo_stato_num_stornate'  }
               ].find(x => x.label === p.seriesName);
               const count = s ? row[s.countField] : '-';
               return `${p.marker} ${p.seriesName}: N. ${count} — ${formatEur(p.value)}`;
@@ -325,7 +371,7 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
       },
       legend: {
         bottom: 0,
-        data: ['RICEVUTE', 'REGISTRATE', 'PAGATE']
+        data: ['RICEVUTE', 'REGISTRATE', 'PAGATE', 'STORNATE']
       },
       grid: {
         left: '3%',
@@ -344,6 +390,8 @@ export class AcquistiStatoComponent implements OnInit, OnDestroy {
       },
       yAxis: {
         type: 'value',
+        // spazio sopra la barra più alta per le etichette verticali
+        boundaryGap: [0, '15%'],
         axisLabel: {
           formatter: (v: number) => v.toLocaleString('it-IT') + '€'
         }

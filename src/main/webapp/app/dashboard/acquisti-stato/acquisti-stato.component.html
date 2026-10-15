@@ -8,29 +8,37 @@
   @if(!dashboard) {
     <div class="card-header bg-white d-flex flex-wrap align-items-center justify-content-between">
       <h1 class="h4 mb-0 mr-3 my-1 text-monospace text-primary-dark bg-white" translate>dashboard.acquisti-stato.title</h1>
-      <form class="form-inline flex-wrap my-1" role="form" [formGroup]="filterForm">
-        <label for="codice" class="text-muted mr-2 mb-0" translate>dashboard.indice-tempestivita.uo</label>
-        <div class="input-group" style="min-width:320px">
-          <input
-            #codice
-            formControlName="codice"
-            [ngbTypeahead]="searchuo"
-            [resultTemplate]="rt"
-            [inputFormatter]="formatter"
-            [resultFormatter]="formatter"
-            (selectItem)="onUoSelected($event)"
-            [editable]="true"
-            class="form-control"
-            id="codice"
-            type="search"
-            placeholder="{{'global.form.filter.placeholder' | translate}}">
-          <div class="input-group-append">
-            <button type="button" class="btn btn-outline-secondary" aria-label="Mostra elenco" (click)="openTypeaheadUo()">
-              <i class="fa fa-caret-down"></i>
-            </button>
+      @if(filterForm) {
+        <form class="form-inline flex-wrap my-1" role="form" [formGroup]="filterForm">
+          <label for="esercizio" class="text-muted mr-2 mb-0" translate>dashboard.indice-tempestivita.esercizio</label>
+          <select id="esercizio" class="form-control mr-3" style="width:auto" formControlName="esercizio">
+            @for (esercizio of esercizi; track esercizio) {
+              <option [ngValue]="esercizio">{{esercizio}}</option>
+            }
+          </select>
+          <label for="codice" class="text-muted mr-2 mb-0" translate>dashboard.indice-tempestivita.uo</label>
+          <div class="input-group" style="min-width:320px">
+            <input
+              #codice
+              formControlName="codice"
+              [ngbTypeahead]="searchuo"
+              [resultTemplate]="rt"
+              [inputFormatter]="formatter"
+              [resultFormatter]="formatter"
+              (selectItem)="onUoSelected($event)"
+              [editable]="true"
+              class="form-control"
+              id="codice"
+              type="search"
+              placeholder="{{'global.form.filter.placeholder' | translate}}">
+            <div class="input-group-append">
+              <button type="button" class="btn btn-outline-secondary" aria-label="Mostra elenco" (click)="openTypeaheadUo()">
+                <i class="fa fa-caret-down"></i>
+              </button>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      }
     </div>
   }
 
