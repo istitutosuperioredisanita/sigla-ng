@@ -6,7 +6,7 @@ import { Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, map, takeUntil } from 'rxjs/operators';
 import { ContextService } from 'app/context';
 import { Pair } from '../../context/pair.model';
-import { EChartsOption, ECharts } from 'echarts';
+import { EChartsOption, ECharts, init as echartsInit } from 'echarts';
 import { CespitiStrutturaService } from './cespiti-struttura.service';
 import { LocalStateStorageService } from '../../shared/auth/local-storage.service';
 import { Principal } from '../../shared/auth/principal.service';
@@ -352,16 +352,21 @@ export class CespitiStrutturaComponent implements OnInit, OnDestroy {
 
   /** Toolbox: salva immagine (blu) e scarica CSV (verde) */
   private toolbox(data: VoceInventario[], nomeFile: string) {
+    const stileIconaImmagine = {
+      title: 'Salva immagine',
+      icon: ICONA_IMMAGINE,
+      iconStyle: { color: '#2c6fbb', borderWidth: 0 },          // blu
+      emphasis: { iconStyle: { color: '#1f5291', borderWidth: 0 } } // blu più scuro al passaggio del mouse
+    };
+    // a livello categoria le barre non hanno etichette sull'asse X: l'immagine esportata deve includere la legenda,
+    // quindi si usa un salvataggio personalizzato al posto di quello standard di ECharts
+    const salvaImmagine: any = this.uoFissa
+      ? { mySalvaImmagine: { show: true, ...stileIconaImmagine, onclick: () => this.salvaImmagineConLegenda(data, nomeFile) } }
+      : { saveAsImage: { ...stileIconaImmagine, name: nomeFile } };
     return {
       feature: {
         myHelp: this.dashboard ? {} : helpToolboxFeature(this.router),
-        saveAsImage: {
-          title: 'Salva immagine',
-          name: nomeFile,
-          icon: ICONA_IMMAGINE,
-          iconStyle: { color: '#2c6fbb', borderWidth: 0 },          // blu
-          emphasis: { iconStyle: { color: '#1f5291', borderWidth: 0 } } // blu più scuro al passaggio del mouse
-        },
+        ...salvaImmagine,
         myScaricaCsv: {
           show: true,
           title: 'Scarica CSV',
@@ -372,6 +377,61 @@ export class CespitiStrutturaComponent implements OnInit, OnDestroy {
         }
       }
     };
+  }
+
+  /**
+   * Salva il grafico come PNG includendo la legenda numerata (numero → descrizione, n. beni, valore).
+   * Il grafico viene ridisegnato fuori schermo, con tutte le barre (senza slider) e la legenda sotto,
+   * così l'immagine è leggibile anche senza la pagina.
+   */
+  private salvaImmagineConLegenda(data: VoceInventario[], nomeFile: string): void {
+    const larghezza = 1800;
+    const altezzaGrafico = 620;
+    const colonne = 3;
+    const altezzaRiga = 20;
+    const larghezzaColonna = (larghezza - 40) / colonne;
+    const righe = Math.ceil(data.length / colonne);
+    const altezzaLegenda = righe * altezzaRiga + 30;
+    const altezzaTotale = altezzaGrafico + altezzaLegenda;
+
+    const contenitore = document.createElement('div');
+    contenitore.style.cssText = `position:absolute;left:-99999px;top:0;width:${larghezza}px;height:${altezzaTotale}px`;
+    document.body.appendChild(contenitore);
+    const chart = echartsInit(contenitore, null, { renderer: 'canvas', width: larghezza, height: altezzaTotale });
+
+    try {
+      const voci = data.map((d, i) => ({
+        type: 'text',
+        left: 20 + (i % colonne) * larghezzaColonna,
+        top: altezzaGrafico + Math.floor(i / colonne) * altezzaRiga,
+        style: {
+          text: `${i + 1}. ${d.descrizione} (${this.formatNum(d.numeroBeni)} beni per un valore totale di ${this.formatEur(d.valore)})`,
+          fontSize: 12,
+          fill: '#333',
+          width: larghezzaColonna - 20,
+          overflow: 'truncate'
+        }
+      }));
+
+      chart.setOption({
+        ...this.chartOptions,
+        animation: false,
+        toolbox: { show: false },
+        dataZoom: [],
+        legend: { show: true, top: 70, left: 'center', data: ['Numero beni', 'Valore totale'] },
+        grid: { left: '3%', right: '3%', top: 120, bottom: altezzaLegenda + 10, containLabel: true },
+        graphic: voci
+      } as any, true);
+
+      const url = chart.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: '#fff' });
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${nomeFile}.png`;
+      a.click();
+    } finally {
+      chart.dispose();
+      contenitore.remove();
+    }
   }
 
   /** Esporta in CSV i dati mostrati nel grafico (separatore ';', UTF-8 con BOM, per Excel in italiano) */
@@ -400,8 +460,8 @@ export class CespitiStrutturaComponent implements OnInit, OnDestroy {
 
   /** Grafico misto: barre = numero beni (asse sinistro), linea = valore totale in € (asse destro) */
   private loadChart(data: VoceInventario[]): void {
-    // a livello categoria il codice non va mostrato: sull'asse X c'è la sola descrizione
-    const categories = this.uoFissa ? data.map(d => '') : data.map(d => d.codice);
+    // a livello categoria il codice non va mostrato: sull'asse X c'è il numero d'ordine, che rimanda alla legenda
+    const categories = this.uoFissa ? data.map((d, i) => String(i + 1)) : data.map(d => d.codice);
     const finestra = data.length > VOCI_VISIBILI_INIZIALI
       ? { startValue: 0, endValue: VOCI_VISIBILI_INIZIALI - 1 }
       : {};
@@ -427,10 +487,11 @@ export class CespitiStrutturaComponent implements OnInit, OnDestroy {
         textStyle: { align: 'left' },
         confine: true,
         formatter: (params: any) => {
-          const row = data[params[0]?.dataIndex];
+          const idx = params[0]?.dataIndex;
+          const row = data[idx];
           if (!row) return '';
           return [
-            `<b>${row.codice}</b><br/><div style="max-width:320px;white-space:normal">${row.descrizione}</div>`,
+            `<b>${this.uoFissa ? (idx + 1) + '. ' : ''}${row.codice}</b><br/><div style="max-width:320px;white-space:normal">${row.descrizione}</div>`,
             `<span style="color:${COLORE_BENI}">■</span> Numero beni: ${this.formatNum(row.numeroBeni)}`,
             `<span style="color:${COLORE_VALORE}">●</span> Valore totale: ${this.formatEur(row.valore)}`
           ].join('<br/>');
@@ -447,7 +508,7 @@ export class CespitiStrutturaComponent implements OnInit, OnDestroy {
         type: 'category',
         data: categories,
         axisLabel: this.uoFissa
-          ? { fontSize: 11, rotate: 60, width: 140, overflow: 'truncate' }
+          ? { fontSize: 11, rotate: 0 }
           : { fontSize: 11, rotate: 60 }
       },
       // doppio asse Y: indice 0 = quantità (sx), indice 1 = valore economico (dx, senza griglia per non sovrapporla)

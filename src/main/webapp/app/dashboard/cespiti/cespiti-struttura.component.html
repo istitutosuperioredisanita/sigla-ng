@@ -109,9 +109,9 @@
           @for (voce of legenda; track voce.codice) {
             <div class="col-12 col-md-6 col-xl-4 mb-1">
               @if (uoFissa) {
-                {{voce.descrizione}}
+                {{$index + 1}}. {{voce.descrizione}}
                 <span class="text-muted">
-                  ({{formatNum(voce.numeroBeni)}} beni - {{formatEur(voce.valore)}})
+                  ({{formatNum(voce.numeroBeni)}} beni per un valore totale di {{formatEur(voce.valore)}})
                 </span>
               } @else {
                 <b>{{voce.codice}}</b> - {{voce.descrizione}}
