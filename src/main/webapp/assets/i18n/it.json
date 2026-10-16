@@ -10,13 +10,13 @@
             "indice-tempestivita-pagamenti": "Indice Tempestività dei Pagamenti",
             "acquisti-struttura": "Acquisti per Struttura",
             "acquisti-stato": "Acquisti per Stato",
-            "cespiti-struttura": "Cespiti per Struttura",
+            "cespiti-struttura": "Cespiti",
             "progetti": {
                 "title": "Progetti",
                 "fondi-funzionamento": {
                     "uo": "Trend Fondi di Funzionamento per UO",
                     "tipo-progetto": "Progetti per Tipo",
-                    "elemento-voce": "Progetti per Voce",
+                    "elemento-voce": "Funzionamento per Voce",
                     "tipo-finanziamento": "Progetti per Tipo Finanziamento",
                     "ente-finanziatore": "Progetti per Ente Finanziatore"
                 }

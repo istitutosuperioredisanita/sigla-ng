@@ -297,7 +297,10 @@ export class CespitiStrutturaComponent implements OnInit, OnDestroy {
               numeroBeni: r.numeroTotaleBeni ?? 0,
               valore: r.valoreTotaleBeni ?? 0
             }))
-            .sort((a, b) => a.codice.localeCompare(b.codice));
+            // a livello categoria l'ordine è per descrizione (il codice non è mostrato), altrimenti per codice
+            .sort((a, b) => this.uoFissa
+              ? a.descrizione.localeCompare(b.descrizione, 'it', { sensitivity: 'base' })
+              : a.codice.localeCompare(b.codice));
           if (livelloUo) {
             data.forEach(d => this.descrizioniUo.set(d.codice, d.descrizione));
           }
@@ -476,7 +479,7 @@ export class CespitiStrutturaComponent implements OnInit, OnDestroy {
 
     this.chartOptions = {
       title: {
-        text: this.uoFissa ? 'Cespiti per Categoria Gruppo' : 'Cespiti per Struttura',
+        text: this.uoFissa ? 'Cespiti per Categoria Gruppo' : 'Cespiti',
         subtext: `Anno ${this.anno}${suffisso}`,
         left: 'center'
       },
