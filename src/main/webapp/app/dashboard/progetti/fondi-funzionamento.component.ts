@@ -20,6 +20,7 @@ interface VoceFondo {
   descrizione: string;
   importoFinanziato: number;
   importoUtilizzato: number;
+  importoPagato?: number;
 }
 export interface DatiFondi {
   anno: number;
@@ -43,6 +44,7 @@ interface FiltroFondo {
 
 const COLORE_UTILIZZATO = '#516fdb'; // blu
 const COLORE_ASSEGNATO = '#b6d635';  // verde
+const COLORE_PAGATO = '#f28e2b';     // arancione (solo con voce fissata)
 
 /** Colori delle fette della torta (neutri, per non confonderli con blu/verde delle barre) */
 const COLORI_TORTA = ['#4e79a7', '#f28e2b', '#b07aa1', '#e15759', '#76b7b2', '#edc948', '#9c755f', '#bab0ac'];
@@ -143,6 +145,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
   protected loadingDettaglio = signal(false);
   protected readonly coloreUtilizzato = COLORE_UTILIZZATO;
   protected readonly coloreAssegnato = COLORE_ASSEGNATO;
+  protected readonly colorePagato = COLORE_PAGATO;
 
   /** parte a true: finché non arrivano i primi dati il grafico non deve comparire */
   loadingChart = signal(true);
@@ -499,7 +502,8 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
               codice: r.codiceProgetto ?? r.codiceUnita ?? r.codice,
               descrizione: (r.descrizioneProgetto ?? r.descrizioneUnita ?? r.descrizione ?? '').trim(),
               importoFinanziato: r.importoFinanziato ?? 0,
-              importoUtilizzato: r.importoUtilizzato ?? 0
+              importoUtilizzato: r.importoUtilizzato ?? 0,
+              importoPagato: r.importoPagato ?? 0
             }))
             .sort((a, b) => b.importoFinanziato - a.importoFinanziato);
           // il nuovo setOption azzera l'highlight: riallinea anche la select
@@ -824,15 +828,20 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     const num = (v: number) => (v ?? 0).toFixed(2).replace('.', ',');
     const testo = (v: string) => `"${(v ?? '').replace(/"/g, '""')}"`;
 
+    const conPagato = !!this.voceFissa;
     const righe = [
-      ['Codice', 'Descrizione', 'Importo assegnato', 'Importo utilizzato', 'Residuo', '% utilizzo'].join(';'),
+      ['Codice', 'Descrizione', 'Importo assegnato', 'Importo utilizzato', ...(conPagato ? ['Importo pagato'] : []), 'Residuo', '% utilizzo', ...(conPagato ? ['% pagato su utilizzato'] : [])].join(';'),
       ...data.map(d => [
         testo(d.codice),
         testo(d.descrizione),
         num(d.importoFinanziato),
         num(d.importoUtilizzato),
+        ...(conPagato ? [num(d.importoPagato ?? 0)] : []),
         num(d.importoFinanziato - d.importoUtilizzato),
-        d.importoFinanziato ? ((d.importoUtilizzato / d.importoFinanziato) * 100).toFixed(1).replace('.', ',') : '0'
+        d.importoFinanziato ? ((d.importoUtilizzato / d.importoFinanziato) * 100).toFixed(1).replace('.', ',') : '0',
+        ...(conPagato
+          ? [d.importoUtilizzato ? (((d.importoPagato ?? 0) / d.importoUtilizzato) * 100).toFixed(1).replace('.', ',') : '0']
+          : [])
       ].join(';'))
     ];
 
@@ -865,6 +874,16 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
 
   get etichettaImporto2() {
     return `Importo ${this.etichettaDimensione2}`;
+  }
+
+  get etichettaImporto3() {
+    return 'Importo pagato';
+  }
+
+  /** Chiave di traduzione del titolo: con voce fissata il grafico è "per Voce" anche se la dimensione è 'uo' */
+  private get titoloGrafico(): string {
+    const dimensione = this.voceFissa ? 'elemento-voce' : this.dimensioneCorrente;
+    return this.translateService.instant(`global.menu.progetti.fondi-funzionamento.${dimensione}`);
   }
 
   private loadChart(data: VoceFondo[]): void {
@@ -969,9 +988,28 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
       animationDuration: 1000
     };
 
+    // terza barra (pagato): solo con voce fissata, affiancata alle altre due
+    const seriePagato: any = {
+      name: this.etichettaImporto3,
+      type: 'bar',
+      stack: 'fondi3',
+      barMaxWidth: 28,
+      cursor: this.filtroCorrente ? 'default' : 'pointer',
+      itemStyle: { color: COLORE_PAGATO },
+      emphasis,
+      data: data.map(d => ({
+        value: d.importoPagato ?? 0,
+        itemStyle: { borderRadius: raggioCima }
+      })),
+      animationDuration: 1000
+    };
+    const serieAffiancate = this.voceFissa
+      ? [serieAssegnato, serieUtilizzato, seriePagato]
+      : [serieAssegnato, serieUtilizzato];
+
     this.chartOptions = {
       title: {
-        text: this.translateService.instant(`global.menu.progetti.fondi-funzionamento.${this.dimensioneCorrente}`),
+        text: this.titoloGrafico,
         subtext: `Anno ${this.anno}${suffisso}`,
         subtextStyle: { rich: { voce: { fontWeight: 'bold', color: '#333' } } },
         left: 'center'
@@ -990,11 +1028,18 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
           const perc = row.importoFinanziato
             ? ((row.importoUtilizzato / row.importoFinanziato) * 100).toFixed(1)
             : '0';
+          // pagato rispetto all'utilizzato (non all'assegnato)
+          const percPagato = row.importoUtilizzato
+            ? (((row.importoPagato ?? 0) / row.importoUtilizzato) * 100).toFixed(1)
+            : '0';
           return [
             `<b>${row.codice}</b>`,
             `<div style="max-width:320px;white-space:normal">${row.descrizione}</div>`,
             `<span style="color:${COLORE_ASSEGNATO}">●</span> ${Helpers.capitalizeWord(this.etichettaDimensione1)}: ${this.formatEur(row.importoFinanziato)}`,
             `<span style="color:${COLORE_UTILIZZATO}">●</span> ${Helpers.capitalizeWord(this.etichettaDimensione2)}: ${this.formatEur(row.importoUtilizzato)} (${perc}%)`,
+            ...(this.voceFissa
+              ? [`<span style="color:${COLORE_PAGATO}">●</span> Pagato: ${this.formatEur(row.importoPagato ?? 0)} (${percPagato}% dell'utilizzato)`]
+              : []),
             `Residuo: ${this.formatEur(residuoVal)}`
           ].join('<br/>');
         }
@@ -1016,7 +1061,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
       xAxis: orizzontale ? asseImporti : asseCategorie,
       yAxis: orizzontale ? asseCategorie : asseImporti,
       // barre impilate: utilizzato (base) + residuo; barre affiancate: prima assegnato, poi utilizzato
-      series: affiancate ? [serieAssegnato, serieUtilizzato] : [serieUtilizzato, serieAssegnato]
+      series: affiancate ? serieAffiancate : [serieUtilizzato, serieAssegnato]
     };
   }
 }

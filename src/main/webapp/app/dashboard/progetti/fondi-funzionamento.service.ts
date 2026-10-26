@@ -29,6 +29,8 @@ export interface FondiPerGruppo {
   codiceUnita?: string;
   importoFinanziato: number;
   importoUtilizzato: number;
+  /** presente solo quando l'endpoint UO è filtrato per voce */
+  importoPagato?: number;
 }
 
 /** Riga restituita dal drill-down sui progetti di un gruppo */

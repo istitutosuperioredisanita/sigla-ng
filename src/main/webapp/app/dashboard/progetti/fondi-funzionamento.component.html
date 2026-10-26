@@ -154,6 +154,11 @@
           <span>
             <i class="fa fa-square" [style.color]="coloreUtilizzato"></i> {{etichettaImporto2}}
           </span>
+          @if (voceFissa) {
+            <span class="ml-4">
+              <i class="fa fa-square" [style.color]="colorePagato"></i> {{etichettaImporto3}}
+            </span>
+          }
         </div>
       }
       @if (!dashboard) {
