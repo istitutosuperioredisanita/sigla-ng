@@ -882,8 +882,10 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
 
   /** Chiave di traduzione del titolo: con voce fissata il grafico è "per Voce" anche se la dimensione è 'uo' */
   private get titoloGrafico(): string {
-    const dimensione = this.voceFissa ? 'elemento-voce' : this.dimensioneCorrente;
-    return this.translateService.instant(`global.menu.progetti.fondi-funzionamento.${dimensione}`);
+    if (this.voceFissa) {
+      return 'Trend fondi funzionamento per Voce';
+    }
+    return this.translateService.instant(`global.menu.progetti.fondi-funzionamento.${this.dimensioneCorrente}`);
   }
 
   private loadChart(data: VoceFondo[]): void {
