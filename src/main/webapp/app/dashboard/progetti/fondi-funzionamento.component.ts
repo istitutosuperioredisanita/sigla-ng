@@ -530,19 +530,28 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
    * - livello 2 (filtro attivo): apre una modale con il dettaglio per voce di spesa
    */
   onChartClick(params: any): void {
-    if (this.dashboard) {
-      return;
-    }
     const voce = this.legenda[params?.dataIndex];
     if (!voce) {
       return;
     }
+
     if (this.filtroCorrente) {
-      this.apriDettaglioProgetto(voce);
-    } else if (this.dimensioneCorrente === 'elemento-voce') {
-      // click su una voce: apre il grafico per UO con la voce fissata
+      // livello 2: la modale di dettaglio ha senso solo nella pagina piena
+      if (!this.dashboard) {
+        this.apriDettaglioProgetto(voce);
+      }
+      return;
+    }
+
+    if (this.dimensioneCorrente === 'elemento-voce') {
+      // click su una voce: grafico per UO con la voce fissata
       this.router.navigate(['/dashboard/fondi-funzionamento/uo'], {
-        queryParams: { voce: voce.codice, descrizioneVoce: voce.descrizione, anno: this.anno }
+        queryParams: { voce: voce.codice, descrizioneVoce: voce.descrizione, anno: this.anno, dashboard: false }
+      });
+    } else if (this.dashboard) {
+      // dalla dashboard: stessa route della pagina piena, con il drill-down già applicato
+      this.router.navigate(['/dashboard/fondi-funzionamento', this.dimensioneCorrente], {
+        queryParams: { valore: voce.codice, anno: this.anno, dashboard: false }
       });
     } else {
       this.router.navigate([], {
@@ -552,7 +561,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
       });
     }
   }
-
+ 
   private apriDettaglioProgetto(progetto: VoceFondo): void {
     this.modalRef?.close();
 

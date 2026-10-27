@@ -227,13 +227,23 @@ export class CespitiStrutturaComponent implements OnInit, OnDestroy {
    * - livello categoria: nessuna azione
    */
   onChartClick(params: any): void {
-    if (this.dashboard || this.uoFissa) {
+    if (this.uoFissa) {
+      // livello categoria: nessuna azione
       return;
     }
     const voce = this.legenda[params?.dataIndex];
     if (!voce) {
       return;
     }
+
+    if (this.dashboard) {
+      // dalla dashboard: stessa route della pagina piena, con il CDS già fissato
+      this.router.navigate(['/dashboard/cespiti-struttura'], {
+        queryParams: { cds: voce.codice, anno: this.anno, dashboard: false }
+      });
+      return;
+    }
+
     if (this.cdsFisso) {
       this.fissaUo(voce.codice);
     } else {

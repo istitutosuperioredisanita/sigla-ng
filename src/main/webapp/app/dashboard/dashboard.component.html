@@ -72,14 +72,12 @@
     </div>
     -->
     @for (k of [chiaveRicarica()]; track k) {
-        <a class="d-block" [routerLink]="['/dashboard/fondi-funzionamento/uo']" [queryParams]="{dashboard: false}"
-        [class.in-caricamento]="!pronti().has('uo')" [class.comparsa]="pronti().has('uo')">
+        <div class="d-block" [class.in-caricamento]="!pronti().has('uo')" [class.comparsa]="pronti().has('uo')">
             <fondi-funzionamento [dashboard]="true" (caricato)="segnaPronto('uo')" (datiCaricati)="onUo($event)"></fondi-funzionamento>
-        </a>
-        <a class="d-block" [routerLink]="['/dashboard/fondi-funzionamento/elemento-voce']" [queryParams]="{dashboard: false}"
-        [class.in-caricamento]="!pronti().has('elemento-voce')" [class.comparsa]="pronti().has('elemento-voce')">
+        </div>
+        <div class="d-block" [class.in-caricamento]="!pronti().has('elemento-voce')" [class.comparsa]="pronti().has('elemento-voce')">
             <fondi-funzionamento [dashboard]="true" dimensione="elemento-voce" (caricato)="segnaPronto('elemento-voce')"></fondi-funzionamento>
-        </a>
+        </div>
         <!--
         <div class="my-4" [class.in-caricamento]="!pronti().has('uo')" [class.comparsa]="pronti().has('uo')">
             <div class="row pt-2 justify-content-md-center">
@@ -115,10 +113,9 @@
         </div>
         -->
         <div class="mb-4" [class.in-caricamento]="!pronti().has('uo')" [class.comparsa]="pronti().has('uo')">
-            <a class="d-block" [routerLink]="['/dashboard/cespiti-struttura']" [queryParams]="{dashboard: false}"
-            [class.in-caricamento]="!pronti().has('cespiti-struttura')" [class.comparsa]="pronti().has('cespiti-struttura')">
+            <div class="d-block" [class.in-caricamento]="!pronti().has('cespiti-struttura')" [class.comparsa]="pronti().has('cespiti-struttura')">
                 <cespiti-struttura [dashboard]="true" (caricato)="segnaPronto('cespiti-struttura')"></cespiti-struttura>
-            </a>
+            </div>
         </div>
     }
 </div>
