@@ -505,7 +505,9 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
               importoUtilizzato: r.importoUtilizzato ?? 0,
               importoPagato: r.importoPagato ?? 0
             }))
-            .sort((a, b) => b.importoFinanziato - a.importoFinanziato);
+            .sort((a, b) => this.soloUtilizzatoPagato
+              ? b.importoUtilizzato - a.importoUtilizzato
+              : b.importoFinanziato - a.importoFinanziato);
           // il nuovo setOption azzera l'highlight: riallinea anche la select
           this.indiceEvidenziato = undefined;
           this.lastValueVoce = null;
@@ -837,22 +839,39 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     const num = (v: number) => (v ?? 0).toFixed(2).replace('.', ',');
     const testo = (v: string) => `"${(v ?? '').replace(/"/g, '""')}"`;
 
-    const conPagato = !!this.voceFissa;
-    const righe = [
-      ['Codice', 'Descrizione', 'Importo assegnato', 'Importo utilizzato', ...(conPagato ? ['Importo pagato'] : []), 'Residuo', '% utilizzo', ...(conPagato ? ['% pagato su utilizzato'] : [])].join(';'),
-      ...data.map(d => [
-        testo(d.codice),
-        testo(d.descrizione),
-        num(d.importoFinanziato),
-        num(d.importoUtilizzato),
-        ...(conPagato ? [num(d.importoPagato ?? 0)] : []),
-        num(d.importoFinanziato - d.importoUtilizzato),
-        d.importoFinanziato ? ((d.importoUtilizzato / d.importoFinanziato) * 100).toFixed(1).replace('.', ',') : '0',
-        ...(conPagato
-          ? [d.importoUtilizzato ? (((d.importoPagato ?? 0) / d.importoUtilizzato) * 100).toFixed(1).replace('.', ',') : '0']
-          : [])
-      ].join(';'))
-    ];
+    const soloVoce = this.soloUtilizzatoPagato;
+    const conPagato = !!this.voceFissa || soloVoce;
+    // con voce fissata o nel grafico per Voce il residuo non compare
+    const conResiduo = !this.voceFissa && !soloVoce;
+    const percPag = (d: VoceFondo) =>
+      d.importoUtilizzato ? (((d.importoPagato ?? 0) / d.importoUtilizzato) * 100).toFixed(1).replace('.', ',') : '0';
+    const percUtil = (d: VoceFondo) =>
+      d.importoFinanziato ? ((d.importoUtilizzato / d.importoFinanziato) * 100).toFixed(1).replace('.', ',') : '0';
+
+    const righe = soloVoce
+      ? [
+          ['Codice', 'Descrizione', 'Importo utilizzato', 'Importo pagato', '% pagato su utilizzato'].join(';'),
+          ...data.map(d => [
+            testo(d.codice),
+            testo(d.descrizione),
+            num(d.importoUtilizzato),
+            num(d.importoPagato ?? 0),
+            percPag(d)
+          ].join(';'))
+        ]
+      : [
+          ['Codice', 'Descrizione', this.voceFissa ? 'Importo assegnato (Totale progetto)' : 'Importo assegnato', 'Importo utilizzato', ...(conPagato ? ['Importo pagato'] : []), ...(conResiduo ? ['Residuo'] : []), '% utilizzo', ...(conPagato ? ['% pagato su utilizzato'] : [])].join(';'),
+          ...data.map(d => [
+            testo(d.codice),
+            testo(d.descrizione),
+            num(d.importoFinanziato),
+            num(d.importoUtilizzato),
+            ...(conPagato ? [num(d.importoPagato ?? 0)] : []),
+            ...(conResiduo ? [num(d.importoFinanziato - d.importoUtilizzato)] : []),
+            percUtil(d),
+            ...(conPagato ? [percPag(d)] : [])
+          ].join(';'))
+        ];
 
     const blob = new Blob(['\uFEFF' + righe.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
@@ -863,11 +882,18 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     URL.revokeObjectURL(url);
   }
 
+  /** true nel grafico per Voce: si vedono solo utilizzato e pagato (niente stanziato/assegnato né residuo) */
+  protected get soloUtilizzatoPagato(): boolean {
+    return this.dimensioneCorrente === 'elemento-voce';
+  }
+
   get etichettaDimensione1() {
-    if (this.dimensioneCorrente === 'elemento-voce' || this.voceFissa)
-      return `stanziato`;
-    else
+    // con voce fissata l'importo di riferimento è quello assegnato al progetto
+    if (this.voceFissa)
       return `assegnato`;
+    if (this.dimensioneCorrente === 'elemento-voce')
+      return `stanziato`;
+    return `assegnato`;
   }
 
   get etichettaDimensione2() {
@@ -878,6 +904,8 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
   }
 
   get etichettaImporto() {
+    if (this.voceFissa)
+      return `Importo assegnato (Totale progetto)`;
     return `Importo ${this.etichettaDimensione1} (totale barra)`;
   }
 
@@ -914,13 +942,16 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
       ? { itemStyle: { shadowBlur: 12, shadowColor: 'rgba(0,0,0,0.5)', borderColor: '#d9534f', borderWidth: 2 } }
       : undefined;
 
+    // grafico per Voce: solo utilizzato e pagato, affiancati, senza stanziato né residuo
+    const soloUtilPag = this.soloUtilizzatoPagato;
+
     // blu = utilizzato (base della barra)
     const utilizzato = data.map(d => {
       const residuo = d.importoFinanziato - d.importoUtilizzato;
       return {
         value: d.importoUtilizzato,
-        // se non c'è residuo la parte blu è anche la cima della barra
-        itemStyle: { borderRadius: residuo > 0 ? 0 : raggioCima }
+        // se non c'è residuo (o il residuo non è mostrato) la parte blu è anche la cima della barra
+        itemStyle: { borderRadius: soloUtilPag || residuo <= 0 ? raggioCima : 0 }
       };
     });
 
@@ -976,7 +1007,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     const topGrid = this.voceFissa ? '24%' : '18%';
 
     const serieUtilizzato: any = {
-      name: 'Importo {{this.etichettaDimensione2}}',
+      name: this.etichettaImporto2,
       type: 'bar',
       stack: 'fondi',
       barMaxWidth: 28,
@@ -988,7 +1019,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     };
     // impilate: è la parte residuo sopra l'utilizzato; affiancate: è l'importo assegnato intero in una barra a parte
     const serieAssegnato: any = {
-      name: affiancate ? 'Importo {{this.etichettaDimensione1}}' : 'Importo {{this.etichettaDimensione1}} (residuo)',
+      name: this.etichettaImporto,
       type: 'bar',
       stack: affiancate ? 'fondi2' : 'fondi',
       barMaxWidth: 28,
@@ -1003,7 +1034,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     const seriePagato: any = {
       name: this.etichettaImporto3,
       type: 'bar',
-      stack: 'fondi3',
+      stack: soloUtilPag ? 'fondi2' : 'fondi3',
       barMaxWidth: 28,
       cursor: this.filtroCorrente ? 'default' : 'pointer',
       itemStyle: { color: COLORE_PAGATO },
@@ -1017,6 +1048,8 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     const serieAffiancate = this.voceFissa
       ? [serieAssegnato, serieUtilizzato, seriePagato]
       : [serieAssegnato, serieUtilizzato];
+    // nel grafico per Voce: solo utilizzato (blu) e pagato (arancione), affiancati
+    const serieVoce = [serieUtilizzato, seriePagato];
 
     this.chartOptions = {
       title: {
@@ -1043,14 +1076,35 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
           const percPagato = row.importoUtilizzato
             ? (((row.importoPagato ?? 0) / row.importoUtilizzato) * 100).toFixed(1)
             : '0';
-          return [
+          const intestazione = [
             `<b>${row.codice}</b>`,
-            `<div style="max-width:320px;white-space:normal">${row.descrizione}</div>`,
+            `<div style="max-width:320px;white-space:normal">${row.descrizione}</div>`
+          ];
+          const rigaPagato = `<span style="color:${COLORE_PAGATO}">●</span> Pagato: ${this.formatEur(row.importoPagato ?? 0)} (${percPagato}% dell'utilizzato)`;
+
+          // grafico per Voce: solo utilizzato e pagato
+          if (this.soloUtilizzatoPagato) {
+            return [
+              ...intestazione,
+              `<span style="color:${COLORE_UTILIZZATO}">●</span> Utilizzato: ${this.formatEur(row.importoUtilizzato)}`,
+              rigaPagato
+            ].join('<br/>');
+          }
+
+          // voce fissata: importo assegnato (totale progetto), utilizzato e pagato, senza residuo
+          if (this.voceFissa) {
+            return [
+              ...intestazione,
+              `<span style="color:${COLORE_ASSEGNATO}">●</span> Importo assegnato (Totale progetto): ${this.formatEur(row.importoFinanziato)}`,
+              `<span style="color:${COLORE_UTILIZZATO}">●</span> Utilizzato: ${this.formatEur(row.importoUtilizzato)} (${perc}%)`,
+              rigaPagato
+            ].join('<br/>');
+          }
+
+          return [
+            ...intestazione,
             `<span style="color:${COLORE_ASSEGNATO}">●</span> ${Helpers.capitalizeWord(this.etichettaDimensione1)}: ${this.formatEur(row.importoFinanziato)}`,
             `<span style="color:${COLORE_UTILIZZATO}">●</span> ${Helpers.capitalizeWord(this.etichettaDimensione2)}: ${this.formatEur(row.importoUtilizzato)} (${perc}%)`,
-            ...(this.voceFissa
-              ? [`<span style="color:${COLORE_PAGATO}">●</span> Pagato: ${this.formatEur(row.importoPagato ?? 0)} (${percPagato}% dell'utilizzato)`]
-              : []),
             `Residuo: ${this.formatEur(residuoVal)}`
           ].join('<br/>');
         }
@@ -1072,7 +1126,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
       xAxis: orizzontale ? asseImporti : asseCategorie,
       yAxis: orizzontale ? asseCategorie : asseImporti,
       // barre impilate: utilizzato (base) + residuo; barre affiancate: prima assegnato, poi utilizzato
-      series: affiancate ? serieAffiancate : [serieUtilizzato, serieAssegnato]
+      series: soloUtilPag ? serieVoce : affiancate ? serieAffiancate : [serieUtilizzato, serieAssegnato]
     };
   }
 }

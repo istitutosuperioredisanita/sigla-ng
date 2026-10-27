@@ -148,13 +148,15 @@
     <div class="px-3 pb-3 mt-3">
       @if (!tortaAttiva) {
         <div class="d-flex justify-content-center mb-2 small">
-          <span class="mr-4">
-            <i class="fa fa-square" [style.color]="coloreAssegnato"></i> {{etichettaImporto}}
-          </span>
+          @if (!soloUtilizzatoPagato) {
+            <span class="mr-4">
+              <i class="fa fa-square" [style.color]="coloreAssegnato"></i> {{etichettaImporto}}
+            </span>
+          }
           <span>
             <i class="fa fa-square" [style.color]="coloreUtilizzato"></i> {{etichettaImporto2}}
           </span>
-          @if (voceFissa) {
+          @if (voceFissa || soloUtilizzatoPagato) {
             <span class="ml-4">
               <i class="fa fa-square" [style.color]="colorePagato"></i> {{etichettaImporto3}}
             </span>
