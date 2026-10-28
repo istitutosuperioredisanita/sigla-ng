@@ -897,7 +897,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
   }
 
   get etichettaDimensione2() {
-    if (this.dimensioneCorrente === 'elemento-voce' || this.voceFissa)
+    if (this.dimensioneCorrente === 'uo' || this.dimensioneCorrente === 'elemento-voce' || this.voceFissa)
       return `utilizzato`;
     else
       return `stanziato`;
