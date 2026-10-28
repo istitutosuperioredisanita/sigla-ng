@@ -546,10 +546,16 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
     }
 
     if (this.dimensioneCorrente === 'elemento-voce') {
-      // click su una voce: grafico per UO con la voce fissata
-      this.router.navigate(['/dashboard/fondi-funzionamento/uo'], {
-        queryParams: { voce: voce.codice, descrizioneVoce: voce.descrizione, anno: this.anno, dashboard: false }
-      });
+      // click su una voce: grafico per UO con la voce fissata se non è inserito il filtro per UO
+      if (this.filtroUoCorrente) {
+        this.router.navigate(['/dashboard/fondi-funzionamento/uo'], {
+          queryParams: { valore: this.filtroUoCorrente, voce: voce.codice, descrizioneVoce: voce.descrizione, anno: this.anno, dashboard: false }
+        });
+      } else {
+        this.router.navigate(['/dashboard/fondi-funzionamento/uo'], {
+          queryParams: { voce: voce.codice, descrizioneVoce: voce.descrizione, anno: this.anno, dashboard: false }
+        });
+      }
     } else if (this.dashboard) {
       // dalla dashboard: stessa route della pagina piena, con il drill-down già applicato
       this.router.navigate(['/dashboard/fondi-funzionamento', this.dimensioneCorrente], {
