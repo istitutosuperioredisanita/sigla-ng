@@ -788,7 +788,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
             style: {
               x: fine[0] + lato * 4,
               y: fine[1],
-              text: `${d.codice}\n${percTotale(d)}%\nutil. ${percUtilizzo(d)}%`,
+              text: `${d.codice}\n${percTotale(d)}%\nstan. ${percUtilizzo(d)}%`,
               textAlign: lato > 0 ? 'left' : 'right',
               textVerticalAlign: 'middle',
               fontSize: 12,
@@ -804,7 +804,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
       color: COLORI_TORTA,
       title: {
         text: this.translateService.instant(`global.menu.progetti.fondi-funzionamento.${this.dimensioneCorrente}`),
-        subtext: `Anno ${this.anno}${suffisso}\nFetta scura = importo assegnato · settore chiaro (raggio minore) = di cui utilizzato`,
+        subtext: `Anno ${this.anno}${suffisso}\nFetta scura = importo assegnato · settore chiaro (raggio minore) = di cui stanziato`,
         left: 'center'
       },
       toolbox: this.toolbox(data, nomeFile),
@@ -820,7 +820,7 @@ export class FondiFunzionamentoComponent implements OnInit, OnChanges, OnDestroy
             `<b>${row.codice}</b>`,
             `<div style="max-width:320px;white-space:normal">${row.descrizione}</div>`,
             `Assegnato: ${this.formatEur(row.importoFinanziato)} (${percTotale(row)}% del totale)`,
-            `di cui utilizzato: ${this.formatEur(row.importoUtilizzato)} (${percUtilizzo(row)}%)`,
+            `di cui stanziato: ${this.formatEur(row.importoUtilizzato)} (${percUtilizzo(row)}%)`,
             `Residuo: ${this.formatEur(residuoVal)}`
           ].join('<br/>');
         }
